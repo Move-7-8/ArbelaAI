@@ -1,0 +1,778 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+  Note: The styles for this gradient grid background is heavily inspired by the creator of this amazing site (https://dub.sh) – all credits go to them! 
+*/
+
+.main {
+  width: 100vw;
+  min-height: 100vh;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  padding: 120px 24px 160px 24px;
+  pointer-events: none;
+}
+
+.main:before {
+  background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);
+  position: absolute;
+  content: "";
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  top: 0;
+}
+
+.main:after {
+  content: "";
+  background-image: url("/assets/images/grid.svg");
+  z-index: 1;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  opacity: 0.4;
+  filter: invert(1);
+}
+
+.gradient {
+  height: fit-content;
+  z-index: 3;
+  width: 100%;
+  max-width: 640px;
+  background-image: radial-gradient(
+      at 27% 37%,
+      hsla(215, 98%, 61%, 1) 0px,
+      transparent 0%
+    ),
+    radial-gradient(at 97% 21%, hsla(125, 98%, 72%, 1) 0px, transparent 50%),
+    radial-gradient(at 52% 99%, hsla(354, 98%, 61%, 1) 0px, transparent 50%),
+    radial-gradient(at 10% 29%, hsla(256, 96%, 67%, 1) 0px, transparent 50%),
+    radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 1) 0px, transparent 50%),
+    radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 1) 0px, transparent 50%),
+    radial-gradient(at 79% 53%, hsla(343, 68%, 79%, 1) 0px, transparent 50%);
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  filter: blur(100px) saturate(150%);
+  top: 80px;
+  opacity: 0.15;
+}
+
+@media screen and (max-width: 640px) {
+  .main {
+    padding: 0;
+  }
+}
+
+/* Tailwind Styles */
+
+/* .app {
+  @apply relative z-10 flex justify-center items-center flex-col max-w-none w-full mx-auto sm:px-16 px-6;
+} */
+
+.app {
+  @apply relative z-10 flex justify-center items-center flex-col max-w-none w-full mx-auto sm:px-4 px-1 ;
+}
+
+
+.black_btn {
+  @apply rounded-full border border-black bg-black py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black text-center text-sm font-inter flex items-center justify-center;
+}
+
+.outline_btn {
+  @apply rounded-full border border-black bg-transparent py-1.5 px-5 text-black transition-all hover:bg-black hover:text-white text-center text-sm font-inter flex items-center justify-center;
+}
+
+.head_text {
+  @apply mt-5 text-5xl font-extrabold leading-[1.15] text-black sm:text-6xl;
+}
+
+.orange_gradient {
+  @apply bg-gradient-to-r from-amber-500 via-orange-600 to-yellow-500 bg-clip-text text-transparent;
+}
+
+.new_blue_gradient {
+  background-image: linear-gradient(to right, #455BBA, #6A45BA, #4595BA);
+  background-clip: text;
+  color: transparent;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* For better compatibility */
+}
+
+
+
+.green_gradient {
+  @apply bg-gradient-to-r from-green-400 to-green-500 bg-clip-text text-transparent;
+}
+
+.blue_gradient {
+  @apply bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent;
+}
+
+.desc {
+  @apply mt-5 text-lg text-gray-600 sm:text-xl max-w-2xl;
+}
+
+.search_input {
+  @apply block w-full rounded-md border border-gray-200 bg-white py-2.5 font-satoshi pl-5 pr-12 text-sm shadow-lg font-medium focus:border-black focus:outline-none focus:ring-0;
+}
+
+.copy_btn {
+  @apply w-7 h-7 rounded-full bg-white/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur flex justify-center items-center cursor-pointer;
+}
+
+.glassmorphism {
+  @apply rounded-xl border border-gray-200 bg-white/20 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur p-5;
+}
+
+.prompt_layout {
+  @apply space-y-6 py-8 sm:columns-2 sm:gap-6 xl:columns-3;
+}
+
+/* NavBar  */
+.nav_button {
+  display: flex;       /* Enables flexbox */
+  align-items: center; /* Vertically centers the content */
+  margin-right: 30px;  /* Adds space to the right */
+  margin-top: -2px; 
+
+}
+
+.dropdown-menu {
+  position: absolute; 
+  right: 0; 
+  z-index: 1000; 
+  display: block; 
+  min-width: 160px; 
+  max-width: 200px; 
+  padding: 0.5rem 0;
+  margin-top: 0.5rem; 
+  background-color: #fff; 
+  border: 1px solid #ddd; 
+  border-radius: 4px; 
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.dropdown-link {
+  display: block; 
+  padding: 0.5rem 1rem; 
+  color: #333; 
+  text-decoration: none; 
+  white-space: nowrap; 
+  background-color: #fff; 
+  border-bottom: 1px solid #ddd; /* Add a solid border */
+  transition: transform 0.2s ease; /* Smooth transition for the transform effect */
+}
+
+.dropdown-link:hover {
+  transform: scale(1.05); /* Slightly increase the size */
+  border-bottom: 1px solid #ccc; /* Optional: change the border color on hover */
+}
+
+/* Optionally remove the border from the last item */
+.dropdown-link:last-child {
+  border-bottom: none;
+}
+
+
+/* Landing Page Component */
+/* Initial state of the entering element */
+.fade-enter {
+  opacity: 0;
+  z-index: 1;
+}
+
+/* Final state of the entering element. Will transition to this state over 250ms */
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transition: opacity 750ms ease-in;
+}
+
+/* Initial state of the exiting element */
+.fade-exit {
+  opacity: 1;
+}
+
+/* Final state of the exiting element. Will transition to this state over 250ms */
+.fade-exit.fade-exit-active {
+  opacity: 0;
+  transition: opacity 750ms ease-out;
+}
+
+.features {
+  display: flex; /* This is already set by 'flex' utility class */
+  justify-content: space-between; /* This is already set by 'justify-between' utility class */
+  gap: 1rem; /* Adjust gap as needed, or use margin utilities from Tailwind */
+}
+
+.feature {
+  /* Utility classes from Tailwind are used for padding and margin */
+  display: flex; /* Flex container for centering content */
+  flex-direction: column; /* Stack children vertically */
+  justify-content: flex-start; /* Align children to the start on the cross axis */
+  align-items: center; /* Center children on the main axis */
+  text-align: center; /* Center text */
+  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+  backdrop-filter: blur(10px); /* Blurred glass effect */
+  border-radius: 0.5rem; /* Optional: rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: shadow for depth */
+  color: black; /* White text color */
+}
+
+.feature h3 {
+  margin-bottom: 1rem; /* or use 'mb-4' in Tailwind */
+  font-weight: bold; /* or use 'font-bold' in Tailwind */
+}
+
+.feature p {
+  margin-top: 1rem; /* or use 'mt-4' in Tailwind */
+}
+
+
+
+
+/* Feed Component */
+.feed {
+  @apply mt-16 mx-auto w-full max-w-xl flex justify-center items-center flex-col gap-2;
+}
+
+/* Form Component */
+.form_textarea {
+  @apply w-full flex rounded-lg h-[200px] mt-2 p-3 text-sm text-gray-500 outline-0 bg-white/10;
+}
+
+.form_input {
+  @apply w-full flex rounded-lg mt-2 p-3 text-sm text-gray-500 outline-0;
+}
+
+/* Nav Component */
+nav {
+  position: fixed; /* Pin the nav to the top */
+  top: 0; /* Align it to the top */
+  left: 0; /* Align it to the left */
+  width: 100%; /* Make it full width */
+  background: rgba(255, 255, 255, 0.15); /* Semi-transparent white background */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Brighter border */
+  backdrop-filter: blur(10px); /* Apply the blur */
+  -webkit-backdrop-filter: blur(10px); /* For Safari */
+  border-radius: 5px; /* Rounded corners */
+  padding: 0.5rem 1rem; /* Some padding */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  z-index: 1000; /* Ensure the nav stays on top of other content */
+}
+
+.logo_text {
+  @apply max-sm:hidden font-satoshi font-semibold text-lg text-black tracking-wide;
+}
+
+.dropdown {
+  @apply absolute right-0 top-full mt-3 w-full p-5 rounded-lg bg-white min-w-[150px] flex flex-col gap-2 justify-end items-end;
+}
+
+.dropdown_link {
+  @apply text-sm font-inter text-gray-700 hover:text-gray-500 font-medium;
+}
+
+/* PromptCard Component */
+.prompt_card {
+  @apply flex-1 break-inside-avoid rounded-lg border border-gray-300 bg-white/20 bg-clip-padding p-6 pb-4 backdrop-blur-lg backdrop-filter md:w-[360px] w-full h-fit;
+}
+
+.flex-center {
+  @apply flex justify-center items-center;
+}
+
+.flex-start {
+  @apply flex justify-start items-start;
+}
+
+.flex-end {
+  @apply flex justify-end items-center;
+}
+
+.flex-between {
+  @apply flex justify-between items-center;
+}
+
+/* Feed */
+.dropdown-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.2); /* Increased opacity for a brighter effect */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Brighter border */
+  backdrop-filter: blur(10px); /* Apply the blur */
+  -webkit-backdrop-filter: blur(10px); /* For Safari */
+  border-radius: 5px; /* Rounded corners */
+  padding: 0.5rem 1rem; /* Some padding */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.dropdown-button-category {
+  width: 100%; /* Adjust width as needed */
+  /* ... (other styles) ... */
+}
+
+.dropdown-button-sort {
+  width: 100%; /* Adjust width as needed */
+  /* ... (other styles) ... */
+}
+
+.listbox-options {
+  background: rgba(255, 255, 255, 0.8); /* Adjusted opacity for a more solid background */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 20; /* Ensure the dropdown is on top */
+}
+
+.listbox-option {
+  padding: 0.5rem 1rem;
+  transition: background-color 0.2s;
+}
+
+.listbox-option:hover {
+  background-color: rgba(0, 112, 243, 0.1);
+}
+
+.listbox-option[data-active="true"] {
+  background-color: rgba(0, 112, 243, 0.2);
+}
+
+.listbox-option:first-child {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.listbox-option:last-child {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+/* Open Card  */
+.company_button {
+  background: #5E5DF0;
+  border-radius: 999px;
+  /* box-shadow: #5E5DF0 0 10px 20px -10px; */
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
+  font-size: 14px; /* Reduced font size */
+  font-weight: 700;
+  line-height: 20px; /* Reduced line height */
+  opacity: 0.8; /* Reduced opacity */
+  outline: 0 solid transparent;
+  padding: 6px 16px; /* Reduced padding */
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: fit-content;
+  word-break: break-word;
+  border: 0;
+}
+
+.company_button:hover {
+  transform: scale(1.25); /* Slightly larger on hover */
+  box-shadow: #5E5DF0 0 7px 12px -5px; /* Enhanced shadow for depth effect */
+  background: #6E6FF0; /* Slightly lighter color on hover */
+}
+
+/* Carousel */
+
+.carousel-fade-overlay {
+  right: 20px;
+
+}
+/* Pricing  */
+
+
+
+/* Model Page (PDF Reader and Assistant Page) */
+
+
+
+/* ChatBox */
+/* Apply styles for chat components based on screen width */
+@media (max-width: 768px) {
+  .chatscope-message-list .chatscope-message-text {
+    font-size: 0.8rem; /* Adjust the font size */
+  }
+
+  .chatscope-message-input {
+    font-size: 0.8rem; /* Adjust the font size */
+  }
+}
+
+.cs-button--attachment {
+  display: none !important;
+}
+
+.cs-message--incoming .cs-message__content {
+  background-color: rgba(19, 210, 253, 0.15)!important; 
+  backdrop-filter: blur(5px) !important;   
+}
+
+.message-with-button .cs-message__content{
+  background-color: rgba(126, 126, 126, 0.15)!important; 
+  backdrop-filter: blur(5px) !important;   
+
+}
+
+.cs-message--outgoing .cs-message__content {
+  background-color: rgba(22, 0, 145, 0.267) !important; 
+  backdrop-filter: blur(5px) !important; 
+
+}
+.cs-message-input__content-editor-wrapper {
+  background-color: rgba(16, 136, 255, 0.5)!important; 
+  background-color: white !important; 
+
+  backdrop-filter: blur(5px) !important; 
+  border: 1px solid black;
+}
+
+.cs-message-input__content-editor {
+  background-color: rgba(16, 136, 255, 0.5)!important; 
+  background-color: white !important; 
+}
+
+.cs-message--outgoing .cs-message__content {
+  background-color: rgba(0, 85, 170, 0.284)!important; 
+  backdrop-filter: blur(5px) !important; 
+
+}
+
+  /* Company Page */
+.company_page {
+  margin-top: 65px;
+  position: relative;  
+  z-index: 0;
+  width: 100%;
+  height: 80vh; /* Full viewport height */
+  display: flex; /* Set as flex container */
+  flex-direction: column; /* Children are stacked vertically */
+}
+
+.company_page:before {
+    background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);
+    position: absolute;
+    content: "";
+    z-index: -1;  
+    width: 100%;
+    height: 100%;
+    top: 0;
+}
+
+.company_content {
+  position: relative; 
+  z-index: 1;
+  flex: 1; /* Expand to fill available space */
+  width: 100%;
+  overflow: hidden; /* Prevent any child content from overflowing */
+  margin-bottom: 0;
+
+}
+
+.company_page .gradient {
+  z-index: -3;
+}
+
+.company_chart{
+  max-width: 25rem !important;
+  padding: 0px 0px 0px 0px !important;
+  background-color: rgba(255, 255, 255, 0.05); /* Semi-transparent white */
+  backdrop-filter: blur(10px); /* Blur effect */
+  border-radius: 10px; /* Optional: to give rounded edges */
+}
+
+@media screen and (min-width: 1000px) and (max-width: 1400px) {
+  .company_chart.volume_chart {
+      display: none;
+  }
+}
+
+@media screen and (min-width: 800px) and (max-width: 999px) {
+  .company_chart.volume_chart,
+  .company_chart.revenue_chart {
+      display: none;
+  }
+}
+
+@media screen and (max-width: 799px) {
+  .company_chart {
+      display: block;
+  }
+}
+
+.company_analysis {
+  height: 90vh;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow-y: auto;
+
+
+}
+
+.company_analysis_cards {
+  backdrop-filter: blur(10px);
+  background: rgba(6, 92, 204, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow-y: auto;
+  max-height: calc(90vh - 40px); /* Optional: Adjust as per your requirements */
+
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
+.company_analysis_items {
+  background: rgba(255, 255, 255, 0.01) !important;  
+  backdrop-filter: blur(10px);  
+  transition: all 0.3s;  
+}
+
+.company_analysis_items:hover {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+.selected_data{
+  background-color: transparent;
+
+}
+
+.css-h4y409-MuiList-root{
+  padding: 0px !important;
+  margin: 0px !important;
+}
+.analyse_button {
+  background: #5E5DF0;
+  border-radius: 999px;
+  box-shadow: 0px 4px 10px rgba(94, 93, 240, 0.25); /* Added a subtle box shadow */
+  box-sizing: border-box;
+  color: #FFFFFF;
+  font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
+  font-size: 16px; /* Increased font size */
+  font-weight: 700;
+  line-height: 24px; /* Increased line height for the larger font size */
+  opacity: 1; /* Full opacity */
+  outline: 0 solid transparent;
+  padding: 10px 20px; /* Increased padding */
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: fit-content;
+  word-break: break-word;
+  border: 0;
+  transition: background 0.3s ease; /* Added transition for smooth hover effect */
+  cursor: pointer !important;
+
+  /* &:hover {
+    background: #4E4DD6; /* Slightly darker shade on hover */
+}
+
+/* File Upload */
+.FileUpload-file-card {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 3px dashed #cbd5e0;
+  background-color: #edf2f7;
+  /* Use percentages or max-width for better responsiveness */
+  width: 100%;
+  max-width: 380px;
+  min-height: 230px;
+  margin: auto; /* Center the card */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+@media (max-width: 768px) { /* Adjust the breakpoint as needed */
+  .FileUpload-file-card {
+    /* Adjust the padding and min-width for smaller screens */
+    padding: 0.5em;
+    min-width: 0;
+    max-width: 100%; /* Take up full container width */
+  }
+  .FileUpload-file-inputs,
+  .FileUpload-button {
+    width: 100%; /* Full width for child elements */
+  }
+}
+
+.file-upload-flex-container{
+  display: flex;
+  flex-direction: row; /* default direction */
+  justify-content: between;
+  padding: 1rem;
+  /* Other styling */
+}
+/* When the screen width is 768px or less, stack the children vertically */
+@media (max-width: 768px) {
+  .file-upload-flex-container {
+    flex-direction: column;
+  }
+
+  /* Optional: Adjust width of children to take full width */
+  .file-upload-flex-container > div {
+    width: 100%;
+    margin: 2px 0; /* Adjust margin for vertical stacking if needed */
+  }
+}
+
+
+.file-upload-company-name-form{
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Stack children vertically */
+  gap: 0.5rem; /* Space between form elements */
+  padding: 1rem; /* Padding around the form */
+  width: 100%; /* Full width of its parent */
+}
+
+.file-upload-company-name-input {
+  flex: 1; /* Input field will fill the space */
+  padding: 0.5rem; /* Padding inside the input */
+  font-size: 1rem; /* Text size */
+  border: 1px solid #cbd5e0; /* Border color */
+  border-radius: 0.25rem; /* Rounded corners */
+  margin-bottom: 0.5rem; /* Space below the input field */
+}
+
+.file-upload-submit-button {
+  padding: 0.5rem 1rem; /* Padding inside the button */
+  background-color: #f55e30; /* Button color */
+  color: white; /* Text color */
+  font-size: 1rem; /* Text size */
+  border: none; /* No border */
+  border-radius: 0.25rem; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Transition for background color */
+}
+
+.file-upload-submit-button:hover {
+  background-color: #e64a19; /* Darker button color on hover */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .file-upload-company-name-form {
+    flex-direction: column; /* Keep stacking vertically on small screens */
+  }
+  .file-upload-company-name-input,
+  .file-upload-submit-button {
+    width: 100%; /* Full width on small screens */
+  }
+}
+
+.FileUpload-file-inputs{
+  position: relative;
+  margin-bottom: 1.5em;
+
+}
+
+.FileUpload-file{
+  position: relative;
+  text-align: right;
+  opacity: 0;
+  z-index: 2;
+  cursor: pointer;
+  height: 46px;
+  max-width: 200px;
+
+}
+
+.FileUpload-button{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: #fff;
+  background-color: #f55e30;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  /* padding: 1em; */
+  transition: background-color 0.4s;
+  box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.5);
+}
+
+.FileUpload-button-icon {
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0.4em;
+  background-color: #fff;
+  color: #f55e30;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 0.8em;
+  font-size: 0.8em;
+
+}
+
+.file-item-list-item{
+  list-style: none;
+  margin: 1.2em 0;
+  background-color: #f55e3038;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 1.2em 1.5em;
+
+}
+
+.faFileAlt {
+  color: orange; /* you can use a more specific color code if needed */
+}
+
+.faFileAlt:first-child {
+  font-size: 1.2em;
+  margin-right: 0.8em;
+}
+
+  .file-item-file-name{
+    flex: 1;
+    font-size: 0.9rem;
+  }
+
+  .file-items-actions {
+    justify-self: flex-end;
+    cursor: pointer;
+  }
+
+  .fa-spin {
+    font-size: 1.2em;
+    color: orange; /* you can use a more specific color code if needed */
+  }
+
+  .fa-trash{
+    font-size: 1.2em;
+    color: orange; /* you can use a more specific color code if needed */
+
+  }
