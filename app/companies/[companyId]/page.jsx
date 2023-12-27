@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 import Charts from '@components/Charts'; // Assuming Charts component is in the same directory
-import CompanyAnalysis from '@components/CompanyAnalysis'; // Assuming Charts component is in the same directory
+import CompanyAnalysis from '@components/StockPageComponents/CompanyAnalysis'; // Assuming Charts component is in the same directory
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -50,7 +50,7 @@ const Page = () => {
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-700 font-medium">EPS: </span>
-            <span className="text-gray-700">5.90</span>
+            <span className="text-gray-700">5.91</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-700 font-medium">Volume: </span>
@@ -67,7 +67,7 @@ const Page = () => {
 
         <div className="w-full overflow-hidden md:w-3/4 flex flex-col mt-4 space-y-4 md:mt-0 md:ml-4 flex-grow">
       <div className='flex-grow'>
-        <CompanyAnalysis/>
+        {/* <CompanyAnalysis/> */}
       </div>
     </div>
     </div>
