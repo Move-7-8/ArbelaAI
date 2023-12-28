@@ -1,4 +1,8 @@
+"use client"
+
 import Link from 'next/link';
+import { useState } from 'react';
+
 
 function StockCard({ company }) {
     // Function to truncate the company name if it's too long
@@ -16,6 +20,8 @@ function StockCard({ company }) {
             change: (company['Change (%)'] / company['Price']).toFixed(2)
         }
     };
+
+
 
     return (
         <Link 
