@@ -91,37 +91,37 @@ const Page = () => {
   
   // console.log('DATA RECEIVED: ', data);
 
-  return (
-        <div className="flex w-full h-screen">
-            {/* Container for the content sections */}
-            <div className="w-3/4">  {/* Adjusted to 3/4 of the width */}
-                {/* Section for the cards at the top */}
-                <section className="mt-16 w-full">
-                    <div className="flex justify-start">
-                        <Card color="green" title="Card 1" />
-                        <Card color="blue" title="Card 2" />
-                        <Card color="yellow" title="Card 3" />
-                        <Card color="red" title="Card 4" />
-                    </div>
-                </section>
+return (
+    <div className="flex w-full h-screen">
+        {/* Container for the content sections */}
+        <div className="flex flex-col w-3/4 h-full"> {/* Adjusted to 3/4 of the width and made it a flex column container */}
+            {/* Section for the cards at the top */}
+            <section className="mt-16 w-full flex-grow">
+                <div className="flex justify-start">
+                    <Card color="blue" title="Card 1" data={data} />
+                    <Card color="blue" title="Card 2" data={data} />
+                    <Card color="blue" title="Card 3" data={data} />
+                    <Card color="blue" title="Card 4" data={data} />
+                </div>
+            </section>
 
-                {/* Section for StockCard and TradingChartContainer */}
-                <section className="flex mt-3 w-full">
-                    <div className="w-1/3">  
-                        <DashboardStockCard />
-                    </div>
-                    <div className="w-2/3">  
-                        <TradingChartContainer />
-                    </div>
-                </section>
-            </div>
-
-            {/* Chatbox Component */}
-            <div className="w-1/4 mt-16">
-                <Chatbox />
-            </div>
+            {/* Section for StockCard and TradingChartContainer */}
+            <section className="flex mt-3 w-full h-full">
+                <div className="w-1/3 h-full">  
+                    <DashboardStockCard data={data} />
+                </div>
+                <div className="w-2/3 h-full">  
+                    <TradingChartContainer data={data} />
+                </div>
+            </section>
         </div>
-    );
+
+        {/* Chatbox Component */}
+        <div className="w-1/4 mt-16 h-full">
+            <Chatbox />
+        </div>
+    </div>
+);
 }
 
 export default Page;

@@ -9,28 +9,28 @@ const TradingChartContainer = () => {
     return (
         <>
                     {/* Buttons Section */}
-            <div className="flex justify-center rounded mx-4 pt-2 pb-4">
+            <div className="flex justify-center rounded mx-4 pb-4">
                <button
-    className={`w-50 px-3 py-1 rounded-lg shadow hover:scale-105 transition-transform duration-300 mr-4 ${activeButton === 'charts' ? 'bg-gray-600' : 'bg-gray-100'}`}
-    style={{ backgroundColor: activeButton === 'charts' ? 'rgba(169, 169, 169, 0.2)' : '' }}
-    onClick={() => setActiveButton('charts')}
->
-    Charts
-</button>
-<button
-    className={`w-50 px-3 py-1 rounded-lg shadow hover:scale-105 transition-transform duration-300 mr-4 ${activeButton === 'balanceSheet' ? 'bg-gray-600' : 'bg-gray-100'}`}
-    style={{ backgroundColor: activeButton === 'balanceSheet' ? 'rgba(169, 169, 169, 0.2)' : '' }}
-    onClick={() => setActiveButton('balanceSheet')}
->
-    Balance Sheet
-</button>
-<button
-    className={`w-50 px-3 py-1 rounded-lg shadow hover:scale-105 transition-transform duration-300 ${activeButton === 'incomeStatement' ? 'bg-gray-600' : 'bg-gray-100'}`}
-    style={{ backgroundColor: activeButton === 'incomeStatement' ? 'rgba(169, 169, 169, 0.2)' : '' }}
-    onClick={() => setActiveButton('incomeStatement')}
->
-    Income Statement
-</button>
+                    className={`w-50 px-3 py-1 rounded-lg shadow hover:scale-105 transition-transform duration-300 mr-4 ${activeButton === 'charts' ? 'bg-gray-600' : 'bg-gray-100'}`}
+                    style={{ backgroundColor: activeButton === 'charts' ? 'rgba(169, 169, 169, 0.2)' : '' }}
+                    onClick={() => setActiveButton('charts')}
+                >
+                    Charts
+                </button>
+                <button
+                    className={`w-50 px-3 py-1 rounded-lg shadow hover:scale-105 transition-transform duration-300 mr-4 ${activeButton === 'balanceSheet' ? 'bg-gray-600' : 'bg-gray-100'}`}
+                    style={{ backgroundColor: activeButton === 'balanceSheet' ? 'rgba(169, 169, 169, 0.2)' : '' }}
+                    onClick={() => setActiveButton('balanceSheet')}
+                >
+                    Balance Sheet
+                </button>
+                <button
+                    className={`w-50 px-3 py-1 rounded-lg shadow hover:scale-105 transition-transform duration-300 ${activeButton === 'incomeStatement' ? 'bg-gray-600' : 'bg-gray-100'}`}
+                    style={{ backgroundColor: activeButton === 'incomeStatement' ? 'rgba(169, 169, 169, 0.2)' : '' }}
+                    onClick={() => setActiveButton('incomeStatement')}
+                >
+                    Income Statement
+                </button>
 
             </div>
             {/* Chart Containers */}

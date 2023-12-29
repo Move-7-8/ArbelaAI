@@ -6,9 +6,10 @@ const Card = ({ color, title }) => {
         case 'green':
             gradient = 'linear-gradient(75deg, rgba(195, 223, 198, 0.5), rgba(221, 236, 221, 0.5))';
             break;
-        case 'blue':
-            gradient = 'rgba(101, 81, 186, 0.1)';
-            break;
+case 'blue':
+    gradient = 'rgba(102, 209, 250, 0.1)';
+    break;
+
 
 
         case 'yellow':
