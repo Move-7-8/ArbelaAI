@@ -7,8 +7,10 @@ const Card = ({ color, title }) => {
             gradient = 'linear-gradient(75deg, rgba(195, 223, 198, 0.5), rgba(221, 236, 221, 0.5))';
             break;
         case 'blue':
-            gradient = 'linear-gradient(75deg, rgba(150, 167, 208, 0.5), rgba(223, 235, 231, 0.5))';
+            gradient = 'rgba(101, 81, 186, 0.1)';
             break;
+
+
         case 'yellow':
             gradient = 'linear-gradient(75deg, rgba(219, 246, 231, 0.5), rgba(251, 221, 151, 0.5))';
             break;
@@ -25,7 +27,8 @@ const Card = ({ color, title }) => {
                  minWidth: '150px',
                  minHeight: '110px',
                  position: 'relative',
-                 overflow: 'hidden' // Ensures the blur doesn't bleed outside the card
+                 overflow: 'hidden', // Ensures the blur doesn't bleed outside the card
+                 boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' // Box shadow added here
              }}>
             <div className="card-background" style={{
                 position: 'absolute',

@@ -77,10 +77,10 @@ const Page = () => {
                 {/* Section for the cards at the top */}
                 <section className="mt-16 w-full">
                     <div className="flex justify-start">
-                        <Card color="green" title="Card 1" />
+                        <Card color="blue" title="Card 1" />
                         <Card color="blue" title="Card 2" />
-                        <Card color="yellow" title="Card 3" />
-                        <Card color="red" title="Card 4" />
+                        <Card color="blue" title="Card 3" />
+                        <Card color="blue" title="Card 4" />
                     </div>
                 </section>
 
