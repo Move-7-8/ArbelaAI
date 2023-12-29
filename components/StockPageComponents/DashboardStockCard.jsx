@@ -18,20 +18,24 @@ function DashboardStockCard({ company }) {
  return (
         <div className="rounded-md mx-auto">
             {/* Align buttons to the left */}
-          <div className="flex justify-center rounded mx-4 pr-2 pb-2" style={{ backgroundColor: 'rgba(211, 211, 211, 0.1)', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-                <button
-                    className={`font-bold px-3 py-1 ${activeButton === 'button1' ? 'underline' : ''} mr-4`}
-                    onClick={() => setActiveButton('button1')}
-                >
-                    Button 1
-                </button>
-                <button
-                    className={`font-bold px-3 py-1 ${activeButton === 'button2' ? 'underline' : ''}`}
-                    onClick={() => setActiveButton('button2')}
-                >
-                    Button 2
-                </button>
-            </div>
+<div className="flex justify-center rounded mx-4 pr-2 pb-2">
+<button
+                className={`w-24 px-3 py-1 rounded-lg shadow hover:scale-105 transition-transform duration-300 mr-4 ${activeButton === 'button1' ? '' : 'bg-gray-100'}`}
+                style={{ backgroundColor: activeButton === 'button1' ? 'rgba(169, 169, 169, 0.2)' : '' }} // Increased opacity for active button
+                onClick={() => setActiveButton('button1')}
+            >
+                Summary
+            </button>
+            <button
+                className={`w-24 px-3 py-1 rounded-lg shadow hover:scale-105 transition-transform duration-300 ${activeButton === 'button2' ? '' : 'bg-gray-100'}`}
+                style={{ backgroundColor: activeButton === 'button2' ? 'rgba(169, 169, 169, 0.2)' : '' }} // Increased opacity for active button
+                onClick={() => setActiveButton('button2')}
+            >
+                Ratio
+            </button>
+</div>
+
+
 
 
 <div className="relative rounded-md m-4 " style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
