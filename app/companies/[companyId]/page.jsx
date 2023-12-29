@@ -15,26 +15,31 @@ import Chatbox from '@components/StockPageComponents/DashboardChatBox';
 const Page = () => {
   const [data, setData] = useState(null); 
   const [isLoading, setIsLoading] = useState(false); 
-
+  
+  // Search Params
   const searchParams = useSearchParams();
   const companyName = searchParams.get('companyName');
   const ticker = searchParams.get('ticker');
   const industry = searchParams.get('industry');
   const price = searchParams.get('price');
   const change = searchParams.get('change');
-
-  //Use effect to pull in Financial data with fetch aborting 
+  
+  // From the UseEffect 
+  
+  
+  //Useeffect to pull in Financial data with fetch aborting 
   //(because multiple requests were somehow firing)
-
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
-
+  
     const fetchData = async () => {
       if (!isLoading) {
-        setIsLoading(true); 
+        setIsLoading(true);
         console.log('Fetching data...');
+  
         try {
+          // Make sure to define response here from the fetch API
           const response = await fetch(`/api/companies/[${ticker}]`, {
             method: 'POST',
             headers: {
@@ -43,32 +48,48 @@ const Page = () => {
             body: JSON.stringify({ 'ticker': ticker }),
             signal: signal 
           });
-
+  
           if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
-
+  
+          // Now you can safely use response to get the JSON result
           const result = await response.json();
+          console.log('Complete Data:', result);
+  
+          // Destructure the data into variables
+          const { historic, balanceSheet, earnings, financeAnalytics, news, earningsTrend, keyStatistics  } = result;
+          console.log('Price Data:', price);
+          console.log('Historic Data:', historic);
+          console.log('Balance Sheet Data:', balanceSheet);
+          console.log('Earnings Data:', earnings);
+          console.log('Finance Analytics:', financeAnalytics);
+          console.log('News:', news);
+          console.log('Trends:', earningsTrend);
+          console.log('Key Statistics:', keyStatistics);
+
+          // Save the complete data to state if needed
           setData(result);
+  
         } catch (error) {
-          if (error.name !== 'AbortError') { 
+          if (error.name !== 'AbortError') {
             console.error('There was an error fetching the data!', error);
           }
         } finally {
-          setIsLoading(false); 
+          setIsLoading(false);
         }
       }
     };
-
+  
     fetchData();
-
+  
     // Cleanup function for the effect
     return () => {
       controller.abort(); // Abort the fetch on component unmount
     };
-  }, []);
-
-  console.log('DATA RECEIVED: ', data);
+  }, []); // Empty array means this effect runs once after the first render
+  
+  // console.log('DATA RECEIVED: ', data);
 
   return (
         <div className="flex w-full h-screen">
@@ -77,10 +98,10 @@ const Page = () => {
                 {/* Section for the cards at the top */}
                 <section className="mt-16 w-full">
                     <div className="flex justify-start">
-                        <Card color="blue" title="Card 1" />
+                        <Card color="green" title="Card 1" />
                         <Card color="blue" title="Card 2" />
-                        <Card color="blue" title="Card 3" />
-                        <Card color="blue" title="Card 4" />
+                        <Card color="yellow" title="Card 3" />
+                        <Card color="red" title="Card 4" />
                     </div>
                 </section>
 
