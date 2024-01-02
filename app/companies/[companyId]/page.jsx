@@ -82,7 +82,7 @@ const Page = () => {
       }
     };
   
-    // fetchData();
+    fetchData();
   
     // Cleanup function for the effect
     return () => {
