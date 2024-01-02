@@ -10,6 +10,8 @@ import StockCard from '@components/StockCard';
 import DashboardStockCard from '@components/StockPageComponents/DashboardStockCard';
 import TradingChartContainer from '@components/StockPageComponents/DashboardTradingChart';
 import Chatbox from '@components/StockPageComponents/DashboardChatBox';
+import FinancialStatements from '@components/StockPageComponents/Statements';
+import NewsSection from '@components/StockPageComponents/NewsSection';
 
 
 const Page = () => {
@@ -18,10 +20,8 @@ const Page = () => {
   
   // Search Params
   const searchParams = useSearchParams();
-  const companyName = searchParams.get('companyName');
   const ticker = searchParams.get('ticker');
   const industry = searchParams.get('industry');
-  const price = searchParams.get('price');
   const change = searchParams.get('change');
   
   // From the UseEffect 
@@ -58,7 +58,8 @@ const Page = () => {
           console.log('Complete Data:', result);
   
           // Destructure the data into variables
-          const { historic, balanceSheet, earnings, financeAnalytics, news, earningsTrend, keyStatistics  } = result;
+          const { historic, price, balanceSheet, earnings, financeAnalytics, news, earningsTrend, keyStatistics  } = result;
+          // const { historic, price, keyStatistics, balanceSheet  } = result;
           console.log('Price Data:', price);
           console.log('Historic Data:', historic);
           console.log('Balance Sheet Data:', balanceSheet);
@@ -92,11 +93,11 @@ const Page = () => {
   // console.log('DATA RECEIVED: ', data);
 
 return (
-    <div className="flex w-full h-screen">
-        {/* Container for the content sections */}
-        <div className="flex flex-col w-3/4 h-full"> {/* Adjusted to 3/4 of the width and made it a flex column container */}
-            {/* Section for the cards at the top */}
-            <section className="mt-16 w-full flex-grow">
+   <div className="flex w-full h-full">
+            {/* Main content container - 3/4 of the width */}
+        <div className="flex flex-col w-3/4">
+            {/* Top Cards Section */}
+            <section className="mt-16 w-full">
                 <div className="flex justify-start">
                     <Card color="blue" title="Card 1" data={data} />
                     <Card color="blue" title="Card 2" data={data} />
@@ -105,23 +106,27 @@ return (
                 </div>
             </section>
 
-            {/* Section for StockCard and TradingChartContainer */}
-            <section className="flex mt-3 w-full h-full">
-                <div className="w-1/3 h-full">  
-                    <DashboardStockCard data={data} />
-                </div>
-                <div className="w-2/3 h-full">  
-                    <TradingChartContainer data={data} />
-                </div>
-            </section>
+      {/* DashboardStockCard and TradingChartContainer Section */}
+      <div className="flex mt-3">
+        <div className="flex w-1/3">  
+          <DashboardStockCard data={data} industry={industry} />
         </div>
+        <div className="flex flex-col flex-grow w-2/3 overflow-y-scroll h-screen">
+            <TradingChartContainer data={data} />
+            <FinancialStatements data={data} className="mt-4" /> {/* Added margin-top */}
+            <NewsSection data={data} className="mt-4" /> {/* Added margin-top */}
+        </div>
+      </div>
+    </div>
+
 
         {/* Chatbox Component */}
-        <div className="w-1/4 mt-16 h-full">
-            <Chatbox />
+         <div className="flex-col flex-1 flex-grow  flex w-1/4  mt-16">
+            <Chatbox  />
         </div>
     </div>
 );
+
 }
 
 export default Page;
