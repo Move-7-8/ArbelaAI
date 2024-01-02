@@ -98,7 +98,7 @@ return (
         <div className="flex flex-col w-full md:w-3/4">
             {/* Top Cards Section */}
             <section className="mt-16 w-full">
-                <div className="flex justify-start">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <Card color="blue" title="Card 1" data={data} />
                     <Card color="blue" title="Card 2" data={data} />
                     <Card color="blue" title="Card 3" data={data} />
@@ -107,8 +107,8 @@ return (
             </section>
 
       {/* DashboardStockCard and TradingChartContainer Section */}
-      <div className="flex mt-3">
-        <div className="flex w-1/3">  
+      <div className="flex flex-col md:flex-row mt-3">
+        <div className="flex w-full md:w-1/3 mb-4 md:mb-0">  
           <DashboardStockCard data={data} industry={industry} />
         </div>
         <div className="flex flex-col flex-grow w-2/3 overflow-y-scroll h-screen">
@@ -121,7 +121,7 @@ return (
 
 
         {/* Chatbox Component */}
-         <div className="flex-col flex-1 flex w-1/4  mt-16">
+         <div className="flex-col flex w-1/4  mt-16">
             <Chatbox  />
         </div>
     </div>
