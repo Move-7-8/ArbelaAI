@@ -13,10 +13,15 @@ function DashboardStockCard({ data, industry }) {
     const prevClose = data?.historic?.meta?.chartPreviousClose || 'Not Available';
     const volume = data?.price?.regularMarketVolume?.longFmt || 'Not Available';
 
-
-   
-
-
+    //New Data for Ratios Connor added: 
+    const EPS = data?.keyStatistics?.epsCurrentYear?.raw || 'Not Available'
+    const peRatioLagging = data?.keyStatistics?.priceEpsCurrentYear?.raw || 'Not Available'
+    const peRatioForward = data?.keyStatistics?.forwardPE?.raw || 'Not Available'
+    const pbRatio = data?.keyStatistics?.priceToBook?.raw || 'Not Available'
+    const debtToEquityRatio = data?.financeAnalytics?.debtToEquity?.raw || 'Not Available'
+    const revenuePerShare = data?.financeAnalytics?.revenuePerShare?.raw || 'Not Available'
+    const returnOnAssets = data?.financeAnalytics?.returnOnAssets?.raw || 'Not Available'
+    const returnOnEquity = data?.financeAnalytics?.returnOnEquity?.raw || 'Not Available'
 
     const formatAskPrice = (askPriceObj) => {
         // Check if askPriceObj is an object with a 'raw' property
