@@ -97,16 +97,15 @@ const Page = () => {
 return (
    <div className="flex w-full h-full">
             {/* Main content container - 3/4 of the width */}
-        <div className="flex flex-col w-full md:w-3/4">
-            {/* Top Cards Section */}
-            <section className="mt-16 w-full">
+        <div className="flex flex-col w-full mt-20 md:w-3/4">
+            {/* <section className="mt-16 w-full">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <Card color="blue" title="Card 1" data={data} />
                     <Card color="blue" title="Card 2" data={data} />
                     <Card color="blue" title="Card 3" data={data} />
                     <Card color="blue" title="Card 4" data={data} />
                 </div>
-            </section>
+            </section> */}
 
       {/* DashboardStockCard and TradingChartContainer Section */}
       <div className="flex flex-col md:flex-row mt-3">
