@@ -16,7 +16,7 @@ const Chatbox = () => {
 
 
     return (
-     <div className="bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col flex-grow justify-between" style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+     <div className="bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-grow flex-col justify-between" style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
             {/* Chat header */}
             <div className="p-3 border-b border-gray-300 text-center">
                 <div className="font-bold text-lg">ChatBot</div>
@@ -27,7 +27,7 @@ const Chatbox = () => {
             </div>
 
            {/* Chat content area with scrollbar */}
-            <div className="chat-content-area p-3 overflow-y-auto" style={{ minHeight: '470px' }}>
+            <div className="chat-content-area p-3  overflow-y-auto" style={{ minHeight: '470px' }}>
                 {/* Display chat messages */}
                     {messages.map((msg, index) => (
                         <p key={index} className="text-left text-xs my-2 p-2 rounded-md" 

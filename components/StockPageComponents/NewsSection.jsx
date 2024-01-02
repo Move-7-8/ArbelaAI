@@ -37,7 +37,7 @@ const NewsSection = ({ data }) => {
             <div className="grid md:grid-cols-2 gap-4">
                 {newsArray.slice(0, visibleCount).map((article, index) => (
                     <a key={index} href={article.link} target="_blank" rel="noopener noreferrer"
-                       className="block rounded-lg overflow-hidden shadow-lg relative min-h-[220px] group">
+                       className="block rounded-lg overflow-hidden shadow-lg relative min-h-[180px] group">
                         <div className="absolute inset-0 bg-cover bg-center filter blur-sm group-hover:blur-none transition duration-300 ease-in-out"
                              style={{ backgroundImage: `url(${getThumbnailUrl(article)})` }}>
                              {/* Blurred background */}
@@ -54,9 +54,16 @@ const NewsSection = ({ data }) => {
                     </a>
                 ))}
             </div>
-            {visibleCount < newsArray.length && (
-                <button onClick={loadMore} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mt-4">See More</button>
-            )}
+            <div className="flex justify-center mt-4 mb-4"> {/* Centering the button and adding top and bottom margins */}
+        {visibleCount < newsArray.length && (
+            <button 
+                onClick={loadMore} 
+                className={`w-24 px-3 py-1 rounded-lg shadow hover:scale-105 transition-transform duration-300 ${visibleCount < newsArray.length ? '' : 'bg-gray-100'}`}
+                style={{ backgroundColor: visibleCount < newsArray.length ? 'rgba(169, 169, 169, 0.2)' : '' }}>
+                See More
+            </button>
+        )}
+    </div>
         </div>
     );
 };
