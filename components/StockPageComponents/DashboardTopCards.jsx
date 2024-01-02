@@ -6,9 +6,9 @@ const Card = ({ color, title }) => {
         case 'green':
             gradient = 'linear-gradient(75deg, rgba(195, 223, 198, 0.5), rgba(221, 236, 221, 0.5))';
             break;
-case 'blue':
-    gradient = 'rgba(102, 209, 250, 0.1)';
-    break;
+        case 'blue':
+            gradient = 'rgba(80, 120, 235, 0.1)';
+            break;
 
 
 
@@ -23,7 +23,7 @@ case 'blue':
     }
 
     return (
-        <div className="card text-white p-4 m-4 flex-grow rounded-md"
+        <div className="card text-white p-4 m-4 flex-row flex-grow rounded-md"
              style={{
                  minWidth: '150px',
                  minHeight: '110px',
