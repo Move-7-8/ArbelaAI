@@ -65,6 +65,8 @@ function StockCard({ company }) {
             volatility: volatility, 
             change: change,
             liquidity: liquidity,
+            volatilityScore: volatilityScore,
+            liquidityScore: liquidityScore
         }
     };
 
