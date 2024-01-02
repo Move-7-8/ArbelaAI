@@ -22,7 +22,9 @@ const Page = () => {
   const searchParams = useSearchParams();
   const ticker = searchParams.get('ticker');
   const industry = searchParams.get('industry');
-  const change = searchParams.get('change');
+  // const change = searchParams.get('change');
+  const volatilityScore = searchParams.get('volatilityScore');
+  const liquidityScore = searchParams.get('liquidityScore');
   
   // From the UseEffect 
   

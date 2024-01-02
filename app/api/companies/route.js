@@ -18,7 +18,7 @@ export async function GET() {
     },
   });
   }
-  
+
   //Pulling Data from the JSON and converting it to numerical 
   //Where necessary
   // let list = []; 
@@ -93,6 +93,4 @@ export async function GET() {
   //     VolatilityScore: VolatilityScore,
   //     LiquidityScore: LiquidityScore
   // };
-
-
 
