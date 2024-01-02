@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Plot from 'react-plotly.js';
 import * as d3 from 'd3';
 import { select, scaleLinear, axisBottom, axisLeft } from 'd3';
 
