@@ -109,13 +109,13 @@ function DashboardStockCard({ data, industry }) {
 
 
 
-    <div className="flex mx-4 mb-4 flex-col relative rounded-md  p-4" style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+    <div className="flex mx-4 mb-4 flex-col  relative rounded-md  p-4" style={{minHeight:'88%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
         {/* Blurred Background */}
         <div className="absolute inset-0 bg-gray-100 bg-opacity-50" style={{  filter: 'blur(1px)' }}></div>
 
 
         {/* Content */}
-        <div className="p-4 flex-col flex flex-grow relative">
+        <div className="p-4 flex-col flex relative">
             {activeButton === 'button1' && (
                 <div>
                     {/* Rows */}
