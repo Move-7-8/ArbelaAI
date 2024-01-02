@@ -97,7 +97,7 @@ const Page = () => {
 return (
    <div className="flex w-full h-full">
             {/* Main content container - 3/4 of the width */}
-        <div className="flex flex-col w-3/4">
+        <div className="flex flex-col w-full md:w-3/4">
             {/* Top Cards Section */}
             <section className="mt-16 w-full">
                 <div className="flex justify-start">
@@ -123,7 +123,7 @@ return (
 
 
         {/* Chatbox Component */}
-         <div className="flex-col flex-1 flex-grow  flex w-1/4  mt-16">
+         <div className="flex-col flex-1 flex w-1/4  mt-16">
             <Chatbox  />
         </div>
     </div>

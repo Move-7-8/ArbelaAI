@@ -104,7 +104,7 @@ function DashboardStockCard({ data, industry }) {
 
 
 
-    <div className="flex-grow flex mx-4 mb-4 flex-col relative rounded-md  p-4" style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+    <div className="flex mx-4 mb-4 flex-col relative rounded-md  p-4" style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
         {/* Blurred Background */}
         <div className="absolute inset-0 bg-gray-100 bg-opacity-50" style={{  filter: 'blur(1px)' }}></div>
 
@@ -161,23 +161,23 @@ function DashboardStockCard({ data, industry }) {
                 </span>
             </div>
 
-                    <div className="flex justify-between my-6">
+                    <div className="flex justify-between my-7">
                         <span className="text-gray-500">Market Cap:</span>
                          <span>{marketCap}</span>
                     </div>
-                    <div className="flex justify-between my-6">
+                    <div className="flex justify-between my-7">
                         <span className="text-gray-500">Volume:</span>
                         <span>{volume}</span>
                     </div>
-                    <div className="flex justify-between my-6">
+                    <div className="flex justify-between my-7">
                         <span className="text-gray-500">Row 4:</span>
                         <span>Value 4</span>
                     </div>
-                    <div className="flex justify-between my-6">
+                    <div className="flex justify-between my-7">
                         <span className="text-gray-500">Row 4:</span>
                         <span>Value 4</span>
                     </div>
-                    <div className="flex justify-between my-6">
+                    <div className="flex justify-between my-7">
                         <span className="text-gray-500">Row 4:</span>
                         <span>Value 4</span>
                     </div>
