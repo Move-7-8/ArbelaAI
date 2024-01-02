@@ -8,8 +8,8 @@ export async function POST(req, res) {
   const ticker = request_data.ticker; // 
 
   // Replace 'Your-RapidAPI-Key' and 'Your-RapidAPI-Host' with actual values from RapidAPI
-  const apiKey = '3e127537b5mshfdc9b740d2be432p180807jsn2142859ab157';
-  const apiHost = 'yahoo-finance127.p.rapidapi.com';
+  const apiKey = process.env.RAPID_API_KEY
+  const apiHost = process.env.RAPID_API_HOST
   
   // Array of API endpoint paths
   const endpoints = [
@@ -24,6 +24,7 @@ export async function POST(req, res) {
     ];
 
   try {
+    
     // Iterate over each endpoint and fetch the data
     const allDataPromises = endpoints.map(async ({ key, path }) => { // Use destructuring to get key and path
         const apiUrl = `https://yahoo-finance127.p.rapidapi.com/${path}`;

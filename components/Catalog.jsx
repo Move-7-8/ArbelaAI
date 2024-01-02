@@ -11,9 +11,11 @@ function Catalog({ searchText, selectedCategory }) {
     const [selectedCompany, setSelectedCompany] = useState(null);
 
     const selectCompany = (company) => {
-        setSelectedCompany(company);
+        setSelectedCompany(company); 
     };
 
+    
+    // In your fetchData function
     const fetchData = async () => {
         try {
             const response = await fetch("/api/companies");
@@ -21,7 +23,12 @@ function Catalog({ searchText, selectedCategory }) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const fetchedData = await response.json();
-            setTickers(fetchedData.companies);
+            console.log("Fetched Data Companies: ", fetchedData); // Debug: log fetched data
+            // Ensure setTickers always receives an array.
+            // setTickers(Array.isArray(fetchedData.companies) ? fetchedData.companies : []);
+            //Testing new line:
+            setTickers(Array.isArray(fetchedData) ? fetchedData : []);
+
         } catch (error) {
             console.error("Fetch error: ", error);
         }
@@ -55,7 +62,7 @@ function Catalog({ searchText, selectedCategory }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
                 {filteredTickers.slice(0, visibleCount).map(company => (
                     <div onClick={() => selectCompany(company)} key={company.ASX_code}>
-                        <StockCard company={company} />
+                        <StockCard company={company}  />
                     </div>
                 ))}
             </div>

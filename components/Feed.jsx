@@ -36,7 +36,19 @@ const Feed = () => {
     fetchPosts();
   }, []);
 
-  
+  // JSON Stock Attribute Calculations (Equivalent of calculations in @StockCard.jsx)
+  // companiesData.forEach(company => {
+  //   company.change = ((company.Price - company.LastPrice) / company.LastPrice) * 100;
+
+  //   const rangeVolatility = ((company.fiftyTwoWeekHigh - company.fiftyTwoWeekLow) / company.fiftyTwoWeekLow) * 100;
+  //   const percentageChangeVolatility = (company.fiftyTwoWeekChangePercent + company.twoHundredDayAverageChangePercent + company.fiftyDayAverageChangePercent) / 3;
+  //   company.volatility = (0.5 * rangeVolatility) + (0.5 * percentageChangeVolatility);
+    
+  //   company.liquidity = (0.8 * company.averageDailyVolume3Month) + (0.2 * company.regularMarketVolume);
+  // });
+
+
+
   return (
     <section>
       <div className="feed">
