@@ -44,6 +44,7 @@ export async function POST(req, res) {
 
       const jsonData = await response.json();
       // return new Response ({ [key]: jsonData }); // Return an object with a key
+      return { [key]: jsonData }; // Return an object with a key
     });
       
       const allData = await Promise.all(allDataPromises);
