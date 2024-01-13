@@ -5,7 +5,9 @@ import { useState } from 'react';
 
 
 
-function DashboardStockCard({ data, industry }) {
+function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) {
+
+    console.log(data)
     
     const companyName = data?.keyStatistics?.longName || 'Company Name Not Available';
     const marketCap = data?.price?.marketCap?.longFmt || 'Not Available';
@@ -22,6 +24,17 @@ function DashboardStockCard({ data, industry }) {
     const revenuePerShare = data?.financeAnalytics?.revenuePerShare?.raw || 'Not Available'
     const returnOnAssets = data?.financeAnalytics?.returnOnAssets?.raw || 'Not Available'
     const returnOnEquity = data?.financeAnalytics?.returnOnEquity?.raw || 'Not Available'
+    const dividendYield = data?.keyStatistics?.trailingAnnualDividendYield?.raw || 'Not Available'
+
+console.log('EPS:', EPS);
+console.log('PE Ratio (Lagging):', peRatioLagging);
+console.log('PE Ratio (Forward):', peRatioForward);
+console.log('PB Ratio:', pbRatio);
+console.log('Debt to Equity Ratio:', debtToEquityRatio);
+console.log('Revenue per Share:', revenuePerShare);
+console.log('Return on Assets:', returnOnAssets);
+console.log('Return on Equity:', returnOnEquity);
+console.log('Dividend Yield:', dividendYield);
 
     const formatAskPrice = (askPriceObj) => {
         // Check if askPriceObj is an object with a 'raw' property
@@ -115,7 +128,52 @@ function DashboardStockCard({ data, industry }) {
 
 
         {/* Content */}
-        <div className="p-4 flex-col flex relative">
+            <div className="p-4 flex-col flex relative">
+                {activeButton === 'button2' && ( // Check if Ratio button is active
+                    <div>
+                        {/* Ratio Headers and Values */}
+                        <div className="mb-4">
+                            <h2 className="text-xl font-bold">Financial Ratios</h2>
+                            <p className="text-sm text-gray-600">Key financial ratios of the company.</p>
+                        </div>
+
+                        {/* Financial Ratios Display */}
+                        <div className="mt-4">
+                            <div className="flex justify-between my-12">
+                                <span className="text-gray-500" style={{ minWidth: '100px' }}>EPS:</span>
+                                <span>{EPS}</span>
+                            </div>
+                            <div className="flex justify-between my-9">
+                                <span className="text-gray-500">PE Ratio (Lagging):</span>
+                                <span>{peRatioLagging}</span>
+                            </div>
+                            <div className="flex justify-between my-9">
+                                <span className="text-gray-500">PE Ratio (Forward):</span>
+                                <span>{peRatioForward}</span>
+                            </div>
+                            <div className="flex justify-between my-9">
+                                <span className="text-gray-500">PB Ratio:</span>
+                                <span>{pbRatio}</span>
+                            </div>
+                            <div className="flex justify-between my-7">
+                                <span className="text-gray-500">Debt to Equity Ratio:</span>
+                                <span>{debtToEquityRatio}</span>
+                            </div>
+                            <div className="flex justify-between my-9">
+                                <span className="text-gray-500">Revenue per Share:</span>
+                                <span>{revenuePerShare}</span>
+                            </div>
+                            <div className="flex justify-between my-9">
+                                <span className="text-gray-500">Return on Assets:</span>
+                                <span>{returnOnAssets}</span>
+                            </div>
+                            <div className="flex justify-between mt-9">
+                                <span className="text-gray-500">Return on Equity:</span>
+                                <span>{returnOnEquity}</span>
+                            </div>
+                        </div>
+                    </div>
+                )}
             {activeButton === 'button1' && (
                 <div>
                     {/* Rows */}
@@ -159,38 +217,40 @@ function DashboardStockCard({ data, industry }) {
             </div>
                     {/* Faint Black Line Separator */}
             <div className="border-t border-gray-300 mt-4"></div>
-            <div className="flex justify-between my-6">
+            <div className="flex justify-between my-9">
                 <span className="text-gray-500" style={{ minWidth: '100px' }}>Sector:</span>
                 <span className="flex-1 text-right" style={{ maxWidth: 'calc(100% - 100px)' }}>
                     {industry || 'Not Available'}
                 </span>
             </div>
 
-                    <div className="flex justify-between my-7">
+                    <div className="flex justify-between my-9">
                         <span className="text-gray-500">Market Cap:</span>
                          <span>{marketCap}</span>
                     </div>
-                    <div className="flex justify-between my-7">
+                    <div className="flex justify-between my-9">
                         <span className="text-gray-500">Volume:</span>
                         <span>{volume}</span>
                     </div>
-                    <div className="flex justify-between my-7">
-                        <span className="text-gray-500">Row 4:</span>
-                        <span>Value 4</span>
+                    <div className="flex justify-between my-9">
+                        <span className="text-gray-500">Dividend Yield:</span>
+                        <span>{dividendYield}</span>
                     </div>
-                    <div className="flex justify-between my-7">
-                        <span className="text-gray-500">Row 4:</span>
-                        <span>Value 4</span>
+                    <div className="flex justify-between my-9">
+                        <span className="text-gray-500">Volatility Score:</span>
+                        <span>{volatilityScore}</span>
                     </div>
-                    <div className="flex justify-between my-7">
-                        <span className="text-gray-500">Row 4:</span>
-                        <span>Value 4</span>
+                    <div className="flex justify-between mt-9">
+                        <span className="text-gray-500">Dividend Score:</span>
+                        <span>{liquidityScore}</span>
                     </div>
                 </div>
             )}
 
         
         </div>
+
+        
         
     </div>
     {/* Buttons Container */}

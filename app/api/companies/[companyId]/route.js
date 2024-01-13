@@ -43,14 +43,14 @@ export async function POST(req, res) {
       }
 
       const jsonData = await response.json();
-      return { [key]: jsonData }; // Return an object with a key
+      // return new Response ({ [key]: jsonData }); // Return an object with a key
     });
-
-    const allData = await Promise.all(allDataPromises);
-    const organizedData = allData.reduce((acc, data) => ({ ...acc, ...data }), {});
-
-    console.log('Organized Data:', organizedData);
-    return new Response(JSON.stringify(organizedData), { status: 200 });
+      
+      const allData = await Promise.all(allDataPromises);
+      const organizedData = allData.reduce((acc, data) => ({ ...acc, ...data }), {});
+      
+      console.log('Organized Data:', organizedData);
+      return new Response(JSON.stringify(organizedData), { status: 200 });
   } catch (error) {
     console.error('Error:', error);
     return new Response(JSON.stringify({ error: 'Server Error' }), { status: 500 });
