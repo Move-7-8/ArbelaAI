@@ -33,9 +33,8 @@ const TradingChartContainer = ({ data }) => {
 
     const minValue = d3.min(closingPrices);
     const maxValue = d3.max(closingPrices);
-    const buffer = (maxValue - minValue) * 0.20; // For example, a 5% buffer
-    console.log('Buffer:', buffer);
-        console.log('Min value:', minValue, 'Max value:', maxValue);
+    const buffer = (maxValue - minValue) * 0.30; // For example, a 5% buffer
+
  
 
 
@@ -83,7 +82,7 @@ const TradingChartContainer = ({ data }) => {
             const yScale = d3.scaleLinear()
                              .domain([minValue - buffer, maxValue + buffer])
                              .range([chartHeight, 0]);
-            console.log('Y Scale Domain:', yScale.domain());
+
 
         const timeFormat = d3.timeFormat("%m-%d");
 

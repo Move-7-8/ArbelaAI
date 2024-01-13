@@ -16,8 +16,10 @@ const NewsSection = ({ data }) => {
 };
 
     const titleCase = (str) => {
+        if (!str) return ''; // Return an empty string if str is undefined or null
         return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     };
+
 
     const getTimeAgo = (publishTime) => {
         const now = new Date();
@@ -37,7 +39,7 @@ const NewsSection = ({ data }) => {
             <div className="grid md:grid-cols-2 gap-4">
                 {newsArray.slice(0, visibleCount).map((article, index) => (
                     <a key={index} href={article.link} target="_blank" rel="noopener noreferrer"
-                       className="block rounded-lg overflow-hidden shadow-lg relative min-h-[180px] group">
+                       className="block rounded-lg overflow-hidden shadow-lg relative min-h-[200px] group">
                         <div className="absolute inset-0 bg-cover bg-center filter blur-sm group-hover:blur-none transition duration-300 ease-in-out"
                              style={{ backgroundImage: `url(${getThumbnailUrl(article)})` }}>
                              {/* Blurred background */}

@@ -97,11 +97,7 @@ const balanceSheetData = activeStatement === 'balance' && data.balanceSheet ? {
     // Add other fields if available
 } : null;
 
-    // Debugging - log the active statement and data
-    console.log('Active Statement:', activeStatement);
-    console.log('Balance Sheet Data:', balanceSheetData);
-    console.log('Income Statement Data:', incomeStatementData);
-    console.log('Cash Flow Data:', cashflowData);
+
 
 
 
