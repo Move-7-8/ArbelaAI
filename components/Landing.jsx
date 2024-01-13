@@ -2,7 +2,8 @@
 import Image from "next/image";
 import InvestorLogos from "@components/InvestorLogos";
 import Features from "./Features";
-import Test from '@components/test'
+import CronTest from '@components/CronTest'
+import AssistantTest from '@components/Test'
 
 const Landing = ({ setIsLandingVisible }) => {
     return (
@@ -20,7 +21,8 @@ const Landing = ({ setIsLandingVisible }) => {
             
             <h2 className="text-l font-bold">Supported By</h2>
             <InvestorLogos/>
-            <Test/>
+            <CronTest/>
+            <AssistantTest />
         </div>
     )
 }

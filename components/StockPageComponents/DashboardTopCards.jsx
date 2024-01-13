@@ -1,6 +1,10 @@
 import React from 'react';
 
 const Card = ({ color, title }) => {
+
+    
+
+
     let gradient;
     switch (color) {
         case 'green':
