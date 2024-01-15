@@ -66,17 +66,31 @@ const Page = () => {
           const result = await response.json();
           console.log('Complete Data:', result);
   
-          // Destructure the data into variables
-          const { historic, price, balanceSheet, earnings, financeAnalytics, news, earningsTrend, keyStatistics  } = result;
-          // const { historic, price, keyStatistics, balanceSheet  } = result;
+                    // Destructure the data into variables
+          const { 
+            historic, 
+            historic30Days, 
+            historic7Days, 
+            price, 
+            balanceSheet, 
+            earnings, 
+            financeAnalytics, 
+            news, 
+            earningsTrend, 
+            keyStatistics 
+          } = result;
+
           console.log('Price Data:', price);
-          console.log('Historic Data:', historic);
+          console.log('Historic Yearly Data:', historic); // Data for 1 year
+          console.log('Historic 30 Days Data:', historic30Days); // Data for 30 days at 1-hour intervals
+          console.log('Historic 7 Days Data:', historic7Days); // Data for 7 days at 30-minute intervals
           console.log('Balance Sheet Data:', balanceSheet);
           console.log('Earnings Data:', earnings);
           console.log('Finance Analytics:', financeAnalytics);
           console.log('News:', news);
-          console.log('Trends:', earningsTrend);
+          console.log('Earnings Trend:', earningsTrend);
           console.log('Key Statistics:', keyStatistics);
+
 
           // Save the complete data to state if needed
           setData(result);
@@ -101,59 +115,57 @@ const Page = () => {
   
   // console.log('DATA RECEIVED: ', data);
 
+
+
 return (
+    <div className="flex flex-wrap w-full h-full">
+        {/* Main content container */}
+        <div className="flex flex-col w-full mt-20 lg:w-3/4">
+            <SearchBar />
 
-<div className="flex flex-wrap w-full h-full">
-            {/* Main content container */}
-            <div className="flex flex-col w-full mt-20 lg:w-3/4 px-4 lg:px-0">
-                <SearchBar />
-
-                {/* DashboardStockCard and TradingChartContainer Section */}
-                <div className="flex flex-col lg:flex-row mt-3">
-                    <div className="w-full lg:w-1/3 mb-4 lg:mb-0 min-w-0">  
-                        <DashboardStockCard 
-                            data={data} 
-                            industry={industry} 
-                            liquidityScore={liquidityScore} 
-                            volatilityScore={volatilityScore} 
-                        />
-                    </div>
-                    <div className="flex flex-col flex-grow w-full lg:w-2/3 lg:overflow-y-auto">
-                        <TradingChartContainer data={data} />
-                        <FinancialStatements data={data} className="mt-4" />
-                        <NewsSection data={data} className="mt-4" />
-                    </div>
+            {/* DashboardStockCard and TradingChartContainer Section */}
+            <div className="flex flex-col lg:flex-row mt-3">
+                <div className="w-full lg:w-1/3 mb-4 lg:mb-0">  
+                    <DashboardStockCard data={data} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
                 </div>
-            </div>
-
-            {/* Conditional Chatbox Popup Icon for small screens */}
-            <div className="fixed right-4 bottom-4 z-50 lg:hidden">
-                 <button 
-                    onClick={toggleChatbox} 
-                    className="text-4xl text-black p-3 bg-white rounded-full shadow-lg focus:outline-none"
-                >
-                    <FaComments />
-                </button>
-            </div>
-
-            {/* Chatbox Component for small screens */}
-            {showChatbox && (
-                <div className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden">
-                    <div className="w-full fixed bottom-0 bg-white h-2/3 overflow-auto">
-                        <Chatbox />
-                        <button onClick={toggleChatbox} className="absolute top-0 right-0 mt-2 mr-2 text-2xl text-gray-700">
-                            &times; {/* Close icon */}
-                        </button>
-                    </div>
+                <div className="w-full lg:flex-grow overflow-y-scroll lg:h-screen">
+                    <TradingChartContainer data={data} />
+                    <FinancialStatements data={data} className="mt-4" />
+                    <NewsSection data={data} className="mt-4" />
                 </div>
-            )}
-
-            {/* Always visible Chatbox for larger screens */}
-            <div className="hidden lg:block lg:w-1/4 mt-16 px-4 w-full  lg:px-0 mb-4">
-                <Chatbox />
             </div>
         </div>
-    );
+
+        {/* Conditional Chatbox Popup Icon for small screens */}
+        <div className="fixed right-4 bottom-4 z-50 lg:hidden">
+            <button 
+                onClick={toggleChatbox} 
+                className="text-4xl text-black p-3 bg-white rounded-full shadow-lg focus:outline-none"
+            >
+                <FaComments />
+            </button>
+        </div>
+
+        {/* Chatbox Component for small screens */}
+        {showChatbox && (
+            <div className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden">
+                <div className="w-full fixed bottom-0 bg-white h-2/3 overflow-auto">
+                    <Chatbox />
+                    <button onClick={toggleChatbox} className="absolute top-0 right-0 mt-2 mr-2 text-2xl text-gray-700">
+                        &times; {/* Close icon */}
+                    </button>
+                </div>
+            </div>
+        )}
+
+        {/* Always visible Chatbox for larger screens */}
+        <div className="hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4">
+            <Chatbox />
+        </div>
+    </div>
+);
+
+    
 }
 
 

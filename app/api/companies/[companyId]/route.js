@@ -11,17 +11,20 @@ export async function POST(req, res) {
   const apiKey = process.env.RAPID_API_KEY
   const apiHost = process.env.RAPID_API_HOST
   
-  // Array of API endpoint paths
-  const endpoints = [
-    { key: 'price', path: `price/${ticker}` },
-    { key: 'historic', path: `historic/${ticker}/1d/15d` },
-    { key: 'balanceSheet', path: `balance-sheet/${ticker}` },
-    { key: 'earnings', path: `earnings/${ticker}` },
-    { key: 'financeAnalytics', path: `finance-analytics/${ticker}` },
-    { key: 'news', path: `news/${ticker}` },
-    { key: 'earningsTrend', path: `earnings-trend/${ticker}` },
-    { key: 'keyStatistics', path: `key-statistics/${ticker}` }
-    ];
+// Array of API endpoint paths
+const endpoints = [
+  { key: 'price', path: `price/${ticker}` },
+  { key: 'historic', path: `historic/${ticker}/1d/1y` },
+  { key: 'historic30Days', path: `historic/${ticker}/1h/30d` }, // 30 days at 1-hour intervals
+  { key: 'historic7Days', path: `historic/${ticker}/30m/7d` }, // 7 days at 30-minute intervals
+  { key: 'balanceSheet', path: `balance-sheet/${ticker}` },
+  { key: 'earnings', path: `earnings/${ticker}` },
+  { key: 'financeAnalytics', path: `finance-analytics/${ticker}` },
+  { key: 'news', path: `news/${ticker}` },
+  { key: 'earningsTrend', path: `earnings-trend/${ticker}` },
+  { key: 'keyStatistics', path: `key-statistics/${ticker}` }
+];
+
 
   try {
     

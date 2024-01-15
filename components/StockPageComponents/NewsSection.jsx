@@ -3,6 +3,15 @@ import React, { useState } from 'react';
 const NewsSection = ({ data }) => {
     const [visibleCount, setVisibleCount] = useState(4);
 
+        // Function to render skeleton loader for news cards
+    const renderSkeletonCards = () => {
+        return [...Array(visibleCount)].map((_, index) => (
+            <div key={index} className="block rounded-lg overflow-hidden shadow-lg relative min-h-[200px] bg-gray-200 animate-pulse">
+                {/* Additional elements to mimic the layout of the news card */}
+            </div>
+        ));
+    };
+
     // Check if data is null or undefined
     const newsArray = data && data.news ? Object.values(data.news) : [];
 
@@ -37,8 +46,10 @@ const NewsSection = ({ data }) => {
 <div>
             <h2 className="text-2xl font-semibold mb-4 mt-8">Company News</h2>
             <div className="grid md:grid-cols-2 gap-4">
-                {newsArray.slice(0, visibleCount).map((article, index) => (
-                    <a key={index} href={article.link} target="_blank" rel="noopener noreferrer"
+                  {!newsArray || newsArray.length === 0
+                    ? renderSkeletonCards()
+                    : newsArray.slice(0, visibleCount).map((article, index) => (
+                                            <a key={index} href={article.link} target="_blank" rel="noopener noreferrer"
                        className="block rounded-lg overflow-hidden shadow-lg relative min-h-[200px] group">
                         <div className="absolute inset-0 bg-cover bg-center filter blur-sm group-hover:blur-none transition duration-300 ease-in-out"
                              style={{ backgroundImage: `url(${getThumbnailUrl(article)})` }}>
@@ -54,7 +65,8 @@ const NewsSection = ({ data }) => {
                             </div>
                         </div>
                     </a>
-                ))}
+                      ))}
+               
             </div>
             <div className="flex justify-center mt-4 mb-4"> {/* Centering the button and adding top and bottom margins */}
         {visibleCount < newsArray.length && (
