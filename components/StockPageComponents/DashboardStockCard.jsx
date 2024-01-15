@@ -90,12 +90,6 @@ console.log('Dividend Yield:', dividendYield);
 
 
 
-
-
-
-
-
-
     const [activeButton, setActiveButton] = useState('button1');
 
 
@@ -177,80 +171,126 @@ console.log('Dividend Yield:', dividendYield);
             {activeButton === 'button1' && (
                 <div>
                     {/* Rows */}
-                        <div className="mb-4">
+        <div className="mb-4">
              <h2 className="text-xl font-bold">{companyName}</h2>
             <p className="text-sm text-gray-600">This is a short description about the company.This is a short description about the company.</p>
         </div>
         {/* Price and Increase Display */}
-            <div className="mt-4 flex justify-between items-center w-full">
-                {/* Stock Price - Left Aligned */}
-                <div>
-                    <span className="text-gray-500 uppercase text-xs block">Price</span>
-                 <span className="text-black font-bold text-2xl">{formatAskPrice(askPrice)}</span>
-                </div>
+        <div className="mt-4 flex justify-between items-center w-full">
+            {!data ? (
+                // Skeleton loader displayed when data is not available
+                <>
+                    {/* Skeleton for Stock Price */}
+                    <div className="bg-gray-200 h-6 w-1/3 rounded"></div>
 
-                {/* Price Increase - Right Aligned */}
-                <div className="flex items-center">
+                    {/* Skeleton for Price Increase */}
+                    <div className="flex items-center">
+                        <div className="bg-gray-200 h-6 w-16 rounded mr-2"></div>
+                        <div className="bg-gray-200 h-6 w-10 rounded"></div>
+                    </div>
+                </>
+            ) : (
+                // Actual content displayed when data is available
+                <>
+                    {/* Stock Price - Left Aligned */}
                     <div>
-                        <span className="text-gray-500 uppercase text-xs block">Change</span>
-                        <div className="flex items-center mt-1">
-                            {/* Price Increase Percentage */}
-                            <div className="p-2 rounded flex items-center" 
-                                style={{
-                                    backgroundColor: priceChange >= 0 ? 'rgba(53, 168, 83, 0.5)' : 'rgba(255, 0, 0, 0.5)',
-                                    color: priceChange >= 0 ? '#35A853' : 'red'
-                                }}>
-                                <span className="mr-2 text-white text-sm">{priceChange >= 0 ? '↑' : '↓'}</span>
-                                <span className="text-white text-sm">{`${percentageChange}%`}</span>
-                            </div>
-                            {/* Price Increase in Dollars */}
-                            <div className="ml-2 text-sm" 
-                                style={{ 
-                                    color: priceChange >= 0 ? '#35A853' : 'red' 
-                                }}>
-                                {`${priceChange >= 0 ? '+' : ''}${formatPriceChange(priceChange)}`}
+                        <span className="text-gray-500 uppercase text-xs block">Price</span>
+                        <span className="text-black font-bold text-xl">{formatAskPrice(askPrice)}</span>
+                    </div>
+
+                    {/* Price Increase - Right Aligned */}
+                    <div className="flex items-center">
+                        <div>
+                            <span className="text-gray-500 uppercase text-xs block">Change</span>
+                            <div className="flex items-center mt-1">
+                                {/* Price Increase Percentage */}
+                                <div className="p-2 rounded flex items-center" 
+                                    style={{
+                                        backgroundColor: priceChange >= 0 ? 'rgba(53, 168, 83, 0.5)' : 'rgba(255, 0, 0, 0.5)',
+                                        color: priceChange >= 0 ? '#35A853' : 'red'
+                                    }}>
+                                    <span className="mr-2 text-white text-xs">{priceChange >= 0 ? '↑' : '↓'}</span>
+                                    <span className="text-white text-xs">{`${percentageChange}%`}</span>
+                                </div>
+                                {/* Price Increase in Dollars */}
+                                <div className="ml-2 text-xs" 
+                                    style={{ 
+                                        color: priceChange >= 0 ? '#35A853' : 'red' 
+                                    }}>
+                                    {`${priceChange >= 0 ? '+' : ''}${formatPriceChange(priceChange)}`}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-            </div>
-                    {/* Faint Black Line Separator */}
-            <div className="border-t border-gray-300 mt-4"></div>
-            <div className="flex justify-between my-9">
-                <span className="text-gray-500" style={{ minWidth: '100px' }}>Sector:</span>
-                <span className="flex-1 text-right" style={{ maxWidth: 'calc(100% - 100px)' }}>
-                    {industry || 'Not Available'}
-                </span>
-            </div>
-
-                    <div className="flex justify-between my-9">
-                        <span className="text-gray-500">Market Cap:</span>
-                         <span>{marketCap}</span>
-                    </div>
-                    <div className="flex justify-between my-9">
-                        <span className="text-gray-500">Volume:</span>
-                        <span>{volume}</span>
-                    </div>
-                    <div className="flex justify-between my-9">
-                        <span className="text-gray-500">Dividend Yield:</span>
-                        <span>{dividendYield}</span>
-                    </div>
-                    <div className="flex justify-between my-9">
-                        <span className="text-gray-500">Volatility Score:</span>
-                        <span>{volatilityScore}</span>
-                    </div>
-                    <div className="flex justify-between mt-9">
-                        <span className="text-gray-500">Dividend Score:</span>
-                        <span>{liquidityScore}</span>
-                    </div>
-                </div>
+                </>
             )}
-
-        
         </div>
 
-        
+                {!data ? (
+                        // Skeleton loaders for each data field
+                        <>
+                            <div className="border-t border-gray-300 mt-4"></div>
+                            <div className="flex justify-between my-9">
+                                <span className="text-gray-500" style={{ minWidth: '100px' }}>Sector:</span>
+                                <div className="bg-gray-200 h-4 flex-1 rounded"></div>
+                            </div>
+                            <div className="flex justify-between my-9">
+                                <span className="text-gray-500">Market Cap:</span>
+                                <div className="bg-gray-200 h-4 w-1/3 rounded"></div>
+                            </div>
+                            <div className="flex justify-between my-9">
+                                <span className="text-gray-500">Volume:</span>
+                                <div className="bg-gray-200 h-4 w-1/3 rounded"></div>
+                            </div>
+                            <div className="flex justify-between my-9">
+                                <span className="text-gray-500">Dividend Yield:</span>
+                                <div className="bg-gray-200 h-4 w-1/4 rounded"></div>
+                            </div>
+                            <div className="flex justify-between my-9">
+                                <span className="text-gray-500">Volatility Score:</span>
+                                <div className="bg-gray-200 h-4 w-1/4 rounded"></div>
+                            </div>
+                            <div className="flex justify-between mt-9">
+                                <span className="text-gray-500">Dividend Score:</span>
+                                <div className="bg-gray-200 h-4 w-1/4 rounded"></div>
+                            </div>
+                        </>
+                    ) : (
+            // Actual data fields
+            <>
+                <div className="border-t border-gray-300 mt-4"></div>
+                    <div className="flex justify-between my-9">
+                        <span className="text-gray-500" style={{ minWidth: '100px' }}>Sector:</span>
+                        <span className="flex-1 text-right" style={{ maxWidth: 'calc(100% - 100px)' }}>
+                            {industry || 'Not Available'}
+                        </span>
+                    </div>
+                            <div className="flex justify-between my-9">
+                                <span className="text-gray-500">Market Cap:</span>
+                                <span>{marketCap}</span>
+                            </div>
+                            <div className="flex justify-between my-9">
+                                <span className="text-gray-500">Volume:</span>
+                                <span>{volume}</span>
+                            </div>
+                            <div className="flex justify-between my-9">
+                                <span className="text-gray-500">Dividend Yield:</span>
+                                <span>{dividendYield}</span>
+                            </div>
+                            <div className="flex justify-between my-9">
+                                <span className="text-gray-500">Volatility Score:</span>
+                                <span>{volatilityScore}</span>
+                            </div>
+                            <div className="flex justify-between mt-9">
+                                <span className="text-gray-500">Dividend Score:</span>
+                                <span>{liquidityScore}</span>
+                            </div>
+                                            
+                        </>
+                    )}
+            </div>
+            )}     
+        </div>      
         
     </div>
     {/* Buttons Container */}

@@ -9,6 +9,8 @@ const StatementTable = ({ data, statementType }) => {
   let rows = [];
   let endDate = data.endDate;
 
+  console.log(endDate)
+
   if (statementType === 'balance') {
   // Extract balance sheet values directly
 const {
@@ -117,13 +119,13 @@ const {
   } else if (statementType === 'cash') {
     // Extract cash flow statement values
     const {
+      endDate, 
       operatingCashflow,
       totalCash,
       totalCashPerShare,
       totalDebt,
       debtToEquity,
       freeCashflow,
-      // ... other cash flow statement variables as needed ...
     } = data;
 
     // Define the rows of the cash flow statement table

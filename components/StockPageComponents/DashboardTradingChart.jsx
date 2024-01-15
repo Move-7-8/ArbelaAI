@@ -2,12 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { select, scaleLinear, axisBottom, axisLeft } from 'd3';
 
-
-
-
-
 const TradingChartContainer = ({ data }) => {
 
+    
+
+    const [isDataLoading, setDataLoading] = useState(true);
     const volumes = data?.historic?.indicators?.quote[0]?.volume.map(vol => vol === null ? 0 : vol) || [];
     const timestamps = data?.historic?.timestamp;
     const askPriceRaw = data?.financeAnalytics?.currentPrice?.raw;
@@ -46,8 +45,15 @@ const TradingChartContainer = ({ data }) => {
 
     const chartRef = useRef(null);
 
-    useEffect(() => {
+
+    const drawChart = () => {
+        // Clear existing chart
+        d3.select(chartRef.current).selectAll('*').remove();
+
         if (data) {
+
+
+             if (chartRef.current && data) {
                 const margins = { top: 20, right: 30, bottom: 30, left: 50 };
                 const chartWidth = chartRef.current.clientWidth - margins.left - margins.right;
                 const chartHeight = chartRef.current.clientHeight - margins.top - margins.bottom;
@@ -55,80 +61,71 @@ const TradingChartContainer = ({ data }) => {
                                 askPriceRaw < prevClose ? '255, 0, 0' : 
                                '53, 168, 83' ; 
 
-
-
-        const svg = d3.select(chartRef.current)
-                      .append('svg')
-                      .attr('width', chartWidth + margins.left + margins.right)
-                      .attr('height', chartHeight + margins.top + margins.bottom)
-                      .append('g')
-                      .attr('transform', `translate(${margins.left}, ${margins.top})`);
-
-        // Assuming timestamps and closingPrices are arrays with your data
-         // Filter out weekends
-            const dates = timestamps
-              .map(ts => new Date(ts * 1000))
-              .filter(date => date.getDay() !== 0 && date.getDay() !== 6);
-        
+                setTimeout(() => {
+                setDataLoading(false);
+            }, 2000);
 
 
 
-        // Use d3.scalePoint for the xScale
-        const xScale = d3.scalePoint()
-                         .domain(dates.map(d => d.getTime())) // Use getTime() for unique values
-                         .range([0, chartWidth])
-                         .padding(0.5);
+            const svg = d3.select(chartRef.current)
+                        .append('svg')
+                        .attr('width', chartWidth + margins.left + margins.right)
+                        .attr('height', chartHeight + margins.top + margins.bottom)
+                        .append('g')
+                        .attr('transform', `translate(${margins.left}, ${margins.top})`);
 
-            const yScale = d3.scaleLinear()
-                             .domain([minValue - buffer, maxValue + buffer])
-                             .range([chartHeight, 0]);
-
-
-        const timeFormat = d3.timeFormat("%m-%d");
-
-// Append a grey dotted line for hover effect
-        const hoverLine = svg.append("line")
-                             .style("stroke", "grey") // Grey color
-                             .style("stroke-width", 1)
-                             .style("stroke-dasharray", "3, 3") // Dotted style
-                             .style("opacity", 0); // Initially hidden
-
-        // Append an invisible rect for mouse tracking
-        svg.append("rect")
-           .attr("width", chartWidth)
-           .attr("height", chartHeight)
-           .attr("fill", "none")
-           .attr("pointer-events", "all")
-           .on("mouseover", () => focus.style("display", null))
-           .on("mouseout", () => {
-               focus.style("display", "none");
-               hoverLine.style("opacity", 0);
-               tooltip.style("opacity", 0);
-           })
-
-
-             // Define focus for the tooltip
-        const focus = svg.append("g")
-                         .style("display", "none");
+            // Assuming timestamps and closingPrices are arrays with your data
+            // Filter out weekends
+                const dates = timestamps
+                .map(ts => new Date(ts * 1000))
+                .filter(date => date.getDay() !== 0 && date.getDay() !== 6);
+            
 
 
 
-        // Define gradient for the area
-        const gradientId = "area-gradient";
-        svg.append("defs").append("linearGradient")
-        .attr("id", gradientId)
-        .attr("gradientUnits", "userSpaceOnUse")
-        .attr("x1", 0).attr("y1", yScale(d3.max(closingPrices)))
-        .attr("x2", 0).attr("y2", yScale(d3.min(closingPrices)))
-        .selectAll("stop")
-        .data([
-            { offset: "0%", color: `rgba(${baseColor}, 0.8)` }, // Start with a darker color at the line
-            { offset: "30%", color: `rgba(${baseColor}, 0.3)` }, // Begin fading out quickly
-            { offset: "70%", color: `rgba(${baseColor}, 0.1)` }, // Nearly transparent midway
-        ])
-        .enter().append("stop")
-        .attr("offset", d => d.offset)
-        .attr("style", d => `stop-color: ${d.color}`);
+            // Use d3.scalePoint for the xScale
+            const xScale = d3.scalePoint()
+                            .domain(dates.map(d => d.getTime())) // Use getTime() for unique values
+                            .range([0, chartWidth])
+                            .padding(0.5);
+
+                const yScale = d3.scaleLinear()
+                                .domain([minValue - buffer, maxValue + buffer])
+                                .range([chartHeight, 0]);
+
+
+            const timeFormat = d3.timeFormat("%m-%d");
+
+
+            const hoverLine = svg.append("line")
+                                .style("stroke", "grey") // Grey color
+                                .style("stroke-width", 1)
+                                .style("stroke-dasharray", "3, 3") // Dotted style
+                                .style("opacity", 0); // Initially hidden
+
+
+                // Define focus for the tooltip
+            const focus = svg.append("g")
+                            .style("display", "none");
+
+
+
+            // Define gradient for the area
+            const gradientId = "area-gradient";
+            svg.append("defs").append("linearGradient")
+            .attr("id", gradientId)
+            .attr("gradientUnits", "userSpaceOnUse")
+            .attr("x1", 0).attr("y1", yScale(d3.max(closingPrices)))
+            .attr("x2", 0).attr("y2", yScale(d3.min(closingPrices)))
+            .selectAll("stop")
+            .data([
+                { offset: "0%", color: `rgba(${baseColor}, 0.8)` }, // Start with a darker color at the line
+                { offset: "30%", color: `rgba(${baseColor}, 0.3)` }, // Begin fading out quickly
+                { offset: "70%", color: `rgba(${baseColor}, 0.1)` }, // Nearly transparent midway
+            ])
+            .enter().append("stop")
+            .attr("offset", d => d.offset)
+            .attr("style", d => `stop-color: ${d.color}`);
 
 
         // Append an invisible rect for mouse tracking
@@ -137,98 +134,106 @@ const TradingChartContainer = ({ data }) => {
         .attr("height", chartHeight)
         .attr("fill", "none")
         .attr("pointer-events", "all")
-        .on("mouseover", () => focus.style("display", null))
-        .on("mouseout", () => focus.style("display", "none"))
-        .on("mousemove", mousemove);
-
-        const area = d3.area()
-                        .x(d => xScale(d.date) + xScale.bandwidth() / 2)
-                        .y0(chartHeight)
-                        .y1(d => yScale(d.value));
-
-
- 
-
-       // Append the circle to the focus group
-        focus.append("circle")
-            .attr("r", 5)
-            .attr("fill", `rgba(${baseColor}, 0.5)`);
-
-        // Adjust the number of ticks on the x-axis
-        const numberOfTicks = 5; // Choose how many ticks you want to display
-        const tickInterval = Math.ceil(dates.length / numberOfTicks);
-        const tickValues = dates.filter((_, i) => i % tickInterval === 0).map(d => d.getTime());
-
-        svg.append("g")
-        .attr("transform", `translate(0, ${chartHeight})`)
-        .call(d3.axisBottom(xScale).tickValues(tickValues).tickFormat(d => d3.timeFormat("%b %d")(new Date(d))))
-        .selectAll("text")
-        .style("text-anchor", "middle") // Center align text
-        .attr("transform", ""); // Remove rotation
-
-
-
-
-        // Define the format for y-axis (prices)
-        const priceFormat = d3.format(".3f");
-
-        const yRange = d3.max(closingPrices) - d3.min(closingPrices);
-        const optimalTicks = Math.max(Math.floor(chartHeight / 50), 2);
-               // Manually add grid lines
-        // Generate unique tick values
-       const yTicks = Array.from(new Set(yScale.ticks(optimalTicks).map(tick => tick.toFixed(3))));   
-        yTicks.forEach(tick => {
-            svg.append("line")
-               .attr("x1", 0)
-               .attr("x2", chartWidth)
-               .attr("y1", yScale(tick))
-               .attr("y2", yScale(tick))
-               .style("stroke", "lightgrey")
-               .style("opacity", 0.7);
+        .on("mousemove", mousemove)
+        .on("mouseover", () => {
+            focus.style("display", null);
+            hoverLine.style("opacity", 1); // Show hover line
+        })
+        .on("mouseout", () => {
+            focus.style("display", "none");
+            hoverLine.style("opacity", 0); // Hide hover line
+            tooltip.style("opacity", 0); // Hide tooltip
         });
-// Append the y-axis with unique ticks and formatted values
-svg.append("g")
-   .call(d3.axisLeft(yScale)
-         .tickValues(yTicks) // Use unique tick values
-         .tickFormat(d3.format(".3f"))) // Format each tick value
-   .call(g => g.select(".domain").remove()); // Remove the Y-axis line
 
 
-        
+            const area = d3.area()
+                            .x(d => xScale(d.date) + xScale.bandwidth() / 2)
+                            .y0(chartHeight)
+                            .y1(d => yScale(d.value));
 
-function mousemove(event) {
-    const mouseX = d3.pointer(event, this)[0];
-    const closestDate = xScale.domain().reduce((a, b) => {
-        return Math.abs(xScale(a) - mouseX) < Math.abs(xScale(b) - mouseX) ? a : b;
-    });
-    const index = dates.findIndex(d => d.getTime() === closestDate);
 
-    if (index >= 0 && index < dates.length) {
-        const d = lineData[index]; // Define 'd' here at the start
+    
 
-                // Update the position of the focus circle
-        focus.attr("transform", `translate(${xScale(d.date) + xScale.bandwidth() / 2}, ${yScale(d.value)})`)
-             .style("display", null);
+        // Append the circle to the focus group
+            focus.append("circle")
+                .attr("r", 5)
+                .attr("fill", `rgba(${baseColor}, 0.5)`);
 
-        // Update hover line's position and display it
-        hoverLine.attr("x1", xScale(d.date) + xScale.bandwidth() / 2)
-                 .attr("x2", xScale(d.date) + xScale.bandwidth() / 2)
-                 .attr("y1", yScale(d.value))
-                 .attr("y2", chartHeight)
-                 .style("opacity", 1);
+            // Adjust the number of ticks on the x-axis
+            const numberOfTicks = 5; // Choose how many ticks you want to display
+            const tickInterval = Math.ceil(dates.length / numberOfTicks);
+            const tickValues = dates.filter((_, i) => i % tickInterval === 0).map(d => d.getTime());
 
-        // Update tooltip content and position
-        const dateFormat = d3.timeFormat("%b %d");
-        const price = `AUD $${d.value.toFixed(3)}`;
-        const date = dateFormat(d.date);
-        const volume = volumes[index];
+            svg.append("g")
+            .attr("transform", `translate(0, ${chartHeight})`)
+            .call(d3.axisBottom(xScale).tickValues(tickValues).tickFormat(d => d3.timeFormat("%b %d")(new Date(d))))
+            .selectAll("text")
+            .style("text-anchor", "middle") // Center align text
+            .attr("transform", ""); // Remove rotation
 
-        tooltip.html(`<div class='text-black'>${price}</div>
-                      <div class='text-gray-500'>${date}</div>
-                      <div class='text-gray-500'>Volume: ${volume.toLocaleString()}</div>`)
-               .style("left", `${event.pageX + 10}px`)
-               .style("top", `${event.pageY - 28}px`)
-               .style("opacity", 1);
+
+
+
+            // Define the format for y-axis (prices)
+            const priceFormat = d3.format(".3f");
+
+            const yRange = d3.max(closingPrices) - d3.min(closingPrices);
+            const optimalTicks = Math.max(Math.floor(chartHeight / 50), 2);
+                // Manually add grid lines
+            // Generate unique tick values
+        const yTicks = Array.from(new Set(yScale.ticks(optimalTicks).map(tick => tick.toFixed(3))));   
+            yTicks.forEach(tick => {
+                svg.append("line")
+                .attr("x1", 0)
+                .attr("x2", chartWidth)
+                .attr("y1", yScale(tick))
+                .attr("y2", yScale(tick))
+                .style("stroke", "lightgrey")
+                .style("opacity", 0.7);
+            });
+    // Append the y-axis with unique ticks and formatted values
+    svg.append("g")
+    .call(d3.axisLeft(yScale)
+            .tickValues(yTicks) // Use unique tick values
+            .tickFormat(d3.format(".3f"))) // Format each tick value
+    .call(g => g.select(".domain").remove()); // Remove the Y-axis line
+
+
+            
+
+    function mousemove(event) {
+        const mouseX = d3.pointer(event, this)[0];
+        const closestDate = xScale.domain().reduce((a, b) => {
+            return Math.abs(xScale(a) - mouseX) < Math.abs(xScale(b) - mouseX) ? a : b;
+        });
+        const index = dates.findIndex(d => d.getTime() === closestDate);
+
+        if (index >= 0 && index < dates.length) {
+            const d = lineData[index]; // Define 'd' here at the start
+
+                    // Update the position of the focus circle
+            focus.attr("transform", `translate(${xScale(d.date) + xScale.bandwidth() / 2}, ${yScale(d.value)})`)
+                .style("display", null);
+
+            // Update hover line's position and display it
+            hoverLine.attr("x1", xScale(d.date) + xScale.bandwidth() / 2)
+                    .attr("x2", xScale(d.date) + xScale.bandwidth() / 2)
+                    .attr("y1", yScale(d.value))
+                    .attr("y2", chartHeight)
+                    .style("opacity", 1);
+
+            // Update tooltip content and position
+            const dateFormat = d3.timeFormat("%b %d");
+            const price = `AUD $${d.value.toFixed(3)}`;
+            const date = dateFormat(d.date);
+            const volume = volumes[index];
+
+            tooltip.html(`<div class='text-black'>${price}</div>
+                        <div class='text-gray-500'>${date}</div>
+                        <div class='text-gray-500'>Volume: ${volume.toLocaleString()}</div>`)
+                .style("left", `${event.pageX + 10}px`)
+                .style("top", `${event.pageY - 28}px`)
+                .style("opacity", 1);
 
 
     }
@@ -293,24 +298,54 @@ function mousemove(event) {
             .attr('d', line);
 
             }
-}, [data]);
+
+           
+        }
+    };
+    useEffect(() => {
+        if (data && Object.keys(data).length > 0) {
+            // Assuming the data is now fully loaded and ready
+            drawChart(); // Draw the chart
+            setDataLoading(false); // Update loading state
+        }
+
+        // Handle window resize
+        const handleResize = () => {
+            if (!isDataLoading) {
+                drawChart();
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        // Cleanup
+        return () => window.removeEventListener('resize', handleResize);
+    }, [data, isDataLoading]); // Add isDataLoading as a dependency
+
 
 
     const [activeButton, setActiveButton] = useState('charts'); 
 
     return (
-        <>
-                    {/* Buttons Section */}
-            <div className="flex justify-center rounded mx-4 pb-4">
-
-            </div>
-                    <div className="trading-chart-container flex " ref={chartRef} style={{ width: '100%', minHeight: '40%' }}>
-            {/* Chart will be attached to this div */}
+    <>
+        {/* Buttons Section */}
+        <div className="flex justify-center rounded mx-4 pb-4">
+            {/* Your buttons or other UI elements */}
         </div>
 
-            
-        </>
-    );
+        {isDataLoading ? (
+            // Skeleton loader
+            <div className="animate-pulse">
+                <div className="bg-gray-200 h-64 w-full rounded"></div>
+            </div>
+        ) : (
+            // Chart container
+            <div className="trading-chart-container flex min-h-[15%] lg:min-h-[40%]" ref={chartRef} style={{ width: '100%' }}>
+                {/* Chart will be attached to this div */}
+            </div>
+        )}
+    </>
+);
 }
 
 

@@ -21,9 +21,13 @@ const renderTab = (title, statementType) => {
         );
     };
 
-        // Check if data is loaded
+    // If data is not available, render skeleton loader
     if (!data) {
-        return <div>Loading data...</div>;
+        return (
+            <div className="animate-pulse">
+                <div className="bg-gray-200 h-64 w-full mt-4 rounded"></div>
+            </div>
+        );
     }
 
 
@@ -116,7 +120,7 @@ const balanceSheetData = activeStatement === 'balance' && data.balanceSheet ? {
                 ? <StatementTable data={incomeStatementData} statementType="income" />
                 : activeStatement === 'cash' && cashflowData
                 ? <StatementTable data={cashflowData} statementType="cash" />
-                : <div>Loading data or data not available for the selected statement.</div>
+                : <div>data not available for the selected statement.</div>
             }
         </div>
     );
