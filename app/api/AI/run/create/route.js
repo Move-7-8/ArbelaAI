@@ -1,6 +1,7 @@
 import OpenAI from "openai";    
 
 export async function GET (req) {
+    console.log('Run create route hit')
     const searchParams = req.nextUrl.searchParams;
     const threadId = searchParams.get('threadId');
     const assistantId = searchParams.get('assistantId');

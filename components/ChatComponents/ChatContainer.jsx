@@ -1,9 +1,7 @@
 import { messagesAtom, threadAtom } from "@/atom";
 import axios from "axios";
 import { useAtom } from "jotai";
-import { ThreadMessage } from "openai/resources/beta/threads/messages/messages.mjs";
 import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 function ChatContainer() {
   // Atom State
@@ -19,59 +17,60 @@ function ChatContainer() {
     const fetchMessages = async () => {
       setFetching(true);
       if (!thread) return;
-
+  
       try {
-        axios
-          .get<{ messages: ThreadMessage[] }>(
-            `/api/message/list?threadId=${thread.id}`
-          )
-          .then((response) => {
-            let newMessages = response.data.messages;
+        const response = await fetch(`/api/AI/message/list?threadId=${thread}`);
+        console.log('response status: ', response.status)
+        if (!response.ok) {
+          if (response.status === 404) {
+            
+            // Handle the case where no messages are found
+            console.log('No messages found for this thread.');
+            setMessages([]); // Set messages to an empty array or handle as needed
+            return;
+          }
+          
+          // throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('data', data)
+        let newMessages = data.messages;
 
-            // Sort messages in descending order by createdAt
-            newMessages = newMessages.sort(
-              (a, b) =>
-                new Date(a.created_at).getTime() -
-                new Date(b.created_at).getTime()
-            );
-            setMessages(newMessages);
-          });
+        // Sort messages in descending order by createdAt
+        newMessages = newMessages.sort(
+          (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        );
+        setMessages(newMessages);
       } catch (error) {
         console.log("error", error);
-        toast.error("Error fetching messages", { position: "bottom-center" });
       } finally {
         setFetching(false);
       }
     };
-
+  
     fetchMessages();
   }, [thread]);
-
+  
   const sendMessage = async () => {
     if (!thread) return;
     setSending(true);
-
+  
     try {
-      const response = await axios.post<{ message: ThreadMessage }>(
-        `/api/message/create?threadId=${thread.id}&message=${message}`,
-        { message: message, threadId: thread.id }
+      const response = await axios.post(`/api/AI/message/create?threadId=${thread}&message=${message}`, 
+        { message: message, threadId: thread }
       );
-
+  
       const newMessage = response.data.message;
       console.log("newMessage", newMessage);
       setMessages([...messages, newMessage]);
       setMessage("");
-      toast.success("Successfully sent message", {
-        position: "bottom-center",
-      });
     } catch (error) {
       console.log("error", error);
-      toast.error("Error sending message", { position: "bottom-center" });
     } finally {
       setSending(false);
     }
   };
-
+  
   return (
     <div className="flex flex-col w-full h-full max-h-screen rounded-lg border-blue-200 border-solid border-2 p-10">
       {/* Messages */}

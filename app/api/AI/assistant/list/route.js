@@ -1,12 +1,12 @@
 import OpenAI from "openai";
 
 export async function GET() {
-    const openai = New OpenAI(); 
+    const openai = new OpenAI(process.env.OPENAI_API_KEY);
 
     try {
         const response = await openai.beta.assistants.list({
             order: 'desc',
-            limit: 10,
+            limit: 100,
         });
 
         const assistants = response.data; 
@@ -17,3 +17,4 @@ export async function GET() {
         console.log(e);
         return Response.json({ error: e });
     }
+}

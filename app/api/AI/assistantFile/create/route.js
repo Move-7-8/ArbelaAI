@@ -5,7 +5,8 @@ export async function GET (request) {
     const searchParams = request.nextUrl.searchParams;
     const assistantId = searchParams.get('assistantId');
     const fileId = searchParams.get('fileId');
-
+    console.log('assistant ID: ', assistantId);
+    console.log('file ID: ', fileId);
     if (!assistantId || !fileId) 
         return Response.json(
         { error: 'No assistant id provided' }, 
@@ -18,7 +19,7 @@ export async function GET (request) {
     const openai = new OpenAI(process.env.OPENAI_API_KEY);
 
     try {
-        const assistantFile = await openai.assistants.files.create(
+        const assistantFile = await openai.beta.assistants.files.create(
             assistantId, 
             {
                 file_id: fileId,

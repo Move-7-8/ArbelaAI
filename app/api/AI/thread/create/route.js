@@ -4,7 +4,7 @@ export async function GET () {
 
     const openai = new OpenAI(process.env.OPENAI_API_KEY);
     try {
-        const thread = await OpenAI.thread.create()
+        const thread = await openai.beta.threads.create()
         console.log(thread);
 
         return Response.json({thread: thread}, {status: 200});
