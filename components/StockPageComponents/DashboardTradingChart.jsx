@@ -4,30 +4,75 @@ import { select, scaleLinear, axisBottom, axisLeft } from 'd3';
 
 const TradingChartContainer = ({ data }) => {
 
-    
-
+    const [timeFrame, setTimeFrame] = useState('1y'); // Default to 1 year
     const [isDataLoading, setDataLoading] = useState(true);
-    const volumes = data?.historic?.indicators?.quote[0]?.volume.map(vol => vol === null ? 0 : vol) || [];
-    const timestamps = data?.historic?.timestamp;
-    const askPriceRaw = data?.financeAnalytics?.currentPrice?.raw;
-    const prevClose = data?.historic?.meta?.chartPreviousClose;
-        // Ensure closingPrices is defined before using it, otherwise use an empty array
-    let closingPrices = data?.historic?.indicators?.quote[0]?.close || [];
 
-    // Replace null values with the last available non-null value
-    closingPrices = closingPrices.map((price, i, arr) => {
-        if (price !== null) {
-            return price;
-        }
-        // Find the most recent non-null value
-        for (let j = i - 1; j >= 0; j--) {
-            if (arr[j] !== null) {
-                return arr[j];
+    // Function to process closing prices
+    const processClosingPrices = (closingPrices) => {
+        return closingPrices.map((price, i, arr) => {
+            if (price !== null) {
+                return price;
             }
+            for (let j = i - 1; j >= 0; j--) {
+                if (arr[j] !== null) {
+                    return arr[j];
+                }
+            }
+            return 0; // Default to 0 if no non-null value is found
+        });
+    };
+
+    // Function to get data based on the selected time frame
+    const getDataForTimeFrame = (timeFrame) => {
+        switch (timeFrame) {
+            case '7d':
+                return {
+                    volumes: data?.historic7Days?.indicators?.quote[0]?.volume.map(vol => vol === null ? 0 : vol) || [],
+                    timestamps: data?.historic7Days?.timestamp || [],
+                    closingPrices: processClosingPrices(data?.historic7Days?.indicators?.quote[0]?.close || []),
+                     askPriceRaw: data?.historic7Days?.financeAnalytics?.currentPrice?.raw,
+                     prevClose: data?.historic7Days?.meta?.chartPreviousClose
+                };
+            case '30d':
+                return {
+                    volumes: data?.historic30Days?.indicators?.quote[0]?.volume.map(vol => vol === null ? 0 : vol) || [],
+                    timestamps: data?.historic30Days?.timestamp || [],
+                    closingPrices: processClosingPrices(data?.historic30Days?.indicators?.quote[0]?.close || []),
+                    askPriceRaw: data?.historic30Days?.financeAnalytics?.currentPrice?.raw,
+                    prevClose: data?.historic30Days?.meta?.chartPreviousClose
+                };
+            case '1y':
+            default:
+                return {
+                    volumes: data?.historic?.indicators?.quote[0]?.volume.map(vol => vol === null ? 0 : vol) || [],
+                    timestamps: data?.historic?.timestamp || [],
+                    closingPrices: processClosingPrices(data?.historic?.indicators?.quote[0]?.close || []),
+                    askPriceRaw: data?.financeAnalytics?.currentPrice?.raw,
+                    prevClose:data?.historic?.meta?.chartPreviousClose,
+                };
         }
-        // Default to 0 if no non-null value is found
-        return 0;
-    });
+    };
+
+    // Get the data for the currently selected time frame
+    const { volumes, timestamps, closingPrices, askPriceRaw, prevClose } = getDataForTimeFrame(timeFrame);
+
+
+
+
+    // // Replace null values with the last available non-null value
+    // closingPrices = closingPrices.map((price, i, arr) => {
+    //     if (price !== null) {
+    //         return price;
+    //     }
+    //     // Find the most recent non-null value
+    //     for (let j = i - 1; j >= 0; j--) {
+    //         if (arr[j] !== null) {
+    //             return arr[j];
+    //         }
+    //     }
+    //     // Default to 0 if no non-null value is found
+    //     return 0;
+    // });
 
 
     const minValue = d3.min(closingPrices);
@@ -322,16 +367,42 @@ const TradingChartContainer = ({ data }) => {
         return () => window.removeEventListener('resize', handleResize);
     }, [data, isDataLoading]); // Add isDataLoading as a dependency
 
-
+const handleTimeFrameChange = (newTimeFrame) => {
+    setTimeFrame(newTimeFrame);
+    setDataLoading(true); // Indicate loading while the chart is being redrawn
+};
 
     const [activeButton, setActiveButton] = useState('charts'); 
 
     return (
     <>
-        {/* Buttons Section */}
-        <div className="flex justify-center rounded mx-4 pb-4">
-            {/* Your buttons or other UI elements */}
+            {/* Buttons Section */}
+<div className="flex justify-end mx-4 pb-4">
+            <div 
+                className="rounded-lg inline-block" 
+                style={{ backgroundColor: 'rgba(169, 169, 169, 0.2)', padding: '3px' }}
+            >
+                <button 
+                    className={`text-sm mr-2 px-3 py-1 rounded ${timeFrame === '1y' ? 'bg-white' : 'bg-transparent'}`} 
+                    onClick={() => handleTimeFrameChange('1y')}
+                >
+                    1 Year
+                </button>
+                <button 
+                    className={`text-sm mr-2 px-3 py-1 rounded ${timeFrame === '30d' ? 'bg-white' : 'bg-transparent'}`} 
+                    onClick={() => handleTimeFrameChange('30d')}
+                >
+                    30 Days
+                </button>
+                <button 
+                    className={`text-sm px-3 py-1 rounded ${timeFrame === '7d' ? 'bg-white' : 'bg-transparent'}`} 
+                    onClick={() => handleTimeFrameChange('7d')}
+                >
+                    7 Days
+                </button>
+            </div>
         </div>
+
 
         {isDataLoading ? (
             // Skeleton loader
