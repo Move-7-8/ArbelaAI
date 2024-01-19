@@ -5,6 +5,35 @@
 import { IncomingForm } from 'formidable';
 import OpenAI from "openai";
 import { createReadStream } from 'fs';
+// const AWS = require('aws-sdk');
+
+
+// Configure AWS
+// AWS.config.update({
+//     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+//     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+//     region: 'ap-southeast-2'
+// });
+
+// const s3 = new AWS.S3();
+
+// async function handler(req, res) {
+//     const bucketName = 'kalicapitaltest';
+//     console.log('S3 Route Hit')
+
+//     try {
+//         const response = await s3.listObjectsV2({ Bucket: bucketName }).promise();
+//         const files = response.Contents.map(file => file.Key);
+//         res.status(200).json({ files });
+//         console.log('S3 List Done');
+//         console.log(files)
+//     } catch (error) {
+//         console.error('S3 List Error:', error);
+//         res.status(500).json({ error: 'Error listing files from S3' });
+//     }
+// }
+
+
 
 export const config = {
     api: {
@@ -20,6 +49,7 @@ export default async function handler(req, res) {
     }
 
     const form = new IncomingForm();
+    console.log('form: ', form)
 
     form.parse(req, async (err, fields, files) => {
         if (err) {
@@ -30,7 +60,7 @@ export default async function handler(req, res) {
         try {
             const fileArray = Array.isArray(files.file) ? files.file : [files.file];
             const file = fileArray[0];
-
+            console.log('file: ', file)
             if (!file || !file.filepath) {
                 console.error("No file or file path found");
                 return res.status(400).json({ error: 'No file uploaded' });
@@ -43,7 +73,7 @@ export default async function handler(req, res) {
                 file: fileStream,
                 purpose: "assistants",
             });
-
+            console.log('open AI response: ', response)
             return res.status(200).json({ file: response });
         } catch (e) {
             console.error(e);

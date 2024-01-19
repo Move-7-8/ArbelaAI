@@ -27,6 +27,21 @@ export default function Home() {
   const [, setRun] = useAtom(runAtom);
   const [, setRunState] = useAtom(runStateAtom);
   
+  const [fileChangeTrigger, setFileChangeTrigger] = useState(false);
+  const [fileChangeCompleted, setFileChangeCompleted] = useState(false);
+
+  // Singular function run all sub-functions 
+  const handleFileChangeTrigger = () => {
+    setFileChangeTrigger(true);
+  };
+
+  // Add a useEffect hook to reset the trigger
+  useEffect(() => {
+    if (fileChangeTrigger) {
+      setFileChangeTrigger(false);
+    }
+  }, [fileChangeTrigger]);
+
   // Load default data
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -63,15 +78,19 @@ export default function Home() {
       <div className="flex flex-row mt-20 gap-x-10">
         {/* Actions */}
         <div className="flex flex-col w-full">
-          <Assistant />
-          <AssistantFile />
-          <Thread />
-          <Run /> 
+          <Assistant onFileChangeTrigger={handleFileChangeTrigger} />
+          <AssistantFile 
+            onFileChangeTrigger={handleFileChangeTrigger} 
+            fileChangeTrigger={fileChangeTrigger} 
+            onFileChangeComplete={() => setFileChangeCompleted(true)} 
+          />
+        <Thread fileChangeCompleted={fileChangeCompleted} />
+          <Run/> 
+          <ChatContainer/>
         </div>
         {/* Chat */}
-        <div className="w-full">
-          <ChatContainer />
-        </div>
+        {/* <div className="w-full"> */}
+        {/* </div> */}
       </div>
     </main>
   );

@@ -7,6 +7,7 @@ import Charts from '@components/Charts';
 import CompanyAnalysis from '@components/StockPageComponents/CompanyAnalysis';
 import Card from '@components/StockPageComponents/DashboardTopCards';
 import StockCard from '@components/StockCard';
+import Test from '@components/Test';
 import DashboardStockCard from '@components/StockPageComponents/DashboardStockCard';
 import TradingChartContainer from '@components/StockPageComponents/DashboardTradingChart';
 import Chatbox from '@components/StockPageComponents/DashboardChatBox';
@@ -14,8 +15,6 @@ import FinancialStatements from '@components/StockPageComponents/Statements';
 import NewsSection from '@components/StockPageComponents/NewsSection';
 import SearchBar from '@components/StockPageComponents/SearchBar';
 import { FaComments } from 'react-icons/fa';
-
-
 
 const Page = () => {
   const [data, setData] = useState(null); 
@@ -28,14 +27,11 @@ const Page = () => {
   // const change = searchParams.get('change');
   const volatilityScore = searchParams.get('volatilityScore');
   const liquidityScore = searchParams.get('liquidityScore');
-
   const [showChatbox, setShowChatbox] = useState(false);
 
   const toggleChatbox = () => setShowChatbox(!showChatbox);
   
   // From the UseEffect 
-  
-  
   //Useeffect to pull in Financial data with fetch aborting 
   //(because multiple requests were somehow firing)
   useEffect(() => {
@@ -46,7 +42,7 @@ const Page = () => {
       if (!isLoading) {
         setIsLoading(true);
         console.log('Fetching data...');
-  
+
         try {
           // Make sure to define response here from the fetch API
           const response = await fetch(`/api/companies/[${ticker}]`, {
@@ -150,7 +146,8 @@ return (
         {showChatbox && (
             <div className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden">
                 <div className="w-full fixed bottom-0 bg-white h-2/3 overflow-auto">
-                    <Chatbox />
+                    {/* <Chatbox /> */}
+                    <Test/>
                     <button onClick={toggleChatbox} className="absolute top-0 right-0 mt-2 mr-2 text-2xl text-gray-700">
                         &times; {/* Close icon */}
                     </button>
@@ -160,12 +157,11 @@ return (
 
         {/* Always visible Chatbox for larger screens */}
         <div className="hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4">
-            <Chatbox />
+            {/* <Chatbox /> */}
+            <Test/>
         </div>
     </div>
 );
-
-    
 }
 
 

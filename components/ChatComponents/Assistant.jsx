@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { assistantAtom, fileAtom, messagesAtom } from "@/atom";
 import { useAtom } from "jotai";
 
-const Assistant = () => {
+const Assistant = ({ onFileChangeTrigger }) => {
     const [assistant, setAssistant] = useAtom(assistantAtom);
     const [, setMessages] = useAtom(messagesAtom);
     const [file] = useAtom(fileAtom);
@@ -24,6 +24,8 @@ const Assistant = () => {
           setAssistant(newAssistant);
           localStorage.setItem("assistant", JSON.stringify(newAssistant));
           setMessage("Successfully created assistant");
+          onFileChangeTrigger();
+
         } catch (error) {
           console.log("error", error);
           setMessage("Error creating assistant");
@@ -102,7 +104,6 @@ const Assistant = () => {
             
     return (
       <div className="flex flex-col mb-8">
-          <h1 className="text-4xl font-semibold mb-4">Assistant</h1>
 
           <div className="flex flex-row gap-x-4 w-full">
               <button
@@ -118,22 +119,21 @@ const Assistant = () => {
               >
               {modifying ? "Modifying..." : "Modify"}
               </button> */}
-              <button
+              {/* <button
               onClick={handleList}
               className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
               >
               {listing ? "Listing..." : "List"}
-              </button>
-              <button
+              </button> */}
+              {/* <button
               onClick={handleDelete}
-            //   disabled={!assistant}
               className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
               >
               {deleting ? "Deleting..." : "Delete"}
-              </button>
+              </button> */}
           </div>
-          {message && <div className="mt-4 text-center text-lg">{message}</div>}
-          <p className="font-semibold mb-4">Assistant ID: {assistant?.id}</p>
+          {/* {message && <div className="mt-4 text-center text-lg">{message}</div>}
+          <p className="font-semibold mb-4">Assistant ID: {assistant?.id}</p> */}
 
       </div>
     );

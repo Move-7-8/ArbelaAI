@@ -2,9 +2,9 @@
 
 import { messagesAtom, threadAtom } from "@/atom";
 import { useAtom } from "jotai";
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 
-function Thread() {
+function Thread({ fileChangeCompleted }) {
   // Atom State
   const [thread, setThread] = useAtom(threadAtom);
   const [, setMessages] = useAtom(messagesAtom);
@@ -13,6 +13,16 @@ function Thread() {
   const [creating, setCreating] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [message, setMessage] = useState(""); // Added message state
+
+  // Trigger handleCreate when fileChangeCompleted updates to true
+// In Thread.jsx
+useEffect(() => {
+  if (fileChangeCompleted) {
+    console.log("Triggering handleCreate in Thread.jsx");
+    handleCreate();
+  }
+}, [fileChangeCompleted]);
+  
 
   const handleCreate = async () => {
     setCreating(true);
@@ -28,6 +38,7 @@ function Thread() {
         setThread(newThread);
         localStorage.setItem("thread", JSON.stringify(newThread));
         setMessage("Successfully created thread"); // Update message
+        console.log("Successfully created thread")
     } catch (error) {
         console.error(error);
         setMessage("Failed to create thread"); // Update message
