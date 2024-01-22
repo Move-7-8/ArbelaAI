@@ -26,15 +26,15 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
     const returnOnEquity = data?.financeAnalytics?.returnOnEquity?.raw || 'Not Available'
     const dividendYield = data?.keyStatistics?.trailingAnnualDividendYield?.raw || 'Not Available'
 
-console.log('EPS:', EPS);
-console.log('PE Ratio (Lagging):', peRatioLagging);
-console.log('PE Ratio (Forward):', peRatioForward);
-console.log('PB Ratio:', pbRatio);
-console.log('Debt to Equity Ratio:', debtToEquityRatio);
-console.log('Revenue per Share:', revenuePerShare);
-console.log('Return on Assets:', returnOnAssets);
-console.log('Return on Equity:', returnOnEquity);
-console.log('Dividend Yield:', dividendYield);
+// console.log('EPS:', EPS);
+// console.log('PE Ratio (Lagging):', peRatioLagging);
+// console.log('PE Ratio (Forward):', peRatioForward);
+// console.log('PB Ratio:', pbRatio);
+// console.log('Debt to Equity Ratio:', debtToEquityRatio);
+// console.log('Revenue per Share:', revenuePerShare);
+// console.log('Return on Assets:', returnOnAssets);
+// console.log('Return on Equity:', returnOnEquity);
+// console.log('Dividend Yield:', dividendYield);
 
     const formatAskPrice = (askPriceObj) => {
         // Check if askPriceObj is an object with a 'raw' property
@@ -116,7 +116,7 @@ console.log('Dividend Yield:', dividendYield);
 
 
 
-    <div className="flex mx-4 mb-4 flex-col  relative rounded-md  p-4" style={{minHeight:'88%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+    <div className="flex mx-4 mb-4 flex-col  relative rounded-md  p-4" style={{minHeight:'100%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
         {/* Blurred Background */}
         <div className="absolute inset-0 bg-gray-100 bg-opacity-50" style={{  filter: 'blur(1px)' }}></div>
 
