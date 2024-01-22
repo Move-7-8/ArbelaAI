@@ -130,18 +130,27 @@ const handleCreate = async (uploadedFile) => {
 
     setCreating(true);
     try {
+      
       const response = await fetch(`/api/AI/assistantFile/create?assistantId=${assistant.id}&fileId=${uploadedFile.id}`);
+      const fileData = await response.json();
+      const assistantFile = fileData.assistantFile;
+      const assistantFileId = fileData.assistantFile.id;
+      console.log('======================================')
+      console.log('RESPONSE RECEIVED', fileData)
+      console.log('======================================')
+      // if (!response.ok) {
+        //     throw new Error(`HTTP error! status: ${response.status}`);
+        // }
+        
+        // const assistantFile = response.data.assistantFile;
 
-      if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const assistantFile = response.data.assistantFile;
-
-      console.log("assistantFile", assistantFile);
-      setAssistantFile(assistantFile.id);
-      localStorage.setItem("assistantFile", assistantFile.id);
+      console.log("assistantFileReceived", assistantFile);
+      setAssistantFile(assistantFileId);
+      localStorage.setItem("assistantFile", assistantFileId);
       onFileChangeComplete(); // Call the callback here
+      console.log('======================================')
+      console.log('C A L L  B A C K  T R I G G E R E D')
+      console.log('======================================')
 
     } catch (error) {
       console.error("Error creating assistant file:", error);

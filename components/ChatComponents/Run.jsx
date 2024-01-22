@@ -13,7 +13,7 @@ import { useAtom } from "jotai";
 // import { Run } from "openai/resources/beta/threads/runs/runs.mjs";
 // import { ThreadMessage } from "openai/resources/beta/threads/messages/messages.mjs";
 
-function Run() {
+function Run({ messageSent }) {
   // Atom State
   const [thread] = useAtom(threadAtom);
   const [run, setRun] = useAtom(runAtom);
@@ -26,6 +26,13 @@ function Run() {
   const [canceling, setCanceling] = useState(false);
   const [pollingIntervalId, setPollingIntervalId] = useState(null);
   const [message, setMessage] = useState('');
+
+  //Listen for when the send function in ChatComponent.jsx is complete
+  useEffect(() => {
+    if (messageSent) {
+      handleCreate(); // Trigger handleCreate when a message is sent
+    }
+  }, [messageSent]);
 
   useEffect(() => {
     // Clean up polling on unmount
@@ -142,32 +149,31 @@ function Run() {
     }
   };
 
-  return (
-    <div className="flex flex-col mb-8">
-      <h1 className="text-4xl font-semibold mb-4">Run</h1>
-      <div className="flex flex-row gap-x-4 w-full">
-        <button
-          onClick={handleCreate}
-          disabled={creating || !assistant || !thread}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-        >
-          {creating ? "Creating..." : "Create"}
-        </button>
-        <button
-          onClick={handleCancel}
-          disabled={["N/A"].includes(runState) || !run}
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-        >
-          {canceling ? "Canceling..." : "Cancel"}
-        </button>
-      </div>
-      {message && <div className="mt-4 text-center text-lg">{message}</div>}
-      <p className="font-semibold mb-4">Run: {run?.id}</p>
-      <p className="font-semibold mb-4">RunState: {runState}</p>
-
-
-    </div>
-  );
+  return null
+  // return (
+  //   <div className="flex flex-col mb-8">
+  //     <h1 className="text-4xl font-semibold mb-4">Run</h1>
+  //     <div className="flex flex-row gap-x-4 w-full">
+  //       <button
+  //         onClick={handleCreate}
+  //         disabled={creating || !assistant || !thread}
+  //         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+  //       >
+  //         {creating ? "Creating..." : "Create"}
+  //       </button>
+  //       <button
+  //         onClick={handleCancel}
+  //         disabled={["N/A"].includes(runState) || !run}
+  //         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+  //       >
+  //         {canceling ? "Canceling..." : "Cancel"}
+  //       </button>
+  //     </div>
+  //     {message && <div className="mt-4 text-center text-lg">{message}</div>}
+  //     <p className="font-semibold mb-4">Run: {run?.id}</p>
+  //     <p className="font-semibold mb-4">RunState: {runState}</p>
+  //   </div>
+  // );
 }
 
 export default Run;

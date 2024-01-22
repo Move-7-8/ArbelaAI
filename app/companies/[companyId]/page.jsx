@@ -62,7 +62,7 @@ const Page = () => {
           const result = await response.json();
           console.log('Complete Data:', result);
   
-                    // Destructure the data into variables
+          // Destructure the data into variables
           const { 
             historic, 
             historic30Days, 

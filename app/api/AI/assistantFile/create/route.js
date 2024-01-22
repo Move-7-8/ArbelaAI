@@ -25,7 +25,7 @@ export async function GET (request) {
                 file_id: fileId,
             }
         );
-        console.log(assistantFile);
+        console.log('assistantFile', assistantFile);
 
         return Response.json({assistantFile: assistantFile}, {status: 200});
     } catch (e) {

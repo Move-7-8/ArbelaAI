@@ -3,7 +3,7 @@ import axios from "axios";
 import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 
-function ChatContainer() {
+function ChatContainer({ onMessageSent }) {
   // Atom State
   const [thread] = useAtom(threadAtom);
   const [messages, setMessages] = useAtom(messagesAtom);
@@ -64,6 +64,8 @@ function ChatContainer() {
       console.log("newMessage", newMessage);
       setMessages([...messages, newMessage]);
       setMessage("");
+      onMessageSent(); // Invoke the callback after successful send
+
     } catch (error) {
       console.log("error", error);
     } finally {

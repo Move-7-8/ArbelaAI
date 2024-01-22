@@ -4,7 +4,7 @@ import { messagesAtom, threadAtom } from "@/atom";
 import { useAtom } from "jotai";
 import React, { useState, useEffect} from "react";
 
-function Thread({ fileChangeCompleted }) {
+function Thread({ fileChangeCompleted, onThreadCreated }) {
   // Atom State
   const [thread, setThread] = useAtom(threadAtom);
   const [, setMessages] = useAtom(messagesAtom);
@@ -22,7 +22,6 @@ useEffect(() => {
     handleCreate();
   }
 }, [fileChangeCompleted]);
-  
 
   const handleCreate = async () => {
     setCreating(true);
@@ -39,6 +38,8 @@ useEffect(() => {
         localStorage.setItem("thread", JSON.stringify(newThread));
         setMessage("Successfully created thread"); // Update message
         console.log("Successfully created thread")
+        onThreadCreated(); // Call the callback once the thread is created
+
     } catch (error) {
         console.error(error);
         setMessage("Failed to create thread"); // Update message
@@ -71,27 +72,28 @@ useEffect(() => {
 //     }
 //   };
 
-  return (
-    <div className="flex flex-col mb-8">
-      <h1 className="text-4xl font-semibold mb-4">Thread</h1>
-      <div className="flex flex-row gap-x-4 w-full">
-      <button
-        onClick={handleCreate}
-        disabled={creating}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-        >
-        {creating ? "Creating..." : "Create"}
-        </button>
-        {/* <button
-        onClick={handleDelete}
-        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-        >
-        {deleting ? "Deleting..." : "Delete"}
-        </button> */}
-      </div>
-      {message && <div className="mt-4 text-center text-lg">{message}</div>} {/* Display message */}
-    </div>
-  );
+return null
+  // return (
+  //   <div className="flex flex-col mb-8">
+  //     <h1 className="text-4xl font-semibold mb-4">Thread</h1>
+  //     <div className="flex flex-row gap-x-4 w-full">
+  //     <button
+  //       onClick={handleCreate}
+  //       disabled={creating}
+  //       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+  //       >
+  //       {creating ? "Creating..." : "Create"}
+  //       </button>
+  //       {/* <button
+  //       onClick={handleDelete}
+  //       className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+  //       >
+  //       {deleting ? "Deleting..." : "Delete"}
+  //       </button> */}
+  //     </div>
+  //     {message && <div className="mt-4 text-center text-lg">{message}</div>} {/* Display message */}
+  //   </div>
+  // );
 }
 
 export default Thread;

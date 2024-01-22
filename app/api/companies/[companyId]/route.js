@@ -25,13 +25,12 @@ const endpoints = [
   { key: 'keyStatistics', path: `key-statistics/${ticker}` }
 ];
 
-
   try {
-    
     // Iterate over each endpoint and fetch the data
     const allDataPromises = endpoints.map(async ({ key, path }) => { // Use destructuring to get key and path
         const apiUrl = `https://yahoo-finance127.p.rapidapi.com/${path}`;
-  
+        console.log(`Requesting URL: ${apiUrl}`); // Log the URL being requested
+
       const response = await fetch(apiUrl, {
         method: 'GET',
         headers: {
