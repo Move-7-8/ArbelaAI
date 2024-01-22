@@ -117,7 +117,7 @@ return (
     <div className="flex flex-wrap w-full h-full">
         {/* Main content container */}
         <div className="flex flex-col w-full mt-20 lg:w-3/4">
-            <SearchBar />
+            {/* <SearchBar /> */}
 
             {/* DashboardStockCard and TradingChartContainer Section */}
             <div className="flex flex-col lg:flex-row mt-3">

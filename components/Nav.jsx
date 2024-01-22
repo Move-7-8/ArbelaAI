@@ -1,7 +1,8 @@
-"use client";
+'use client'
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import {useState, useEffect} from 'react';
 import {signIn, signOut, useSession, getProviders } from 'next-auth/react';
 
@@ -10,7 +11,13 @@ const Nav = () => {
   const {data: session } = useSession();
   const [providers, setProviders ] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
-  
+
+  const pathname = usePathname()
+  const isCompanyPage = pathname.startsWith('/companies/');
+
+
+
+
   useEffect(() => {
     (async () => {
       const res = await getProviders();
@@ -35,6 +42,17 @@ const Nav = () => {
 
 {/* Desktop Navigation  */}
 {/* For Logged In Users  */}
+{isCompanyPage && (
+    <form className="relative w-1/4 ml-auto mr-4">
+      <input
+        type="text"
+        placeholder="Search by company name or ticker"
+        required
+        className="search_input peer w-full px-3 py-2"
+      />
+    </form>
+
+      )}
       <div className="sm:flex hidden">
         {session?.user ? (
           <div className="flex gap-3 md:gap-5">

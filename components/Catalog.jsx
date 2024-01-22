@@ -1,4 +1,3 @@
-// Catalog.jsx
 import { useState, useEffect } from 'react';
 import StockCard from './StockCard';
 import OpenCard from './OpenCard';
@@ -41,6 +40,8 @@ function Catalog({ searchText, selectedCategory }) {
     useEffect(() => {
         fetchData();
     }, []);
+
+    
 
     const filteredTickers = tickers.filter(company => {
         const companyName = company['Company name'];
