@@ -94,7 +94,7 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
 
  return (
     
-        <div className="flex flex-col flex-1 rounded-md mx-auto">
+        <div className="flex flex-col flex-1 rounded-md mx-auto" style={{ height: '85vh' }}>
             {/* Align buttons to the left */}
         <div className="flex justify-center rounded mx-4 pr-2 pb-2">
           <button
@@ -112,9 +112,6 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
                 Ratio
             </button>
         </div>
-
-
-
 
     <div className="flex mx-4 mb-4 flex-col  relative rounded-md  p-2" style={{minHeight:'100%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
         {/* Blurred Background */}
@@ -230,23 +227,23 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
                         // Skeleton loaders for each data field
                         <>
                             <div className="border-t border-gray-300 mt-4"></div>
-                            <div className="flex justify-between my-5">
+                            <div className="flex justify-between my-2">
                                 <span className="text-gray-500" style={{ minWidth: '100px' }}>Sector:</span>
                                 <div className="bg-gray-200 h-4 flex-1 rounded"></div>
                             </div>
-                            <div className="flex justify-between my-8">
+                            <div className="flex justify-between my-7">
                                 <span className="text-gray-500">Market Cap:</span>
                                 <div className="bg-gray-200 h-4 w-1/3 rounded"></div>
                             </div>
-                            <div className="flex justify-between my-8">
+                            <div className="flex justify-between my-7">
                                 <span className="text-gray-500">Volume:</span>
                                 <div className="bg-gray-200 h-4 w-1/3 rounded"></div>
                             </div>
-                            <div className="flex justify-between my-8">
+                            <div className="flex justify-between my-7">
                                 <span className="text-gray-500">Dividend Yield:</span>
                                 <div className="bg-gray-200 h-4 w-1/4 rounded"></div>
                             </div>
-                            <div className="flex justify-between my-8">
+                            <div className="flex justify-between my-7">
                                 <span className="text-gray-500">Volatility Score:</span>
                                 <div className="bg-gray-200 h-4 w-1/4 rounded"></div>
                             </div>
@@ -259,7 +256,7 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
             // Actual data fields
             <>
                 <div className="border-t border-gray-300 mt-4"></div>
-                    <div className="flex justify-between my-9">
+                    <div className="flex justify-between my-2">
                         <span className="text-gray-500" style={{ minWidth: '100px' }}>Sector:</span>
                         <span className="flex-1 text-right" style={{ maxWidth: 'calc(100% - 100px)' }}>
                             {industry || 'Not Available'}

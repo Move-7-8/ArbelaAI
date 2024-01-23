@@ -157,7 +157,7 @@ return (
         {/* Always visible Chatbox for larger screens */}
         <div className="hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4">
             {/* <Chatbox /> */}
-            <FileUpload />
+            {/* <FileUpload /> */}
             <Test/>
         </div>
     </div>

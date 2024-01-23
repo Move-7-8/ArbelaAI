@@ -79,7 +79,7 @@ function ChatContainer({ onMessageSent }) {
   
 return (
   
-  <div className="bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col" style={{ height: '100vh', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+  <div className="bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col" style={{ height: '90vh', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
     {/* Chat Header */}
     <div className="p-3 border-b border-gray-300 text-center">
       <div className="font-bold text-lg">ChatBot</div>
