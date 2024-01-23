@@ -120,7 +120,7 @@ return (
 
             {/* DashboardStockCard and TradingChartContainer Section */}
             <div className="flex flex-col lg:flex-row mt-3">
-                <div className="w-full lg:w-1/3 mb-4 lg:mb-0">  
+                <div className="w-full lg:w-1/3 mb-4 flex-1 lg:mb-0">  
                     <DashboardStockCard data={data} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
                 </div>
                 <div className="w-full lg:flex-grow overflow-y-scroll lg:h-screen">

@@ -4,6 +4,15 @@ import StatementTable from './StatementTables';
 const FinancialStatements = ({ data }) => {
     const [activeStatement, setActiveStatement] = useState('balance');
 
+        // Log the entire data object
+    console.log('Full Data:', data);
+
+    // Check if balanceSheet and financeAnalytics are present in the data
+    console.log('Balance Sheet Data:', data?.balanceSheet);
+    console.log('Finance Analytics Data:', data?.financeAnalytics);
+    
+
+
 const renderTab = (title, statementType) => {
         const isActive = activeStatement === statementType;
         const buttonClass = `m-3 px-3 py-1 rounded-lg shadow hover:scale-105 transition-transform duration-300 text-xs ${isActive ? '' : 'bg-gray-100'}`;
