@@ -36,11 +36,25 @@ export default function Home() {
   const [messageSent, setMessageSent] = useState(false);
   const [triggerCreate, setTriggerCreate] = useState(false);
   const [isThreadCreated, setIsThreadCreated] = useState(false);
+  const [fileUploadTrigger, setFileUploadTrigger] = useState(false);
+  const [triggerFileUploadFunction, setTriggerFileUploadFunction] = useState(false);
 
   //Function to run the Assistant Create function on page load
   useEffect(() => {
     setTriggerCreate(true);
   }, []);
+
+  // Call this function after Assistant's handleCreate
+  const afterAssistantCreate = () => {
+    console.log('after assistant create in test being called');
+    handleFileChangeTrigger(); // Directly trigger handleFileChange in AssistantFile
+  };
+  
+  // Call this function after file upload is completed in FileUpload
+  const onFileUploadCompleted = () => {
+    setTriggerFileUploadFunction(false);
+    handleFileChangeTrigger(); // This will trigger handleFileChange in AssistantFile
+  };
 
   // Function aa Callback to trigger the AssistantFile component to re-render 
   const handleFileChangeTrigger = () => {
@@ -104,16 +118,16 @@ export default function Home() {
     <main className="flex flex-col">
       <div className="flex flex-row mt-20 gap-x-10">
         <div className="flex flex-col w-full">
-          {/* Assistant, AssistantFile, Thread are Service Components */}
+          {/* Assistant, FileUpload, AssistantFile, Thread are Service Components */}
           {/* They are triggered once on render of company page */}
-          <Assistant onFileChangeTrigger={handleFileChangeTrigger} triggerCreate={triggerCreate} setTriggerCreate={setTriggerCreate} />
+          {/* <Assistant onFileChangeTrigger={handleFileChangeTrigger} triggerCreate={triggerCreate} setTriggerCreate={setTriggerCreate} /> */}
+          <Assistant onFileChangeTrigger={afterAssistantCreate} triggerCreate={triggerCreate} setTriggerCreate={setTriggerCreate} />
           <AssistantFile 
             onFileChangeTrigger={handleFileChangeTrigger} 
             fileChangeTrigger={fileChangeTrigger} 
             onFileChangeComplete={() => setFileChangeCompleted(true)} 
           />
           <Thread fileChangeCompleted={fileChangeCompleted} onThreadCreated={handleThreadCreated}/>
-
           {/* Run is a Service Component, ChatContainer is not */}
           {/* Run is triggered on ChatContainer 'Send' button click */}
           {/* Conditional Rendering between load screen and chatbox*/}

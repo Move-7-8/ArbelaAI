@@ -14,6 +14,7 @@ import Chatbox from '@components/StockPageComponents/DashboardChatBox';
 import FinancialStatements from '@components/StockPageComponents/Statements';
 import NewsSection from '@components/StockPageComponents/NewsSection';
 import SearchBar from '@components/StockPageComponents/SearchBar';
+import FileUpload from '@components/ChatComponents/FileUpload';
 import { FaComments } from 'react-icons/fa';
 
 const Page = () => {
@@ -111,8 +112,6 @@ const Page = () => {
   
   // console.log('DATA RECEIVED: ', data);
 
-
-
 return (
     <div className="flex flex-wrap w-full h-full">
         {/* Main content container */}
@@ -158,12 +157,11 @@ return (
         {/* Always visible Chatbox for larger screens */}
         <div className="hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4">
             {/* <Chatbox /> */}
+            <FileUpload />
             <Test/>
         </div>
     </div>
 );
 }
-
-
 
 export default Page;

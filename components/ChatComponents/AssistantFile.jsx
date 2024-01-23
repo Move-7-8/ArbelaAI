@@ -27,7 +27,7 @@ const AssistantFile = ({ onFileChangeTrigger, fileChangeTrigger, onFileChangeCom
       handleFileChange();
     }
   }, [fileChangeTrigger]);
-  
+    
   const handleFileChange = async (event) => {
     console.log('handle file change triggered')
     const fileKey = 'DigitalX.pdf';
@@ -211,6 +211,7 @@ const handleDelete = async () => {
       setDeleting(false);
   }
 };
+
 return null
 //   return (
 // <div className="flex flex-col mb-8">
