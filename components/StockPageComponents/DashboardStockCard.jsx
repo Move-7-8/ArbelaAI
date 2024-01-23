@@ -7,8 +7,7 @@ import { useState } from 'react';
 
 function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) {
 
-    console.log(data)
-    
+  
     const companyName = data?.keyStatistics?.longName || 'Company Name Not Available';
     const marketCap = data?.price?.marketCap?.longFmt || 'Not Available';
     const askPrice = data?.financeAnalytics?.currentPrice|| 'Not Available';
@@ -94,6 +93,7 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
 
 
  return (
+    
         <div className="flex flex-col flex-1 rounded-md mx-auto">
             {/* Align buttons to the left */}
         <div className="flex justify-center rounded mx-4 pr-2 pb-2">
@@ -116,13 +116,13 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
 
 
 
-    <div className="flex mx-4 mb-4 flex-col  relative rounded-md  p-4" style={{minHeight:'100%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+    <div className="flex mx-4 mb-4 flex-col  relative rounded-md  p-2" style={{minHeight:'100%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
         {/* Blurred Background */}
         <div className="absolute inset-0 bg-gray-100 bg-opacity-50" style={{  filter: 'blur(1px)' }}></div>
 
 
         {/* Content */}
-            <div className="p-4 flex-col flex relative">
+            <div className="p-4 flex-col flex flex-grow relative">
                 {activeButton === 'button2' && ( // Check if Ratio button is active
                     <div>
                         {/* Ratio Headers and Values */}
@@ -133,7 +133,7 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
 
                         {/* Financial Ratios Display */}
                         <div className="mt-4">
-                            <div className="flex justify-between my-12">
+                            <div className="flex justify-between my-9">
                                 <span className="text-gray-500" style={{ minWidth: '100px' }}>EPS:</span>
                                 <span>{EPS}</span>
                             </div>
@@ -230,27 +230,27 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
                         // Skeleton loaders for each data field
                         <>
                             <div className="border-t border-gray-300 mt-4"></div>
-                            <div className="flex justify-between my-9">
+                            <div className="flex justify-between my-5">
                                 <span className="text-gray-500" style={{ minWidth: '100px' }}>Sector:</span>
                                 <div className="bg-gray-200 h-4 flex-1 rounded"></div>
                             </div>
-                            <div className="flex justify-between my-9">
+                            <div className="flex justify-between my-8">
                                 <span className="text-gray-500">Market Cap:</span>
                                 <div className="bg-gray-200 h-4 w-1/3 rounded"></div>
                             </div>
-                            <div className="flex justify-between my-9">
+                            <div className="flex justify-between my-8">
                                 <span className="text-gray-500">Volume:</span>
                                 <div className="bg-gray-200 h-4 w-1/3 rounded"></div>
                             </div>
-                            <div className="flex justify-between my-9">
+                            <div className="flex justify-between my-8">
                                 <span className="text-gray-500">Dividend Yield:</span>
                                 <div className="bg-gray-200 h-4 w-1/4 rounded"></div>
                             </div>
-                            <div className="flex justify-between my-9">
+                            <div className="flex justify-between my-8">
                                 <span className="text-gray-500">Volatility Score:</span>
                                 <div className="bg-gray-200 h-4 w-1/4 rounded"></div>
                             </div>
-                            <div className="flex justify-between mt-9">
+                            <div className="flex justify-between mt-7">
                                 <span className="text-gray-500">Dividend Score:</span>
                                 <div className="bg-gray-200 h-4 w-1/4 rounded"></div>
                             </div>

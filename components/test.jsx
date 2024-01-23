@@ -102,7 +102,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-col">
-      <div className="flex flex-row mt-20 gap-x-10">
+      <div className="flex flex-row  mt-3 gap-x-10">
         <div className="flex flex-col w-full">
           {/* Assistant, AssistantFile, Thread are Service Components */}
           {/* They are triggered once on render of company page */}
