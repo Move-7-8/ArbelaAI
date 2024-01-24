@@ -1,20 +1,27 @@
 import { useEffect } from 'react';
 
-const FileUpload = ({ triggerFunction, onFileUploadFunction }) => {
+const FileUpload = () => {
+    console.log('file upload component is rendered');
+
+    const handleUpload = async () => {
+        try {
+            const response = await fetch("/api/AI/fileUpload");
+            const data = await response.json();
+            console.log("Data received:", data);
+        } catch (error) {
+            console.error("Error in file upload:", error);
+        }
+    };
+
     useEffect(() => {
-      if (triggerFunction) {
-        console.log('File Upload Triggered');
-        // Simulate file upload process here
-        // Once upload is done:
-        onFileUploadFunction(); // Call this when file upload is complete
-      }
-    }, [triggerFunction, onFileUploadFunction]);
-  
+        handleUpload();
+    }, []); // Empty array makes this effect run only once on component mount
+
     return (
         <div>
             <h1>File Upload</h1>
         </div>
     );
-  };
+};
   
 export default FileUpload;
