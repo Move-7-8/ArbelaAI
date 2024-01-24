@@ -6,10 +6,11 @@ const StatementTable = ({ data, statementType }) => {
     return <div>No data available</div>;
   }
 
-  let rows = [];
-  let endDate = data.endDate;
+  // Extract endDate here so it's available for all statement types
+  const { endDate } = data;
+  console.log(endDate);
 
-  console.log(endDate)
+  let rows = [];
 
   if (statementType === 'balance') {
   // Extract balance sheet values directly
@@ -78,7 +79,6 @@ const {
   } else if (statementType === 'income') {
     // Extract income statement values
       const {
-    endDate,
     totalRevenue,
     grossProfits,
     ebitda,
@@ -119,7 +119,6 @@ const {
   } else if (statementType === 'cash') {
     // Extract cash flow statement values
     const {
-      endDate, 
       operatingCashflow,
       totalCash,
       totalCashPerShare,
@@ -169,7 +168,7 @@ return (
           padding: '10px', 
           fontSize: '14px'
       }}>
-        {endDate || 'N/A'}
+        {endDate || ''}
       </th>
     </tr>
   </thead>

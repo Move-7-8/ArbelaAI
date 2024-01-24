@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import StatementTable from './StatementTables';
 
 const FinancialStatements = ({ data }) => {
-    const [activeStatement, setActiveStatement] = useState('balance');
+    const [activeStatement, setActiveStatement] = useState('income');
 
         // Log the entire data object
     console.log('Full Data:', data);
@@ -99,6 +99,7 @@ const balanceSheetData = activeStatement === 'balance' && data.balanceSheet ? {
 
 
  const cashflowData = activeStatement === 'cash' && data.financeAnalytics  ? {
+    endDate: data.balanceSheet.endDate?.fmt || 'N/A',
     operatingCashflow: data.financeAnalytics.operatingCashflow?.longFmt || 'Data not available',
     totalCash: data.financeAnalytics.totalCash?.longFmt || 'Data not available',
     totalCashPerShare: data.financeAnalytics.totalCashPerShare?.fmt || 'Data not available',

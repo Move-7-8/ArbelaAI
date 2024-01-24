@@ -134,6 +134,7 @@ return (
         type="text" 
         placeholder="Type a message..." 
         className="w-full p-2 border border-black rounded-l-md bg-white"
+         style={{ border: '1px solid #5E5DF0' }} // Set custom border color here
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyPress={(e) => {
