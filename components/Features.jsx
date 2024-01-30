@@ -3,9 +3,9 @@ import Image from 'next/image';
 
 const Features = () => {
   return (
-    <div className='features flex justify-between'> 
-      <div className='flex-1 feature p-4 m-2'> 
-      <h3 className="mb-4 font-bold">
+    <div className='flex flex-col sm:flex-row justify-between'> 
+      <div className='w-full sm:flex-1 feature p-4 m-2'> 
+        <h3 className="mb-4 font-bold">
           Data Feeds
         </h3>
         <Image 
@@ -15,11 +15,11 @@ const Features = () => {
           alt="Unstructured Data"
         />
         <p style={{ marginTop: '1rem' }}>
-           Our Data covers company statements, quarterly updates, news stories, and price movements for all US stocks.
+          Our Data covers company statements, quarterly updates, news stories, and price movements for all US stocks.
         </p>
       </div>
-      <div className='flex-1 feature p-4 m-2'> 
-      <h3 className="mb-4 font-bold">
+      <div className='w-full sm:flex-1 feature p-4 m-2'> 
+        <h3 className="mb-4 font-bold">
           Train Your own Model
         </h3>
         <Image 
@@ -29,10 +29,10 @@ const Features = () => {
           alt="Structured Data"
         />
         <p style={{ marginTop: '1rem' }}>
-           You can choose multiple data points to train your model on.
+          You can choose multiple data points to train your model on.
         </p>
       </div>
-      <div className='flex-1 feature p-4 m-2'> 
+      <div className='w-full sm:flex-1 feature p-4 m-2'> 
         <h3 className="mb-4 font-bold">
           Analyse Companies
         </h3>
@@ -49,5 +49,6 @@ const Features = () => {
     </div>
   )
 }
+
 
 export default Features;

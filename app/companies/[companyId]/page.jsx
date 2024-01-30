@@ -124,7 +124,7 @@ return (
                     <DashboardStockCard data={data} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
                 </div>
                 <div className="w-full lg:flex-grow overflow-y-scroll lg:h-screen">
-                    <TradingChartContainer data={data} />
+                    <TradingChartContainer data={data}  />
                     <FinancialStatements data={data} className="mt-4" />
                     <NewsSection data={data} className="mt-4" />
                 </div>
