@@ -12,7 +12,6 @@ function Catalog({ searchText, selectedCategory }) {
     const selectCompany = (company) => {
         setSelectedCompany(company); 
     };
-
     
     // In your fetchData function
     const fetchData = async () => {

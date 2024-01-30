@@ -8,6 +8,7 @@ import Thread from "./ChatComponents/Thread";
 import ChatContainer from "./ChatComponents/ChatContainer";
 import Run from "./ChatComponents/Run";
 import ChatLoad from "./ChatComponents/ChatLoad";
+import FileUpload from '@components/ChatComponents/FileUpload';
 
 // import Header from "./components/Header";
 import { useAtom } from "jotai";
@@ -21,7 +22,7 @@ import {
   runAtom,
 } from "@/atom";
 
-export default function Home() {
+export default function Home({data}) {
   // Atom State
   const [, setAssistant] = useAtom(assistantAtom);
   const [, setFile] = useAtom(fileAtom);
@@ -32,34 +33,64 @@ export default function Home() {
   
   // UseStates for the Callbacks to trigger functions across the child components
   const [fileChangeTrigger, setFileChangeTrigger] = useState(false);
+  const [tasksCompleted, setTasksCompleted] = useState({ create: false, upload: false });
   const [fileChangeCompleted, setFileChangeCompleted] = useState(false);
+  const [uploadCompleteTrigger, setUploadCompleteTrigger] = useState(false);
+  const [condition1, setcondition1] = useState(false);
+  const [condition2, setcondition2] = useState(false);
+
   const [messageSent, setMessageSent] = useState(false);
   const [triggerCreate, setTriggerCreate] = useState(false);
   const [isThreadCreated, setIsThreadCreated] = useState(false);
   const [fileUploadTrigger, setFileUploadTrigger] = useState(false);
   const [triggerFileUploadFunction, setTriggerFileUploadFunction] = useState(false);
 
+
+
   //Function to run the Assistant Create function on page load
   useEffect(() => {
     setTriggerCreate(true);
   }, []);
 
-  // Call this function after Assistant's handleCreate
-  const afterAssistantCreate = () => {
-    console.log('after assistant create in test being called');
-    handleFileChangeTrigger(); // Directly trigger handleFileChange in AssistantFile
-  };
-  
-  // Call this function after file upload is completed in FileUpload
-  const onFileUploadCompleted = () => {
-    setTriggerFileUploadFunction(false);
-    handleFileChangeTrigger(); // This will trigger handleFileChange in AssistantFile
-  };
+// Update the state when handleCreate completes
+const afterAssistantCreate = () => {
+  setTasksCompleted(prev => ({ ...prev, create: true }));
+  checkAndHandleUpload();
+  handleFileChangeTrigger(); // Verify if this is called
+  console.log("condition1 is pre:", condition1);
+  setcondition1(true);
+  console.log("condition1 is post: ", condition1);
+};
 
-  // Function aa Callback to trigger the AssistantFile component to re-render 
-  const handleFileChangeTrigger = () => {
-    setFileChangeTrigger(true);
-  };
+// const onFileChangeTrigger = () => {
+//   console.log('=============================')
+//   console.log("onFileChangeTrigger called");
+//   console.log('=============================')
+
+// }
+
+const onFileUploadCompleted = () => {
+  setTasksCompleted(prev => ({ ...prev, upload: true }));
+  checkAndHandleUpload();
+  setUploadCompleteTrigger(true); // Verify if this is called
+  console.log("condition1 is pre:", condition1);
+  setcondition2(true);
+  console.log("condition2 is post: ", condition2);
+};
+  
+// Check if both tasks are completed
+const checkAndHandleUpload = () => {
+  if (tasksCompleted.create && tasksCompleted.upload) {
+    handleFileUploadInAssistantFile(); // Function to trigger upload in AssistantFile
+    setTasksCompleted({ create: false, upload: false }); // Reset after triggering
+  }
+};
+    
+  
+// Function aa Callback to trigger the AssistantFile component to re-render 
+const handleFileChangeTrigger = () => {
+  setFileChangeTrigger(true);
+};
 
   useEffect(() => {
     if (fileChangeTrigger) {
@@ -122,10 +153,16 @@ export default function Home() {
           {/* They are triggered once on render of company page */}
           {/* <Assistant onFileChangeTrigger={handleFileChangeTrigger} triggerCreate={triggerCreate} setTriggerCreate={setTriggerCreate} /> */}
           <Assistant onFileChangeTrigger={afterAssistantCreate} triggerCreate={triggerCreate} setTriggerCreate={setTriggerCreate} />
+          <FileUpload data={data} onFileUploadCompleted={onFileUploadCompleted} />
           <AssistantFile 
             onFileChangeTrigger={handleFileChangeTrigger} 
-            fileChangeTrigger={fileChangeTrigger} 
-            onFileChangeComplete={() => setFileChangeCompleted(true)} 
+            tasksCompleted={tasksCompleted}
+            uploadCompleteTrigger={uploadCompleteTrigger}
+            onFileChangeComplete={() => setFileChangeCompleted(true)}
+            fileChangeTrigger={fileChangeTrigger}   
+            condition1={condition1}
+            condition2={condition2}
+            // symbol={symbol}
           />
           <Thread fileChangeCompleted={fileChangeCompleted} onThreadCreated={handleThreadCreated}/>
           {/* Run is a Service Component, ChatContainer is not */}

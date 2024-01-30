@@ -1,9 +1,15 @@
 import AWS from 'aws-sdk';
 import { createObjectCsvStringifier } from 'csv-writer';
 
-export async function GET() {
+export async function POST(req) {
+    const data = await req.json();
+     // This is the data sent from the front-end
+    console.log('*********************************')
+    console.log('Uploading file to S3...FILE ROUTE HIT');
+    console.log('Data: ', data)
+    console.log('*********************************')
 
-    console.log('Uploading file to S3...FIEL ROUTE HIT');
+
     AWS.config.update({
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -11,161 +17,493 @@ export async function GET() {
     });
 
     const s3 = new AWS.S3();
-
-    //TEST DATA: 
-    const testData = [
-        {
-            "ASX_code": "14D.AX",
-            "Company name": "1414 DEGREES LIMITED",
-            "GICsindustrygroup": "Capital Goods",
-            "Listing date": "12/09/2018",
-            "Price": 0.057,
-            "Change (%)": -0.001000002,
-            "Last Price": "0.036",
-            "Market Cap": 15,
-            "fiftyTwoWeekHigh": 0.085,
-            "fiftyTwoWeekLow": 0.025,
-            "fiftyTwoWeekChangePercent": -24,
-            "twoHundredDayAverageChangePercent": 0.12721401,
-            "fiftyDayAverageChangePercent": 0.19546975,
-            "averageDailyVolume3Month": 104790,
-            "regularMarketVolume": 26754,
-            "priceToBook": "1.33",
-            "trailingAnnualDividendRate": "N/A",
-            "epsTrailingTwelveMonths": -0.01,
-            "regularMarketChangePercent": "N/A",
-            "MarketCapitalisation": 13575633,
-            "LastPrice": 0.057,
-            "RangeVolatility": 240,
-            "PercentageChangeVolatility": -7.892438746666667,
-            "Volatility": 116.05378062666666,
-            "Change": 0,
-            "Liquidity": 89182.8,
-            "VolatilityScore": 2,
-            "LiquidityScore": 1,
-            "Date": "20 Jamuary 2024"
-        },
-        {
-            "ASX_code": "1AD.AX",
-            "Company name": "ADALTA LIMITED",
-            "GICsindustrygroup": "Pharmaceuticals, Biotechnology & Life Sciences",
-            "Listing date": "22/08/2016",
-            "Price": 0.024,
-            "Change (%)": 0,
-            "Last Price": "0.024",
-            "Market Cap": 15,
-            "fiftyTwoWeekHigh": 0.048,
-            "fiftyTwoWeekLow": 0.017,
-            "fiftyTwoWeekChangePercent": -45.454544,
-            "twoHundredDayAverageChangePercent": 0.008297447,
-            "fiftyDayAverageChangePercent": 0.069995515,
-            "averageDailyVolume3Month": 495229,
-            "regularMarketVolume": 30800,
-            "priceToBook": "4.80",
-            "trailingAnnualDividendRate": "N/A",
-            "epsTrailingTwelveMonths": -0.02,
-            "regularMarketChangePercent": "N/A",
-            "MarketCapitalisation": 12619296,
-            "LastPrice": 0.024,
-            "RangeVolatility": 182.35294117647058,
-            "PercentageChangeVolatility": -15.125417012666666,
-            "Volatility": 83.61376208190195,
-            "Change": 0,
-            "Liquidity": 402343.2,
-            "VolatilityScore": 1,
-            "LiquidityScore": 2,
-            "Date": "20 Jamuary 2024"
-        },
-        {
-            "ASX_code": "1AE.AX",
-            "Company name": "AURORA ENERGY METALS LIMITED",
-            "GICsindustrygroup": "Materials",
-            "Listing date": "18/05/2022",
-            "Price": 0.115,
-            "Change (%)": 0.017000005,
-            "Last Price": "0.115",
-            "Market Cap": 15,
-            "fiftyTwoWeekHigh": 0.185,
-            "fiftyTwoWeekLow": 0.053,
-            "fiftyTwoWeekChangePercent": -23.333336,
-            "twoHundredDayAverageChangePercent": 0.33430028,
-            "fiftyDayAverageChangePercent": 0.2717019,
-            "averageDailyVolume3Month": 559704,
-            "regularMarketVolume": 175459,
-            "priceToBook": "5.00",
-            "trailingAnnualDividendRate": "N/A",
-            "epsTrailingTwelveMonths": -0.04,
-            "regularMarketChangePercent": -4.1666627,
-            "MarketCapitalisation": 20592360,
-            "LastPrice": 0.115,
-            "RangeVolatility": 249.05660377358492,
-            "PercentageChangeVolatility": -7.575777939999999,
-            "Volatility": 120.74041291679247,
-            "Change": 0,
-            "Liquidity": 482855,
-            "VolatilityScore": 3,
-            "LiquidityScore": 3,
-            "Date": "20 Jamuary 2024"
-        },
-    ]
+    const uploadPromises = [];
         
-    for (const stock of testData) {
-        const csvStringifier = createObjectCsvStringifier({
-            header: [
-                // Add all the fields from your JSON data
-                {id: 'ASX_code', title: 'ASX Code'},
-                {id: 'Company name', title: 'Company Name'},
-                {id: 'GICsindustrygroup', title: 'GICs Industry Group'},
-                {id: 'Listing date', title: 'Listing Date'},
-                {id: 'Price', title: 'Price'},
-                {id: 'Change (%)', title: 'Change (%)'},
-                {id: 'Last Price', title: 'Last Price'},
-                {id: 'Market Cap', title: 'Market Cap'},
-                {id: 'fiftyTwoWeekHigh', title: '52 Week High'},
-                {id: 'fiftyTwoWeekLow', title: '52 Week Low'},
-                {id: 'fiftyTwoWeekChangePercent', title: '52 Week Change Percent'},
-                {id: 'twoHundredDayAverageChangePercent', title: '200 Day Average Change Percent'},
-                {id: 'fiftyDayAverageChangePercent', title: '50 Day Average Change Percent'},
-                {id: 'averageDailyVolume3Month', title: 'Average Daily Volume 3 Month'},
-                {id: 'regularMarketVolume', title: 'Regular Market Volume'},
-                {id: 'priceToBook', title: 'Price to Book'},
-                {id: 'trailingAnnualDividendRate', title: 'Trailing Annual Dividend Rate'},
-                {id: 'epsTrailingTwelveMonths', title: 'EPS Trailing Twelve Months'},
-                {id: 'regularMarketChangePercent', title: 'Regular Market Change Percent'},
-                {id: 'MarketCapitalisation', title: 'Market Capitalisation'},
-                {id: 'LastPrice', title: 'Last Price'},
-                {id: 'RangeVolatility', title: 'Range Volatility'},
-                {id: 'PercentageChangeVolatility', title: 'Percentage Change Volatility'},
-                {id: 'Volatility', title: 'Volatility'},
-                {id: 'Change', title: 'Change'},
-                {id: 'Liquidity', title: 'Liquidity'},
-                {id: 'VolatilityScore', title: 'Volatility Score'},
-                {id: 'LiquidityScore', title: 'Liquidity Score'},
-                {id: 'Date', title: 'Date'}
-                        // ... more fields as per your data
-            ]
-        });
-        const csvData = csvStringifier.getHeaderString() + csvStringifier.stringifyRecords([stock]);
-        console.log('csvData uploaded successfhully')
-        // Define the parameters for the S3 upload
-        const params = {
-            Bucket: 'kalicapitaltest',
-            Key: `pdf/${stock['ASX_code']}.csv`,
-            Body: csvData,
-            ContentType: 'text/csv'
+    const csvStringifier = createObjectCsvStringifier({
+        header: [
+            //PRICE: 
+            { id: 'data.price.symbol', title: 'Symbol' },
+            { id: 'data.price.twoHundredDayAverageChangePercent.raw', title: '200 Day Average Change Percent' },
+            { id: 'data.price.fiftyTwoWeekLowChangePercent.raw', title: '52 Week Low Change Percent' },
+            { id: 'data.price.earningsTimestampEnd.raw', title: 'Earnings Timestamp End' },
+            { id: 'data.price.regularMarketDayRange.raw', title: 'Regular Market Day Range' },
+            { id: 'data.price.epsForward.raw', title: 'EPS Forward' },
+            { id: 'data.price.regularMarketDayHigh.raw', title: 'Regular Market Day High' },
+            { id: 'data.price.twoHundredDayAverageChange.raw', title: '200 Day Average Change' },
+            { id: 'data.price.askSize.raw', title: 'Ask Size' },
+            { id: 'data.price.twoHundredDayAverage.raw', title: '200 Day Average' },
+            { id: 'data.price.bookValue.raw', title: 'Book Value' },
+            { id: 'data.price.marketCap.raw', title: 'Market Cap' },
+            { id: 'data.price.fiftyTwoWeekHighChange.raw', title: '52 Week High Change' },
+            { id: 'data.price.fiftyTwoWeekRange.raw', title: '52 Week Range' },
+            { id: 'data.price.fiftyDayAverageChange.raw', title: '50 Day Average Change' },
+            { id: 'data.price.averageDailyVolume3Month.raw', title: 'Average Daily Volume 3 Month' },
+            { id: 'data.price.firstTradeDateMilliseconds', title: 'First Trade Date Milliseconds' },
+            { id: 'data.price.exchangeDataDelayedBy', title: 'Exchange Data Delayed By' },
+            { id: 'data.price.fiftyTwoWeekChangePercent.raw', title: '52 Week Change Percent' },
+            { id: 'data.price.trailingAnnualDividendRate.raw', title: 'Trailing Annual Dividend Rate' },
+            { id: 'data.price.fiftyTwoWeekLow.raw', title: '52 Week Low' },
+            { id: 'data.price.regularMarketVolume.raw', title: 'Regular Market Volume' },
+            { id: 'data.price.market', title: 'Market' },
+            { id: 'data.price.messageBoardId', title: 'Message Board ID' },
+            { id: 'data.price.priceHint', title: 'Price Hint' },
+            { id: 'data.price.sourceInterval', title: 'Source Interval' },
+            { id: 'data.price.regularMarketDayLow.raw', title: 'Regular Market Day Low' },
+            { id: 'data.price.exchange', title: 'Exchange' },
+            { id: 'data.price.shortName', title: 'Short Name' },
+            { id: 'data.price.region', title: 'Region' },
+            { id: 'data.price.fiftyDayAverageChangePercent.raw', title: '50 Day Average Change Percent' },
+            { id: 'data.price.fullExchangeName', title: 'Full Exchange Name' },
+            { id: 'data.price.earningsTimestampStart.raw', title: 'Earnings Timestamp Start' },
+            { id: 'data.price.financialCurrency', title: 'Financial Currency' },
+            { id: 'data.price.gmtOffSetMilliseconds', title: 'GMT Offset Milliseconds' },
+            { id: 'data.price.regularMarketOpen.raw', title: 'Regular Market Open' },
+            { id: 'data.price.regularMarketTime.raw', title: 'Regular Market Time' },
+            { id: 'data.price.regularMarketChangePercent.raw', title: 'Regular Market Change Percent' },
+            { id: 'data.price.trailingAnnualDividendYield.raw', title: 'Trailing Annual Dividend Yield' },
+            { id: 'data.price.quoteType', title: 'Quote Type' },
+            { id: 'data.price.averageDailyVolume10Day.raw', title: 'Average Daily Volume 10 Day' },
+            { id: 'data.price.fiftyTwoWeekLowChange.raw', title: '52 Week Low Change' },
+            { id: 'data.price.fiftyTwoWeekHighChangePercent.raw', title: '52 Week High Change Percent' },
+            { id: 'data.price.typeDisp', title: 'Type Display' },
+            { id: 'data.price.tradeable', title: 'Tradeable' },
+            { id: 'data.price.currency', title: 'Currency' },
+            { id: 'data.price.sharesOutstanding.raw', title: 'Shares Outstanding' },
+            { id: 'data.price.regularMarketPreviousClose.raw', title: 'Regular Market Previous Close' },
+            { id: 'data.price.fiftyTwoWeekHigh.raw', title: '52 Week High' },
+            { id: 'data.price.exchangeTimezoneName', title: 'Exchange Timezone Name' },
+            { id: 'data.price.bidSize.raw', title: 'Bid Size' },
+            { id: 'data.price.regularMarketChange.raw', title: 'Regular Market Change' },
+            { id: 'data.price.cryptoTradeable', title: 'Crypto Tradeable' },
+            { id: 'data.price.fiftyDayAverage.raw', title: '50 Day Average' },
+            { id: 'data.price.exchangeTimezoneShortName', title: 'Exchange Timezone Short Name' },
+            { id: 'data.price.regularMarketPrice.raw', title: 'Regular Market Price' },
+            { id: 'data.price.customPriceAlertConfidence', title: 'Custom Price Alert Confidence' },
+            { id: 'data.price.marketState', title: 'Market State' },
+            { id: 'data.price.forwardPE.raw', title: 'Forward PE' },
+            { id: 'data.price.ask.raw', title: 'Ask' },
+            { id: 'data.price.epsTrailingTwelveMonths.raw', title: 'EPS Trailing Twelve Months' },
+            { id: 'data.price.bid.raw', title: 'Bid' },
+            { id: 'data.price.triggerable', title: 'Triggerable' },
+            { id: 'data.price.priceToBook.raw', title: 'Price to Book' },
+            { id: 'data.price.longName', title: 'Long Name' },
+            
+            //HISTORIC (Only including Meta for now, may need to run a function to make the AI useful for historic info)
+            { id: 'data.historic.meta.currency', title: 'Historic Currency' },
+            { id: 'data.historic.meta.symbol', title: 'Historic Symbol' },
+            { id: 'data.historic.meta.exchangeName', title: 'Historic Exchange Name' },
+            { id: 'data.historic.meta.instrumentType', title: 'Historic Instrument Type' },
+            { id: 'data.historic.meta.firstTradeDate', title: 'Historic First Trade Date' },
+            { id: 'data.historic.meta.regularMarketTime', title: 'Historic Regular Market Time' },
+            { id: 'data.historic.meta.gmtoffset', title: 'Historic GMT Offset' },
+            { id: 'data.historic.meta.timezone', title: 'Historic Timezone' },
+            { id: 'data.historic.meta.exchangeTimezoneName', title: 'Historic Exchange Timezone Name' },
+            { id: 'data.historic.meta.regularMarketPrice', title: 'Historic Regular Market Price' },
+            { id: 'data.historic.meta.chartPreviousClose', title: 'Historic Chart Previous Close' },
+            { id: 'data.historic.meta.priceHint', title: 'Historic Price Hint' },
+        
+            //Balance Sheet, Earnings, Financial Analytics
+            { id: 'data.balanceSheet.maxAge', title: 'Balance Sheet Max Age' },
+            { id: 'data.balanceSheet.endDate.raw', title: 'Balance Sheet End Date' },
+            { id: 'data.earnings.maxAge', title: 'Earnings Max Age' },
+            { id: 'data.earnings.earningsChart.quarterly', title: 'Earnings Chart Quarterly' }, // Note: This is an array and might need special handling
+            { id: 'data.earnings.earningsChart.earningsDate', title: 'Earnings Chart Earnings Date' }, // Note: This is an array and might need special handling
+            { id: 'data.earnings.financialsChart.yearly', title: 'Financials Chart Yearly' }, // Note: This is an array and might need special handling
+            { id: 'data.earnings.financialsChart.quarterly', title: 'Financials Chart Quarterly' }, // Note: This is an array and might need special handling
+            { id: 'data.earnings.financialCurrency', title: 'Earnings Financial Currency' },
+            { id: 'data.financeAnalytics.maxAge', title: 'Finance Analytics Max Age' },
+            { id: 'data.financeAnalytics.currentPrice.raw', title: 'Current Price' },
+            { id: 'data.financeAnalytics.totalCash.raw', title: 'Total Cash' },
+            { id: 'data.financeAnalytics.totalCashPerShare.raw', title: 'Total Cash Per Share' },
+            { id: 'data.financeAnalytics.ebitda.raw', title: 'EBITDA' },
+            { id: 'data.financeAnalytics.totalDebt.raw', title: 'Total Debt' },
+            { id: 'data.financeAnalytics.quickRatio.raw', title: 'Quick Ratio' },
+            { id: 'data.financeAnalytics.currentRatio.raw', title: 'Current Ratio' },
+            { id: 'data.financeAnalytics.totalRevenue.raw', title: 'Total Revenue' },
+            { id: 'data.financeAnalytics.debtToEquity.raw', title: 'Debt to Equity' },
+            { id: 'data.financeAnalytics.revenuePerShare.raw', title: 'Revenue Per Share' },
+            { id: 'data.financeAnalytics.returnOnAssets.raw', title: 'Return on Assets' },
+            { id: 'data.financeAnalytics.returnOnEquity.raw', title: 'Return on Equity' },
+            { id: 'data.financeAnalytics.freeCashflow.raw', title: 'Free Cashflow' },
+            { id: 'data.financeAnalytics.operatingCashflow.raw', title: 'Operating Cashflow' },
+            { id: 'data.financeAnalytics.revenueGrowth.raw', title: 'Revenue Growth' },
+            { id: 'data.financeAnalytics.grossMargins.raw', title: 'Gross Margins' },
+            { id: 'data.financeAnalytics.ebitdaMargins.raw', title: 'EBITDA Margins' },
+            { id: 'data.financeAnalytics.operatingMargins.raw', title: 'Operating Margins' },
+            { id: 'data.financeAnalytics.profitMargins.raw', title: 'Profit Margins' },
+            { id: 'data.financeAnalytics.financialCurrency', title: 'Finance Analytics Financial Currency' },
+
+             //News
+             { id: 'data.news.0.uuid', title: 'News 1 UUID' },
+             { id: 'data.news.0.title', title: 'News 1 Title' },
+             { id: 'data.news.0.publisher', title: 'News 1 Publisher' },
+             { id: 'data.news.0.link', title: 'News 1 Link' },
+             { id: 'data.news.0.providerPublishTime', title: 'News 1 Provider Publish Time' },
+             { id: 'data.news.0.type', title: 'News 1 Type' },
+         
+             { id: 'data.news.1.uuid', title: 'News 2 UUID' },
+             { id: 'data.news.1.title', title: 'News 2 Title' },
+             { id: 'data.news.1.publisher', title: 'News 2 Publisher' },
+             { id: 'data.news.1.link', title: 'News 2 Link' },
+             { id: 'data.news.1.providerPublishTime', title: 'News 2 Provider Publish Time' },
+             { id: 'data.news.1.type', title: 'News 2 Type' },
+
+             { id: 'data.news.2.uuid', title: 'News 3 UUID' },
+             { id: 'data.news.2.title', title: 'News 3 Title' },
+             { id: 'data.news.2.publisher', title: 'News 3 Publisher' },
+             { id: 'data.news.2.link', title: 'News 3 Link' },
+             { id: 'data.news.2.providerPublishTime', title: 'News 3 Provider Publish Time' },
+             { id: 'data.news.2.type', title: 'News 3 Type' },
+
+             { id: 'data.news.3.uuid', title: 'News 4 UUID' },
+             { id: 'data.news.3.title', title: 'News 4 Title' },
+             { id: 'data.news.3.publisher', title: 'News 4 Publisher' },
+             { id: 'data.news.3.link', title: 'News 4 Link' },
+             { id: 'data.news.3.providerPublishTime', title: 'News 4 Provider Publish Time' },
+             { id: 'data.news.3.type', title: 'News 4 Type' },
+
+             { id: 'data.news.4.uuid', title: 'News 5 UUID' },
+             { id: 'data.news.4.title', title: 'News 5 Title' },
+             { id: 'data.news.4.publisher', title: 'News 5 Publisher' },
+             { id: 'data.news.4.link', title: 'News 5 Link' },
+             { id: 'data.news.4.providerPublishTime', title: 'News 5 Provider Publish Time' },
+             { id: 'data.news.4.type', title: 'News 5 Type' },
+
+             { id: 'data.news.5.uuid', title: 'News 6 UUID' },
+             { id: 'data.news.5.title', title: 'News 6 Title' },
+             { id: 'data.news.5.publisher', title: 'News 6 Publisher' },
+             { id: 'data.news.5.link', title: 'News 6 Link' },
+             { id: 'data.news.5.providerPublishTime', title: 'News 6 Provider Publish Time' },
+             { id: 'data.news.5.type', title: 'News 6 Type' },
+
+             { id: 'data.news.6.uuid', title: 'News 7 UUID' },
+             { id: 'data.news.6.title', title: 'News 7 Title' },
+             { id: 'data.news.6.publisher', title: 'News 7 Publisher' },
+             { id: 'data.news.6.link', title: 'News 7 Link' },
+             { id: 'data.news.6.providerPublishTime', title: 'News 7 Provider Publish Time' },
+             { id: 'data.news.6.type', title: 'News 7 Type' },
+
+            //Earnings Trends
+            { id: 'data.earningsTrend.maxAge', title: 'Earnings Trend Max Age' },
+            { id: 'data.earningsTrend.period', title: 'Earnings Trend Period' },
+            { id: 'data.earningsTrend.endDate', title: 'Earnings Trend End Date' },
+
+            // Earnings Estimate
+            { id: 'data.earningsTrend.earningsEstimate.avg', title: 'Earnings Estimate Average' }, // This is an object, needs specific handling
+            { id: 'data.earningsTrend.earningsEstimate.low', title: 'Earnings Estimate Low' }, // This is an object, needs specific handling
+            { id: 'data.earningsTrend.earningsEstimate.high', title: 'Earnings Estimate High' }, // This is an object, needs specific handling
+            { id: 'data.earningsTrend.earningsEstimate.numberOfAnalysts', title: 'Earnings Estimate Number Of Analysts' }, // This is an object, needs specific handling
+            { id: 'data.earningsTrend.earningsEstimate.growth', title: 'Earnings Estimate Growth' }, // This is an object, needs specific handling
+            
+            // Revenue Estimate
+            { id: 'data.earningsTrend.revenueEstimate.avg', title: 'Revenue Estimate Average' }, // This is an object, needs specific handling
+            { id: 'data.earningsTrend.revenueEstimate.low', title: 'Revenue Estimate Low' }, // This is an object, needs specific handling
+            { id: 'data.earningsTrend.revenueEstimate.high', title: 'Revenue Estimate High' }, // This is an object, needs specific handling
+            { id: 'data.earningsTrend.revenueEstimate.numberOfAnalysts', title: 'Revenue Estimate Number Of Analysts' }, // This is an object, needs specific handling
+            
+            // EPS Trend
+            { id: 'data.earningsTrend.epsTrend.current', title: 'EPS Trend Current' }, // This is an object, needs specific handling
+            { id: 'data.earningsTrend.epsTrend.7daysAgo', title: 'EPS Trend 7 Days Ago' }, // This is an object, needs specific handling
+            { id: 'data.earningsTrend.epsTrend.30daysAgo', title: 'EPS Trend 30 Days Ago' }, // This is an object, needs specific handling
+            { id: 'data.earningsTrend.epsTrend.60daysAgo', title: 'EPS Trend 60 Days Ago' }, // This is an object, needs specific handling
+            { id: 'data.earningsTrend.epsTrend.90daysAgo', title: 'EPS Trend 90 Days Ago' }, // This is an object, needs specific handling
+            
+            // EPS Revisions
+            { id: 'data.earningsTrend.epsRevisions.upLast7days', title: 'EPS Revisions Up Last 7 Days' }, // This is an object, needs specific handling
+            { id: 'data.earningsTrend.epsRevisions.upLast30days', title: 'EPS Revisions Up Last 30 Days' }, // This is an object, needs specific handling
+            { id: 'data.earningsTrend.epsRevisions.downLast30days', title: 'EPS Revisions Down Last 30 Days' }, // This is an object, needs specific handling
+            { id: 'data.earningsTrend.epsRevisions.downLast90days', title: 'EPS Revisions Down Last 90 Days' }, // This is an object, needs specific handling
+         
+            //Key Statistics
+            { id: 'data.keyStatistics.symbol', title: 'Symbol' },
+            { id: 'data.keyStatistics.twoHundredDayAverageChangePercent.raw', title: '200 Day Average Change Percent' },
+            { id: 'data.keyStatistics.fiftyTwoWeekLowChangePercent.raw', title: '52 Week Low Change Percent' },
+            { id: 'data.keyStatistics.language', title: 'Language' },
+            { id: 'data.keyStatistics.regularMarketDayRange.raw', title: 'Regular Market Day Range' },
+            { id: 'data.keyStatistics.earningsTimestampEnd.raw', title: 'Earnings Timestamp End' },
+            { id: 'data.keyStatistics.epsForward.raw', title: 'EPS Forward' },
+            { id: 'data.keyStatistics.regularMarketDayHigh.raw', title: 'Regular Market Day High' },
+            { id: 'data.keyStatistics.twoHundredDayAverageChange.raw', title: '200 Day Average Change' },
+            { id: 'data.keyStatistics.twoHundredDayAverage.raw', title: '200 Day Average' },
+            { id: 'data.keyStatistics.askSize.raw', title: 'Ask Size' },
+            { id: 'data.keyStatistics.bookValue.raw', title: 'Book Value' },
+            { id: 'data.keyStatistics.marketCap.raw', title: 'Market Cap' },
+            { id: 'data.keyStatistics.fiftyTwoWeekHighChange.raw', title: '52 Week High Change' },
+            { id: 'data.keyStatistics.fiftyTwoWeekRange.raw', title: '52 Week Range' },
+            { id: 'data.keyStatistics.fiftyDayAverageChange.raw', title: '50 Day Average Change' },
+            { id: 'data.keyStatistics.exchangeDataDelayedBy', title: 'Exchange Data Delayed By' },
+            { id: 'data.keyStatistics.firstTradeDateMilliseconds', title: 'First Trade Date Milliseconds' },
+            { id: 'data.keyStatistics.averageDailyVolume3Month.raw', title: 'Average Daily Volume 3 Month' },
+            { id: 'data.keyStatistics.trailingAnnualDividendRate.raw', title: 'Trailing Annual Dividend Rate' },
+            { id: 'data.keyStatistics.fiftyTwoWeekChangePercent.raw', title: '52 Week Change Percent' },
+            { id: 'data.keyStatistics.fiftyTwoWeekLow.raw', title: '52 Week Low' },
+            { id: 'data.keyStatistics.regularMarketVolume.raw', title: 'Regular Market Volume' },
+            { id: 'data.keyStatistics.market', title: 'Market' },
+            { id: 'data.keyStatistics.quoteSourceName', title: 'Quote Source Name' },
+            { id: 'data.keyStatistics.messageBoardId', title: 'Message Board ID' },
+            { id: 'data.keyStatistics.priceHint', title: 'Price Hint' },
+            { id: 'data.keyStatistics.exchange', title: 'Exchange' },
+            { id: 'data.keyStatistics.sourceInterval', title: 'Source Interval' },
+            { id: 'data.keyStatistics.regularMarketDayLow.raw', title: 'Regular Market Day Low' },
+            { id: 'data.keyStatistics.region', title: 'Region' },
+            { id: 'data.keyStatistics.shortName', title: 'Short Name' },
+            { id: 'data.keyStatistics.fiftyDayAverageChangePercent.raw', title: '50 Day Average Change Percent' },
+            { id: 'data.keyStatistics.fullExchangeName', title: 'Full Exchange Name' },
+            { id: 'data.keyStatistics.earningsTimestampStart.raw', title: 'Earnings Timestamp Start' },
+            { id: 'data.keyStatistics.financialCurrency', title: 'Financial Currency' },
+            { id: 'data.keyStatistics.gmtOffSetMilliseconds', title: 'GMT Offset Milliseconds' },
+            { id: 'data.keyStatistics.regularMarketOpen.raw', title: 'Regular Market Open' },
+            { id: 'data.keyStatistics.regularMarketTime.raw', title: 'Regular Market Time' },
+            { id: 'data.keyStatistics.regularMarketChangePercent.raw', title: 'Regular Market Change Percent' },
+            { id: 'data.keyStatistics.trailingAnnualDividendYield.raw', title: 'Trailing Annual Dividend Yield' },
+            { id: 'data.keyStatistics.quoteType', title: 'Quote Type' },
+            { id: 'data.keyStatistics.averageDailyVolume10Day.raw', title: 'Average Daily Volume 10 Day' },
+            { id: 'data.keyStatistics.fiftyTwoWeekLowChange.raw', title: '52 Week Low Change' },
+            { id: 'data.keyStatistics.fiftyTwoWeekHighChangePercent.raw', title: '52 Week High Change Percent' },
+            { id: 'data.keyStatistics.typeDisp', title: 'Type Display' },
+            { id: 'data.keyStatistics.tradeable', title: 'Tradeable' },
+            { id: 'data.keyStatistics.currency', title: 'Currency' },
+            { id: 'data.keyStatistics.sharesOutstanding.raw', title: 'Shares Outstanding' },
+            { id: 'data.keyStatistics.fiftyTwoWeekHigh.raw', title: '52 Week High' },
+            { id: 'data.keyStatistics.regularMarketPreviousClose.raw', title: 'Regular Market Previous Close' },
+            { id: 'data.keyStatistics.exchangeTimezoneName', title: 'Exchange Timezone Name' },
+            { id: 'data.keyStatistics.bidSize.raw', title: 'Bid Size' },
+            { id: 'data.keyStatistics.regularMarketChange.raw', title: 'Regular Market Change' },
+            { id: 'data.keyStatistics.cryptoTradeable', title: 'Crypto Tradeable' },
+            { id: 'data.keyStatistics.fiftyDayAverage.raw', title: '50 Day Average' },
+            { id: 'data.keyStatistics.exchangeTimezoneShortName', title: 'Exchange Timezone Short Name' },
+            { id: 'data.keyStatistics.customPriceAlertConfidence', title: 'Custom Price Alert Confidence' },
+            { id: 'data.keyStatistics.regularMarketPrice.raw', title: 'Regular Market Price' },
+            { id: 'data.keyStatistics.marketState', title: 'Market State' },
+            { id: 'data.keyStatistics.forwardPE.raw', title: 'Forward PE' },
+            { id: 'data.keyStatistics.ask.raw', title: 'Ask' },
+            { id: 'data.keyStatistics.epsTrailingTwelveMonths.raw', title: 'EPS Trailing Twelve Months' },
+            { id: 'data.keyStatistics.bid.raw', title: 'Bid' },
+            { id: 'data.keyStatistics.triggerable', title: 'Triggerable' },
+            { id: 'data.keyStatistics.priceToBook.raw', title: 'Price to Book' },
+            { id: 'data.keyStatistics.longName', title: 'Long Name' },
+
+        ]
+    });
+
+        // Preparing the data object to match the CSV structure
+    // Prepare your data object to match the CSV structure
+    const csvRowData = {
+        //Price Data
+        'data.price.symbol': data.price.symbol,
+        'data.price.twoHundredDayAverageChangePercent.raw': data.price.twoHundredDayAverageChangePercent.raw,
+        'data.price.fiftyTwoWeekLowChangePercent.raw': data.price.fiftyTwoWeekLowChangePercent.raw,
+        'data.price.earningsTimestampEnd.raw': data.price.earningsTimestampEnd.raw,
+        'data.price.regularMarketDayRange.raw': data.price.regularMarketDayRange.raw,
+        'data.price.epsForward.raw': data.price.epsForward.raw,
+        'data.price.regularMarketDayHigh.raw': data.price.regularMarketDayHigh.raw,
+        'data.price.twoHundredDayAverageChange.raw': data.price.twoHundredDayAverageChange.raw,
+        'data.price.askSize.raw': data.price.askSize.raw,
+        'data.price.twoHundredDayAverage.raw': data.price.twoHundredDayAverage.raw,
+        'data.price.bookValue.raw': data.price.bookValue.raw,
+        'data.price.marketCap.raw': data.price.marketCap.raw,
+        'data.price.fiftyTwoWeekHighChange.raw': data.price.fiftyTwoWeekHighChange.raw,
+        'data.price.fiftyTwoWeekRange.raw': data.price.fiftyTwoWeekRange.raw,
+        'data.price.fiftyDayAverageChange.raw': data.price.fiftyDayAverageChange.raw,
+        'data.price.averageDailyVolume3Month.raw': data.price.averageDailyVolume3Month.raw,
+        'data.price.firstTradeDateMilliseconds': data.price.firstTradeDateMilliseconds,
+        'data.price.exchangeDataDelayedBy': data.price.exchangeDataDelayedBy,
+        'data.price.fiftyTwoWeekChangePercent.raw': data.price.fiftyTwoWeekChangePercent.raw,
+        'data.price.trailingAnnualDividendRate.raw': data.price.trailingAnnualDividendRate.raw,
+        'data.price.fiftyTwoWeekLow.raw': data.price.fiftyTwoWeekLow.raw,
+        'data.price.regularMarketVolume.raw': data.price.regularMarketVolume.raw,
+        'data.price.market': data.price.market,
+        'data.price.messageBoardId': data.price.messageBoardId,
+        'data.price.priceHint': data.price.priceHint,
+        'data.price.sourceInterval': data.price.sourceInterval,
+        'data.price.regularMarketDayLow.raw': data.price.regularMarketDayLow.raw,
+        'data.price.exchange': data.price.exchange,
+        'data.price.shortName': data.price.shortName,
+        'data.price.region': data.price.region,
+        'data.price.fiftyDayAverageChangePercent.raw': data.price.fiftyDayAverageChangePercent.raw,
+        'data.price.fullExchangeName': data.price.fullExchangeName,
+        'data.price.earningsTimestampStart.raw': data.price.earningsTimestampStart.raw,
+        'data.price.financialCurrency': data.price.financialCurrency,
+        'data.price.gmtOffSetMilliseconds': data.price.gmtOffSetMilliseconds,
+        'data.price.regularMarketOpen.raw': data.price.regularMarketOpen.raw,
+        'data.price.regularMarketTime.raw': data.price.regularMarketTime.raw,
+        'data.price.regularMarketChangePercent.raw': data.price.regularMarketChangePercent.raw,
+        'data.price.trailingAnnualDividendYield.raw': data.price.trailingAnnualDividendYield.raw,
+        'data.price.quoteType': data.price.quoteType,
+        'data.price.averageDailyVolume10Day.raw': data.price.averageDailyVolume10Day.raw,
+        'data.price.fiftyTwoWeekLowChange.raw': data.price.fiftyTwoWeekLowChange.raw,
+        'data.price.fiftyTwoWeekHighChangePercent.raw': data.price.fiftyTwoWeekHighChangePercent.raw,
+        'data.price.typeDisp': data.price.typeDisp,
+        'data.price.tradeable': data.price.tradeable,
+        'data.price.currency': data.price.currency,
+        'data.price.sharesOutstanding.raw': data.price.sharesOutstanding.raw,
+        'data.price.regularMarketPreviousClose.raw': data.price.regularMarketPreviousClose.raw,
+        'data.price.fiftyTwoWeekHigh.raw': data.price.fiftyTwoWeekHigh.raw,
+        'data.price.exchangeTimezoneName': data.price.exchangeTimezoneName,
+        'data.price.bidSize.raw': data.price.bidSize.raw,
+        'data.price.regularMarketChange.raw': data.price.regularMarketChange.raw,
+        'data.price.cryptoTradeable': data.price.cryptoTradeable,
+        'data.price.fiftyDayAverage.raw': data.price.fiftyDayAverage.raw,
+        'data.price.exchangeTimezoneShortName': data.price.exchangeTimezoneShortName,
+        'data.price.regularMarketPrice.raw': data.price.regularMarketPrice.raw,
+        'data.price.customPriceAlertConfidence': data.price.customPriceAlertConfidence,
+        'data.price.marketState': data.price.marketState,
+        'data.price.forwardPE.raw': data.price.forwardPE.raw,
+        'data.price.ask.raw': data.price.ask.raw,
+        'data.price.epsTrailingTwelveMonths.raw': data.price.epsTrailingTwelveMonths.raw,
+        'data.price.bid.raw': data.price.bid.raw,
+        'data.price.triggerable': data.price.triggerable,
+        'data.price.priceToBook.raw': data.price.priceToBook.raw,
+        'data.price.longName': data.price.longName,
+
+        // Historic Data
+        'data.historic.meta.currency': data.historic.meta.currency,
+        'data.historic.meta.symbol': data.historic.meta.symbol,
+        'data.historic.meta.exchangeName': data.historic.meta.exchangeName,
+        'data.historic.meta.instrumentType': data.historic.meta.instrumentType,
+        'data.historic.meta.firstTradeDate': data.historic.meta.firstTradeDate,
+        'data.historic.meta.regularMarketTime': data.historic.meta.regularMarketTime,
+        'data.historic.meta.gmtoffset': data.historic.meta.gmtoffset,
+        'data.historic.meta.timezone': data.historic.meta.timezone,
+        'data.historic.meta.exchangeTimezoneName': data.historic.meta.exchangeTimezoneName,
+        'data.historic.meta.regularMarketPrice': data.historic.meta.regularMarketPrice,
+        'data.historic.meta.chartPreviousClose': data.historic.meta.chartPreviousClose,
+        'data.historic.meta.priceHint': data.historic.meta.priceHint,
+    
+        // Balance Sheet, Earnings, Financial Analytics
+        'data.balanceSheet.maxAge': data.balanceSheet.maxAge,
+        'data.balanceSheet.endDate.raw': data.balanceSheet.endDate.raw,
+        'data.earnings.maxAge': data.earnings.maxAge,
+        // Note: Handle arrays as needed
+        'data.earnings.earningsChart.quarterly': JSON.stringify(data.earnings.earningsChart.quarterly),
+        'data.earnings.earningsChart.earningsDate': JSON.stringify(data.earnings.earningsChart.earningsDate),
+        'data.earnings.financialsChart.yearly': JSON.stringify(data.earnings.financialsChart.yearly),
+        'data.earnings.financialsChart.quarterly': JSON.stringify(data.earnings.financialsChart.quarterly),
+        'data.earnings.financialCurrency': data.earnings.financialCurrency,
+        'data.financeAnalytics.maxAge': data.financeAnalytics.maxAge,
+        'data.financeAnalytics.currentPrice.raw': data.financeAnalytics.currentPrice.raw,
+        'data.financeAnalytics.totalCash.raw': data.financeAnalytics.totalCash.raw,
+        'data.financeAnalytics.totalCashPerShare.raw': data.financeAnalytics.totalCashPerShare.raw,
+        'data.financeAnalytics.ebitda.raw': data.financeAnalytics.ebitda.raw,
+        'data.financeAnalytics.totalDebt.raw': data.financeAnalytics.totalDebt.raw,
+        'data.financeAnalytics.quickRatio.raw': data.financeAnalytics.quickRatio.raw,
+        'data.financeAnalytics.currentRatio.raw': data.financeAnalytics.currentRatio.raw,
+        'data.financeAnalytics.totalRevenue.raw': data.financeAnalytics.totalRevenue.raw,
+        'data.financeAnalytics.debtToEquity.raw': data.financeAnalytics.debtToEquity.raw,
+        'data.financeAnalytics.revenuePerShare.raw': data.financeAnalytics.revenuePerShare.raw,
+        'data.financeAnalytics.returnOnAssets.raw': data.financeAnalytics.returnOnAssets.raw,
+        'data.financeAnalytics.returnOnEquity.raw': data.financeAnalytics.returnOnEquity.raw,
+        'data.financeAnalytics.freeCashflow.raw': data.financeAnalytics.freeCashflow.raw,
+        'data.financeAnalytics.operatingCashflow.raw': data.financeAnalytics.operatingCashflow.raw,
+        'data.financeAnalytics.revenueGrowth.raw': data.financeAnalytics.revenueGrowth.raw,
+        'data.financeAnalytics.grossMargins.raw': data.financeAnalytics.grossMargins.raw,
+        'data.financeAnalytics.ebitdaMargins.raw': data.financeAnalytics.ebitdaMargins.raw,
+        'data.financeAnalytics.operatingMargins.raw': data.financeAnalytics.operatingMargins.raw,
+        'data.financeAnalytics.profitMargins.raw': data.financeAnalytics.profitMargins.raw,
+        'data.financeAnalytics.financialCurrency': data.financeAnalytics.financialCurrency,
+    
+        // News Data
+        'data.news.0.uuid': data.news?.[0]?.uuid,
+        'data.news.0.title': data.news?.[0]?.title,
+        'data.news.0.publisher': data.news?.[0]?.publisher,
+        'data.news.0.link': data.news?.[0]?.link,
+        'data.news.0.providerPublishTime': data.news?.[0]?.providerPublishTime,
+        'data.news.0.type': data.news?.[0]?.type,
+
+        'data.news.1.uuid': data.news?.[1]?.uuid,
+        'data.news.1.title': data.news?.[1]?.title,
+        'data.news.1.publisher': data.news?.[1]?.publisher,
+        'data.news.1.link': data.news?.[1]?.link,
+        'data.news.1.providerPublishTime': data.news?.[1]?.providerPublishTime,
+        'data.news.1.type': data.news?.[1]?.type,
+
+        'data.news.2.uuid': data.news?.[2]?.uuid,
+        'data.news.2.title': data.news?.[2]?.title,
+        'data.news.2.publisher': data.news?.[2]?.publisher,
+        'data.news.2.link': data.news?.[2]?.link,
+        'data.news.2.providerPublishTime': data.news?.[2]?.providerPublishTime,
+        'data.news.2.type': data.news?.[2]?.type,
+
+        'data.news.3.uuid': data.news?.[3]?.uuid,
+        'data.news.3.title': data.news?.[3]?.title,
+        'data.news.3.publisher': data.news?.[3]?.publisher,
+        'data.news.3.link': data.news?.[3]?.link,
+        'data.news.3.providerPublishTime': data.news?.[3]?.providerPublishTime,
+        'data.news.3.type': data.news?.[3]?.type,
+
+        'data.news.4.uuid': data.news?.[4]?.uuid,
+        'data.news.4.title': data.news?.[4]?.title,
+        'data.news.4.publisher': data.news?.[4]?.publisher,
+        'data.news.4.link': data.news?.[4]?.link,
+        'data.news.4.providerPublishTime': data.news?.[4]?.providerPublishTime,
+        'data.news.4.type': data.news?.[4]?.type,
+
+        'data.news.5.uuid': data.news?.[5]?.uuid,
+        'data.news.5.title': data.news?.[5]?.title,
+        'data.news.5.publisher': data.news?.[5]?.publisher,
+        'data.news.5.link': data.news?.[5]?.link,
+        'data.news.5.providerPublishTime': data.news?.[5]?.providerPublishTime,
+        'data.news.5.type': data.news?.[5]?.type,
+
+        'data.news.6.uuid': data.news?.[6]?.uuid,
+        'data.news.6.title': data.news?.[6]?.title,
+        'data.news.6.publisher': data.news?.[6]?.publisher,
+        'data.news.6.link': data.news?.[6]?.link,
+        'data.news.6.providerPublishTime': data.news?.[6]?.providerPublishTime,
+        'data.news.6.type': data.news?.[6]?.type,
+
+        // Earnings Trends Data
+        'data.earningsTrend.maxAge': data.earningsTrend?.maxAge,
+        'data.earningsTrend.period': data.earningsTrend?.period,
+        'data.earningsTrend.endDate': data.earningsTrend?.endDate,
+
+        // Earnings Estimate
+        'data.earningsTrend.earningsEstimate.avg': data.earningsTrend?.earningsEstimate?.avg,
+        'data.earningsTrend.earningsEstimate.low': data.earningsTrend?.earningsEstimate?.low,
+        'data.earningsTrend.earningsEstimate.high': data.earningsTrend?.earningsEstimate?.high,
+        'data.earningsTrend.earningsEstimate.numberOfAnalysts': data.earningsTrend?.earningsEstimate?.numberOfAnalysts,
+        'data.earningsTrend.earningsEstimate.growth': data.earningsTrend?.earningsEstimate?.growth,
+        
+        // Revenue Estimate
+        'data.earningsTrend.revenueEstimate.avg': data.earningsTrend?.revenueEstimate?.avg,
+        'data.earningsTrend.revenueEstimate.low': data.earningsTrend?.revenueEstimate?.low,
+        'data.earningsTrend.revenueEstimate.high': data.earningsTrend?.revenueEstimate?.high,
+        'data.earningsTrend.revenueEstimate.numberOfAnalysts': data.earningsTrend?.revenueEstimate?.numberOfAnalysts,
+        
+        // EPS Trend
+        'data.earningsTrend.epsTrend.current': data.earningsTrend?.epsTrend?.current,
+        'data.earningsTrend.epsTrend.7daysAgo': data.earningsTrend?.epsTrend?.['7daysAgo'],
+        'data.earningsTrend.epsTrend.30daysAgo': data.earningsTrend?.epsTrend?.['30daysAgo'],
+        'data.earningsTrend.epsTrend.60daysAgo': data.earningsTrend?.epsTrend?.['60daysAgo'],
+        'data.earningsTrend.epsTrend.90daysAgo': data.earningsTrend?.epsTrend?.['90daysAgo'],
+        
+        // EPS Revisions
+        'data.earningsTrend.epsRevisions.upLast7days': data.earningsTrend?.epsRevisions?.upLast7days,
+        'data.earningsTrend.epsRevisions.upLast30days': data.earningsTrend?.epsRevisions?.upLast30days,
+        'data.earningsTrend.epsRevisions.downLast30days': data.earningsTrend?.epsRevisions?.downLast30days,
+        'data.earningsTrend.epsRevisions.downLast90days': data.earningsTrend?.epsRevisions?.downLast90days,
+
         };
 
-                // Upload the file to S3
-        try {
-            await s3.upload(params).promise();
-            console.log(`File uploaded successfully. ${params.Key}`);
-            return Response.json('Files uploaded successfully.')
 
+    // Create CSV data
+    const csvData = csvStringifier.getHeaderString() + csvStringifier.stringifyRecords([csvRowData]);
 
-        } catch (error) {
-            console.error('Error uploading file:', error);
-            return Response.json('Files unable to upload.')
+    const stockSymbol = data.price.symbol || 'default';
+    const params = {
+        Bucket: 'kalicapitaltest',
+        Key: `pdf/${stockSymbol}.csv`,
+        Body: csvData,
+        ContentType: 'text/csv'
+    };
 
-        }
+    uploadPromises.push(s3.upload(params).promise());
+
+    try {
+        await Promise.all(uploadPromises);
+        return Response.json('Files uploaded successfully.');
+    } catch (error) {
+        console.error('Error uploading files:', error);
+        return Response.json('Error in file upload.');
     }
 }

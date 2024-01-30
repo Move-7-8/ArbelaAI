@@ -3,8 +3,9 @@
 import { assistantAtom, assistantFileAtom, fileAtom } from "@/atom";
 import { useAtom } from "jotai";
 import React, { useRef, useState, useEffect } from "react";
+import { useSearchParams } from 'next/navigation';
 
-const AssistantFile = ({ onFileChangeTrigger, fileChangeTrigger, onFileChangeComplete }) => {
+const AssistantFile = ({ condition1, condition2, symbol, fileChangeTrigger, onFileChangeComplete, uploadCompleteTrigger }) => {
   // State
   const [assistant] = useAtom(assistantAtom);
   const [file, setFile] = useAtom(fileAtom);
@@ -21,18 +22,24 @@ const AssistantFile = ({ onFileChangeTrigger, fileChangeTrigger, onFileChangeCom
   const [listing, setListing] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  // Use useEffect to listen for changes to onFileChangeTrigger
+  const searchParams = useSearchParams();
+  const ticker = searchParams.get('ticker');
+  console.log('assistantfile ticker', ticker)
+  // In AssistantFile.jsx
   useEffect(() => {
-    if (fileChangeTrigger) {
+    if (condition1 && condition2) {
+      console.log("condition 1 and 2 met, Triggering handleFileChange");
       handleFileChange();
     }
-  }, [fileChangeTrigger]);
-    
+  }, [condition1, condition2]);
+              
   const handleFileChange = async (event) => {
     console.log('handle file change triggered')
-    const fileKey = 'DigitalX.pdf';
+    console.log('assistantFile Symbol', symbol);
 
-    const response = await fetch('/api/AI/assistantFile/S3', {
+    const fileKey = `pdf/${ticker}.csv`;
+
+    const response = await fetch(`/api/AI/assistantFile/S3`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

@@ -52,7 +52,7 @@ const endpoints = [
       const allData = await Promise.all(allDataPromises);
       const organizedData = allData.reduce((acc, data) => ({ ...acc, ...data }), {});
       
-      console.log('Organized Data:', organizedData);
+      // console.log('Organized Data:', organizedData);
       return new Response(JSON.stringify(organizedData), { status: 200 });
   } catch (error) {
     console.error('Error:', error);

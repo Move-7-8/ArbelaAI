@@ -77,18 +77,6 @@ const Page = () => {
             keyStatistics 
           } = result;
 
-          console.log('Price Data:', price);
-          console.log('Historic Yearly Data:', historic); // Data for 1 year
-          console.log('Historic 30 Days Data:', historic30Days); // Data for 30 days at 1-hour intervals
-          console.log('Historic 7 Days Data:', historic7Days); // Data for 7 days at 30-minute intervals
-          console.log('Balance Sheet Data:', balanceSheet);
-          console.log('Earnings Data:', earnings);
-          console.log('Finance Analytics:', financeAnalytics);
-          console.log('News:', news);
-          console.log('Earnings Trend:', earningsTrend);
-          console.log('Key Statistics:', keyStatistics);
-
-
           // Save the complete data to state if needed
           setData(result);
   
@@ -146,7 +134,7 @@ return (
             <div className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden">
                 <div className="w-full fixed bottom-0 bg-white h-2/3 overflow-auto">
                     {/* <Chatbox /> */}
-                    <Test/>
+                    <Test data={data}/>
                     <button onClick={toggleChatbox} className="absolute top-0 right-0 mt-2 mr-2 text-2xl text-gray-700">
                         &times; {/* Close icon */}
                     </button>
@@ -157,8 +145,8 @@ return (
         {/* Always visible Chatbox for larger screens */}
         <div className="hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4">
             {/* <Chatbox /> */}
-            <FileUpload />
-            <Test/>
+            {/* <FileUpload data={data} /> */}
+            <Test data={data}/>
         </div>
     </div>
 );

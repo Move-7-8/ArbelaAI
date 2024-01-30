@@ -31,13 +31,13 @@ const Nav = () => {
 <nav className="flex-between w-full mb-16 pt-3">
 <Link href={session ? "/catalog" : "/"} className="flex gap-2 flex-center">
         <Image
-        src="/assets/images/logo.png"
+        src="/assets/images/logo3.png"
         alt="Promptopia Logo"
         width={40}
         height={40}
         className="object-contain"
         />
-        <p className="logo_text">HAL</p>
+        <p className="logo_text">Arbela</p>
       </Link>
 
 {/* Desktop Navigation  */}

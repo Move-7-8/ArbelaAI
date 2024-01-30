@@ -70,32 +70,32 @@ function StockCard({ company }) {
         }
     };
 
-    console.log('company', company["Company name"])
-    console.log('ticker', company.ASX_code)
-    console.log('industry', company.GICsindustrygroup)
-    console.log('price', Price)
-    console.log('change', change)
-    console.log('MarketCap', MarketCapitalisation)
-    console.log('fiftyTwoWeekHigh', fiftyTwoWeekHigh)
-    console.log('fiftyTwoWeekLow', fiftyTwoWeekLow)
-    console.log('fiftyTwoWeekHigh type:', typeof fiftyTwoWeekHigh, 'Value:', fiftyTwoWeekHigh);
-    console.log('fiftyTwoWeekLow type:', typeof fiftyTwoWeekLow, 'Value:', fiftyTwoWeekLow);
+    // console.log('company', company["Company name"])
+    // console.log('ticker', company.ASX_code)
+    // console.log('industry', company.GICsindustrygroup)
+    // console.log('price', Price)
+    // console.log('change', change)
+    // console.log('MarketCap', MarketCapitalisation)
+    // console.log('fiftyTwoWeekHigh', fiftyTwoWeekHigh)
+    // console.log('fiftyTwoWeekLow', fiftyTwoWeekLow)
+    // console.log('fiftyTwoWeekHigh type:', typeof fiftyTwoWeekHigh, 'Value:', fiftyTwoWeekHigh);
+    // console.log('fiftyTwoWeekLow type:', typeof fiftyTwoWeekLow, 'Value:', fiftyTwoWeekLow);
 
-    console.log('fiftyTwoWeekChangePercent', fiftyTwoWeekChangePercent)
-    console.log('twoHundredDayAverageChangePercent', twoHundredDayAverageChangePercent)
-    console.log('fiftyDayAverageChangePercent', fiftyDayAverageChangePercent)
-    console.log('averageDailyVolume3Month', averageDailyVolume3Month)
-    console.log('regularMarketVolume', regularMarketVolume)
-    console.log('priceToBook', priceToBook)
+    // console.log('fiftyTwoWeekChangePercent', fiftyTwoWeekChangePercent)
+    // console.log('twoHundredDayAverageChangePercent', twoHundredDayAverageChangePercent)
+    // console.log('fiftyDayAverageChangePercent', fiftyDayAverageChangePercent)
+    // console.log('averageDailyVolume3Month', averageDailyVolume3Month)
+    // console.log('regularMarketVolume', regularMarketVolume)
+    // console.log('priceToBook', priceToBook)
 
-    console.log('trailingAnnualDividendRate', trailingAnnualDividendRate)
-    console.log('epsTrailingTwelveMonths', epsTrailingTwelveMonths)
-    console.log('LastPrice', company.LastPrice)    
-    console.log('volatility', volatility)
-    console.log('liquidity', liquidity)    
-    // console.log('Volatility Score', stock.volatilityScore)
-    console.log('Volatility Score', volatilityScore)
-    console.log('Liquidity Score', liquidityScore)    
+    // console.log('trailingAnnualDividendRate', trailingAnnualDividendRate)
+    // console.log('epsTrailingTwelveMonths', epsTrailingTwelveMonths)
+    // console.log('LastPrice', company.LastPrice)    
+    // console.log('volatility', volatility)
+    // console.log('liquidity', liquidity)    
+    // // console.log('Volatility Score', stock.volatilityScore)
+    // console.log('Volatility Score', volatilityScore)
+    // console.log('Liquidity Score', liquidityScore)    
 
     return (
         <Link 

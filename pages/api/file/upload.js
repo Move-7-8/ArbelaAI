@@ -33,8 +33,6 @@ import { createReadStream } from 'fs';
 //     }
 // }
 
-
-
 export const config = {
     api: {
         bodyParser: false,
@@ -73,7 +71,7 @@ export default async function handler(req, res) {
                 file: fileStream,
                 purpose: "assistants",
             });
-            console.log('open AI response: ', response)
+            // console.log('open AI response: ', response)
             return res.status(200).json({ file: response });
         } catch (e) {
             console.error(e);
