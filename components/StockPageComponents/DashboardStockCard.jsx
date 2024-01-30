@@ -25,15 +25,6 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
     const returnOnEquity = data?.financeAnalytics?.returnOnEquity?.raw || 'Not Available'
     const dividendYield = data?.keyStatistics?.trailingAnnualDividendYield?.raw || 'Not Available'
 
-// console.log('EPS:', EPS);
-// console.log('PE Ratio (Lagging):', peRatioLagging);
-// console.log('PE Ratio (Forward):', peRatioForward);
-// console.log('PB Ratio:', pbRatio);
-// console.log('Debt to Equity Ratio:', debtToEquityRatio);
-// console.log('Revenue per Share:', revenuePerShare);
-// console.log('Return on Assets:', returnOnAssets);
-// console.log('Return on Equity:', returnOnEquity);
-// console.log('Dividend Yield:', dividendYield);
 
     const formatAskPrice = (askPriceObj) => {
         // Check if askPriceObj is an object with a 'raw' property
@@ -94,7 +85,7 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
 
  return (
     
-        <div className="flex flex-col flex-1 rounded-md mx-auto" style={{ height: '85vh' }}>
+        <div className="flex flex-col flex-1 rounded-md mx-auto lg-height-85vh">
             {/* Align buttons to the left */}
         <div className="flex justify-center rounded mx-4 pr-2 pb-2">
           <button
@@ -112,6 +103,15 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
                 Ratio
             </button>
         </div>
+  <style>
+    {`
+      @media (min-width: 1024px) {
+        .lg-height-85vh {
+          height: 85vh;
+        }
+      }
+    `}
+  </style>
 
     <div className="flex mx-4 mb-4 flex-col  relative rounded-md  p-2" style={{minHeight:'100%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
         {/* Blurred Background */}
@@ -131,36 +131,36 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
             {/* Financial Ratios Display */}
             <div className="flex flex-col flex-grow space-y-9 2xl:space-y-14">
                 <div className="flex justify-between">
-                    <span className="text-gray-500" style={{ minWidth: '100px' }}>EPS:</span>
-                    <span>{EPS}</span>
+                    <span className="text-sm text-gray-500" style={{ minWidth: '100px' }}>EPS:</span>
+                    <span className="text-sm" >{EPS}</span>
                 </div>
                 <div className="flex justify-between">
-                    <span className="text-gray-500">PE Ratio (Lagging):</span>
-                    <span>{peRatioLagging}</span>
+                    <span className=" text-sm text-gray-500">PE Ratio (Lagging):</span>
+                    <span className="text-sm">{peRatioLagging}</span>
                 </div>
                 <div className="flex justify-between">
-                    <span className="text-gray-500">PE Ratio (Forward):</span>
-                    <span>{peRatioForward}</span>
+                    <span className="text-sm text-gray-500">PE Ratio (Forward):</span>
+                    <span className="text-sm">{peRatioForward}</span>
                 </div>
                 <div className="flex justify-between">
-                    <span className="text-gray-500">PB Ratio:</span>
-                    <span>{pbRatio}</span>
+                    <span className=" text-sm text-gray-500">PB Ratio:</span>
+                    <span className="text-sm">{pbRatio}</span>
                 </div>
                 <div className="flex justify-between">
-                    <span className="text-gray-500">Debt to Equity Ratio:</span>
-                    <span>{debtToEquityRatio}</span>
+                    <span className="text-sm text-gray-500">Debt to Equity Ratio:</span>
+                    <span className="text-sm">{debtToEquityRatio}</span>
                 </div>
                 <div className="flex justify-between">
-                    <span className="text-gray-500">Revenue per Share:</span>
-                    <span>{revenuePerShare}</span>
+                    <span className="text-sm text-gray-500">Revenue per Share:</span>
+                    <span className="text-sm">{revenuePerShare}</span>
                 </div>
                 <div className="flex justify-between">
-                    <span className="text-gray-500">Return on Assets:</span>
-                    <span>{returnOnAssets}</span>
+                    <span className="text-sm text-gray-500">Return on Assets:</span>
+                    <span className="text-sm">{returnOnAssets}</span>
                 </div>
                 <div className="flex justify-between">
-                    <span className="text-gray-500">Return on Equity:</span>
-                    <span>{returnOnEquity}</span>
+                    <span className="text-sm text-gray-500">Return on Equity:</span>
+                    <span className="text-sm">{returnOnEquity}</span>
                 </div>
             </div>
         </div>
@@ -203,7 +203,7 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
                     {/* Stock Price - Left Aligned */}
                     <div>
                         <span className="text-gray-500 uppercase text-xs block">Price</span>
-                        <span className="text-black font-bold text-xl">{formatAskPrice(askPrice)}</span>
+                        <span className="text-black font-bold text-l">{formatAskPrice(askPrice)}</span>
                     </div>
 
                     {/* Price Increase - Right Aligned */}
@@ -239,27 +239,27 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
                         <>
                             <div className="border-t border-gray-300 mt-4 "></div>
                             <div className="flex justify-between my-2">
-                                <span className="text-gray-500" style={{ minWidth: '100px' }}>Sector:</span>
+                                <span className="text-sm text-gray-500" style={{ minWidth: '100px' }}>Sector:</span>
                                 <div className="bg-gray-200 h-4 flex-1 rounded"></div>
                             </div>
                             <div className="flex justify-between my-7 2xl:my-10">
-                                <span className="text-gray-500">Market Cap:</span>
+                                <span className="text-sm text-gray-500">Market Cap:</span>
                                 <div className="bg-gray-200 h-4 w-1/3 rounded"></div>
                             </div>
                             <div className="flex justify-between my-7 2xl:my-10">
-                                <span className="text-gray-500">Volume:</span>
+                                <span className="text-sm text-gray-500">Volume:</span>
                                 <div className="bg-gray-200 h-4 w-1/3 rounded"></div>
                             </div>
                             <div className="flex justify-between my-7 2xl:my-10">
-                                <span className="text-gray-500">Dividend Yield:</span>
+                                <span className="text-sm text-gray-500">Dividend Yield:</span>
                                 <div className="bg-gray-200 h-4 w-1/4 rounded"></div>
                             </div>
                             <div className="flex justify-between my-7 2xl:my-10">
-                                <span className="text-gray-500">Volatility Score:</span>
+                                <span className="text-sm text-gray-500">Volatility Score:</span>
                                 <div className="bg-gray-200 h-4 w-1/4 rounded"></div>
                             </div>
                             <div className="flex justify-between mt-7 2xl:my-10">
-                                <span className="text-gray-500">Dividend Score:</span>
+                                <span className=" text-sm text-gray-500">Dividend Score:</span>
                                 <div className="bg-gray-200 h-4 w-1/4 rounded"></div>
                             </div>
                         </>
@@ -268,32 +268,31 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
             <>
                 <div className="border-t border-gray-300 mt-4"></div>
                     <div className="flex justify-between my-2">
-                        <span className="text-gray-500" style={{ minWidth: '100px' }}>Sector:</span>
-                        <span className="flex-1 text-right" style={{ maxWidth: 'calc(100% - 100px)' }}>
+                        <span className="text-gray-500 text-sm" style={{ minWidth: '100px' }}>Sector:</span>
+                        <span className="flex-1 text-right text-sm" style={{ maxWidth: 'calc(100% - 100px)' }}>
                             {industry || 'Not Available'}
                         </span>
-                    </div>
-                            <div className="flex justify-between 2xl:my-10 my-5">
-                                <span className="text-gray-500">Market Cap:</span>
-                                <span>{marketCap}</span>
-                            </div>
-                            <div className="flex justify-between 2xl:my-10 my-5">
-                                <span className="text-gray-500">Volume:</span>
-                                <span>{volume}</span>
-                            </div>
-                            <div className="flex justify-between 2xl:my-10 my-5">
-                                <span className="text-gray-500">Dividend Yield:</span>
-                                <span>{dividendYield}</span>
-                            </div>
-                            <div className="flex justify-between 2xl:my-10 my-5">
-                                <span className="text-gray-500">Volatility Score:</span>
-                                <span>{volatilityScore}</span>
-                            </div>
-                            <div className="flex justify-between 2xl:my-10 mt-5">
-                                <span className="text-gray-500">Dividend Score:</span>
-                                <span>{liquidityScore}</span>
-                            </div>
-                                            
+                         </div>
+                            <div className="flex justify-between my-5">
+                            <span className="text-gray-500 text-sm">Market Cap:</span>
+                            <span className="text-sm">{marketCap}</span>
+                        </div>
+                        <div className="flex justify-between my-5">
+                            <span className="text-gray-500 text-sm">Volume:</span>
+                            <span className="text-sm">{volume}</span>
+                        </div>
+                        <div className="flex justify-between my-5">
+                            <span className="text-gray-500 text-sm">Dividend Yield:</span>
+                            <span className="text-sm">{dividendYield}</span>
+                        </div>
+                        <div className="flex justify-between my-5">
+                            <span className="text-gray-500 text-sm">Volatility Score:</span>
+                            <span className="text-sm">{volatilityScore}</span>
+                        </div>
+                        <div className="flex justify-between my-5">
+                            <span className="text-gray-500 text-sm">Dividend Score:</span>
+                            <span className="text-sm">{liquidityScore}</span>
+                        </div>
                         </>
                     )}
             </div>

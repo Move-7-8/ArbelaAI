@@ -63,7 +63,7 @@ const Feed = () => {
       <div className="feed">
         {/* New div for Search and Sort By */}
         <div className="flex space-x-8 w-full">
-          <form className="relative flex-grow flex-center">
+          <form className="relative flex-grow flex-center w-96">
 
             <input
               type="text"

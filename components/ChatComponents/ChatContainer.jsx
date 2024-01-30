@@ -79,7 +79,7 @@ function ChatContainer({ onMessageSent }) {
   
 return (
   
-  <div className="bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col" style={{ height: '88vh', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+  <div className="bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container" style={{  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
     {/* Chat Header */}
     <div className="p-3 border-b border-gray-300 text-center">
       <div className="font-bold text-lg">ChatBot</div>
@@ -88,7 +88,19 @@ return (
         <span className="text-xxs text-gray-600" style={{ fontSize: '9px' }}>Online</span>
       </div>
     </div>
+    <style>
+        {`
+          .chat-container {
+            height: 60vh; /* Default height for small screens */
+          }
 
+          @media (min-width: 1024px) { /* Tailwind's 'lg' breakpoint */
+            .chat-container {
+              height: 90vh; /* Height for large screens and above */
+            }
+          }
+        `}
+      </style>
  {/* Chat Content Area */}
     <div className="flex-grow flex flex-col p-3 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 150px)' }}>
       {messages.map((message, index) => (
@@ -134,7 +146,7 @@ return (
         type="text" 
         placeholder="Type a message..." 
         className="w-full p-2 border border-black rounded-l-md bg-white"
-         style={{ border: '1px solid #5E5DF0' }} // Set custom border color here
+        //  style={{ border: '1px solid #5E5DF0' }} // Set custom border color here
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyPress={(e) => {
@@ -152,18 +164,21 @@ return (
       </button>
     </div>
 
-    {/* Custom Scrollbar Styles */}
-    <style jsx>{`
-      .chat-content-area::-webkit-scrollbar {
-        width: 8px;
-        border-radius: 4px;
-      }
+ <style jsx>{`
+  .chat-input:focus {
+    border: 2px solid #5E5DF0; /* Your custom color */
+  }
 
-      .chat-content-area::-webkit-scrollbar-thumb {
-        background: lightgrey;
-        border-radius: 4px;
-      }
-    `}</style>
+  .chat-content-area::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 4px;
+  }
+
+  .chat-content-area::-webkit-scrollbar-thumb {
+    background: lightgrey;
+    border-radius: 4px;
+  }
+`}</style>
   </div>
 );
 }
