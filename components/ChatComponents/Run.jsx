@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import axios from "axios";
-// import toast from "react-hot-toast";
 import {
   assistantAtom,
   messagesAtom,
@@ -8,12 +6,10 @@ import {
   runStateAtom,
   threadAtom,
 } from "@/atom";
-// import { Button } from "@/components/ui/button";
 import { useAtom } from "jotai";
-// import { Run } from "openai/resources/beta/threads/runs/runs.mjs";
-// import { ThreadMessage } from "openai/resources/beta/threads/messages/messages.mjs";
 
-function Run({ messageSent }) {
+function Run({ messageSent, onRunComplete }) {
+
   // Atom State
   const [thread] = useAtom(threadAtom);
   const [run, setRun] = useAtom(runAtom);
@@ -27,10 +23,12 @@ function Run({ messageSent }) {
   const [pollingIntervalId, setPollingIntervalId] = useState(null);
   const [message, setMessage] = useState('');
 
+
+  
   //Listen for when the send function in ChatComponent.jsx is complete
   useEffect(() => {
     if (messageSent) {
-      handleCreate(); // Trigger handleCreate when a message is sent
+      handleCreate(); 
     }
   }, [messageSent]);
 
@@ -58,11 +56,29 @@ function Run({ messageSent }) {
         setRun(updatedRun);
         setRunState(updatedRun.status);
 
+        // Check if run status is 'in_progress' and call the callback
+        if (updatedRun.status === 'in_progress') {
+          onRunComplete(); // Call the callback function
+        }
+        
+        console.log('/////////////////////////////')
+        console.log('RUN STATUS',updatedRun.status )
+        console.log('/////////////////////////////')
+      
+
         if (["cancelled", "failed", "completed", "expired"].includes(updatedRun.status)) {
           clearInterval(intervalId);
           setPollingIntervalId(null);
           fetchMessages();
+          // onRunFinal();
+        // Check if run status is 'in_progress' and call the callback
+
+          if (updatedRun.status === 'completed') {
+            onRunFinal(); // Call the callback for run finalization
         }
+
+        }
+
       } catch (error) {
         console.error("Error polling run status:", error);
         clearInterval(intervalId);

@@ -3,18 +3,18 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-import Charts from '@components/Charts'; 
-import CompanyAnalysis from '@components/StockPageComponents/CompanyAnalysis';
-import Card from '@components/StockPageComponents/DashboardTopCards';
-import StockCard from '@components/StockCard';
+// import Charts from '@components/Charts'; 
+// import CompanyAnalysis from '@components/StockPageComponents/CompanyAnalysis';
+// import Card from '@components/StockPageComponents/DashboardTopCards';
+// import StockCard from '@components/StockCard';
 import Test from '@components/Test';
 import DashboardStockCard from '@components/StockPageComponents/DashboardStockCard';
 import TradingChartContainer from '@components/StockPageComponents/DashboardTradingChart';
-import Chatbox from '@components/StockPageComponents/DashboardChatBox';
+// import Chatbox from '@components/StockPageComponents/DashboardChatBox';
 import FinancialStatements from '@components/StockPageComponents/Statements';
 import NewsSection from '@components/StockPageComponents/NewsSection';
-import SearchBar from '@components/StockPageComponents/SearchBar';
-import FileUpload from '@components/ChatComponents/FileUpload';
+// import SearchBar from '@components/StockPageComponents/SearchBar';
+// import FileUpload from '@components/ChatComponents/FileUpload';
 import { FaComments } from 'react-icons/fa';
 
 const Page = () => {
@@ -64,18 +64,18 @@ const Page = () => {
           console.log('Complete Data:', result);
   
           // Destructure the data into variables
-          const { 
-            historic, 
-            historic30Days, 
-            historic7Days, 
-            price, 
-            balanceSheet, 
-            earnings, 
-            financeAnalytics, 
-            news, 
-            earningsTrend, 
-            keyStatistics 
-          } = result;
+          // const { 
+          //   historic, 
+          //   historic30Days, 
+          //   historic7Days, 
+          //   price, 
+          //   balanceSheet, 
+          //   earnings, 
+          //   financeAnalytics, 
+          //   news, 
+          //   earningsTrend, 
+          //   keyStatistics 
+          // } = result;
 
           // Save the complete data to state if needed
           setData(result);

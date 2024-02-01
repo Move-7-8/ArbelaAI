@@ -72,7 +72,7 @@ const SettingsPage = () => {
     <div className="mt-20 mx-auto w-4/5">
       <h1 className="text-2xl font-bold mb-4">Settings</h1>
       {/* First Row: */}
-      <div className='w-full border-2 border-black flex flex-col p-4'>
+      {/* <div className='w-full border-2 border-black flex flex-col p-4'>
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold mb-4">Update Password</h2>
           <button 
@@ -137,15 +137,14 @@ const SettingsPage = () => {
             </div>
           </form>
         )}
-        </div>    
+        </div>     */}
 
 {/* Second Row: */}
-<div className='mt-10 w-full border-2 border-black'>
-      {/* Left Section: Manage Subscription */}
+  {/* <div className='mt-10 w-full border-2 border-black'>
       <div className="w-full flex justify-between items-center p-4">
         <div>
           <h2 className="text-xl font-semibold">Manage Subscription</h2>
-          <p>Your current plan: <strong>Pro</strong></p> {/* Display dynamic subscription info here */}
+          <p>Your current plan: <strong>Pro</strong></p>
         </div>
         <button 
           onClick={handleChangeSubscription} 
@@ -154,12 +153,12 @@ const SettingsPage = () => {
           Change Subscription
         </button>
       </div>
-      </div>
+    </div> */}
 
         {/* Contact Us / Leave Feedback Form */}
       <div className='mt-10 w-full h-auto border-2 border-black'>
         <div className="p-4">
-          <h2 className="text-xl font-semibold mb-2">Contact Us / Leave Feedback</h2>
+          <h2 className="text-xl font-semibold mb-2">Contact || Leave Feedback || Feature Recommendations</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">

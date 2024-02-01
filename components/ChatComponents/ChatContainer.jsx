@@ -4,18 +4,23 @@ import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 
-function ChatContainer({ onMessageSent }) {
+function ChatContainer({ onMessageSent, chatCondition }) {
   // Atom State
   const [thread] = useAtom(threadAtom);
   const [messages, setMessages] = useAtom(messagesAtom);
   const [isTyping, setIsTyping] = useState(false); // Temporarily set to true for testing
 
-
-
   // State
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const [fetching, setFetching] = useState(false);
+
+  useEffect(() => {
+    // Logic to execute when chatCondition changes
+    console.log("Chat condition changed:", chatCondition);
+    // You can add any additional logic you need here
+    // For example, if you need to hide typing indicators or something similar
+  }, [chatCondition]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -83,6 +88,8 @@ return (
     {/* Chat Header */}
     <div className="p-3 border-b border-gray-300 text-center">
       <div className="font-bold text-lg">ChatBot</div>
+      {chatCondition && <div>...</div>} {/* Render ellipsis when chatCondition is false */}
+
       <div className="mt-1 inline-flex items-center justify-center bg-gray-200 rounded-full px-2 py-1">
         <div className="h-2 w-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
         <span className="text-xxs text-gray-600" style={{ fontSize: '9px' }}>Online</span>

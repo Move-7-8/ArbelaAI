@@ -32,7 +32,7 @@ const Nav = () => {
 <Link href={session ? "/catalog" : "/"} className="flex gap-2 flex-center">
         <Image
         src="/assets/images/logo3.png"
-        alt="Promptopia Logo"
+        alt="Arbela Logo"
         width={40}
         height={40}
         className="object-contain"
@@ -75,9 +75,9 @@ const Nav = () => {
               />
               {toggleDropdown && (
                 <div className="dropdown-menu"> {/* Add appropriate styles for positioning */}
-                  <Link href="/profile" className="dropdown-link">
-                    My Models
-                  </Link>
+                  {/* <Link href="/profile" className="dropdown-link">
+                    My Potfolio
+                  </Link> */}
                   <Link href="/settings" className="dropdown-link">
                     Settings
                   </Link>
@@ -100,16 +100,23 @@ const Nav = () => {
 //For Logged Out Users  
 <>
 {/* For Logged Out Users */}
-<Link href="/pricing" className="nav_button">
+{/* <Link href="/pricing" className="nav_button">
   Pricing
-</Link>
-<button
+</Link> */}
+{/* <button
   type="button"
   onClick={() => signIn('google', { callbackUrl: '/catalog' })} // Change 'google' to your preferred provider ID
   className="black_btn"
 >
   Sign In
-</button>
+</button> */}
+<Link href="/catalog" passHref>
+  <button type="button" className="black_btn">
+    Sign Up || Sign In
+  </button>
+</Link>
+
+
 </>
 }
       </div>
@@ -173,18 +180,28 @@ const Nav = () => {
     ):
     <>
 {/* For Logged Out Users */}
-<Link href="/pricing" className="nav_button">
+{/* <Link href="/pricing" className="nav_button">
   Pricing
-</Link>
-<button
+</Link> */}
+{/* <button
   type="button"
   onClick={() => signIn('google', { callbackUrl: '/catalog' })} // Change 'google' to your preferred provider ID
   className="black_btn"
 >
   Sign In
-</button>
+</button> */}
+<Link href="/catalog" passHref>
+  <button type="button" className="black_btn">
+    Sign Up || Sign In
+  </button>
+</Link>
+
     </>
     }
+
+
+
+
   </div>
 </nav>
 )}

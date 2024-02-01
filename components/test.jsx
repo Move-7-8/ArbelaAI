@@ -38,6 +38,7 @@ export default function Home({data}) {
   const [uploadCompleteTrigger, setUploadCompleteTrigger] = useState(false);
   const [condition1, setcondition1] = useState(false);
   const [condition2, setcondition2] = useState(false);
+  const [Chatcondition, setChatcondition] = useState(false);
 
   const [messageSent, setMessageSent] = useState(false);
   const [triggerCreate, setTriggerCreate] = useState(false);
@@ -69,6 +70,7 @@ const afterAssistantCreate = () => {
 
 // }
 
+//Trigger AssistantFile when both necessary conditions are met
 const onFileUploadCompleted = () => {
   setTasksCompleted(prev => ({ ...prev, upload: true }));
   checkAndHandleUpload();
@@ -78,6 +80,15 @@ const onFileUploadCompleted = () => {
   console.log("condition2 is post: ", condition2);
 };
   
+//Track if the Run has loaded and trigger the ChatMessage to render
+const handleRunCompletion = () => {
+  setChatcondition(true);
+};
+
+const handleRunFinalization = () => {
+  setChatcondition(false); // Set Chatcondition to false when run is completed
+};
+
 // Check if both tasks are completed
 const checkAndHandleUpload = () => {
   if (tasksCompleted.create && tasksCompleted.upload) {
@@ -168,8 +179,8 @@ const handleFileChangeTrigger = () => {
           {/* Run is a Service Component, ChatContainer is not */}
           {/* Run is triggered on ChatContainer 'Send' button click */}
           {/* Conditional Rendering between load screen and chatbox*/}
-          {isThreadCreated ? <ChatContainer onMessageSent={handleMessageSent} /> : <ChatLoad />}
-          <Run messageSent={messageSent} />
+          {isThreadCreated ? <ChatContainer onMessageSent={handleMessageSent} chatCondition={Chatcondition} /> : <ChatLoad />}
+          <Run messageSent={messageSent} onRunComplete={handleRunCompletion} onRunFinal={handleRunFinalization} />
         </div>
         {/* Chat */}
         {/* <div className="w-full"> */}
