@@ -1,7 +1,7 @@
 import { messagesAtom, threadAtom } from "@/atom";
 import axios from "axios";
 import { useAtom } from "jotai";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 
 function ChatContainer({ onMessageSent, chatCondition }) {
@@ -9,6 +9,16 @@ function ChatContainer({ onMessageSent, chatCondition }) {
   const [thread] = useAtom(threadAtom);
   const [messages, setMessages] = useAtom(messagesAtom);
   const [isTyping, setIsTyping] = useState(false); // Temporarily set to true for testing
+
+  //Chatbox scrolls down to new message
+
+  const chatContentRef = useRef(null);
+
+  useEffect(() => {
+    if (chatContentRef.current) {
+      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
+    }
+  }, [messages]); 
 
   // State
   const [message, setMessage] = useState("");
@@ -87,13 +97,7 @@ return (
   <div className="bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container" style={{  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
     {/* Chat Header */}
     <div className="p-3 border-b border-gray-300 text-center">
-      <div className="font-bold text-lg">ChatBot</div>
-      {chatCondition && <div>...</div>} {/* Render ellipsis when chatCondition is false */}
-
-      <div className="mt-1 inline-flex items-center justify-center bg-gray-200 rounded-full px-2 py-1">
-        <div className="h-2 w-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-        <span className="text-xxs text-gray-600" style={{ fontSize: '9px' }}>Online</span>
-      </div>
+      <div className="font-bold text-lg">AI Assistant</div>
     </div>
     <style>
         {`
@@ -103,29 +107,58 @@ return (
 
           @media (min-width: 1024px) { /* Tailwind's 'lg' breakpoint */
             .chat-container {
-              height: 90vh; /* Height for large screens and above */
+              height: 92vh; /* Height for large screens and above */
             }
           }
         `}
       </style>
  {/* Chat Content Area */}
-    <div className="flex-grow flex flex-col p-3 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 150px)' }}>
-      {messages.map((message, index) => (
-        <p key={index} className="text-left text-xs my-2 p-2 rounded-md" 
-           style={{ backgroundColor: message.role === 'user' ? 'rgba(80, 120, 235, 0.2)' : 'rgba(200, 200, 200, 0.2)' }}>
-          {message.content[0].type === "text" ? message.content[0].text.value : null}
-        </p>
-      ))}
-          {isTyping && (
-    <div className="flex space-x-1">
-      <span className="typing-indicator"></span>
-      <span className="typing-indicator"></span>
-      <span className="typing-indicator"></span>
-    </div>
-  )}
-    </div>
-    <style>
-      {`
+      <div className="flex-grow flex flex-col p-3 overflow-y-auto" ref={chatContentRef} style={{ maxHeight: 'calc(100vh - 120px)' }}>
+        {messages.map((message, index) => (
+          <p key={index} className="text-left text-sm my-2 p-2 rounded-md" 
+             style={{ backgroundColor: message.role === 'user' ? 'rgba(80, 120, 235, 0.2)' : 'rgba(200, 200, 200, 0.2)' }}>
+            {message.content[0].type === "text" ? message.content[0].text.value : null}
+          </p>
+        ))}
+        {isTyping && (
+          <div className="flex space-x-1">
+            <span className="typing-indicator"></span>
+            <span className="typing-indicator"></span>
+            <span className="typing-indicator"></span>
+          </div>
+        )}
+      </div>
+
+      {/* Chat Input Area */}
+      <div  className="fixed bg-gray-50 bottom-0  mr-6 p-4 pr-8 border-t border-gray-300 w-full lg:max-w-[calc(25%-2.3rem)] flex items-center"
+  style={{
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    borderRadius: '0 0 8px 8px',
+
+  }}>
+        <input 
+          type="text" 
+          placeholder="Type a message..." 
+            className="chat-input flex-grow p-2 border border-black rounded-l-md bg-white"
+  style={{ minWidth: '50px', maxWidth: 'calc(100% - 20px)' }} // Adjust 60px based on the button and padding
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              sendMessage();
+            }
+          }}
+        />
+        <button 
+          disabled={!thread || sending || message === ""}
+          className="bg-black text-white rounded-r-md p-2 flex items-center hover:bg-white hover:text-black border border-black"
+          onClick={sendMessage}
+        >
+          <FaPaperPlane size={24} className="text-current" />
+        </button>
+      </div>
+
+      <style jsx>{`
         @keyframes blink {
           0%, 100% { opacity: .2; }
           50% { opacity: 1; }
@@ -144,50 +177,10 @@ return (
         .typing-indicator:nth-child(3) {
           animation-delay: .4s;
         }
-      `}
-    </style>
-
- {/* Chat Input Area */}
-    <div className="flex p-3 border-t border-gray-300 items-center mt-auto">
-      <input 
-        type="text" 
-        placeholder="Type a message..." 
-        className="w-full p-2 border border-black rounded-l-md bg-white"
-        //  style={{ border: '1px solid #5E5DF0' }} // Set custom border color here
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter' && !e.shiftKey) {
-            sendMessage();
-          }
-        }}
-      />
-      <button 
-        disabled={!thread || sending || message === ""}
-        className="bg-black text-white rounded-r-md p-2 flex items-center hover:bg-white hover:text-black border border-black"
-        onClick={sendMessage}
-      >
-        <FaPaperPlane size={24} className="text-current" />
-      </button>
+      `}</style>
     </div>
-
- <style jsx>{`
-  .chat-input:focus {
-    border: 2px solid #5E5DF0; /* Your custom color */
-  }
-
-  .chat-content-area::-webkit-scrollbar {
-    width: 8px;
-    border-radius: 4px;
-  }
-
-  .chat-content-area::-webkit-scrollbar-thumb {
-    background: lightgrey;
-    border-radius: 4px;
-  }
-`}</style>
-  </div>
-);
+  );
 }
+
 
 export default ChatContainer;

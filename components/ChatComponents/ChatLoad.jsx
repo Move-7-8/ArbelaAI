@@ -13,8 +13,8 @@ const ChatLoad = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center"> {/* Center the content vertically and horizontally */}
-      <div className="mt-32"> {/* Add margin to the top */}
+<div className="flex flex-col items-center justify-center" style={{ marginTop: '300px' }}> {/* Custom margin top */}
+  <div> {/* Increased margin to the top */}
         {/* Lottie Animation Wrapper with Increased Opacity */}
              <div style={{ 
             opacity: 1, // Fully opaque
