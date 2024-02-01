@@ -14,15 +14,17 @@ const FinancialStatements = ({ data }) => {
 
 
 const renderTab = (title, statementType) => {
-        const isActive = activeStatement === statementType;
-        const buttonClass = `m-3 px-3 py-1 rounded-lg shadow hover:scale-105 transition-transform duration-300 text-xs ${isActive ? '' : 'bg-gray-100'}`;
-        const buttonStyle = { backgroundColor: isActive ? 'rgba(169, 169, 169, 0.2)' : '' };
 
+         const isActive = activeStatement === statementType;
+    const buttonClass = `text-sm mr-2 px-3 py-1 rounded ${isActive ? 'bg-white' : 'bg-transparent'}`;
+
+       
+      
 
         return (
             <button
                 className={buttonClass}
-                style={buttonStyle}
+       
                 onClick={() => setActiveStatement(statementType)}
             >
                 {title}
@@ -119,10 +121,12 @@ const balanceSheetData = activeStatement === 'balance' && data.balanceSheet ? {
 
     return (
         <div>
-            <div className="flex justify-center mt-8" >
-                {renderTab("Balance Sheet", "balance")}
-                {renderTab("Income Statement", "income")}
-                {renderTab("Cash Flow", "cash")} {/* If you have cash flow data */}
+            <div className="flex justify-center mt-8 mb-4">
+                <div className="inline-block" style={{ backgroundColor: 'rgba(169, 169, 169, 0.2)', padding: '3px', borderRadius: '8px' }}>
+                    {renderTab("Balance Sheet", "balance")}
+                    {renderTab("Income Statement", "income")}
+                    {renderTab("Cash Flow", "cash")}
+                </div>
             </div>
             {activeStatement === 'balance' && balanceSheetData
                 ? <StatementTable data={balanceSheetData} statementType="balance" />

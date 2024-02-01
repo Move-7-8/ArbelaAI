@@ -62,25 +62,23 @@ const Feed = () => {
        <section>
       <div className="feed">
         {/* New div for Search and Sort By */}
-        <div className="flex space-x-8 w-full">
-          <form className="relative flex-grow flex-center w-96">
-
+          <div className="flex space-x-8 w-full mx-4"> 
+          <form className="relative flex-center w-full md:w-96">
             <input
-              type="text"
-              placeholder="Search by company name or ticker"
-              value={searchText}
-              onChange={handleSearchChange}
-              required
-              className="search_input peer w-90"
+                type="text"
+                placeholder="Search by company name or ticker"
+                value={searchText}
+                onChange={handleSearchChange}
+                required
+                className="search_input peer w-full"
             />
-          </form>
-
+        </form>
           <Listbox value={sortBy} onChange={setSortBy}>
             {({ open }) => (
               <Fragment>
-                <div className="relative w-38">
+                <div className="relative w-40">
                 <Listbox.Button className="dropdown-button dropdown-button-sort flex justify-between items-center h-10 px-3">
-                  <span className="mr-2">{sortBy || 'Sort By'}</span> {/* Add margin to the right of the text */}
+                  <span className="">{sortBy || 'Sort By'}</span> {/* Add margin to the right of the text */}
                   {open ? <FaChevronUp className="h-4 w-4 text-gray-500" /> : <FaChevronDown className="h-4 w-4 text-gray-500" />}
                 </Listbox.Button>
 
@@ -113,7 +111,7 @@ const Feed = () => {
         {({ open }) => (
           
           <Fragment>
-            <div className="relative w-96">
+            <div className="relative w-full">
               <Listbox.Button className="dropdown-button dropdown-button-category flex justify-between items-center h-10 px-3">
                 <span>{selectedCategory || 'Filters'}</span>
                 {open ? <FaChevronUp className="h-4 w-4 text-gray-500" /> : <FaChevronDown className="h-4 w-4 text-gray-500" />}
