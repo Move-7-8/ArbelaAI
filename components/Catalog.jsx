@@ -81,21 +81,13 @@ function Catalog({ searchText, selectedCategory, preloadedData }) {
         const industry = company.GICsIndustryGroup; 
         const price = company.Price; 
         const change = (company.Change / company.Price).toFixed(2)
-
-            // Check if "All Industries" is selected or there is no selected category
-        // const isCategoryMatch = selectedCategory === 'All Industries' || selectedCategory === '' || selectedCategory.name === 'All Industries'
-        // ? true
-        // : company.GICsIndustryGroup === selectedCategory;
-
-        const isCategoryMatch = selectedCategory
-        ? company.GICsIndustryGroup === selectedCategory.name
-        : true;
     
+        const isCategoryMatch = !selectedCategory || selectedCategory.name === 'All Industries' ? true : company.GICsIndustryGroup === selectedCategory.name;
         return isCategoryMatch &&
             ((typeof companyName === 'string' && companyName.toLowerCase().includes(searchText.toLowerCase())) ||
                 (typeof industry === 'string' && industry.toLowerCase().includes(searchText.toLowerCase())));
     });
-    
+
     return (
         <div className="w-full px-28 pt-10 py-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">

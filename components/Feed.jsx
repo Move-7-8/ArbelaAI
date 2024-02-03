@@ -15,8 +15,8 @@ const sortOptions = [
 
 const Feed = ({ preloadedData }) => {
   const [searchText, setSearchText] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(''); // Renamed to selectedCategory
-
+  // const [selectedCategory, setSelectedCategory] = useState(''); // Renamed to selectedCategory
+  const [selectedCategory, setSelectedCategory] = useState(null); // Use null to indicate no category is selected
   const [selectedIndustry, setSelectedIndustry] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [industries, setIndustries] = useState([]);
@@ -55,6 +55,12 @@ const Feed = ({ preloadedData }) => {
       
     fetchIndustries();
   }, []);
+
+  // Update the onChange handler for Listbox to handle "All Industries"
+  const handleIndustryChange = (industry) => {
+    setSelectedCategory(industry); // Directly set the selected category based on selection
+  };
+
   
   return (
        <section>
@@ -64,7 +70,7 @@ const Feed = ({ preloadedData }) => {
           <form className="relative flex-center w-full md:w-96">
             <input
                 type="text"
-                placeholder="Search by company name or ticker"
+                placeholder="Search by company name"
                 value={searchText}
                 onChange={handleSearchChange}
                 required
@@ -101,15 +107,15 @@ const Feed = ({ preloadedData }) => {
 
         {/* Filters Section */}
     <div className="flex space-x-4 w-full">
-        <Listbox value={selectedCategory} onChange={(category) => {
-        setSelectedCategory(category);
-        console.log('Selected Category:', category); // Correctly log the selected category
-          }} className="w-1/2 max-w-xs">
+        <Listbox value={selectedCategory} onChange={(newSelectedCategory) => {
+          setSelectedCategory(newSelectedCategory);
+          console.log('Selected Category:', newSelectedCategory);
+        }} className="w-1/2 max-w-xs">
             {({ open }) => (
               <Fragment>
                 <div className="relative w-full">
                   <Listbox.Button className="dropdown-button dropdown-button-category flex justify-between items-center h-10 px-3">
-                    <span>{selectedCategory.name || 'Filters'}</span>
+                    <span>{selectedCategory ? selectedCategory.name : 'Filters'}</span>
                     {open ? <FaChevronUp className="h-4 w-4 text-gray-500" /> : <FaChevronDown className="h-4 w-4 text-gray-500" />}
                   </Listbox.Button>
                   {open && (

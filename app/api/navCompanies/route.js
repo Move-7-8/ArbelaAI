@@ -1,5 +1,4 @@
 //api/companies/route.js
-
 import fs from 'fs';
 import path from 'path';
 import { NextRequest } from 'next/server';
@@ -30,38 +29,22 @@ export async function POST(request) {
   const limit = request_data.limit;
   const offset = request_data.offset;
   const searchText = request_data.searchText; 
-  const category = request_data.category; 
 
   console.log('Limit: ', limit);
   console.log('Offset: ', offset);
   console.log('Search Text: ', searchText);
-  console.log('Category: ', category);
 
-  let query = {};
 
   // If there is searchText, add conditions for searching by Name or Ticker.
-  if (searchText) {
-    query.$or = [
-      { Name: { $regex: searchText, $options: 'i' } },
-      { Ticker: { $regex: searchText, $options: 'i' } },
-    ];
-  }
+  const companiesData = await Stock.find(
+    searchText ? { Name: { $regex: searchText, $options: 'i' } } : {}
+  ).skip(offset).limit(limit).lean();
 
-  // Special condition for "All Industries" to not filter by any categories
-  if (category && category.name !== 'All Industries') {
-    const industryName = typeof category === 'object' ? category.name : category;
-    query.GICsIndustryGroup = { $regex: industryName, $options: 'i' };
-  }
+
   
-  console.log('Final Query: ', JSON.stringify(query, null, 2));
 
-  // Execute a single query with the constructed conditions.
-  const companiesData = await Stock.find(query).skip(offset).limit(limit).lean();
+
   console.log('Companies Data Result: ', companiesData);
-
-  
-
-
   // Prepare and return the response.
   return new Response(JSON.stringify(companiesData), {
     status: 200,

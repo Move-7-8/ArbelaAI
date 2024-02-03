@@ -34,7 +34,7 @@ const CompanySearch = () => {
   const searchCompanies = async () => {
     setIsSearching(true);
     try {
-      const response = await fetch(`/api/companies`, {
+      const response = await fetch(`/api/navCompanies`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,6 +46,7 @@ const CompanySearch = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
+      console.log('company search data', data);
       setSearchResults(data);
     } catch (error) {
       console.error("Fetch error: ", error);
