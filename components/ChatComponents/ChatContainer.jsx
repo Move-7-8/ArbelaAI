@@ -3,16 +3,34 @@ import axios from "axios";
 import { useAtom } from "jotai";
 import React, { useEffect, useRef, useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
+import botImage from '../../public/assets/images/bot.png';
+import Image from 'next/image';
+
+
 
 function ChatContainer({ onMessageSent, chatCondition }) {
   // Atom State
   const [thread] = useAtom(threadAtom);
   const [messages, setMessages] = useAtom(messagesAtom);
   const [isTyping, setIsTyping] = useState(false); // Temporarily set to true for testing
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024); // Initial check
 
   //Chatbox scrolls down to new message
 
   const chatContentRef = useRef(null);
+
+    // Function to update `isLargeScreen` based on window width
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024); // 'lg' breakpoint for Tailwind CSS
+    };
+
+    // Set up event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+    // Clean up event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (chatContentRef.current) {
@@ -94,11 +112,39 @@ function ChatContainer({ onMessageSent, chatCondition }) {
   
 return (
   
-  <div className="bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container" style={{  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+    <div className="bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container" style={{  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', }}>
     {/* Chat Header */}
-    <div className="p-3 border-b border-gray-300 text-center">
-      <div className="font-bold text-lg">AI Assistant</div>
+    {/* Chat Header with SVG */}
+    <div className="relative text-center rounded-lg overflow-hidden shadow-lg" style={{ paddingTop: 0, marginTop: 0 }}>
+          <div className={isLargeScreen ? "h-[10vw] max-h-[90px]" : "h-[15vw]"} style={{ width: '100%', overflow: 'hidden' }}>
+            <svg width="100%" height="100%" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style={{ stopColor: '#5E5DF0', stopOpacity: 0.5 }} />
+                        <stop offset="100%" style={{ stopColor: '#4FC6EB', stopOpacity: 0.5 }} /> 
+                    </linearGradient>
+                </defs>
+                 <path d={isLargeScreen ? "M0,0 L700,0 L500 60 Q100,150 0,80 Z" : "M0,0 L500,0 L500 40 Q60,120 0,70 Z"} fill="url(#gradient)" />
+            </svg>
+        </div>
+    {/* Container for image and text */}
+    <div className="absolute left-3 top-1/4 mt-4 transform -translate-y-1/2 flex items-center">
+        {/* Circle for PNG with image */}
+        <div className="rounded-full w-12 h-12 flex justify-center items-center" style={{ backgroundColor: 'rgba(79, 198, 235, 0.3)' }}>
+            <div className="relative w-10 h-10 rounded-full overflow-hidden">
+                <Image src={botImage} alt="PNG" layout="fill" objectFit="cover" />
+            </div>
+        </div>
+
+{/* Adjusted text alignment */}
+        <div className="ml-3 text-white flex flex-col justify-center">
+            <div className="text-sm" style={{ alignSelf: 'flex-start' }}>Chat with</div>
+            <div className="text-lg" style={{ alignSelf: 'flex-start' }}>Arbela bot</div>
+        </div>
     </div>
+</div>
+
+
     <style>
         {`
           .chat-container {
@@ -111,14 +157,22 @@ return (
             }
           }
         `}
+  
       </style>
  {/* Chat Content Area */}
-      <div className="flex-grow flex flex-col p-3 overflow-y-auto" ref={chatContentRef} style={{ maxHeight: 'calc(100vh - 120px)' }}>
+      <div className="flex-grow flex flex-col p-3 overflow-y-auto" ref={chatContentRef} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
+  
+      backdropFilter: 'blur(10px)', /* Blur effect */
+      WebkitBackdropFilter: 'blur(10px)', /* For Safari */
+     }}>
         {messages.map((message, index) => (
-          <p key={index} className="text-left text-sm my-2 p-2 rounded-md" 
-             style={{ backgroundColor: message.role === 'user' ? 'rgba(80, 120, 235, 0.2)' : 'rgba(200, 200, 200, 0.2)' }}>
-            {message.content[0].type === "text" ? message.content[0].text.value : null}
-          </p>
+   <p key={index} 
+     className="text-left text-sm my-2 p-2 rounded-md" 
+     style={message.role === 'user' ? 
+            { background: 'linear-gradient(to right, rgba(80, 120, 235, 0.5), rgba(79, 198, 235, 0.5))', color: 'white' } : 
+            { backgroundColor: 'rgba(200, 200, 200, 0.2)' }}>
+    {message.content[0].type === "text" ? message.content[0].text.value : null}
+  </p>
         ))}
         {isTyping && (
           <div className="flex space-x-1">
