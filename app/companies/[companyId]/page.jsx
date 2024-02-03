@@ -23,7 +23,10 @@ const Page = () => {
   
   // Search Params
   const searchParams = useSearchParams();
+  console.log('Page Search Params',searchParams )
   const ticker = searchParams.get('ticker');
+  console.log('Page Ticker',ticker )
+
   const industry = searchParams.get('industry');
   // const change = searchParams.get('change');
   const volatilityScore = searchParams.get('volatilityScore');

@@ -22,8 +22,8 @@ const Landing = ({ setIsLandingVisible }) => {
             
             <h2 className="text-l font-bold">Supported By</h2>
             <InvestorLogos/>
-            {/* <CronTest/>
-            <Test /> */}
+            <CronTest/>
+            {/* <Test /> */}
         </div>
     )
 }

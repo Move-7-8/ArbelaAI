@@ -46,6 +46,7 @@
     "jotai": "^2.6.1",
     "kerberos": "^2.0.3",
     "langchain": "^0.0.186",
+    "lodash.debounce": "^4.0.8",
     "lottie-web": "^5.12.2",
     "lucide-react": "^0.292.0",
     "mongodb": "^5.2.0",

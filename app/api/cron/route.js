@@ -1,28 +1,39 @@
 // /api/cron/route.js
 import fs from 'fs';
 import path from 'path';
-
+import {connectToDB} from '@utils/database'
+import Stock from '@models/stock';
 
 export async function GET() {
     console.log('Cron job is hit');
-    const filePath = path.join(process.cwd(), 'constants', 'ASX.json');
+    await connectToDB();
+
+    // Read the JSON file
+  const jsonFilePath = path.join(process.cwd(), 'constants/ASX.json');
+  const fileContent = fs.readFileSync(jsonFilePath, 'utf8');
+    const jsonCompanies = JSON.parse(fileContent);
+    
+    // Create a mapping from ASX_code to GICsindustrygroup
+    const gicsMapping = jsonCompanies.reduce((acc, company) => {
+        acc[company.ASX_code] = company.GICsindustrygroup;
+        return acc;
+    }, {});
+    
     const apiKey = process.env.RAPID_API_KEY
     const apiHost = process.env.RAPID_API_HOST
 
     try {
-        const fileData = fs.readFileSync(filePath, 'utf8');
-        let data = JSON.parse(fileData);
-
-        // Initialize sum of all volatilities
         let totalVolatility = 0;
         let validVolatilityCount = 0; // counter for stocks with valid volatility
         let validStocks = []; // array to store stocks with valid volatility
     
-        //REAL
-        // let tickers = data.map(stock => stock["ASX_code"]); // Use all tickers
+        const stocks = await Stock.find({}).select('Stock'); // This selects only the ASX_code field
+        
+        // //REAL
+        // let tickers = stocks.map(stock => stock.Stock);
 
         //TESTING
-        let tickers = data.map(stock => stock["ASX_code"]).slice(0, 3); // Use only first 10 tickers
+        let tickers = stocks.map(stock => stock.Stock).slice(0, 10);
         console.log("Testing with first 10 tickers:", tickers);
 
         const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -32,17 +43,16 @@ export async function GET() {
 
         for (let i = 0; i < tickers.length; i += batchSize) {
             let batchTickers = tickers.slice(i, i + batchSize);
-
             // Execute all requests in the current batch concurrently
             await Promise.all(batchTickers.map(async (ticker) => {
-            let tickers = data.map(stock => stock["ASX_code"]).slice(0, 3); // Adjust as needed
-            console.log("Processing tickers:", tickers);
-    
-            // for (let ticker of tickers) { // Iterate over each ticker
-    
+
+                // Fetch stock details from the database
+                const stockDetails = await Stock.findOne({ Stock: ticker });
+                if (!stockDetails) {
+                    console.log(`Stock with Ticker: ${ticker} not found.`);
+                    return;
+                }    
                 const apiUrl = `https://yahoo-finance127.p.rapidapi.com/price/${ticker}`;
-                // const apiUrl = `https://yahoo-finance127.p.rapidapi.com/price/CBA.AX`;
-                console.log(`Requesting URL: ${apiUrl}`); // Log the URL being requested
 
                 try {
                     const response = await fetch(apiUrl, {
@@ -56,53 +66,49 @@ export async function GET() {
 
                     if (!response.ok) {
                         console.error(`Error fetching ${ticker}: ${response.statusText}`);
-                        console.error(`Error fetching 14D: ${response.statusText}`);
-
                         return; // Early return on error
                     }
 
-                    const jsonData = await response.json();
-                    console.log('RAW DATA CRON ROUTE: ')
-                    console.log(jsonData)
-                    let stock = data.find(stock => stock["ASX_code"] === ticker);
-                    if (stock) {
+                    const apiData = await response.json();
+                    const stockDetails = await Stock.findOne({ Stock: ticker });
+                    if (stockDetails) {
                         
-                        let lastPrice = stock.Price || 'N/A';
-                        // console.log(`Stock: ${ticker}`)
-                        // console.log(`Price: ${JSON.stringify(jsonData)}`)
-                        Object.assign(stock, {
-                            Price: jsonData.regularMarketPrice?.raw || 'N/A',
-                            LastPrice: lastPrice, // Set the 'Last Price' to what was previously the 'Price'
-                            MarketCapitalisation: jsonData.marketCap?.raw || 'N/A',
-                            fiftyTwoWeekHigh: jsonData.fiftyTwoWeekHigh?.raw || 'N/A',
-                            fiftyTwoWeekLow: jsonData.fiftyTwoWeekLow?.raw || 'N/A',
-                            fiftyTwoWeekChangePercent: jsonData.fiftyTwoWeekChangePercent?.raw || 'N/A',
-                            twoHundredDayAverageChangePercent: jsonData.twoHundredDayAverageChangePercent?.raw || 'N/A',
-                            fiftyDayAverageChangePercent: jsonData.fiftyDayAverageChangePercent?.raw || 'N/A',
-                            averageDailyVolume3Month: jsonData.averageDailyVolume3Month?.raw || 'N/A',
-                            regularMarketVolume: jsonData.regularMarketVolume?.raw || 'N/A',
-                            priceToBook: jsonData.priceToBook?.fmt || 'N/A',
-                            trailingAnnualDividendRate: jsonData.trailingAnnualDividendRate?.raw || 'N/A',
-                            epsTrailingTwelveMonths: jsonData.epsTrailingTwelveMonths?.raw || 'N/A',
-                            regularMarketChangePercent: jsonData.regularMarketChangePercent?.raw || 'N/A',
-                            Date: '20 Jamuary 2024'
-                        });
+                        let lastPrice = stockDetails.Price || 'N/A';
+                        stockDetails.Name = apiData.longName || 'N/A',
+                        stockDetails.Price = apiData.regularMarketPrice?.raw || 'N/A',
+                        stockDetails.LastPrice = lastPrice, // Set the 'Last Price' to what was previously the 'Price'
+                        stockDetails.MarketCapitalisation = apiData.marketCap?.raw || 'N/A',
+                        stockDetails.fiftyTwoWeekHigh = apiData.fiftyTwoWeekHigh?.raw || 'N/A',
+                        stockDetails.fiftyTwoWeekLow = apiData.fiftyTwoWeekLow?.raw || 'N/A',
+                        stockDetails.fiftyTwoWeekChangePercent = apiData.fiftyTwoWeekChangePercent?.raw || 'N/A',
+                        stockDetails.twoHundredDayAverageChangePercent = apiData.twoHundredDayAverageChangePercent?.raw || 'N/A',
+                        stockDetails.fiftyDayAverageChangePercent = apiData.fiftyDayAverageChangePercent?.raw || 'N/A',
+                        stockDetails.averageDailyVolume3Month = apiData.averageDailyVolume3Month?.raw || 'N/A',
+                        stockDetails.regularMarketVolume = apiData.regularMarketVolume?.raw || 'N/A',
+                        stockDetails.priceToBook = apiData.priceToBook?.fmt || 'N/A',
+                        stockDetails.trailingAnnualDividendRate = apiData.trailingAnnualDividendRate?.raw || 'N/A',
+                        stockDetails.epsTrailingTwelveMonths = apiData.epsTrailingTwelveMonths?.raw || 'N/A',
+                        stockDetails.regularMarketChangePercent = apiData.regularMarketChangePercent?.raw || 'N/A'
 
                         // Calculated fields
-                        const rangeVolatility = ((stock.fiftyTwoWeekHigh - stock.fiftyTwoWeekLow) / stock.fiftyTwoWeekLow) * 100;
-                        const percentageChangeVolatility = (stock.fiftyTwoWeekChangePercent + stock.twoHundredDayAverageChangePercent + stock.fiftyDayAverageChangePercent) / 3;
+                        const rangeVolatility = ((apiData.fiftyTwoWeekHigh - apiData.fiftyTwoWeekLow) / apiData.fiftyTwoWeekLow) * 100;
+                        const percentageChangeVolatility = (apiData.fiftyTwoWeekChangePercent + apiData.twoHundredDayAverageChangePercent + apiData.fiftyDayAverageChangePercent) / 3;
                         const volatility = (0.5 * rangeVolatility) + (0.5 * percentageChangeVolatility);
-                        const change = ((stock.Price - stock.LastPrice) / stock.LastPrice) * 100;
-                        const liquidity = (0.8 * stock.averageDailyVolume3Month) + (0.2 * stock.regularMarketVolume);
+                        const change = ((apiData.regularMarketPrice?.raw - lastPrice) / lastPrice) * 100;
+                        console.log('apiData.regularMarketPrice?.raw', apiData.regularMarketPrice?.raw)
+                        console.log('lastPrice', lastPrice)
+                        console.log('change', change);
+                        const liquidity = (0.8 * apiData.averageDailyVolume3Month) + (0.2 * apiData.regularMarketVolume);
+                        const gicsIndustryGroup = gicsMapping[`${ticker}`] || 'N/A';
 
                         // Updating stock object with calculated fields
-                        Object.assign(stock, {
-                            RangeVolatility: rangeVolatility || 'N/A',
-                            PercentageChangeVolatility: percentageChangeVolatility || 'N/A',
-                            Volatility: volatility || 'N/A',
-                            Change: change ,
-                            Liquidity: liquidity || 'N/A'
-                        });
+                        stockDetails.RangeVolatility = rangeVolatility || 'N/A',
+                        stockDetails.PercentageChangeVolatility = percentageChangeVolatility || 'N/A',
+                        stockDetails.Volatility = volatility || 'N/A',
+                        stockDetails.Change = change ,
+                        stockDetails.Liquidity = liquidity || 'N/A'
+                        stockDetails.GICsIndustryGroup = gicsIndustryGroup;
+                        // stockDetails.Ding = 'Dong';
 
                         // Add the stock's volatility to the total if it's valid
                         if (!isNaN(volatility) && !isNaN(liquidity)) {
@@ -115,18 +121,32 @@ export async function GET() {
                             }); 
                         }
                         
+                        //START NEW
+                        await stockDetails.save()
+                        .then(updatedDocument => {
+                            console.log(`Successfully updated stock details for ${ticker}`);
+                        })
+                        .catch(error => {
+                            console.error(`Error updating stock details for ${ticker}: ${error}`);
+                        });
+                    
+                        // If you want to increment a completion counter or perform other logic after saving, do it here
+                        completedRequests++;
+                        // Calculate the completion percentage
+                        let percentageComplete = ((completedRequests / tickers.length) * 100).toFixed(2);
+                        console.log(`Completed: ${percentageComplete / 2}% for ticker ${ticker}`);
+                
+                        //END NEW
                         completedRequests++;
 
                         // Calculate the completion percentage
-                        let percentageComplete = ((completedRequests / tickers.length) * 100).toFixed(2);
-                        console.log(`Completed: ${percentageComplete}%`);
-
-                        
+                        // let percentageComplete = ((completedRequests / tickers.length) * 100).toFixed(2);
+                        // console.log(`Completed: ${percentageComplete}% for ticker ${ticker}`);
                     }
+
                 } catch (error) {
                     console.error(`Error fetching ${ticker}: ${error}`);
                 }
-            // }
             }));
             
             await delay(1200); // Wait for 1 second (1000 milliseconds) before processing the next batch
@@ -136,52 +156,80 @@ export async function GET() {
         //  CALCULATIONS: //
         ///////////////////
 
-            // Calculate and log the average volatility
-            let averageVolatility = totalVolatility / validVolatilityCount;
-            console.log(`Average Volatility across all stocks: ${averageVolatility}%`);
-            
-            // // Sorting and scoring for Volatility
-            validStocks.sort((a, b) => a.Volatility - b.Volatility);
-
-            const binSize = Math.ceil(validStocks.length / 10);
-
-            for (let i = 0; i < validStocks.length; i++) {
-                let score = Math.ceil((i + 1) / binSize);
-                validStocks[i].VolatilityScore = score;
-            }
-            data.forEach(stock => {
-                const found = validStocks.find(vStock => vStock["ASX_code"] === stock["ASX_code"]);
-                if(found) {
-                    stock.VolatilityScore = found.VolatilityScore;
-                }
-            });
-
-            // // Sorting and scoring for Liquidity
-            validStocks.sort((a, b) => a.Liquidity - b.Liquidity); // Sort stocks by liquidity
-            const liquidityBinSize = Math.ceil(validStocks.length / 10); // Determine bin size for liquidity
-
-            // // Assign Liquidity Scores
-            for (let i = 0; i < validStocks.length; i++) {
-                let liquidityScore = Math.ceil((i + 1) / liquidityBinSize);
-                validStocks[i].LiquidityScore = liquidityScore;
-            }
-
-            // // Map the scores back to the original data
-            data.forEach(stock => {
-                const found = validStocks.find(vStock => vStock["ASX_code"] === stock["ASX_code"]);
-                if(found) {
-                    stock.VolatilityScore = found.VolatilityScore; // Existing Volatility Score assignment
-                    stock.LiquidityScore = found.LiquidityScore; // New Liquidity Score assignment
-                }
-            });
-
+        let averageVolatility = totalVolatility / validVolatilityCount;
+        console.log(`Average Volatility across all stocks: ${averageVolatility}%`);
+        
+        // Sorting and scoring for Volatility
+        validStocks.sort((a, b) => a.Volatility - b.Volatility);
+        
+        const binSize = Math.ceil(validStocks.length / 10);
+        for (let i = 0; i < validStocks.length; i++) {
+            let score = Math.ceil((i + 1) / binSize);
+            validStocks[i].VolatilityScore = score;
+        }
+        
+        // Sorting and scoring for Liquidity
+        validStocks.sort((a, b) => b.Liquidity - a.Liquidity); // Assuming higher liquidity is better
+        const liquidityBinSize = Math.ceil(validStocks.length / 10);
+        for (let i = 0; i < validStocks.length; i++) {
+            validStocks[i].LiquidityScore = Math.ceil((i + 1) / liquidityBinSize);
+        }
+        
 
         ////////////////////
-        //  REWRITE JSON: //
+        //  REWRITE DB: //
         ///////////////////
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-            console.log('File updated successfully');
+
+    
+        // for (const updatedStock of validStocks) {
+        //     try {
+        //         await Stock.updateOne(
+        //             { Stock: updatedStock.Stock }, // Filter to identify the document to update
+        //             {
+        //                 $set: {
+        //                     Name: updatedStock.Name,
+        //                     Price: updatedStock.Price,
+        //                     LastPrice: updatedStock.LastPrice,
+        //                     MarketCapitalisation: updatedStock.MarketCapitalisation,
+        //                     fiftyTwoWeekHigh: updatedStock.fiftyTwoWeekHigh,
+        //                     fiftyTwoWeekLow: updatedStock.fiftyTwoWeekLow,
+        //                     fiftyTwoWeekChangePercent: updatedStock.fiftyTwoWeekChangePercent,
+        //                     twoHundredDayAverageChangePercent: updatedStock.twoHundredDayAverageChangePercent,
+        //                     fiftyDayAverageChangePercent: updatedStock.fiftyDayAverageChangePercent,
+        //                     averageDailyVolume3Month: updatedStock.averageDailyVolume3Month,
+        //                     regularMarketVolume: updatedStock.regularMarketVolume,
+        //                     priceToBook: updatedStock.priceToBook,
+        //                     trailingAnnualDividendRate: updatedStock.trailingAnnualDividendRate,
+        //                     epsTrailingTwelveMonths: updatedStock.epsTrailingTwelveMonths,
+        //                     regularMarketChangePercent: updatedStock.regularMarketChangePercent,
+        //                     RangeVolatility: updatedStock.RangeVolatility,
+        //                     PercentageChangeVolatility: updatedStock.PercentageChangeVolatility,
+        //                     Volatility: updatedStock.Volatility,
+        //                     Change: updatedStock.Change,
+        //                     Liquidity: updatedStock.Liquidity,
+        //                     GICsIndustryGroup: updatedStock.GICsIndustryGroup,
+        //                     VolatilityScore: updatedStock.VolatilityScore,
+        //                     LiquidityScore: updatedStock.LiquidityScore,
+        //                     Ding: updatedStock.Ding
+        //                 },
+        //             },
+        //             { new: true } // This option returns the document after update was applied
+        //         );
+        //         console.log(`Stock ${updatedStock.Stock} updated successfully.`);
+        //     } catch (error) {
+        //         console.error(`Error updating stock ${updatedStock.Stock}:`, error);
+        //     }
+        // }
         
+        // Database Update - Assuming validStocks now holds all the data to be updated
+        // for (let i = 0; i < validStocks.length; i++) {
+        //     const stock = validStocks[i];
+        //     await Stock.findOneAndUpdate({ Stock: stock.Stock }, { $set: stock }, { upsert: true, new: true });
+        //     let percentageComplete = ((i + 1) / validStocks.length * 100).toFixed(2);
+        //     console.log(`Update Progress: ${percentageComplete}% (${i + 1}/${validStocks.length})`);
+        // }
+        
+        // console.log('All stocks updated successfully.');
 
     
         ////////////////////

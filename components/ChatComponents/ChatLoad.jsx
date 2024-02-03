@@ -1,3 +1,4 @@
+'use client';
 import React from 'react'
 import Lottie from 'react-lottie';
 import animationData from '../../public/assets/images/loading4.json'; // Path to your Lottie file

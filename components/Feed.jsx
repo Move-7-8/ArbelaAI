@@ -13,7 +13,7 @@ const sortOptions = [
   // ... add more sort options
 ];
 
-const Feed = () => {
+const Feed = ({ preloadedData }) => {
   const [searchText, setSearchText] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(''); // Renamed to selectedCategory
 
@@ -21,9 +21,12 @@ const Feed = () => {
   const [sortBy, setSortBy] = useState('');
   const [industries, setIndustries] = useState([]);
 
-    const handleSearchChange = (e) => {
-        setSearchText(e.target.value);
-    };
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchText(value);
+    // Optionally debounce this call
+    // fetchData(false, value); // Pass false to not append data, and pass the search value
+};
 
     const handleCategoryChange = (category) => {
         if (selectedCategories.includes(category)) {
@@ -36,10 +39,17 @@ const Feed = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch('/api/companies');
-      const data = await response.json();
-      const uniqueIndustries = [...new Set(data.industry)];
-      setIndustries(uniqueIndustries.map((industry, index) => ({ id: index + 1, name: industry })));
+
+      const response = await fetch(`/api/companies`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+    });
+          const data = await response.json();
+      console.log('data',)
+      const uniqueIndustries = [...new Set(data.GICsIndustryGroup)];
+      setIndustries(uniqueIndustries.map((GICsIndustryGroup, index) => ({ id: index + 1, name: GICsIndustryGroup })));
           }
   
     fetchPosts();
@@ -66,7 +76,7 @@ const Feed = () => {
           <form className="relative flex-center w-full md:w-96">
             <input
                 type="text"
-                placeholder="Search by company name or ticker"
+                placeholder="Search by coompany name or ticker"
                 value={searchText}
                 onChange={handleSearchChange}
                 required
@@ -138,7 +148,7 @@ const Feed = () => {
 
   </div>
   
-      <Catalog searchText={searchText} selectedCategory={selectedCategory} />
+      <Catalog searchText={searchText} selectedCategory={selectedCategory} preloadedData={preloadedData}/>
     </section>
   );
 }

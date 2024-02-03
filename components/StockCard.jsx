@@ -6,15 +6,15 @@ import { useState, useEffect } from 'react';
 
 function StockCard({ company }) {
     // Function to truncate the company name if it's too long
-    const truncateCompanyName = (name) => {
-        return name.length > 20 ? name.substring(0, 20) + "..." : name;
+    const truncateCompanyName = (Name) => {
+        return Name.length > 20 ? Name.substring(0, 20) + "..." : Name;
     };
 
     // Convert the Strings to Numerical
     const Price = +company.Price;
+
     const MarketCapitalisation = +company.MarketCapitalisation;
     const fiftyTwoWeekHigh = +company.fiftyTwoWeekHigh;
-    // console.log('Converted fiftyTwoWeekHigh Front end type:', typeof fiftyTwoWeekHigh, 'Value:', fiftyTwoWeekHigh);
 
     const fiftyTwoWeekLow = +company.fiftyTwoWeekLow;
     const fiftyTwoWeekChangePercent = +company.fiftyTwoWeekChangePercent;
@@ -39,12 +39,11 @@ function StockCard({ company }) {
 
     // Relative Calculations
     const linkPath = {
-        pathname: `/companies/${company['Company name'].toLowerCase().replace(/ /g, '')}`,
+        pathname: `/companies/${company.Name.toLowerCase().replace(/ /g, '')}`,
         query: {
-            //Direct
-            companyName: company["Company name"],
-            ticker: company.ASX_code,
-            industry: company.GICsindustrygroup,
+            companyName: company.Name,
+            ticker: company.Stock,
+            industry: company.GICsIndustryGroup,
             price: Price,
             MarketCapitalisation: MarketCapitalisation,
             fiftyTwoWeekHigh: fiftyTwoWeekHigh, 
@@ -70,33 +69,6 @@ function StockCard({ company }) {
         }
     };
 
-    // console.log('company', company["Company name"])
-    // console.log('ticker', company.ASX_code)
-    // console.log('industry', company.GICsindustrygroup)
-    // console.log('price', Price)
-    // console.log('change', change)
-    // console.log('MarketCap', MarketCapitalisation)
-    // console.log('fiftyTwoWeekHigh', fiftyTwoWeekHigh)
-    // console.log('fiftyTwoWeekLow', fiftyTwoWeekLow)
-    // console.log('fiftyTwoWeekHigh type:', typeof fiftyTwoWeekHigh, 'Value:', fiftyTwoWeekHigh);
-    // console.log('fiftyTwoWeekLow type:', typeof fiftyTwoWeekLow, 'Value:', fiftyTwoWeekLow);
-
-    // console.log('fiftyTwoWeekChangePercent', fiftyTwoWeekChangePercent)
-    // console.log('twoHundredDayAverageChangePercent', twoHundredDayAverageChangePercent)
-    // console.log('fiftyDayAverageChangePercent', fiftyDayAverageChangePercent)
-    // console.log('averageDailyVolume3Month', averageDailyVolume3Month)
-    // console.log('regularMarketVolume', regularMarketVolume)
-    // console.log('priceToBook', priceToBook)
-
-    // console.log('trailingAnnualDividendRate', trailingAnnualDividendRate)
-    // console.log('epsTrailingTwelveMonths', epsTrailingTwelveMonths)
-    // console.log('LastPrice', company.LastPrice)    
-    // console.log('volatility', volatility)
-    // console.log('liquidity', liquidity)    
-    // // console.log('Volatility Score', stock.volatilityScore)
-    // console.log('Volatility Score', volatilityScore)
-    // console.log('Liquidity Score', liquidityScore)    
-
     return (
     <Link 
         href={linkPath} 
@@ -106,20 +78,20 @@ function StockCard({ company }) {
         <div className="px-5 mt-5 flex-grow flex flex-col justify-between">
             <div className="" style={{ height: '30px' }}>
                 <h5 className="text-lg font-semibold tracking-tight text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
-                    {truncateCompanyName(company['Company name'])}
+                    {truncateCompanyName(company.Name)}
                 </h5>
             </div>
             <div className="flex items-center mb-5" style={{ height: '25px' }}>
                 <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 rounded">
-                    {company.ASX_code}
+                    {company.Stock}
                 </span>
             </div>
             <div className="flex items-center">
                 <span className="text-xl text-gray-900 mr-4">
-                    ${company['Price']}
+                    ${company.Price.toFixed(2)}
                 </span>
                 <span className={`text-xl ${((company['Change (%)'] / company['Price']) >= 0) ? 'text-green-500' : 'text-red-500'}`}>
-                    {(company['Change (%)'] / company['Price']).toFixed(2)}%
+                    {(company.Change / company.Price).toFixed(2)}%
                 </span>
             </div>
             <div className="mb-5" style={{ height: '25px' }}>
@@ -128,7 +100,7 @@ function StockCard({ company }) {
                 WebkitLineClamp: '2',
                 WebkitBoxOrient: 'vertical'
             }}>
-                {company['GICsindustrygroup']}
+                {company.GICsIndustryGroup}
             </span>
             </div>
 
@@ -137,19 +109,3 @@ function StockCard({ company }) {
 );
     }
 export default StockCard;
-
-
-
-
-    // // 1. Ranking the Stocks by Volatility
-    // company.sort((a, b) => a.volatility - b.volatility);
-    // // 2. Dividing into Categories
-    // const totalStocks = company.length;
-    // const stocksPerScore = totalStocks / 10;  // Assuming 2000 stocks, 200 stocks per score
-    // // 3. Assigning Scores
-    // company.forEach((company, index) => {
-    //     // Determine the score by finding out which decile the stock falls into
-    //     // The Math.ceil function is used to ensure scores are from 1 to 10
-    //     const score = Math.ceil((index + 1) / stocksPerScore);
-    //     company.volatilityScore = score;
-    // });

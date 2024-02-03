@@ -8,7 +8,7 @@ import {
 } from "@/atom";
 import { useAtom } from "jotai";
 
-function Run({ messageSent, onRunComplete }) {
+function Run({ messageSent, onRunComplete, onRunFinal }) {
 
   // Atom State
   const [thread] = useAtom(threadAtom);

@@ -46,8 +46,6 @@ export default function Home({data}) {
   const [fileUploadTrigger, setFileUploadTrigger] = useState(false);
   const [triggerFileUploadFunction, setTriggerFileUploadFunction] = useState(false);
 
-
-
   //Function to run the Assistant Create function on page load
   useEffect(() => {
     setTriggerCreate(true);
@@ -87,6 +85,7 @@ const handleRunCompletion = () => {
 
 const handleRunFinalization = () => {
   setChatcondition(false); // Set Chatcondition to false when run is completed
+  'OLA PENDEJO, CHAT  CONDITION IS FALSE'
 };
 
 // Check if both tasks are completed

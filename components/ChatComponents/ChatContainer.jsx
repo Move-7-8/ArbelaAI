@@ -8,7 +8,6 @@ function ChatContainer({ onMessageSent, chatCondition }) {
   // Atom State
   const [thread] = useAtom(threadAtom);
   const [messages, setMessages] = useAtom(messagesAtom);
-  const [isTyping, setIsTyping] = useState(false); // Temporarily set to true for testing
 
   //Chatbox scrolls down to new message
 
@@ -24,13 +23,18 @@ function ChatContainer({ onMessageSent, chatCondition }) {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const [fetching, setFetching] = useState(false);
+  const [isTyping, setIsTyping] = useState(false); // Temporarily set to true for testing
 
   useEffect(() => {
-    // Logic to execute when chatCondition changes
-    console.log("Chat condition changed:", chatCondition);
-    // You can add any additional logic you need here
-    // For example, if you need to hide typing indicators or something similar
+    setIsTyping(chatCondition);
   }, [chatCondition]);
+
+  // useEffect(() => {
+  //   // Logic to execute when chatCondition changes
+  //   console.log("Chat condition changed:", chatCondition);
+  //   // You can add any additional logic you need here
+  //   // For example, if you need to hide typing indicators or something similar
+  // }, [chatCondition]);
 
   useEffect(() => {
     const fetchMessages = async () => {

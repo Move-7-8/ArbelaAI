@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {useState, useEffect} from 'react';
 import {signIn, signOut, useSession, getProviders } from 'next-auth/react';
-
+import CompanySearch from '@components/CompanySearch';
 
 const Nav = () => {
   const {data: session } = useSession();
@@ -14,8 +14,6 @@ const Nav = () => {
 
   const pathname = usePathname()
   const isCompanyPage = pathname.startsWith('/companies/');
-
-
 
 
   useEffect(() => {
@@ -43,14 +41,7 @@ const Nav = () => {
 {/* Desktop Navigation  */}
 {/* For Logged In Users  */}
 {isCompanyPage && (
-    <form className="relative w-1/4 ml-auto mr-4">
-      <input
-        type="text"
-        placeholder="Search by company name or ticker"
-        required
-        className="search_input peer w-full px-3 py-2"
-      />
-    </form>
+  <CompanySearch />
 
       )}
       <div className="sm:flex hidden">
