@@ -24,8 +24,8 @@ const Nav = () => {
   }, []);
 
 
-  return (
-    <nav className="w-full mb-16 pt-3 flex justify-between items-center">
+ return (
+<nav className="w-full mb-16 pt-3 flex justify-between items-center">
       {/* Logo and Brand Name */}
       <Link href={session ? "/catalog" : "/"} className="flex gap-2 items-center">
         <Image
@@ -37,14 +37,19 @@ const Nav = () => {
         />
         <p className="logo_text">Arbela</p>
       </Link>
-
-{/* Desktop Navigation  */}
-{/* For Logged In Users  */}
-{isCompanyPage && (
-  <CompanySearch />
-
+<style jsx>
+{`
+  .search_input {
+    padding-right: 0 !important;
+  }
+`}
+</style>
+      {/* Right Section of Navbar */}
+      <div className="flex items-center gap-3 md:gap-5">
+        {/* Search Bar (only if isCompanyPage is true) */}
+        {isCompanyPage && (
+          <CompanySearch/>
         )}
-
         {/* Links and Profile */}
         {session?.user ? (
           <>
@@ -53,10 +58,9 @@ const Nav = () => {
               Catalog
             </Link>
             {/* More links can be added here */}
-
             {/* Profile and Dropdown */}
             <div onClick={() => setToggleDropdown((prev) => !prev)} className="cursor-pointer">
-              <Image 
+              <Image
                 src={session?.user.image || "/assets/images/profile.png"}
                 width={37}
                 height={37}
@@ -93,6 +97,6 @@ const Nav = () => {
       </div>
     </nav>
   );
-}
+};
 
 export default Nav;

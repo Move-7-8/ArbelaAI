@@ -12,7 +12,6 @@ function ChatContainer({ onMessageSent, chatCondition }) {
   // Atom State
   const [thread] = useAtom(threadAtom);
   const [messages, setMessages] = useAtom(messagesAtom);
-  const [isTyping, setIsTyping] = useState(false); // Temporarily set to true for testing
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024); // Initial check
 
   //Chatbox scrolls down to new message
