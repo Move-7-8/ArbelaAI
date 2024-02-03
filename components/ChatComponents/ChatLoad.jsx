@@ -1,32 +1,52 @@
-'use client';
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
-import animationData from '../../public/assets/images/loading4.json'; // Path to your Lottie file
+import animationData from '../../public/assets/images/loading4.json';
 
 const ChatLoad = () => {
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice' // Adjust as needed
-    },
-  };
+    // Helper function to determine initial container height
+    const calculateInitialHeight = () => window.innerWidth >= 1024 ? '97vh' : '60vh';
 
-  return (
-<div className="flex flex-col items-center justify-center" style={{ marginTop: '300px' }}> {/* Custom margin top */}
-  <div> {/* Increased margin to the top */}
-        {/* Lottie Animation Wrapper with Increased Opacity */}
-             <div style={{ 
-            opacity: 1, // Fully opaque
-            borderRadius: '10px' // Optional: to round the corners of the background
-          }}>
-          <Lottie options={defaultOptions} height={150} width={150} /> {/* Adjust the size if needed */}
+    // Set initial container height based on current viewport width
+    const [containerHeight, setContainerHeight] = useState(calculateInitialHeight());
+
+    useEffect(() => {
+        const handleResize = () => {
+            // Adjust container height based on viewport width
+            const height = calculateInitialHeight();
+            setContainerHeight(height);
+        };
+
+        // Set height on mount and add resize event listener
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        // Cleanup event listener on component unmount
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: animationData,
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice'
+        },
+    };
+
+    return (
+        <div className="bg-gray-100 bg-opacity-50 m-4 rounded-lg shadow-lg overflow-hidden flex items-center justify-center"
+             style={{ height: containerHeight, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+            <div style={{
+                opacity: 1,
+                borderRadius: '10px',
+                height: '150px',
+                width: '150px'
+            }}>
+                <Lottie options={defaultOptions} height={150} width={150} />
+            </div>
         </div>
-      </div>
-    </div>
-  )
-}
+    );
+};
 
 export default ChatLoad;
 

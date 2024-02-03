@@ -172,15 +172,15 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
     <div className="flex flex-col flex-grow">
         {!data ? (
             // Skeleton loaders for company name and description
-            <div className="mb-4">
+            <div className="mb-2">
                 <div className="bg-gray-200 h-6 w-1/2 rounded"></div> {/* Skeleton for Company Name */}
-                <div className="bg-gray-200 h-4 mt-2 w-3/4 rounded"></div> {/* Skeleton for Company Description */}
+                <div className="bg-gray-200 h-4 mt-2 w-3/4 rounded mt-2"></div> {/* Skeleton for Company Description */}
             </div>
         ) : (
             // Actual Company Name and Description
-            <div className="mb-4">
+            <div className="mb-2">
                 <h2 className="text-xl font-bold">{companyName}</h2>
-                <p className="text-sm text-gray-600 2xl:mt-5">This is a short description about the company.</p>
+                <p className="text-sm text-gray-600 2xl:mt-5 mt-2">This is a short description about the company.</p>
             </div>
         )}
 
