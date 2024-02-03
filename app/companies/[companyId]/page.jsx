@@ -114,7 +114,7 @@ return (
                 <div className="w-full lg:w-1/3 mb-4 flex-1 lg:mb-0">  
                     <DashboardStockCard data={data} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
                 </div>
-                <div className="w-full lg:flex-grow overflow-y-scroll lg:h-screen">
+                <div className="w-full lg:flex-grow lg:overflow-y-scroll lg:h-screen">
                     <TradingChartContainer data={data}  />
                     <FinancialStatements data={data} className="mt-4" />
                     <NewsSection data={data} className="mt-4" />
@@ -122,35 +122,36 @@ return (
             </div>
         </div>
 
-        {/* Conditional Chatbox Popup Icon for small screens */}
-        <div className="fixed right-4 bottom-4 z-50 lg:hidden">
-            <button 
-                onClick={toggleChatbox} 
-                className="text-4xl text-black p-3 bg-white rounded-full shadow-lg focus:outline-none"
-            >
-                <FaComments />
-            </button>
-        </div>
-
-        {/* Chatbox Component for small screens */}
-        {showChatbox && (
-            <div className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden">
-                <div className="w-full fixed bottom-0 bg-white h-2/3 overflow-auto">
-                    {/* <Chatbox /> */}
-                    <Test data={data}/>
-                    <button onClick={toggleChatbox} className="absolute top-0 right-0 mt-2 mr-2 text-2xl text-gray-700">
-                        &times; {/* Close icon */}
+            {/* Conditional Chatbox Popup Icon for small screens */}
+            {!showChatbox && ( // This line ensures the icon is only shown when showChatbox is false
+                <div className="fixed right-4 bottom-4 z-50 lg:hidden">
+                    <button 
+                        onClick={toggleChatbox} 
+                        className="text-4xl text-black p-3 bg-white rounded-full shadow-lg focus:outline-none"
+                    >
+                        <FaComments />
                     </button>
                 </div>
-            </div>
-        )}
+            )}
 
-        {/* Always visible Chatbox for larger screens */}
-        <div className="hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4">
-            {/* <Chatbox /> */}
-            {/* <FileUpload data={data} /> */}
-            <Test data={data}/>
-        </div>
+            {/* Chatbox Component for small screens */}
+            {showChatbox && (
+                <div className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden">
+                    <div className="w-full fixed bottom-0 bg-white h-2/3 overflow-auto">
+                        {/* Chatbox content */}
+                        <Test data={data}/>
+                        <button onClick={toggleChatbox} className="absolute top-0 right-0 mt-2 mr-2 text-2xl text-gray-700">
+                            &times; {/* Close icon */}
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Always visible Chatbox for larger screens */}
+            <div className="hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4">
+                {/* Permanent chatbox or other content for large screens */}
+                <Test data={data}/>
+            </div>
     </div>
 );
 }
