@@ -11,6 +11,7 @@ function Catalog({ searchText, selectedCategory, preloadedData }) {
     const [tickers, setTickers] = useState(preloadedData || []);
     const [visibleCount, setVisibleCount] = useState(12); // Number of visible tickers
     const [selectedCompany, setSelectedCompany] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const selectCompany = (company) => {
         setSelectedCompany(company); 
@@ -19,29 +20,40 @@ function Catalog({ searchText, selectedCategory, preloadedData }) {
     const itemPerLoad = 12;
 
     const fetchData = async (shouldAppend = false, searchQuery = '', fetchAll = false) => {
-      try {
-          const offset = shouldAppend && !searchQuery ? tickers.length : 0; // Adjust offset based on shouldAppend and if there's a searchQuery
-          let limit = fetchAll ? 2000 : itemPerLoad;
+    setLoading(true); // Set loading true at the beginning of fetch
+    try {
+        const offset = shouldAppend && !searchQuery ? tickers.length : 0;
+        let limit = fetchAll ? 2000 : itemPerLoad;
 
-          const response = await fetch(`/api/companies?limit=${limit}&offset=${offset}`, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ limit: limit, offset: offset, searchText: searchQuery, category: selectedCategory  }),
-          });
+        const response = await fetch(`/api/companies?limit=${limit}&offset=${offset}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ limit: limit, offset: offset, searchText: searchQuery, category: selectedCategory }),
+        });
 
-          const fetchedData = await response.json();
-          if (!shouldAppend || searchQuery || selectedCategory) { // If not appending or if there's a search query, replace the list
+        const fetchedData = await response.json();
+        if (!shouldAppend || searchQuery || selectedCategory) {
             setTickers(fetchedData);
-            console.log('selectedCategory', selectedCategory)
-          } else { // Otherwise, append the data
-              setTickers(prevTickers => [...prevTickers, ...fetchedData]);
-          }
-        } catch (error) {
-            console.error("Fetch error: ", error);
+        } else {
+            setTickers(prevTickers => [...prevTickers, ...fetchedData]);
         }
-      };
+    } catch (error) {
+        console.error("Fetch error: ", error);
+    } finally {
+        setLoading(false); // Ensure loading is set to false after fetch completes or fails
+    }
+};
+
+ useEffect(() => {
+        if (preloadedData) {
+            setTickers(preloadedData);
+            setLoading(false); // Set loading false if preloadedData is used
+        } else {
+            fetchData(); // Fetch data on component mount
+        }
+    }, []); 
 
     const handleLoadMore = () => {
         fetchData(true).then(() => {
@@ -87,27 +99,44 @@ function Catalog({ searchText, selectedCategory, preloadedData }) {
             ((typeof companyName === 'string' && companyName.toLowerCase().includes(searchText.toLowerCase())) ||
                 (typeof industry === 'string' && industry.toLowerCase().includes(searchText.toLowerCase())));
     });
-
-    return (
-        <div className="w-full px-28 pt-10 py-2">
+    
+ return (
+ <div className="w-full px-28 pt-10 py-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-                {filteredTickers.slice(0, visibleCount).map(company => (
-                    <div onClick={() => selectCompany(company)} key={company.Stock}>
-                        <StockCard company={company}  />
-                    </div>
-                ))}
+                {loading ? (
+                    // Render adjusted skeleton loaders when loading
+                    Array.from({ length: visibleCount }).map((_, index) => (
+                        <div key={index} className="bg-gray-200 flex flex-col w-full mx-auto border border-gray-200 rounded-lg shadow" style={{ width: '270px', height: 'auto' }}>
+                            
+                            <div className="px-5 mt-5 space-y-3 flex-grow flex flex-col justify-between">
+                                <div className="h-6 bg-gray-200 rounded" style={{ height: '30px' }}></div> {/* Mimic Company Name Placeholder */}
+                                <div className="h-4 bg-gray-200 rounded w-3/4" style={{ height: '25px' }}></div> {/* Mimic Stock Placeholder */}
+                                <div className="flex justify-between">
+                                    <div className="h-4 bg-gray-200 rounded w-1/2"></div> {/* Mimic Price Placeholder */}
+                                    <div className="h-4 bg-gray-200 rounded w-1/4"></div> {/* Mimic Change Placeholder */}
+                                </div>
+                                <div className="h-4 bg-gray-200 rounded" style={{ height: '25px' }}></div> {/* Mimic Industry Placeholder */}
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    // Render StockCards when not loading
+                    tickers.slice(0, visibleCount).map(company => (
+                        <div onClick={() => selectCompany(company)} key={company.Stock} className="w-full max-w-sm mx-auto" style={{ maxWidth: '270px', height: 'auto' }}>
+                            <StockCard company={company} />
+                        </div>
+                    ))
+                )}
             </div>
 
-            {searchText.length === 0 && (
+            {!loading && searchText.length === 0 && (
                 <div className="flex justify-center mt-4">
                     <button onClick={handleLoadMore} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mb-20 mt-8 rounded">
                         Load More
                     </button>
                 </div>
             )}
-
         </div>
     );
 }
-
 export default Catalog;
