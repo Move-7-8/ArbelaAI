@@ -24,50 +24,38 @@ const Feed = ({ preloadedData }) => {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchText(value);
-    // Optionally debounce this call
-    // fetchData(false, value); // Pass false to not append data, and pass the search value
 };
 
     const handleCategoryChange = (category) => {
-        if (selectedCategories.includes(category)) {
-            setSelectedCategories(selectedCategories.filter(c => c !== category));
+        if (selectedCategory.includes(category)) {
+            setSelectedCategory(selectedCategory.filter(c => c !== category));
         } else {
-            setSelectedCategories([...selectedCategories, category]);
+            setSelectedCategory([...selectedCategory, category]);
         }
     };
 
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-
-      const response = await fetch(`/api/companies`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-    });
+    useEffect(() => {
+      const fetchIndustries = async () => {
+        const response = await fetch(`/api/industries?uniqueIndustries=true`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (response.ok) {
           const data = await response.json();
-      console.log('data',)
-      const uniqueIndustries = [...new Set(data.GICsIndustryGroup)];
-      setIndustries(uniqueIndustries.map((GICsIndustryGroup, index) => ({ id: index + 1, name: GICsIndustryGroup })));
-          }
-  
-    fetchPosts();
+          // Map your data to the existing structure
+          const industriesData = data.map((code, index) => ({ id: index + 1, name: code })); // Adjusted index to start from 1
+          // Prepend the "All Industries" option to your industries array
+          const allIndustriesOption = [{ id: 0, name: 'All Industries' }];
+          const industriesWithAllOption = allIndustriesOption.concat(industriesData);
+          setIndustries(industriesWithAllOption);
+        }
+      };
+      
+    fetchIndustries();
   }, []);
-
-  // JSON Stock Attribute Calculations (Equivalent of calculations in @StockCard.jsx)
-  // companiesData.forEach(company => {
-  //   company.change = ((company.Price - company.LastPrice) / company.LastPrice) * 100;
-
-  //   const rangeVolatility = ((company.fiftyTwoWeekHigh - company.fiftyTwoWeekLow) / company.fiftyTwoWeekLow) * 100;
-  //   const percentageChangeVolatility = (company.fiftyTwoWeekChangePercent + company.twoHundredDayAverageChangePercent + company.fiftyDayAverageChangePercent) / 3;
-  //   company.volatility = (0.5 * rangeVolatility) + (0.5 * percentageChangeVolatility);
-    
-  //   company.liquidity = (0.8 * company.averageDailyVolume3Month) + (0.2 * company.regularMarketVolume);
-  // });
-
-
-
+  
   return (
        <section>
       <div className="feed">
@@ -76,7 +64,7 @@ const Feed = ({ preloadedData }) => {
           <form className="relative flex-center w-full md:w-96">
             <input
                 type="text"
-                placeholder="Search by coompany name or ticker"
+                placeholder="Search by company name or ticker"
                 value={searchText}
                 onChange={handleSearchChange}
                 required
@@ -94,16 +82,16 @@ const Feed = ({ preloadedData }) => {
 
                   {open && (
                     <Listbox.Options className="listbox-options absolute mt-2 w-full z-10">
-                      {sortOptions.map((option) => (
-                        <Listbox.Option key={option.id} value={option.name}>
-                          {({ active, selected }) => (
-                            <div className={`listbox-option ${active ? 'bg-blue-500 text-white' : 'text-black'} px-4 py-2`}>
-                              {option.name}
-                            </div>
-                          )}
-                        </Listbox.Option>
-                      ))}
-                    </Listbox.Options>
+                    {industries.map((industry) => (
+                      <Listbox.Option key={industry.id} value={industry.name}>
+                        {({ active, selected }) => (
+                          <div className={`listbox-option ${active ? 'bg-blue-500 text-white' : 'text-black'} px-4 py-2`}>
+                            {industry.name}
+                          </div>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
                   )}
                 </div>
               </Fragment>
@@ -111,38 +99,36 @@ const Feed = ({ preloadedData }) => {
           </Listbox>
         </div>
 
-        {/* Industry Filter - Unchanged */}
         {/* Filters Section */}
     <div className="flex space-x-4 w-full">
-   <Listbox value={selectedCategory} onChange={category => {
+        <Listbox value={selectedCategory} onChange={(category) => {
         setSelectedCategory(category);
-        console.log('Selected Category:', category); // Log the selected category
-    }} className="w-1/2 max-w-xs">
-        {({ open }) => (
-          
-          <Fragment>
-            <div className="relative w-full">
-              <Listbox.Button className="dropdown-button dropdown-button-category flex justify-between items-center h-10 px-3">
-                <span>{selectedCategory || 'Filters'}</span>
-                {open ? <FaChevronUp className="h-4 w-4 text-gray-500" /> : <FaChevronDown className="h-4 w-4 text-gray-500" />}
-              </Listbox.Button>
-              {open && (
-                <Listbox.Options className="listbox-options absolute mt-2 w-full z-10">
-                  <div className="px-4 py-2 text-gray-700 text-sm">Select Industry:</div>
-                  {Object.keys(categoryMap).map((category) => (
-                    <Listbox.Option key={category} value={category}>
-                      {({ active, selected }) => (
-                        <div className={`listbox-option ${active ? 'bg-blue-500 text-white' : 'text-black'} px-4 py-2`}>
-                          {category}
-                        </div>
-                      )}
-                    </Listbox.Option>
-                  ))}
-                </Listbox.Options>
-              )}
-            </div>
-          </Fragment>
-        )}
+        console.log('Selected Category:', category); // Correctly log the selected category
+          }} className="w-1/2 max-w-xs">
+            {({ open }) => (
+              <Fragment>
+                <div className="relative w-full">
+                  <Listbox.Button className="dropdown-button dropdown-button-category flex justify-between items-center h-10 px-3">
+                    <span>{selectedCategory.name || 'Filters'}</span>
+                    {open ? <FaChevronUp className="h-4 w-4 text-gray-500" /> : <FaChevronDown className="h-4 w-4 text-gray-500" />}
+                  </Listbox.Button>
+                  {open && (
+                    <Listbox.Options className="listbox-options absolute mt-2 w-full z-10">
+                      <div className="px-4 py-2 text-gray-700 text-sm">Select Industry:</div>
+                      {industries.map((industry) => (
+                        <Listbox.Option key={industry.id} value={industry}>
+                          {({ active, selected }) => (
+                            <div className={`listbox-option ${active ? 'bg-blue-500 text-white' : 'text-black'} px-4 py-2`}>
+                              {industry.name}
+                            </div>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  )}
+                </div>
+            </Fragment>
+          )}
       </Listbox>
     </div>
 

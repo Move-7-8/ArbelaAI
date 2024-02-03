@@ -18,30 +18,30 @@ function Catalog({ searchText, selectedCategory, preloadedData }) {
     
     const itemPerLoad = 12;
 
-    const fetchData = async (shouldAppend = true, searchQuery = '', fetchAll = false) => {
-        try {
-          const offset = shouldAppend ? tickers.length : 0;
-          let limit = fetchAll ? 2000 : itemPerLoad; // Use 2000 if fetching all, else itemPerLoad
-      
+    const fetchData = async (shouldAppend = false, searchQuery = '', fetchAll = false) => {
+      try {
+          const offset = shouldAppend && !searchQuery ? tickers.length : 0; // Adjust offset based on shouldAppend and if there's a searchQuery
+          let limit = fetchAll ? 2000 : itemPerLoad;
+
           const response = await fetch(`/api/companies?limit=${limit}&offset=${offset}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ limit: limit, offset: offset, searchText: searchQuery }),
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ limit: limit, offset: offset, searchText: searchQuery, category: selectedCategory  }),
           });
-      
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
+
           const fetchedData = await response.json();
-          setTickers(prevTickers => shouldAppend ? [...prevTickers, ...fetchedData] : fetchedData);
+          if (!shouldAppend || searchQuery || selectedCategory) { // If not appending or if there's a search query, replace the list
+            setTickers(fetchedData);
+            console.log('selectedCategory', selectedCategory)
+          } else { // Otherwise, append the data
+              setTickers(prevTickers => [...prevTickers, ...fetchedData]);
+          }
         } catch (error) {
-          console.error("Fetch error: ", error);
+            console.error("Fetch error: ", error);
         }
       };
-      
-
 
     const handleLoadMore = () => {
         fetchData(true).then(() => {
@@ -49,16 +49,31 @@ function Catalog({ searchText, selectedCategory, preloadedData }) {
         });
     }; 
 
-      const debounceSearch = useCallback(debounce((search) => {
-        fetchData(false, search, true); 
-      }, 200), []); 
-      
-      useEffect(() => {
+    const debounceSearch = useCallback(debounce((search) => {
+      fetchData(false, search, true); // Always replace the tickers on search
+    }, 200), []);
+
+    //Use Effect to handle search changes
+    useEffect(() => {
         if (searchText && searchText.length > 2) { 
-          debounceSearch(searchText);
+            debounceSearch(searchText);
+        } else if (!searchText) {
+            fetchData(); // Reload initial data if search text is cleared
         }
-      }, [searchText, debounceSearch]);
-            
+    }, [searchText, debounceSearch]);
+      
+    //Use Effect to handle category changes
+    useEffect(() => {
+      if (selectedCategory) {
+          fetchData(false, searchText, false, selectedCategory); // Call fetchData with the selected category
+      }
+    }, [selectedCategory]);
+  
+    //Use Effect to handle initial data load
+    useEffect(() => {
+      fetchData();
+    }, []); 
+
 
     const filteredTickers = tickers.filter(company => {
 
@@ -67,15 +82,20 @@ function Catalog({ searchText, selectedCategory, preloadedData }) {
         const price = company.Price; 
         const change = (company.Change / company.Price).toFixed(2)
 
-        const isCategoryMatch = selectedCategory
-            ? categoryMap[selectedCategory].includes(industry)
-            : true;
+            // Check if "All Industries" is selected or there is no selected category
+        // const isCategoryMatch = selectedCategory === 'All Industries' || selectedCategory === '' || selectedCategory.name === 'All Industries'
+        // ? true
+        // : company.GICsIndustryGroup === selectedCategory;
 
+        const isCategoryMatch = selectedCategory
+        ? company.GICsIndustryGroup === selectedCategory.name
+        : true;
+    
         return isCategoryMatch &&
             ((typeof companyName === 'string' && companyName.toLowerCase().includes(searchText.toLowerCase())) ||
                 (typeof industry === 'string' && industry.toLowerCase().includes(searchText.toLowerCase())));
     });
-
+    
     return (
         <div className="w-full px-28 pt-10 py-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -86,11 +106,13 @@ function Catalog({ searchText, selectedCategory, preloadedData }) {
                 ))}
             </div>
 
+            {searchText.length === 0 && (
                 <div className="flex justify-center mt-4">
                     <button onClick={handleLoadMore} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mb-20 mt-8 rounded">
                         Load More
                     </button>
                 </div>
+            )}
 
         </div>
     );

@@ -30,35 +30,42 @@ export async function POST(request) {
   const limit = request_data.limit;
   const offset = request_data.offset;
   const searchText = request_data.searchText; 
+  const category = request_data.category; 
 
   console.log('Limit: ', limit);
   console.log('Offset: ', offset);
   console.log('Search Text: ', searchText);
-
+  console.log('Category: ', category);
 
   let query = {};
+
+  // If there is searchText, add conditions for searching by Name or Ticker.
   if (searchText) {
-    query = {
-      $or: [
-        { Name: { $regex: searchText, $options: 'i' } },
-        { Ticker: { $regex: searchText, $options: 'i' } }
-      ]
-    };
+    query.$or = [
+      { Name: { $regex: searchText, $options: 'i' } },
+      { Ticker: { $regex: searchText, $options: 'i' } },
+    ];
   }
 
-  console.log('Companies Data Query: ', JSON.stringify(query, null, 2));
-  const companiesData = await Stock.find({ 'Name' : { $regex: searchText, $options: 'i' }}).skip(offset).limit(limit).lean();
-  // const companiesData = await Stock.find({DigitalX}).skip(offset).limit(limit).lean();
+  // If there is a category, add a condition for the category.
+  if (category) {
+    // Ensure that category is treated as a string value representing the industry name.
+    // If category is an object, use category.name; otherwise, use category directly.
+    const industryName = typeof category === 'object' ? category.name : category;
+    query.GICsIndustryGroup = { $regex: industryName, $options: 'i' };
+  }
+  
+  console.log('Final Query: ', JSON.stringify(query, null, 2));
 
+  // Execute a single query with the constructed conditions.
+  const companiesData = await Stock.find(query).skip(offset).limit(limit).lean();
   console.log('Companies Data Result: ', companiesData);
 
-  
-  const responseData = companiesData;
-  return new Response(JSON.stringify(responseData), {
+  // Prepare and return the response.
+  return new Response(JSON.stringify(companiesData), {
     status: 200,
     headers: {
       'Content-Type': 'application/json',
     },
   });
-  }
-
+}

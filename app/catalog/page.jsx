@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Fragment } from 'react';
-import Catalog from '@components/Catalog';
+// import Catalog from '@components/Catalog';
 import Feed from '@components/Feed';
 import { Listbox } from '@headlessui/react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'; // Importing ChevronDown icon from FontAwesome
