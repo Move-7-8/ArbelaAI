@@ -122,7 +122,7 @@ const gradientId = `gradient-${Math.random().toString(36).substr(2, 9)}`;
   
 return (
   
-    <div className="bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container" style={{  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', }}>
+    <div className="bg-gray-100 fixed bottom-20 top-20 bg-opacity-50 m-4  w-full lg:max-w-[calc(25%-2.3rem)]  rounded-lg flex flex-col chat-container" style={{  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', }}>
     {/* Chat Header */}
     {/* Chat Header with SVG */}
     <div className="relative text-center rounded-lg overflow-hidden shadow-lg" style={{ paddingTop: 0, marginTop: 0 }}>
@@ -163,14 +163,14 @@ return (
 
           @media (min-width: 1024px) { /* Tailwind's 'lg' breakpoint */
             .chat-container {
-              height: 93vh; /* Height for large screens and above */
+              height: 74vh; /* Height for large screens and above */
             }
           }
         `}
   
       </style>
  {/* Chat Content Area */}
-      <div className="flex-grow flex flex-col p-3 overflow-y-auto" ref={chatContentRef} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
+      <div className="flex-grow flex flex-col p-3 overflow-y-auto lg:max-h-[calc(90%-2.3rem)]" ref={chatContentRef} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
   
       backdropFilter: 'blur(10px)', /* Blur effect */
       WebkitBackdropFilter: 'blur(10px)', /* For Safari */
@@ -194,7 +194,7 @@ return (
       </div>
 
       {/* Chat Input Area */}
-      <div  className="fixed bg-gray-50 bottom-0  mr-6 p-4 pr-8 border-t border-gray-300 w-full lg:max-w-[calc(25%-2.3rem)] flex items-center"
+      <div  className="fixed mb-2 bg-gray-50 bottom-0  mr-6 p-4 pr-8 border-t border-gray-300 w-full lg:max-w-[calc(25%-2.3rem)] flex items-center"
   style={{
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
     borderRadius: '0 0 8px 8px',
