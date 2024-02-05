@@ -38,7 +38,7 @@ export async function GET() {
 
         const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
         
-        const batchSize = 9; // 10 requests per batch
+        const batchSize = 4; // 10 requests per batch
         let completedRequests = 0; // Counter for completed requests
 
         for (let i = 0; i < tickers.length; i += batchSize) {
@@ -145,7 +145,7 @@ export async function GET() {
                 }
             }));
             
-            await delay(1200); // Wait for 1 second (1000 milliseconds) before processing the next batch
+            await delay(1400); // Wait for 1.4 second (1400 milliseconds) before processing the next batch
         }
 
         ////////////////////
