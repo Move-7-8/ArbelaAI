@@ -47,20 +47,23 @@ return (
     <div className="grid md:grid-cols-2 gap-4">
       {!newsArray || newsArray.length === 0
         ? renderSkeletonCards()
-        : newsArray.slice(0, visibleCount).map((article, index) => (
-            <a key={index} href={article.link} target="_blank" rel="noopener noreferrer"
-               className="block rounded-lg overflow-hidden shadow-lg relative min-h-[200px] group">
-              <div className="absolute inset-0 bg-cover bg-center filter blur-sm group-hover:blur-none transition duration-300 ease-in-out"
-                   style={{ backgroundImage: `url(${getThumbnailUrl(article)})` }}>
+         : newsArray.slice(0, visibleCount).map((article, index) => (
+        <a key={index} href={article.link} target="_blank" rel="noopener noreferrer"
+           className="block rounded-lg overflow-hidden shadow-lg relative min-h-[200px] group">
+          <div className="absolute inset-0 bg-cover bg-center filter blur-sm group-hover:blur-none transition duration-300 ease-in-out"
+               style={{
+                 backgroundImage: getThumbnailUrl(article) ? `url(${getThumbnailUrl(article)})` : 'none',
+                 backgroundColor: getThumbnailUrl(article) ? 'transparent' : '#333', // Dark grey background if no image
+               }}>
                 {/* Blurred background */}
               </div>
               {/* Adjusted container for text */}
-              <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-90 rounded-t-lg" style={{ height: '50%' }}>
+              <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-90 rounded-t-lg" style={{ height: '53%' }}>
                 <div className="p-4" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
                   <h3 className="text-black text-sm font-semibold overflow-hidden" style={{ display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', textOverflow: 'ellipsis' }}>
                     {titleCase(article.title)}
                   </h3>
-                  <div className="text-black text-xs">
+                  <div className="text-black text-xs mt-1">
                     <p>By {article.publisher}</p>
                     <p>Updated {getTimeAgo(article.providerPublishTime)}</p>
                   </div>

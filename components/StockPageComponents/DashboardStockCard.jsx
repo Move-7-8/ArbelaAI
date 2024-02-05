@@ -85,7 +85,7 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
 
  return (
     
-        <div className="flex flex-col flex-1 rounded-md mx-auto lg-height-85vh">
+        <div className="flex flex-col flex-1 rounded-md mx-auto lg-height-85vh" >
             {/* Align buttons to the left */}
         <div className="flex justify-center rounded mx-4 pr-2 pb-2">
           <button
