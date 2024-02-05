@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { FaSearch, FaTimes } from 'react-icons/fa';
-import NavStockCard from '@components/navStockCard';
+import NavStockCard from '@components/NavStockcard';
 
 const CompanySearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
