@@ -5,6 +5,7 @@ import animationData from '../../public/assets/images/loading4.json';
 const ChatLoad = () => {
     // Helper function to determine initial container height
     const calculateInitialHeight = () => window.innerWidth >= 1024 ? '84vh' : '60vh';
+     const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024); // Initial check
 
     // Set initial container height based on current viewport width
     const [containerHeight, setContainerHeight] = useState(calculateInitialHeight());
@@ -34,7 +35,7 @@ const ChatLoad = () => {
     };
 
     return (
-        <div className="bg-gray-100 fixed bottom-20 top-20 mb-2  w-full lg:max-w-[calc(25%-2.3rem)]  bg-opacity-50 m-4 rounded-lg shadow-lg overflow-hidden flex items-center justify-center"
+        <div className={`bg-gray-100 mb-2 bg-opacity-50 m-4 rounded-lg shadow-lg overflow-hidden flex items-center justify-center ${isLargeScreen ? 'fixed bottom-20 w-full top-20 lg:max-w-[calc(25%-2.3rem)]' : ''}`} 
              style={{ height: containerHeight, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
             <div style={{
                 opacity: 1,

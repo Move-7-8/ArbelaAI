@@ -122,7 +122,8 @@ const gradientId = `gradient-${Math.random().toString(36).substr(2, 9)}`;
   
 return (
   
-    <div className="bg-gray-100 fixed bottom-20 top-20 bg-opacity-50 m-4  w-full lg:max-w-[calc(25%-2.3rem)]  rounded-lg flex flex-col chat-container" style={{  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', }}>
+    
+  <div className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container ${isLargeScreen ? 'fixed bottom-20 w-full top-20 lg:max-w-[calc(25%-2.3rem)]' : ''}`} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
     {/* Chat Header */}
     {/* Chat Header with SVG */}
     <div className="relative text-center rounded-lg overflow-hidden shadow-lg" style={{ paddingTop: 0, marginTop: 0 }}>
