@@ -1,4 +1,4 @@
-import PlanCard from '@components/Plancard'
+import PlanCard from '@components/PlanCard'
 
 const page = () => {
   return (

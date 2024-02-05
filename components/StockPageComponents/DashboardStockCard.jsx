@@ -7,11 +7,13 @@ import { useState } from 'react';
 
 function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) {
 
-  
     const companyName = data?.keyStatistics?.longName || 'Company Name Not Available';
     const marketCap = data?.price?.marketCap?.longFmt || 'Not Available';
     const askPrice = data?.financeAnalytics?.currentPrice|| 'Not Available';
     const prevClose = data?.historic?.meta?.chartPreviousClose || 'Not Available';
+    console.log('current price 1', askPrice)
+    console.log('previous close 1', prevClose)
+
     const volume = data?.price?.regularMarketVolume?.longFmt || 'Not Available';
 
     //New Data for Ratios Connor added: 
@@ -47,11 +49,11 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
                           : Number(askPrice);
     const previousClose = Number(prevClose);
 
+    console.log('current price 2', currentPrice)
+    console.log('previous close 2', previousClose)
     // Calculate price change and percentage change
-    const priceChange = ((currentPrice - previousClose) / previousClose) * 100;
-    const percentageChange = previousClose !== 0 
-                             ? ((priceChange / previousClose) * 100).toFixed(2) 
-                             : 'N/A';
+    const priceChange = currentPrice - previousClose;
+    const percentageChange = parseFloat((((currentPrice - previousClose) / previousClose) * 100).toFixed(2));
 
         // Custom function to format price change
     const formatPriceChange = (change) => {
@@ -226,7 +228,7 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
                                         backgroundColor: priceChange >= 0 ? 'rgba(53, 168, 83, 0.5)' : 'rgba(255, 0, 0, 0.5)',
                                         color: priceChange >= 0 ? '#35A853' : 'red'
                                     }}>
-                                    <span className="mr-2 text-white text-xs">{priceChange >= 0 ? '↑' : '↓'}</span>
+                                    <span className="mr-2 text-white text-xs">{percentageChange >= 0 ? '↑' : '↓'}</span>
                                     <span className="text-white text-xs">{`${percentageChange}%`}</span>
                                 </div>
                                 {/* Price Increase in Dollars */}
