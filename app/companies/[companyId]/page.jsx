@@ -32,8 +32,10 @@ const Page = () => {
   const volatilityScore = searchParams.get('volatilityScore');
   const liquidityScore = searchParams.get('liquidityScore');
   const [showChatbox, setShowChatbox] = useState(false);
-
   const toggleChatbox = () => setShowChatbox(!showChatbox);
+
+    // This CSS class determines whether the chatbox is visible
+  const chatboxClass = showChatbox ? "block" : "hidden";
   
   // From the UseEffect 
   //Useeffect to pull in Financial data with fetch aborting 
@@ -102,6 +104,11 @@ const Page = () => {
   }, []); // Empty array means this effect runs once after the first render
   
   // console.log('DATA RECEIVED: ', data);
+  // CSS for controlling chatbox visibility
+  const chatboxVisibility = showChatbox ? 'block' : 'hidden';
+  const mobileChatboxStyle = `fixed inset-0 z-40 bg-black bg-opacity-50 ${chatboxVisibility} lg:hidden`;
+  const desktopChatboxStyle = "hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4";
+
 
 return (
     <div className="flex flex-wrap w-full h-full">
@@ -134,26 +141,24 @@ return (
                 </div>
             )}
 
-            {/* Chatbox Component for small screens */}
-            {showChatbox && (
-                <div className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden">
-                    <div className="w-full fixed bottom-0 bg-white h-2/3 overflow-auto">
-                        {/* Chatbox content */}
-                        <Test data={data}/>
-                        <button onClick={toggleChatbox} className="absolute top-0 right-0 mt-2 mr-2 text-2xl text-gray-700">
-                            &times; {/* Close icon */}
-                        </button>
-                    </div>
-                </div>
-            )}
+      {/* Mobile chatbox with controlled visibility through CSS */}
+      <div className={mobileChatboxStyle}>
+        <div className="w-full fixed bottom-0 bg-white h-2/3 overflow-auto">
+          <Test data={data}/>
+          <button onClick={toggleChatbox} className="absolute top-0 right-0 mt-2 mr-2 text-2xl text-gray-700">
+            &times;
+          </button>
+        </div>
+      </div>
 
-            {/* Always visible Chatbox for larger screens */}
-            <div className="hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4">
-                {/* Permanent chatbox or other content for large screens */}
-                <Test data={data}/>
-            </div>
+      {/* Desktop chatbox always visible */}
+      <div className={desktopChatboxStyle}>
+        <Test data={data}/>
+      </div>
     </div>
-);
-}
+  );
+};
+
+
 
 export default Page;

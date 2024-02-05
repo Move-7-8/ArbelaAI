@@ -113,6 +113,10 @@ function ChatContainer({ onMessageSent, chatCondition }) {
       setSending(false);
     }
   };
+
+  // Generate a unique ID for the gradient to avoid conflicts
+const gradientId = `gradient-${Math.random().toString(36).substr(2, 9)}`;
+
   
 return (
   
@@ -122,14 +126,14 @@ return (
     <div className="relative text-center rounded-lg overflow-hidden shadow-lg" style={{ paddingTop: 0, marginTop: 0 }}>
           <div className={isLargeScreen ? "h-[10vw] max-h-[90px]" : "h-[15vw]"} style={{ width: '100%', overflow: 'hidden' }}>
             <svg width="100%" height="100%" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-                <defs>
-                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" style={{ stopColor: '#5E5DF0', stopOpacity: 0.5 }} />
-                        <stop offset="100%" style={{ stopColor: '#4FC6EB', stopOpacity: 0.5 }} /> 
-                    </linearGradient>
-                </defs>
-                 <path d={isLargeScreen ? "M0,0 L700,0 L500 60 Q100,150 0,80 Z" : "M0,0 L500,0 L500 40 Q60,120 0,70 Z"} fill="url(#gradient)" />
-            </svg>
+      <defs>
+        <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style={{ stopColor: '#5E5DF0', stopOpacity: 0.5 }} />
+          <stop offset="100%" style={{ stopColor: '#4FC6EB', stopOpacity: 0.5 }} />
+        </linearGradient>
+      </defs>
+      <path d={isLargeScreen ? "M0,0 L700,0 L500 60 Q100,150 0,80 Z" : "M0,0 L500,0 L500 40 Q60,120 0,70 Z"} fill={`url(#${gradientId})`} />
+    </svg>
         </div>
     {/* Container for image and text */}
     <div className="absolute left-3 top-1/4 mt-4 transform -translate-y-1/2 flex items-center">
