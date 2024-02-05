@@ -48,7 +48,7 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
     const previousClose = Number(prevClose);
 
     // Calculate price change and percentage change
-    const priceChange = currentPrice - previousClose;
+    const priceChange = ((currentPrice - previousClose) / previousClose) * 100;
     const percentageChange = previousClose !== 0 
                              ? ((priceChange / previousClose) * 100).toFixed(2) 
                              : 'N/A';

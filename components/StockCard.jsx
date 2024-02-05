@@ -31,10 +31,13 @@ function StockCard({ company }) {
     const rangeVolatility = +company.RangeVolatility;
     const percentageChangeVolatility = +company.PercentageChangeVolatility;
     const volatility = +company.Volatility;
-    const change = +company.Change;
+    const change = +((Price - company.LastPrice) / company.LastPrice) * 100;
     const liquidity = +company.Liquidity;
     const volatilityScore = +company.VolatilityScore;
     const liquidityScore = +company.LiquidityScore;
+
+
+    console.log('Company Change in Catalog: ',  change)
 
 
     // Relative Calculations
@@ -90,8 +93,8 @@ function StockCard({ company }) {
                 <span className="text-xl text-gray-900 mr-4">
                     ${company.Price.toFixed(2)}
                 </span>
-                <span className={`text-xl ${((company['Change (%)'] / company['Price']) >= 0) ? 'text-green-500' : 'text-red-500'}`}>
-                    {(company.Change / company.Price).toFixed(2)}%
+                <span className={`text-xl ${(change >= 0) ? 'text-green-500' : 'text-red-500'}`}>
+                    {change.toFixed(2)}%
                 </span>
             </div>
             <div className="mb-5" style={{ height: '25px' }}>

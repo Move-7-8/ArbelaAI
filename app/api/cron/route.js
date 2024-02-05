@@ -30,11 +30,11 @@ export async function GET() {
         const stocks = await Stock.find({}).select('Stock'); // This selects only the ASX_code field
         
         // //REAL
-        // let tickers = stocks.map(stock => stock.Stock);
+        let tickers = stocks.map(stock => stock.Stock);
 
         //TESTING
-        let tickers = stocks.map(stock => stock.Stock).slice(0, 10);
-        console.log("Testing with first 10 tickers:", tickers);
+        // let tickers = stocks.map(stock => stock.Stock).slice(0, 2);
+        // console.log("Testing with first 10 tickers:", tickers);
 
         const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
         
@@ -60,7 +60,6 @@ export async function GET() {
                         headers: {
                           'X-RapidAPI-Key': apiKey,
                           'X-RapidAPI-Host': apiHost,
-                          'Content-Type': 'application/json'
                         }
                       });
 
@@ -70,6 +69,7 @@ export async function GET() {
                     }
 
                     const apiData = await response.json();
+
                     const stockDetails = await Stock.findOne({ Stock: ticker });
                     if (stockDetails) {
                         
@@ -95,9 +95,6 @@ export async function GET() {
                         const percentageChangeVolatility = (apiData.fiftyTwoWeekChangePercent + apiData.twoHundredDayAverageChangePercent + apiData.fiftyDayAverageChangePercent) / 3;
                         const volatility = (0.5 * rangeVolatility) + (0.5 * percentageChangeVolatility);
                         const change = ((apiData.regularMarketPrice?.raw - lastPrice) / lastPrice) * 100;
-                        console.log('apiData.regularMarketPrice?.raw', apiData.regularMarketPrice?.raw)
-                        console.log('lastPrice', lastPrice)
-                        console.log('change', change);
                         const liquidity = (0.8 * apiData.averageDailyVolume3Month) + (0.2 * apiData.regularMarketVolume);
                         const gicsIndustryGroup = gicsMapping[`${ticker}`] || 'N/A';
 
@@ -124,7 +121,6 @@ export async function GET() {
                         //START NEW
                         await stockDetails.save()
                         .then(updatedDocument => {
-                            console.log(`Successfully updated stock details for ${ticker}`);
                         })
                         .catch(error => {
                             console.error(`Error updating stock details for ${ticker}: ${error}`);

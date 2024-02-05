@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { FaSearch, FaTimes } from 'react-icons/fa';
+import NavStockCard from '@components/navStockCard';
 
 const CompanySearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -112,14 +113,8 @@ const CompanySearch = () => {
             </ul>
           )}
           {searchResults.length > 0 && (
-            <ul className="absolute w-full  bg-white border border-gray-200 rounded-md shadow-lg z-30">
-              {searchResults.map((company) => (
-                <li key={company.id} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  {company.Name} - {company.Stock}
-                </li>
-              ))}
-            </ul>
-          )}
+              <NavStockCard searchResults={searchResults}  />
+            )}
         </div>
       ) : null}
     </div>
