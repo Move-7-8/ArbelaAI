@@ -117,6 +117,8 @@ function ChatContainer({ onMessageSent, chatCondition }) {
   // Generate a unique ID for the gradient to avoid conflicts
 const gradientId = `gradient-${Math.random().toString(36).substr(2, 9)}`;
 
+///maintain height of chat content area to align with chat input area
+
   
 return (
   
@@ -161,7 +163,7 @@ return (
 
           @media (min-width: 1024px) { /* Tailwind's 'lg' breakpoint */
             .chat-container {
-              height: 92vh; /* Height for large screens and above */
+              height: 93vh; /* Height for large screens and above */
             }
           }
         `}
