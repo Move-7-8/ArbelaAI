@@ -7,6 +7,9 @@ const nextConfig = {
   images: {
       domains: ['lh3.googleusercontent.com', 'img.freepik.com', 'veterinaire-tour-hassan.com'], // You can add or remove domains as needed
   },
+
+  staticPageGenerationTimeout: 1000,
+
   webpack(config) {
       config.module.rules.push({
           test: /\.node$/,
