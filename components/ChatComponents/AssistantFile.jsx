@@ -58,31 +58,6 @@ const AssistantFile = ({ condition1, condition2, symbol, fileChangeTrigger, onFi
     }
   };
 
-//   const handleUpload = async () => {
-//     setUploading(true);
-//     try {
-//         // Call your backend API endpoint to trigger the S3 file retrieval
-//         const response = await fetch("/api/file/upload", {
-//             method: "GET", // or "POST" if appropriate
-//         });
-
-//         if (!response.ok) {
-//             throw new Error(`HTTP error! status: ${response.status}`);
-//         }
-
-//         const responseJSON = await response.json();
-//         // Handle the response, e.g., updating state with the retrieved files
-//         setMessage("Successfully fetched files from S3");
-//         // Further processing...
-
-//     } catch (error) {
-//         console.error("Error fetching files from S3:", error);
-//         setMessage("Error fetching files from S3");
-//     } finally {
-//         setUploading(false);
-//     }
-// };
-
   const handleUpload = async (file) => {
     setUploading(true);
     try {
@@ -142,14 +117,9 @@ const handleCreate = async (uploadedFile) => {
       const fileData = await response.json();
       const assistantFile = fileData.assistantFile;
       const assistantFileId = fileData.assistantFile.id;
-      console.log('======================================')
-      console.log('RESPONSE RECEIVED', fileData)
-      console.log('======================================')
-      // if (!response.ok) {
-        //     throw new Error(`HTTP error! status: ${response.status}`);
-        // }
-        
-        // const assistantFile = response.data.assistantFile;
+      // console.log('======================================')
+      // console.log('RESPONSE RECEIVED', fileData)
+      // console.log('======================================')
 
       console.log("assistantFileReceived", assistantFile);
       setAssistantFile(assistantFileId);
@@ -220,52 +190,6 @@ const handleDelete = async () => {
 };
 
 return null
-//   return (
-// <div className="flex flex-col mb-8">
-//   <h1 className="text-4xl font-semibold mb-4">Assistant File</h1>
-//   <div className="flex flex-row gap-x-4 w-full">
-//     <button
-//       // onClick={() => fileInputRef.current?.click()}
-//       onClick={handleFileChange}
-//       disabled={uploading}
-//       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-//     >
-//       {uploading ? "Uploading..." : "S3"}
-//     </button>
-//      <button
-//       onClick={handleUpload}
-//       // disabled={!assistant || !file}
-//       className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">
-//       {uploading ? "Uploading..." : "Ipload"}
-//       </button>
-    
-
-//     <button
-//       onClick={handleCreate}
-//       // disabled={!assistant || !file}
-//       className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-//     >
-//       {creating ? "Creating..." : "Create"}
-//     </button>
-//     <button
-//       onClick={handleList}
-//       className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
-//     >
-//       {listing ? "Listing..." : "List"}
-//     </button>
-//     <button
-//       onClick={handleDelete}
-//       // disabled={!assistant || !assistantFile}
-//       className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-//     >
-//       {deleting ? "Deleting..." : "Delete"}
-//     </button>
-//   </div>
-//   {message && <div className="mt-4 text-center text-lg">{message}</div>}
-//   <p className="font-semibold mb-4">File ID: {uploadedFileInfo?.id}</p>
-
-// </div>
-//   );
 }
 
 export default AssistantFile;

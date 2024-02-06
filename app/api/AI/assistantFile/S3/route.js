@@ -15,7 +15,12 @@ export async function POST (request) {
         });
 
         const s3 = new AWS.S3();
+        
+        // Introduce a delay of 10 seconds
+        console.log('Timer has started')
 
+        await new Promise(resolve => setTimeout(resolve, 10000)); // 10000 milliseconds = 10 seconds
+        console.log('10 Seconds has passed')
 
         // Get the file from S3
         const file = await s3.getObject({

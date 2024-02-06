@@ -6,13 +6,14 @@ export async function GET (request) {
     const assistantId = searchParams.get('assistantId');
     const fileId = searchParams.get('fileId');
     console.log('assistant ID: ', assistantId);
-    console.log('file ID: ', fileId);
+    console.log('AssistantFile Backend file ID: ', fileId);
+    
     if (!assistantId || !fileId) 
         return Response.json(
         { error: 'No assistant id provided' }, 
         { status: 400 }
         )
-    
+
     if(!fileId) 
         return Response.json({error: 'No file Id provided'}, {status: 400})
         
@@ -28,9 +29,9 @@ export async function GET (request) {
         console.log('assistantFile', assistantFile);
 
         return Response.json({assistantFile: assistantFile}, {status: 200});
+
     } catch (e) {
         console.log(e);
         return Response.json({error: 'unknown error'}, {status: 500});
     }
-    
 }

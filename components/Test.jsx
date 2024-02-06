@@ -161,7 +161,6 @@ const handleFileChangeTrigger = () => {
         <div className="flex flex-col w-full">
           {/* Assistant, FileUpload, AssistantFile, Thread are Service Components */}
           {/* They are triggered once on render of company page */}
-          {/* <Assistant onFileChangeTrigger={handleFileChangeTrigger} triggerCreate={triggerCreate} setTriggerCreate={setTriggerCreate} /> */}
           <Assistant onFileChangeTrigger={afterAssistantCreate} triggerCreate={triggerCreate} setTriggerCreate={setTriggerCreate} />
           <FileUpload data={data} onFileUploadCompleted={onFileUploadCompleted} />
           <AssistantFile 

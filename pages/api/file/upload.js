@@ -2,6 +2,8 @@
 //But it apparently needs to be this way according 
 //To the tutorial I'm following
 
+//api/file/upload.js
+
 import { IncomingForm } from 'formidable';
 import OpenAI from "openai";
 import { createReadStream } from 'fs';
@@ -40,14 +42,13 @@ export const config = {
 };
 
 export default async function handler(req, res) {
-    console.log('upload running');
+    console.log('PAGES API FILE RUNNIN');
     if (req.method !== 'POST') {
         res.setHeader('Allow', 'POST');
         return res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 
     const form = new IncomingForm();
-    console.log('form: ', form)
 
     form.parse(req, async (err, fields, files) => {
         if (err) {
@@ -66,12 +67,14 @@ export default async function handler(req, res) {
 
             const fileStream = createReadStream(file.filepath);
 
+
             const openai = new OpenAI(process.env.OPENAI_API_KEY);
             const response = await openai.files.create({
                 file: fileStream,
                 purpose: "assistants",
             });
-            // console.log('open AI response: ', response)
+
+            console.log('open AI file upload response: ', response)
             return res.status(200).json({ file: response });
         } catch (e) {
             console.error(e);
