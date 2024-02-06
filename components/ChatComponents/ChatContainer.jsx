@@ -123,107 +123,197 @@ const gradientId = `gradient-${Math.random().toString(36).substr(2, 9)}`;
 return (
   
     
-  <div className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container ${isLargeScreen ? 'fixed bottom-20 w-full top-20 lg:max-w-[calc(25%-2.3rem)]' : ''}`} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-    {/* Chat Header */}
-    {/* Chat Header with SVG */}
-    <div className="relative text-center rounded-lg overflow-hidden shadow-lg" style={{ paddingTop: 0, marginTop: 0 }}>
-          <div className={isLargeScreen ? "h-[10vw] max-h-[90px]" : "h-[15vw]"} style={{ width: '100%', overflow: 'hidden' }}>
+//   <div className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container ${isLargeScreen ? 'fixed bottom-20 w-full top-20 lg:max-w-[calc(25%-2.3rem)]' : ''}`} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+//     {/* Chat Header */}
+//     {/* Chat Header with SVG */}
+//     <div className="relative text-center rounded-lg overflow-hidden shadow-lg" style={{ paddingTop: 0, marginTop: 0 }}>
+//           <div className={isLargeScreen ? "h-[10vw] max-h-[90px]" : "h-[15vw]"} style={{ width: '100%', overflow: 'hidden' }}>
+//             <svg width="100%" height="100%" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+//       <defs>
+//         <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+//           <stop offset="0%" style={{ stopColor: '#5E5DF0', stopOpacity: 0.5 }} />
+//           <stop offset="100%" style={{ stopColor: '#4FC6EB', stopOpacity: 0.5 }} />
+//         </linearGradient>
+//       </defs>
+//       <path d={isLargeScreen ? "M0,0 L700,0 L500 60 Q100,150 0,80 Z" : "M0,0 L500,0 L500 40 Q60,120 0,70 Z"} fill={`url(#${gradientId})`} />
+//     </svg>
+//         </div>
+//     {/* Container for image and text */}
+//     <div className="absolute left-3 top-1/4 mt-4 transform -translate-y-1/2 flex items-center">
+//         {/* Circle for PNG with image */}
+//         <div className="rounded-full w-12 h-12 flex justify-center items-center" style={{ backgroundColor: 'rgba(79, 198, 235, 0.3)' }}>
+//             <div className="relative w-10 h-10 rounded-full overflow-hidden">
+//                 <Image src={botImage} alt="PNG" layout="fill" objectFit="cover" />
+//             </div>
+//         </div>
+
+// {/* Adjusted text alignment */}
+//         <div className="ml-3 text-white flex flex-col justify-center">
+//             <div className="text-sm" style={{ alignSelf: 'flex-start' }}>Chat with</div>
+//             <div className="text-lg" style={{ alignSelf: 'flex-start' }}>Arbela bot</div>
+//         </div>
+//     </div>
+// </div>
+
+
+//     <style>
+//         {`
+//           .chat-container {
+//             height: 60vh; /* Default height for small screens */
+//           }
+
+//           @media (min-width: 1024px) { /* Tailwind's 'lg' breakpoint */
+//             .chat-container {
+//               height: 74vh; /* Height for large screens and above */
+//             }
+//           }
+//         `}
+  
+//       </style>
+//  {/* Chat Content Area */}
+//       <div className="flex-grow flex flex-col p-3 overflow-y-auto lg:max-h-[calc(90%-2.3rem)]" ref={chatContentRef} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
+  
+//       backdropFilter: 'blur(10px)', /* Blur effect */
+//       WebkitBackdropFilter: 'blur(10px)', /* For Safari */
+//      }}>
+//         {messages.map((message, index) => (
+//    <p key={index} 
+//      className="text-left text-sm my-2 p-2 rounded-md" 
+//      style={message.role === 'user' ? 
+//             { background: 'linear-gradient(to right, rgba(80, 120, 235, 0.5), rgba(79, 198, 235, 0.5))', color: 'white' } : 
+//             { backgroundColor: 'rgba(200, 200, 200, 0.2)' }}>
+//     {message.content[0].type === "text" ? message.content[0].text.value : null}
+//   </p>
+//         ))}
+//         {isTyping && (
+//           <div className="flex space-x-1">
+//             <span className="typing-indicator"></span>
+//             <span className="typing-indicator"></span>
+//             <span className="typing-indicator"></span>
+//           </div>
+//         )}
+//       </div>
+
+//       {/* Chat Input Area */}
+//       <div  className="fixed mb-2 bg-gray-50 bottom-0  mr-6 p-4 pr-8 border-t border-gray-300 w-full lg:max-w-[calc(25%-2.3rem)] flex items-center"
+//   style={{
+//     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+//     borderRadius: '0 0 8px 8px',
+
+//   }}>
+//         <input 
+//           type="text" 
+//           placeholder="Type a message..." 
+//             className="chat-input flex-grow p-2 border border-black rounded-l-md bg-white"
+//   style={{ minWidth: '50px', maxWidth: 'calc(100% - 20px)' }} // Adjust 60px based on the button and padding
+//           value={message}
+//           onChange={(e) => setMessage(e.target.value)}
+//           onKeyPress={(e) => {
+//             if (e.key === 'Enter' && !e.shiftKey) {
+//               sendMessage();
+//             }
+//           }}
+//         />
+//         <button 
+//           disabled={!thread || sending || message === ""}
+//           className="bg-black text-white rounded-r-md p-2 flex items-center hover:bg-white hover:text-black border border-black"
+//           onClick={sendMessage}
+//         >
+//           <FaPaperPlane size={24} className="text-current" />
+//         </button>
+//       </div>
+
+//       <style jsx>{`
+//         @keyframes blink {
+//           0%, 100% { opacity: .2; }
+//           50% { opacity: 1; }
+//         }
+//         .typing-indicator {
+//           display: inline-block;
+//           height: 8px;
+//           width: 8px;
+//           background-color: black;
+//           border-radius: 9999px; /* Full round */
+//           animation: blink 1.4s infinite;
+//         }
+//         .typing-indicator:nth-child(2) {
+//           animation-delay: .2s;
+//         }
+//         .typing-indicator:nth-child(3) {
+//           animation-delay: .4s;
+//         }
+//       `}</style>
+//     </div>
+//   );
+// }
+
+    <>
+      <div className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container ${isLargeScreen ? 'fixed bottom-20 w-full top-20 lg:max-w-[calc(25%-2.3rem)]' : 'fixed top-0 bottom-0 w-full'}`} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+        
+        {/* Chat Header with SVG */}
+        <div className="relative text-center rounded-lg shadow-lg" style={{ paddingTop: 0, marginTop: 0 }}>
+          <div className= {isLargeScreen ? "h-[10vw] rounded max-h-[90px]" : " rounded h-[15vw]"} style={{ width: '100%', overflow: 'hidden' }}>
             <svg width="100%" height="100%" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style={{ stopColor: '#5E5DF0', stopOpacity: 0.5 }} />
-          <stop offset="100%" style={{ stopColor: '#4FC6EB', stopOpacity: 0.5 }} />
-        </linearGradient>
-      </defs>
-      <path d={isLargeScreen ? "M0,0 L700,0 L500 60 Q100,150 0,80 Z" : "M0,0 L500,0 L500 40 Q60,120 0,70 Z"} fill={`url(#${gradientId})`} />
-    </svg>
-        </div>
-    {/* Container for image and text */}
-    <div className="absolute left-3 top-1/4 mt-4 transform -translate-y-1/2 flex items-center">
-        {/* Circle for PNG with image */}
-        <div className="rounded-full w-12 h-12 flex justify-center items-center" style={{ backgroundColor: 'rgba(79, 198, 235, 0.3)' }}>
-            <div className="relative w-10 h-10 rounded-full overflow-hidden">
-                <Image src={botImage} alt="PNG" layout="fill" objectFit="cover" />
-            </div>
-        </div>
-
-{/* Adjusted text alignment */}
-        <div className="ml-3 text-white flex flex-col justify-center">
-            <div className="text-sm" style={{ alignSelf: 'flex-start' }}>Chat with</div>
-            <div className="text-lg" style={{ alignSelf: 'flex-start' }}>Arbela bot</div>
-        </div>
-    </div>
-</div>
-
-
-    <style>
-        {`
-          .chat-container {
-            height: 60vh; /* Default height for small screens */
-          }
-
-          @media (min-width: 1024px) { /* Tailwind's 'lg' breakpoint */
-            .chat-container {
-              height: 74vh; /* Height for large screens and above */
-            }
-          }
-        `}
-  
-      </style>
- {/* Chat Content Area */}
-      <div className="flex-grow flex flex-col p-3 overflow-y-auto lg:max-h-[calc(90%-2.3rem)]" ref={chatContentRef} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
-  
-      backdropFilter: 'blur(10px)', /* Blur effect */
-      WebkitBackdropFilter: 'blur(10px)', /* For Safari */
-     }}>
-        {messages.map((message, index) => (
-   <p key={index} 
-     className="text-left text-sm my-2 p-2 rounded-md" 
-     style={message.role === 'user' ? 
-            { background: 'linear-gradient(to right, rgba(80, 120, 235, 0.5), rgba(79, 198, 235, 0.5))', color: 'white' } : 
-            { backgroundColor: 'rgba(200, 200, 200, 0.2)' }}>
-    {message.content[0].type === "text" ? message.content[0].text.value : null}
-  </p>
-        ))}
-        {isTyping && (
-          <div className="flex space-x-1">
-            <span className="typing-indicator"></span>
-            <span className="typing-indicator"></span>
-            <span className="typing-indicator"></span>
+              <defs>
+                <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style={{ stopColor: '#5E5DF0', stopOpacity: 0.5 }} />
+                  <stop offset="100%" style={{ stopColor: '#4FC6EB', stopOpacity: 0.5 }} />
+                </linearGradient>
+              </defs>
+              <path d={isLargeScreen ? "M0,0 L700,0 L500 60 Q100,150 0,80 Z" : "M0,0 L500,0 L500 40 Q60,120 0,70 Z"} fill={`url(#${gradientId})`} />
+            </svg>
           </div>
-        )}
+          <div className="absolute left-3 top-1/4 mt-4 transform -translate-y-1/2 flex items-center">
+            <div className="rounded-full w-12 h-12 flex justify-center items-center" style={{ backgroundColor: 'rgba(79, 198, 235, 0.3)' }}>
+              <div className="relative w-10 h-10 rounded-full overflow-hidden">
+                {/* Ensure the Image component is imported correctly for your setup */}
+                <Image src={botImage} alt="PNG" layout="fill" objectFit="cover" />
+              </div>
+            </div>
+            <div className="ml-3 text-white flex flex-col justify-center">
+              <div className="text-sm" style={{ alignSelf: 'flex-start' }}>Chat with</div>
+              <div className="text-lg" style={{ alignSelf: 'flex-start' }}>Arbela bot</div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Chat Content Area */}
+        <div className="flex-grow p-3 overflow-y-auto" ref={chatContentRef} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
+          {messages.map((message, index) => (
+            <p key={index} className="text-left text-sm my-2 p-2 rounded-md" style={message.role === 'user' ? { background: 'linear-gradient(to right, rgba(80, 120, 235, 0.5), rgba(79, 198, 235, 0.5))', color: 'white' } : { backgroundColor: 'rgba(200, 200, 200, 0.2)' }}>
+              {message.content[0].type === "text" ? message.content[0].text.value : null}
+            </p>
+          ))}
+          {isTyping && (
+            <div className="flex space-x-1">
+              <span className="typing-indicator"></span>
+              <span className="typing-indicator"></span>
+              <span className="typing-indicator"></span>
+            </div>
+          )}
+        </div>
+
+        {/* Chat Input Area */}
+        <div className="bg-gray-50 p-4 border-t border-gray-300 flex items-center" style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: '0 0 8px 8px' }}>
+          <input type="text" placeholder="Type a message..." className="flex-grow p-2 border border-gray-300 rounded-l-md bg-white" value={message} onChange={(e) => setMessage(e.target.value)} onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) { sendMessage(); }}} />
+          <button disabled={!message} className="bg-black text-white rounded-r-md p-2 flex items-center hover:bg-gray-700" onClick={sendMessage}>
+            <FaPaperPlane size={24} />
+          </button>
+        </div>
       </div>
 
-      {/* Chat Input Area */}
-      <div  className="fixed mb-2 bg-gray-50 bottom-0  mr-6 p-4 pr-8 border-t border-gray-300 w-full lg:max-w-[calc(25%-2.3rem)] flex items-center"
-  style={{
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    borderRadius: '0 0 8px 8px',
-
-  }}>
-        <input 
-          type="text" 
-          placeholder="Type a message..." 
-            className="chat-input flex-grow p-2 border border-black rounded-l-md bg-white"
-  style={{ minWidth: '50px', maxWidth: 'calc(100% - 20px)' }} // Adjust 60px based on the button and padding
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              sendMessage();
-            }
-          }}
-        />
-        <button 
-          disabled={!thread || sending || message === ""}
-          className="bg-black text-white rounded-r-md p-2 flex items-center hover:bg-white hover:text-black border border-black"
-          onClick={sendMessage}
-        >
-          <FaPaperPlane size={24} className="text-current" />
-        </button>
-      </div>
-
+      {/* Style tags inclusion for specific styling */}
       <style jsx>{`
+        .chat-container {
+          height: 60vh; /* Adjusted for full view height */
+        }
+
+        @media (min-width: 1024px) {
+          .chat-container {
+            height: 85vh; /* Ensured consistency across screen sizes */
+          }
+        }
+
         @keyframes blink {
           0%, 100% { opacity: .2; }
           50% { opacity: 1; }
@@ -233,8 +323,8 @@ return (
           height: 8px;
           width: 8px;
           background-color: black;
-          border-radius: 9999px; /* Full round */
-          animation: blink 1.4s infinite;
+          border-radius: 9999px;
+          animation: blink 1.4s infinite ease-in-out;
         }
         .typing-indicator:nth-child(2) {
           animation-delay: .2s;
@@ -243,9 +333,9 @@ return (
           animation-delay: .4s;
         }
       `}</style>
-    </div>
+    </>
   );
-}
+};
 
 
 export default ChatContainer;

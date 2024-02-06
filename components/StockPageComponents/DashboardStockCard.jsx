@@ -8,6 +8,7 @@ import { useState } from 'react';
 function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) {
 
     const companyName = data?.keyStatistics?.longName || 'Company Name Not Available';
+    const ticker = data?.historic?.meta?.symbol  || 'Company Name Not Available';
     const marketCap = data?.price?.marketCap?.longFmt || 'Not Available';
     const askPrice = data?.financeAnalytics?.currentPrice|| 'Not Available';
     const prevClose = data?.historic?.meta?.chartPreviousClose || 'Not Available';
@@ -188,7 +189,7 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
         ) : (
             // Actual Company Name and Description
             <div className="mb-2">
-                <h2 className="text-xl font-bold">{companyName}</h2>
+                <h2 className="text-xl font-bold">{`${companyName} - ${ticker}`}</h2> {/* Modified to include ticker */}
                 <p className="text-sm text-gray-600 2xl:mt-5 mt-2">This is a short description about the company.</p>
             </div>
         )}
@@ -213,7 +214,7 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
                 <>
                     {/* Stock Price - Left Aligned */}
                     <div>
-                        <span className="text-gray-500 uppercase text-xs block">Price</span>
+                        <span className="text-gray-500 uppercase text-xs block mb-2">Price</span>
                         <span className="text-black font-bold text-l">{formatAskPrice(askPrice)}</span>
                     </div>
 

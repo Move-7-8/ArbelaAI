@@ -4,7 +4,7 @@ import animationData from '../../public/assets/images/loading4.json';
 
 const ChatLoad = () => {
     // Helper function to determine initial container height
-    const calculateInitialHeight = () => window.innerWidth >= 1024 ? '84vh' : '60vh';
+    const calculateInitialHeight = () => window.innerWidth >= 1024 ? '85vh' : '60vh';
      const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024); // Initial check
 
     // Set initial container height based on current viewport width
