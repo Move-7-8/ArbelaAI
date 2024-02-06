@@ -17,8 +17,9 @@ const Home = () => {
     setIsLandingVisible(true);
   }, []);
 
-  // Simulate data fetching function
+ 
   const preloadData = async () => {
+    setIsLoading(true); // Start loading
     try {
       const limit = 12; // Load initial 12 stocks
       const response = await fetch(`/api/companies?limit=${limit}`, {
@@ -36,13 +37,14 @@ const Home = () => {
       setPreloadedData(data);
     } catch (error) {
       console.error("Fetch error: ", error);
+    } finally {
+      setIsLoading(false); // End loading regardless of outcome
     }
   };
     
   useEffect(() => {
     preloadData(); // Trigger data preloading on component mount
   }, []);
-
 
 
   return (
