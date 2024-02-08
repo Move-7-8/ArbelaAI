@@ -130,7 +130,7 @@ const handleFileChangeTrigger = () => {
     if (typeof window !== "undefined") {
       const localAssistant = localStorage.getItem("assistant");
       if (localAssistant) {
-        setAssistant(JSON.parse(localAssistant));
+        // setAssistant(JSON.parse(localAssistant));
       }
       const localFile = localStorage.getItem("file");
       if (localFile) {

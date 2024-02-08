@@ -16,19 +16,22 @@ export async function POST (request) {
 
         const s3 = new AWS.S3();
 
-
         // Get the file from S3
         const file = await s3.getObject({
             Bucket: 'kalicapitaltest',
-            Key: fileKey,
-        }).promise();
+            // Key: `${fileKey}_current_data`,
+            Key: `${fileKey}`,
 
+        }).promise();
+        console.log('Assistant File Route File:', file);
         // Set appropriate headers for the file
         const headers = {
             'Content-Type': file.ContentType,
             'Content-Length': file.ContentLength,
             'Content-Disposition': `attachment; filename="${fileKey}"`,
         };
+
+        console.log('Assistant File Route Headers:', headers);
 
         // Send the file data in the response
         return new Response(file.Body, {
