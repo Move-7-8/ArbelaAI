@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 
 
-function ChatContainer({ onMessageSent, chatCondition }) {
+function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
   // Atom State
   const [thread] = useAtom(threadAtom);
   const [messages, setMessages] = useAtom(messagesAtom);
@@ -16,7 +16,7 @@ function ChatContainer({ onMessageSent, chatCondition }) {
   const [messageFocused, setMessageFocused] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-
+  console.log(' chatComponent chat_ticker:', chat_ticker);
   //Chatbox scrolls down to new message
 
   const chatContentRef = useRef(null);
@@ -151,8 +151,8 @@ return (
       </div>
 
             <div className="ml-3 text-white flex flex-col justify-center">
-              <div className="text-sm" style={{ alignSelf: 'flex-start' }}>Chat with</div>
-              <div className="text-lg" style={{ alignSelf: 'flex-start' }}>Arbela bot</div>
+              <div className="text-sm" style={{ alignSelf: 'flex-start' }}>Analyse</div>
+              <div className="text-lg" style={{ alignSelf: 'flex-start' }}>{chat_ticker}</div>
             </div>
           </div>
         </div>

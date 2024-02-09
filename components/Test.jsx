@@ -46,6 +46,7 @@ export default function Home({data}) {
   const [fileUploadTrigger, setFileUploadTrigger] = useState(false);
   const [triggerFileUploadFunction, setTriggerFileUploadFunction] = useState(false);
 
+  const chat_ticker = data?.price?.symbol;
   //Function to run the Assistant Create function on page load
   useEffect(() => {
     setTriggerCreate(true);
@@ -177,7 +178,7 @@ const handleFileChangeTrigger = () => {
           {/* Run is a Service Component, ChatContainer is not */}
           {/* Run is triggered on ChatContainer 'Send' button click */}
           {/* Conditional Rendering between load screen and chatbox*/}
-          {isThreadCreated ? <ChatContainer onMessageSent={handleMessageSent} chatCondition={Chatcondition} /> : <ChatLoad />}
+          {isThreadCreated ? <ChatContainer onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} /> : <ChatLoad />}
           <Run messageSent={messageSent} onRunComplete={handleRunCompletion} onRunFinal={handleRunFinalization} />
         </div>
         {/* Chat */}
