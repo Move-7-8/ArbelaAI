@@ -47,6 +47,7 @@ export default function Home({data}) {
   const [triggerFileUploadFunction, setTriggerFileUploadFunction] = useState(false);
 
   const chat_ticker = data?.price?.symbol;
+  console.log('chat_ticker:', chat_ticker);
   //Function to run the Assistant Create function on page load
   useEffect(() => {
     setTriggerCreate(true);

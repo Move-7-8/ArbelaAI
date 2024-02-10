@@ -3,18 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-// import Charts from '@components/Charts'; 
-// import CompanyAnalysis from '@components/StockPageComponents/CompanyAnalysis';
-// import Card from '@components/StockPageComponents/DashboardTopCards';
-// import StockCard from '@components/StockCard';
 import Test from '@components/Test';
 import DashboardStockCard from '@components/StockPageComponents/DashboardStockCard';
 import TradingChartContainer from '@components/StockPageComponents/DashboardTradingChart';
-// import Chatbox from '@components/StockPageComponents/DashboardChatBox';
 import FinancialStatements from '@components/StockPageComponents/Statements';
 import NewsSection from '@components/StockPageComponents/NewsSection';
-// import SearchBar from '@components/StockPageComponents/SearchBar';
-// import FileUpload from '@components/ChatComponents/FileUpload';
 import { FaComments } from 'react-icons/fa';
 
 const Page = () => {
@@ -28,18 +21,15 @@ const Page = () => {
   console.log('Page Ticker',ticker )
 
   const industry = searchParams.get('industry');
-  // const change = searchParams.get('change');
   const volatilityScore = searchParams.get('volatilityScore');
   const liquidityScore = searchParams.get('liquidityScore');
   const [showChatbox, setShowChatbox] = useState(false);
   const toggleChatbox = () => setShowChatbox(!showChatbox);
 
-    // This CSS class determines whether the chatbox is visible
+  // This CSS class determines whether the chatbox is visible
   const chatboxClass = showChatbox ? "block" : "hidden";
   
-  // From the UseEffect 
   //Useeffect to pull in Financial data with fetch aborting 
-  //(because multiple requests were somehow firing)
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -50,8 +40,7 @@ const Page = () => {
         console.log('Fetching data...');
 
         try {
-          // Make sure to define response here from the fetch API
-          const response = await fetch(`/api/companies/[${ticker}]`, {
+          const response1 = await fetch(`/api/companies/[${ticker}]`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -60,31 +49,35 @@ const Page = () => {
             signal: signal 
           });
   
-          if (!response.ok) {
+          if (!response1.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
   
-          // Now you can safely use response to get the JSON result
-          const result = await response.json();
-          console.log('Complete Data:', result);
+          const result1 = await response1.json();
+          console.log('Complete Data from first API:', result1);
+          setData(result1); // Assuming you want to keep this data
   
-          // Destructure the data into variables
-          // const { 
-          //   historic, 
-          //   historic30Days, 
-          //   historic7Days, 
-          //   price, 
-          //   balanceSheet, 
-          //   earnings, 
-          //   financeAnalytics, 
-          //   news, 
-          //   earningsTrend, 
-          //   keyStatistics 
-          // } = result;
+          // After the first call completes, make the second POST request
+          const response2 = await fetch(`/api/companies2/[${ticker}]`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            // Adjust the body as per the requirements of the second API endpoint
+            body: JSON.stringify({ 'ticker': ticker }), // Example, adjust as needed
+            signal: signal 
+          });
 
-          // Save the complete data to state if needed
-          setData(result);
-  
+          if (!response2.ok) {
+            throw new Error(`HTTP error! status: ${response2.status}`);
+          }
+
+          const result2 = await response2.json();
+          console.log('Complete Data from second API:', result2);
+          // Update state with the new data, or combine it with the previous result as needed
+          setData(prevData => ({ ...prevData, ...result2 }));
+    
+
         } catch (error) {
           if (error.name !== 'AbortError') {
             console.error('There was an error fetching the data!', error);
@@ -101,22 +94,16 @@ const Page = () => {
     return () => {
       controller.abort(); // Abort the fetch on component unmount
     };
-  }, []); // Empty array means this effect runs once after the first render
+  }, []);
   
-  // console.log('DATA RECEIVED: ', data);
   // CSS for controlling chatbox visibility
   const chatboxVisibility = showChatbox ? 'block' : 'hidden';
   const mobileChatboxStyle = `fixed inset-0 z-40 bg-black bg-opacity-50 ${chatboxVisibility} lg:hidden`;
   const desktopChatboxStyle = "hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4";
 
-
 return (
     <div className="flex flex-wrap w-full h-full">
-        {/* Main content container */}
         <div className="flex flex-col w-full mt-20 lg:w-3/4">
-            {/* <SearchBar /> */}
-
-            {/* DashboardStockCard and TradingChartContainer Section */}
             <div className="flex flex-col lg:flex-row mt-3">
                 <div className="w-full lg:w-1/3 mb-4 flex-1 lg:mb-0">  
                     <DashboardStockCard data={data} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
@@ -128,19 +115,17 @@ return (
                 </div>
             </div>
         </div>
-
-            {/* Conditional Chatbox Popup Icon for small screens */}
-            {!showChatbox && ( // This line ensures the icon is only shown when showChatbox is false
-                <div className="fixed right-4 bottom-4 z-50 lg:hidden">
-                    <button 
-                        onClick={toggleChatbox} 
-                        className="text-4xl text-black p-3 bg-white rounded-full shadow-lg focus:outline-none"
-                    >
-                        <FaComments />
-                    </button>
-                </div>
-            )}
-
+        {/* Conditional Chatbox Popup Icon for small screens */}
+        {!showChatbox && ( 
+            <div className="fixed right-4 bottom-4 z-50 lg:hidden">
+                <button 
+                    onClick={toggleChatbox} 
+                    className="text-4xl text-black p-3 bg-white rounded-full shadow-lg focus:outline-none"
+                >
+                    <FaComments />
+                </button>
+            </div>
+        )}
       {/* Mobile chatbox with controlled visibility through CSS */}
       <div className={mobileChatboxStyle}>
         <div className="w-full fixed bottom-0 bg-white h-2/3 overflow-auto">
@@ -150,7 +135,6 @@ return (
           </button>
         </div>
       </div>
-
       {/* Desktop chatbox always visible */}
       <div className={desktopChatboxStyle}>
         <Test data={data}/>
@@ -158,7 +142,5 @@ return (
     </div>
   );
 };
-
-
 
 export default Page;

@@ -79,7 +79,7 @@ export default async function handler(req, res) {
                 }
         
             const fileStream = createReadStream(newFilePath); // Use newFilePath here
-            console.log('upload file fileStream: ', fileStream)
+            // console.log('upload file fileStream: ', fileStream)
 
 
             const openai = new OpenAI(process.env.OPENAI_API_KEY);
@@ -88,7 +88,7 @@ export default async function handler(req, res) {
                 purpose: "assistants",
             });
 
-            console.log('open AI file upload response: ', response)
+            // console.log('open AI file upload response: ', response)
             return res.status(200).json({ file: response });
         });
     } catch (e) {

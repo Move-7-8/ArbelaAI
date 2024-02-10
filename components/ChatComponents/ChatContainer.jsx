@@ -50,13 +50,6 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
     setIsTyping(chatCondition);
   }, [chatCondition]);
 
-  // useEffect(() => {
-  //   // Logic to execute when chatCondition changes
-  //   console.log("Chat condition changed:", chatCondition);
-  //   // You can add any additional logic you need here
-  //   // For example, if you need to hide typing indicators or something similar
-  // }, [chatCondition]);
-
   useEffect(() => {
     const fetchMessages = async () => {
       setFetching(true);
@@ -95,6 +88,7 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
     fetchMessages();
   }, [thread]);
   
+  //Function to send a message in normal circumstances
   const sendMessage = async () => {
     if (!thread) return;
     setSending(true);
@@ -117,15 +111,79 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
     }
   };
 
+    //Function to send a message automatically when an icon is clicked 
+const sendMessageAutomatically = async (messageText) => {
+  if (!thread) return;
+  setSending(true);
+
+  try {
+    const response = await axios.post(`/api/AI/message/create?threadId=${thread}&message=${messageText}`, {
+      message: messageText, threadId: thread
+    });
+
+    const newMessage = response.data.message;
+    console.log("newMessage", newMessage);
+    setMessages(prevMessages => [...prevMessages, newMessage]);
+    // This line should clear the input field after sending the message
+    setMessage(""); 
+    onMessageSent(); // Optionally, if you have actions to perform after sending
+  } catch (error) {
+    console.error("error", error);
+  } finally {
+    setSending(false);
+  }
+};
+    
+
   // Generate a unique ID for the gradient to avoid conflicts
 const gradientId = `gradient-${Math.random().toString(36).substr(2, 9)}`;
 
-///maintain height of chat content area to align with chat input area
+///Formatting the bold and paragraphs of the message content
+function formatMessage(message) {
+  // Normalize line breaks: Replace single newlines with double newlines for spacing
+  const normalizedMessage = message.replace(/(?<!\n)\n(?!\n)/g, '\n\n');
+  // Further process the message for bold text, ensuring it's preceded by a newline for spacing
+  const processedMessage = normalizedMessage.replace(/\*\*(.*?)\*\*/g, '<br><br><strong>$1</strong>');
+  // Split the processed message into sections based on double newlines for paragraphs
+  const sections = processedMessage.split(/\n\n+/);
+  return sections.map((section, index) => {
+    // Check for numbered lists
+    if (/^\d+\./m.test(section) || /^\-\s/m.test(section)) {
+      const listItems = section.split(/\n/).map((item, itemIndex) => {
+        // Process list item content for bold text
+        const listItemContent = item.replace(/^\d+\.\s*/, '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        return <li key={itemIndex} dangerouslySetInnerHTML={{ __html: listItemContent }}></li>;
+      });
+      return <ol key={index}>{listItems}</ol>;
+    }
+    // Check for bullet points using dash (-)
+    else if (/^\-\s/m.test(section)) {
+      const listItems = section.split(/\n/).map((item, itemIndex) => {
+        // Process list item content for bold text
+        const listItemContent = item.replace(/^\-\s*/, '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        return <li key={itemIndex} dangerouslySetInnerHTML={{ __html: listItemContent }}></li>;
+      });
+      return <ul key={index}>{listItems}</ul>;
+    }
+    else {
+      // For regular paragraphs and other text
+      // Use `dangerouslySetInnerHTML` to render the HTML content
+      return <div key={index} dangerouslySetInnerHTML={{ __html: section }} />;
+    }
+  });
+}
+
+//Function to click an icon and send a message
+const handleIconClick = (messageText) => {
+  // Set the message state to the desired text
+  setMessage(messageText);
+  
+  // Simulate a send action
+  sendMessageAutomatically(messageText);
+};
 
   
 return (
-  
-    
     <>
       <div className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container ${isLargeScreen ? 'fixed bottom-20 w-full top-20 lg:max-w-[calc(25%-2.3rem)]' : ''}`} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
         
@@ -159,11 +217,15 @@ return (
         
         {/* Chat Content Area */}
         <div className="flex-grow p-3 overflow-y-auto" ref={chatContentRef} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
-          {messages.map((message, index) => (
-            <p key={index} className="text-left text-sm my-2 p-2 rounded-md" style={message.role === 'user' ? { background: 'linear-gradient(to right, rgba(80, 120, 235, 0.5), rgba(79, 198, 235, 0.5))', color: 'white' } : { backgroundColor: 'rgba(200, 200, 200, 0.2)' }}>
-              {message.content[0].type === "text" ? message.content[0].text.value : null}
-            </p>
-          ))}
+        {messages.map((message, index) => (
+          <div key={index} className="text-left text-sm my-2 p-2 rounded-md" 
+              style={message.role === 'user' ? 
+                      { background: 'linear-gradient(to right, rgba(80, 120, 235, 0.5), rgba(79, 198, 235, 0.5))', color: 'white' } : 
+                      { backgroundColor: 'rgba(200, 200, 200, 0.2)' }}>
+            {/* Call the formatMessage function */}
+            {formatMessage(message.content[0].type === "text" ? message.content[0].text.value : '')}
+          </div>
+        ))}
           {isTyping && (
             <div className="flex space-x-1">
               <span className="typing-indicator"></span>
@@ -174,27 +236,77 @@ return (
         </div>
 
         {/* Chat Input Area */}
-        <div className="bg-gray-50 p-4 border-t border-gray-300 flex items-center" style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: '0 0 8px 8px' }}>
-     <input
-  type="text"
-  placeholder="Type a message..."
-  className="flex-grow p-2 border border-gray-300 rounded-l-md bg-white focus:outline-none focus:border-purple-500" // Adjusted for Tailwind
-  style={{ borderColor: messageFocused ? '#6a0dad' : 'inherit' }} // Example using inline styles for custom focus color
-  value={message}
-  onChange={(e) => setMessage(e.target.value)}
-  onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) { sendMessage(); }}}
-  onFocus={() => setMessageFocused(true)} // Handler to set state indicating focus
-  onBlur={() => setMessageFocused(false)} // Handler to unset state indicating focus
-/>
+      {/* Adjusted Chat Input Area with Icon above */}
+      <div className="flex flex-col items-center space-y-4 bg-gray-50 p-4 border-t border-gray-300" style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: '0 0 8px 8px' }}>
+        <div className="flex items-center justify-center space-x-4 mb-4">
 
-<button disabled={!message} className="bg-black text-white rounded-r-md p-2 flex items-center relative" onClick={sendMessage}>
-    {/* Use the FaPaperPlane icon and change its color on hover */}
-    <FaPaperPlane size={25} className=" icon text-white-500 hover:text-[#4FC6EB]" />
-
-</button>
-
+        {/* Icon for sending a predefined message */}
+        <div
+          onClick={() => handleIconClick('Explain what this company does and their business model like Im in highschool')}
+          style={{ cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '24px', height: '24px' }}
+        >
+          <Image
+            src="/assets/icons/demonstration.png"
+            alt="Teach Icon"
+            width={24}
+            height={24}
+            layout="intrinsic"
+          />
+        </div>
+        <div
+          onClick={() => handleIconClick('Tell me all the aspects of this particular company that are positive in terms of its investment potential')}
+          style={{ cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '24px', height: '24px' }}
+        >
+          <Image
+            src="/assets/icons/authenticity.png"
+            alt="Positive Icon"
+            width={24}
+            height={24}
+            layout="intrinsic"
+          />
+        </div>
+        <div
+          onClick={() => handleIconClick('Tell me all the risks associated with investing in this particular company')}
+          style={{ cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '24px', height: '24px' }}
+        >
+          <Image
+            src="/assets/icons/warning.png"
+            alt="Risk Icon"
+            width={24}
+            height={24}
+            layout="intrinsic"
+          />
+        </div>
+        <div
+          onClick={() => handleIconClick('what is the health of this company')}
+          style={{ cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '24px', height: '24px' }}
+        >
+          <Image
+            src="/assets/icons/healthcare.png"
+            alt="Health Icon"
+            width={24}
+            height={24}
+            layout="intrinsic"
+          />
         </div>
       </div>
+        <div className="w-full flex">
+          <input
+            type="text"
+            placeholder="Type a message..."
+            className="flex-grow p-2 border border-gray-300 rounded-l-md bg-white focus:outline-none focus:border-purple-500"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) { sendMessage(); }}}
+            onFocus={() => setMessageFocused(true)}
+            onBlur={() => setMessageFocused(false)}
+          />
+          <button disabled={!message} className="bg-black text-white rounded-r-md p-2 flex items-center" onClick={sendMessage}>
+            <FaPaperPlane size={25} className="icon text-white-500 hover:text-[#4FC6EB]" />
+          </button>
+      </div>
+      </div>
+    </div>
 
       {/* Style tags inclusion for specific styling */}
       <style jsx>{`
