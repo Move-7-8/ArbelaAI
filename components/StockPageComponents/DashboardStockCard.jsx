@@ -92,19 +92,20 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
             {/* Align buttons to the left */}
         <div className="flex justify-center rounded mx-4 pr-2 pb-2">
           <button
-                className={`w-24 px-3 py-1 rounded-lg shadow hover:scale-105 transition-transform duration-300 mr-4 ${activeButton === 'button1' ? '' : 'bg-gray-100'}`}
-                style={{ backgroundColor: activeButton === 'button1' ? 'rgba(169, 169, 169, 0.2)' : '' }} // Increased opacity for active button
-                onClick={() => setActiveButton('button1')}
-            >
-                Summary
-            </button>
-            <button
-                className={`w-24 px-3 py-1 rounded-lg shadow hover:scale-105 transition-transform duration-300 ${activeButton === 'button2' ? '' : 'bg-gray-100'}`}
-                style={{ backgroundColor: activeButton === 'button2' ? 'rgba(169, 169, 169, 0.2)' : '' }} // Increased opacity for active button
-                onClick={() => setActiveButton('button2')}
-            >
-                Ratio
-            </button>
+    className={`w-28 px-3 py-1 rounded-full text-sm shadow hover:scale-105 transition-transform duration-300 mr-4 uppercase ${activeButton === 'button1' ? 'text-[#6A849D]' : 'bg-gray-100 text-[#6A849D]'}`}
+    style={{ backgroundColor: activeButton === 'button1' ? 'rgba(169, 169, 169, 0.2)' : '' }}
+    onClick={() => setActiveButton('button1')}
+>
+    Summary
+</button>
+<button
+    className={`w-28 px-3 py-1 rounded-full shadow text-sm hover:scale-105 transition-transform duration-300 uppercase ${activeButton === 'button2' ? 'text-[#6A849D]' : 'bg-gray-100 text-[#6A849D]'}`}
+    style={{ backgroundColor: activeButton === 'button2' ? 'rgba(169, 169, 169, 0.2)' : '' }}
+    onClick={() => setActiveButton('button2')}
+>
+    Ratio
+</button>
+
         </div>
   <style>
     {`
@@ -127,7 +128,8 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
             <div className="flex flex-col flex-grow">
                 {/* Financial Ratios Header */}
                 <div className="mb-4">
-                    <h2 className="text-xl font-bold mb-2">Financial Ratios</h2>
+                 <h2 className="text-xl font-bold mb-2 text-[#3A3C3E]">Financial Ratios</h2>
+
                     <p className="text-sm text-gray-600">Key financial ratios of the company.</p>
                 </div>
                 <div className="border-t border-gray-300 mt-1"></div>
@@ -136,37 +138,37 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
                 <div className="flex flex-col flex-grow space-y-4 md:justify-between mt-2">
                     {/* EPS */}
                     <div className="flex justify-between">
-                        <span className="text-sm text-gray-500">EPS:</span>
+                        <span className="uppercase text-xs text-gray-500">EPS:</span>
                         <span className="text-sm">{EPS}</span>
                     </div>
                     {/* PE Ratio (Lagging) */}
                     <div className="flex justify-between">
-                        <span className="text-sm text-gray-500">PE Ratio (Lagging):</span>
+                        <span className="uppercase text-xs text-gray-500">PE Ratio (Lagging):</span>
                         <span className="text-sm">{peRatioLagging}</span>
                     </div>
                     {/* PE Ratio (Forward) */}
                     <div className="flex justify-between">
-                        <span className="text-sm text-gray-500">PE Ratio (Forward):</span>
+                        <span className="uppercase text-xs text-gray-500">PE Ratio (Forward):</span>
                         <span className="text-sm">{peRatioForward}</span>
                     </div>
                     {/* PB Ratio */}
                     <div className="flex justify-between">
-                        <span className="text-sm text-gray-500">PB Ratio:</span>
+                        <span className="uppercase text-xs text-gray-500">PB Ratio:</span>
                         <span className="text-sm">{pbRatio}</span>
                     </div>
                     {/* Debt to Equity Ratio */}
                     <div className="flex justify-between">
-                        <span className="text-sm text-gray-500">Debt to Equity Ratio:</span>
+                        <span className="uppercase text-xs text-gray-500">Debt to Equity Ratio:</span>
                         <span className="text-sm">{debtToEquityRatio}</span>
                     </div>
                     {/* Revenue per Share */}
                     <div className="flex justify-between">
-                        <span className="text-sm text-gray-500">Revenue per Share:</span>
+                        <span className="uppercase text-xs text-gray-500">Revenue per Share:</span>
                         <span className="text-sm">{revenuePerShare}</span>
                     </div>
                     {/* Return on Assets */}
                     <div className="flex justify-between">
-                        <span className="text-sm text-gray-500">Return on Assets:</span>
+                        <span className="uppercase text-xs text-gray-500">Return on Assets:</span>
                         <span className="text-sm">{returnOnAssets}</span>
                     </div>
                     {/* Return on Equity */}
@@ -189,7 +191,8 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
         ) : (
             // Actual Company Name and Description
             <div className="mb-2">
-                <h2 className="text-xl font-bold">{`${companyName} - ${ticker}`}</h2> {/* Modified to include ticker */}
+          <h2 className="text-xl font-bold text-[#3A3C3E]">{`${companyName} - ${ticker}`}</h2> {/* Modified to include ticker */}
+
                 <p className="text-sm text-gray-600 2xl:mt-5 mt-2">This is a short description about the company.</p>
             </div>
         )}
@@ -265,7 +268,7 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
             <>
                  <div className="flex justify-between my-2">
                      
-                        <span className="text-gray-500 text-sm" style={{ minWidth: '100px' }}>Sector:</span>
+                        <span className="text-gray-500 uppercase text-xs" style={{ minWidth: '100px' }}>Sector:</span>
                             <span className="text-sm" style={{
                             maxWidth: 'calc(100% - 100px)',
                             display: '-webkit-box',
@@ -279,23 +282,23 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
 
                          </div>
                            <div className="flex justify-between my-2">
-                            <span className="text-gray-500 text-sm">Market Cap:</span>
+                            <span className="text-gray-500 uppercase text-xs">Market Cap:</span>
                             <span className="text-sm">{marketCap}</span>
                         </div>
                         <div className="flex justify-between my-2">
-                            <span className="text-gray-500 text-sm">Volume:</span>
+                            <span className="text-gray-500 uppercase text-xs">Volume:</span>
                             <span className="text-sm">{volume}</span>
                         </div>
                         <div className="flex justify-between my-2">
-                            <span className="text-gray-500 text-sm">Dividend Yield:</span>
+                            <span className="text-gray-500 uppercase text-xs">Dividend Yield:</span>
                             <span className="text-sm">{dividendYield}</span>
                         </div>
                         <div className="flex justify-between my-2">
-                            <span className="text-gray-500 text-sm">Volatility Score:</span>
+                            <span className="text-gray-500 uppercase text-xs">Volatility Score:</span>
                             <span className="text-sm">{volatilityScore}</span>
                         </div>
                         <div className="flex justify-between my-2">
-                            <span className="text-gray-500 text-sm">Dividend Score:</span>
+                            <span className="text-gray-500 uppercase text-xs">Dividend Score:</span>
                             <span className="text-sm">{liquidityScore}</span>
                         </div>
                         </>
@@ -309,17 +312,18 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
     </div>
     {/* Buttons Container */}
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
-    {/* Left Aligned Button */}
-    <button className="text-white rounded-lg py-1 px-3 w-32 transition duration-300 ease-in-out hover:scale-105 mb-4 ml-4 mr-4" 
-            style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }}>
+    <button className="uppercase text-sm rounded-full py-1 px-3 w-32 transition duration-300 ease-in-out hover:scale-105 mb-4 ml-4 mr-4 border border-[#FF6665] text-[#FF6665]" 
+            style={{ backgroundColor: 'white' }}>
         Portfolio
     </button>
 
+
     {/* Right Aligned Button */}
-    <button className="text-white rounded-lg py-1 px-3 w-32 transition duration-300 ease-in-out hover:scale-105 mb-4 ml-4 mr-4" 
-            style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }}>
+   <button className="text-white text-sm uppercase rounded-full py-1 px-3 w-32 transition duration-300 ease-in-out hover:scale-105 mb-4 ml-4 mr-4" 
+        style={{ backgroundColor: '#FF6665' }}>
         Analyse
     </button>
+
 </div>
 
 

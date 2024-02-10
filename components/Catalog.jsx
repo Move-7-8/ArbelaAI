@@ -91,7 +91,7 @@ function Catalog({ searchText, selectedCategory, preloadedData }) {
 
             {!loading && searchText.length === 0 && (
                 <div className="flex justify-center mt-4">
-                    <button onClick={handleLoadMore} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mb-20 mt-8 rounded">
+                    <button onClick={handleLoadMore} className="analyse_button  text-white font-bold py-2 px-4 mb-20 mt-8 rounded">
                         Load More
                     </button>
                 </div>

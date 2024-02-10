@@ -75,7 +75,7 @@ function StockCard({ company }) {
     return (
     <Link 
         href={linkPath} 
-        className="cursor-pointer transform transition-transform duration-200 hover:scale-105 w-full max-w-sm mx-auto bg-white/30 border border-gray-200 rounded-lg shadow flex flex-col"
+        className="stock_card cursor-pointer transform transition-transform duration-200 hover:scale-105  w-full max-w-sm mx-auto bg-white/30 border border-gray-200 rounded-lg shadow flex flex-col"
         style={{  width: '270px' }} 
     >
         <div className="px-5 mt-5 flex-grow flex flex-col justify-between">
@@ -85,7 +85,7 @@ function StockCard({ company }) {
                 </h5>
             </div>
             <div className="flex items-center mb-5" style={{ height: '25px' }}>
-                <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 rounded">
+                <span style={{ backgroundColor: 'rgba(106, 132, 157, 0.9)' }} className="text-white text-xs font-semibold mr-2 px-2.5 rounded">
                     {company.Stock}
                 </span>
             </div>
@@ -93,9 +93,10 @@ function StockCard({ company }) {
                 <span className="text-xl text-gray-900 mr-4">
                     ${company.Price.toFixed(2)}
                 </span>
-                <span className={`text-xl ${(change >= 0) ? 'text-green-500' : 'text-red-500'}`}>
-                    {change.toFixed(2)}%
-                </span>
+              <span className="text-xl" style={{ color: change >= 0 ? 'rgba(53, 168, 83, 0.7)' : 'rgba(255, 0, 0, 0.7)' }}>
+                {change.toFixed(2)}%
+            </span>
+
             </div>
             <div className="mb-5" style={{ height: '25px' }}>
                <span className="text-xs text-gray-900 overflow-hidden" style={{
