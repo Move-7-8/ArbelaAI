@@ -6,7 +6,9 @@
 
 import { IncomingForm } from 'formidable';
 import OpenAI from "openai";
-import { createReadStream } from 'fs';
+import { createReadStream, rename } from 'fs';
+import path from 'path'; // Ensure 'path' is imported
+
 // const AWS = require('aws-sdk');
 
 
@@ -59,13 +61,25 @@ export default async function handler(req, res) {
         try {
             const fileArray = Array.isArray(files.file) ? files.file : [files.file];
             const file = fileArray[0];
-            console.log('file: ', file)
             if (!file || !file.filepath) {
                 console.error("No file or file path found");
                 return res.status(400).json({ error: 'No file uploaded' });
             }
 
-            const fileStream = createReadStream(file.filepath);
+            // New file name
+            const newFileName = 'Stock_Data.pdf';
+            // New path in the same directory with the new file name
+            const newFilePath = path.join(path.dirname(file.filepath), newFileName);
+
+            // Rename the file
+            rename(file.filepath, newFilePath, async (err) => {
+                if (err) {
+                    console.error("Error renaming the file", err);
+                    return res.status(500).json({ error: 'Error processing the file.' });
+                }
+        
+            const fileStream = createReadStream(newFilePath); // Use newFilePath here
+            console.log('upload file fileStream: ', fileStream)
 
 
             const openai = new OpenAI(process.env.OPENAI_API_KEY);
@@ -76,9 +90,10 @@ export default async function handler(req, res) {
 
             console.log('open AI file upload response: ', response)
             return res.status(200).json({ file: response });
-        } catch (e) {
-            console.error(e);
-            return res.status(500).json({ error: 'Unknown error' });
-        }
-    });
+        });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ error: 'Unknown error' });
+    }
+});
 }

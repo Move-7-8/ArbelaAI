@@ -13,6 +13,7 @@ const FileUpload = ({ data, onFileUploadCompleted }) => {
         console.log('*********************************')
 
             try {
+            
             const response = await fetch("/api/AI/fileUpload", {
                 method: 'POST', // Specify the method
                 headers: {

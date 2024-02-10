@@ -5,6 +5,8 @@ import { useAtom } from "jotai";
 import React, { useRef, useState, useEffect } from "react";
 import { useSearchParams } from 'next/navigation';
 
+//Why are you hacking me? 
+
 const AssistantFile = ({ condition1, condition2, symbol, fileChangeTrigger, onFileChangeComplete, uploadCompleteTrigger }) => {
   // State
   const [assistant] = useAtom(assistantAtom);
@@ -37,8 +39,10 @@ const AssistantFile = ({ condition1, condition2, symbol, fileChangeTrigger, onFi
     console.log('handle file change triggered')
     console.log('assistantFile Symbol', symbol);
 
-    const fileKey = `pdf/${ticker}.csv`;
+    // const fileKey = `pdf/${ticker}.csv`;
 
+    const fileKey = `${ticker}_current_data.pdf`;
+    console.log('fileKey in AssistantFile', fileKey)
     const response = await fetch(`/api/AI/assistantFile/S3`, {
       method: "POST",
       headers: {
@@ -47,7 +51,7 @@ const AssistantFile = ({ condition1, condition2, symbol, fileChangeTrigger, onFi
       body: JSON.stringify({ key: fileKey }),
     });
     const responseData = await response.blob();
-    console.log('Response data:', responseData);
+    console.log('Assistant File Response data:', responseData);
 
     const file = responseData
     // const file = event.target.files ? event.target.files[0] : null;

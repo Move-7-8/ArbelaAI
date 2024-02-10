@@ -19,7 +19,7 @@ const Home = () => {
 
  
   const preloadData = async () => {
-    setIsLoading(true); // Start loading
+    // setIsLoading(true); // Start loading
     try {
       const limit = 12; // Load initial 12 stocks
       const response = await fetch(`/api/companies?limit=${limit}`, {
@@ -38,7 +38,7 @@ const Home = () => {
     } catch (error) {
       console.error("Fetch error: ", error);
     } finally {
-      setIsLoading(false); // End loading regardless of outcome
+      // setIsLoading(false); // End loading regardless of outcome
     }
   };
     
