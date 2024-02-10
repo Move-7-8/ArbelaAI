@@ -187,9 +187,9 @@ return (
   onBlur={() => setMessageFocused(false)} // Handler to unset state indicating focus
 />
 
-<button disabled={!message} className="bg-black text-white rounded-r-md p-2 flex items-center relative" onClick={sendMessage}>
+<button disabled={!message} className="icon-wrapper bg-black text-white rounded-r-md p-2 flex items-center relative" onClick={sendMessage}>
     {/* Use the FaPaperPlane icon and change its color on hover */}
-    <FaPaperPlane size={25} className=" icon text-white-500 hover:text-[#4FC6EB]" />
+    <FaPaperPlane size={26} className="icon text-white-500" />
 
 </button>
 
@@ -198,11 +198,26 @@ return (
 
       {/* Style tags inclusion for specific styling */}
       <style jsx>{`
+ .icon:hover {
+    transform: scale(1.1); /* Scale the icon to 110% of its original size on hover */
+    transition: transform 0.2s; /* Smooth transition for the transform */
+  }
+    
 
-      .icon:hover {
-       background: linear-gradient(135deg, #4FC6EB 0%, #6551BA 100%);
-        transition: background-color 0.5s ease-in-out;
-       }
+      .icon-wrapper:hover {
+        background: linear-gradient(135deg, #4FC6EB 0%, #6551BA 100%);
+      }
+
+      .icon {
+        color: white; /* Initial icon color */
+      }
+
+      .icon-wrapper:hover .icon {
+        color: transparent; /* Attempt to change icon color on hover - may not work as expected */
+      }
+
+
+      
         .chat-container {
           height: 60vh; /* Adjusted for full view height */
         }

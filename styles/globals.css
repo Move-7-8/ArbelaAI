@@ -83,8 +83,10 @@
 
 
 .black_btn {
-  @apply rounded-full border border-black bg-black py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black text-center text-sm font-inter flex items-center justify-center;
+  @apply rounded-full border  bg-[#6A849D] uppercase py-1.5 px-5 text-white transition-all text-center  text-sm font-inter flex items-center justify-center;
 }
+
+
 
 .outline_btn {
   @apply rounded-full border border-black bg-transparent py-1.5 px-5 text-black transition-all hover:bg-black hover:text-white text-center text-sm font-inter flex items-center justify-center;
@@ -99,11 +101,15 @@
 }
 
 .new_blue_gradient {
-  background-image: linear-gradient(to right, #455BBA, #6A45BA, #4595BA);
+  background-image: linear-gradient(to right, #FF6665, #FFD8D9);
   background-clip: text;
   color: transparent;
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); /* For better compatibility */
+  -webkit-backdrop-filter: blur(10px); 
+}
+
+.landing-header {
+  color: #3A3C3E;
 }
 
 
@@ -121,7 +127,7 @@
 }
 
 .search_input {
-  @apply block w-full rounded-md border border-gray-200 bg-white py-2.5 font-satoshi pl-5 pr-12 text-sm shadow-lg font-medium focus:border-black focus:outline-none focus:ring-0;
+  @apply block w-full border border-gray-200 bg-white py-2.5 font-satoshi pl-5 pr-12 text-sm shadow-lg font-medium focus:border-black focus:outline-none focus:ring-0;
 }
 
 .copy_btn {
@@ -144,6 +150,7 @@
   margin-top: -2px; 
 
 }
+
 
 .dropdown-menu {
   position: absolute; 
@@ -236,7 +243,10 @@
 }
 
 
-
+/* Add this to your global.css or a similar file */
+.stock_card:hover {
+  border-color: #E0D08B;
+}
 
 /* Feed Component */
 .feed {
@@ -310,7 +320,6 @@ nav {
   border: 1px solid rgba(255, 255, 255, 0.3); /* Brighter border */
   backdrop-filter: blur(10px); /* Apply the blur */
   -webkit-backdrop-filter: blur(10px); /* For Safari */
-  border-radius: 5px; /* Rounded corners */
   padding: 0.5rem 1rem; /* Some padding */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
@@ -562,14 +571,14 @@ nav {
   margin: 0px !important;
 }
 .analyse_button {
-  background: #5E5DF0;
+  background: #FF6665;
   border-radius: 999px;
   box-shadow: 0px 4px 10px rgba(94, 93, 240, 0.25); /* Added a subtle box shadow */
   box-sizing: border-box;
   color: #FFFFFF;
   font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
   font-size: 16px; /* Increased font size */
-  font-weight: 700;
+  font-weight: 400;
   line-height: 24px; /* Increased line height for the larger font size */
   opacity: 1; /* Full opacity */
   outline: 0 solid transparent;
@@ -582,9 +591,19 @@ nav {
   border: 0;
   transition: background 0.3s ease; /* Added transition for smooth hover effect */
   cursor: pointer !important;
+  text-transform: uppercase;
 
   /* &:hover {
     background: #4E4DD6; /* Slightly darker shade on hover */
+}
+
+.analyse_button:hover, .black_btn:hover {
+  opacity: 0.7;
+
+}
+
+.supported-by-button, .features-header{
+  color: #3A3C3E
 }
 
 /* File Upload */

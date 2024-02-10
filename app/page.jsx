@@ -50,8 +50,8 @@ const Home = () => {
   return (
     <section className="w-full flex-center flex-col mt-20 pt-10">
       <h1 className="head_text text-center">
-        <div className="text-center">Perform AI Powered Research</div>
-        <div className="new_blue_gradient text-center"> On The Stock Market</div>
+        <div className="landing-header text-center">Perform AI Powered Research</div>
+        <div className="landing-header text-center"> On The Stock Market</div>
       </h1>
       {/* <p className='desc text-center'>
         Build your own models with stock market data.

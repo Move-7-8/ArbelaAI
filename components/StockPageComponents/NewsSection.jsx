@@ -43,7 +43,8 @@ const NewsSection = ({ data }) => {
 
 return (
   <div>
-    <h2 className="text-2xl font-semibold mb-4 mt-8">Company News</h2>
+  <h2 className="text-lg font-semibold mb-4 uppercase mt-8 text-gray-500">Company News</h2>
+
     <div className="grid md:grid-cols-2 gap-4">
       {!newsArray || newsArray.length === 0
         ? renderSkeletonCards()
