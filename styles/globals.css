@@ -127,7 +127,7 @@
 }
 
 .search_input {
-  @apply block w-full border border-gray-200 bg-white py-2.5 font-satoshi pl-5 pr-12 text-sm shadow-lg font-medium focus:border-black focus:outline-none focus:ring-0;
+  @apply block w-full border border-gray-200 bg-white py-2.5 font-satoshi pl-5 pr-12 text-sm shadow-lg font-medium focus:border-black focus:outline-none  rounded-full focus:ring-0;
 }
 
 .copy_btn {
@@ -179,7 +179,7 @@
 }
 
 .dropdown-link:hover {
-  transform: scale(1.05); /* Slightly increase the size */
+  transform: scale(1.01); 
   border-bottom: 1px solid #ccc; /* Optional: change the border color on hover */
 }
 
@@ -597,9 +597,9 @@ nav {
     background: #4E4DD6; /* Slightly darker shade on hover */
 }
 
-.analyse_button:hover, .black_btn:hover {
-  opacity: 0.7;
-
+.analyse_button:hover,
+.black_btn:hover {
+  transform: scale(1.05);
 }
 
 .supported-by-button, .features-header{

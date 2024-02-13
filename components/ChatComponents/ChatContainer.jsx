@@ -2,9 +2,11 @@ import { messagesAtom, threadAtom } from "@/atom";
 import axios from "axios";
 import { useAtom } from "jotai";
 import React, { useEffect, useRef, useState } from "react";
-import { FaPaperPlane } from "react-icons/fa";
 import botImage from '../../public/assets/images/user1.png';
 import Image from 'next/image';
+import { MdOutlineSend } from 'react-icons/md';
+import { FaChalkboardTeacher, FaThumbsUp, FaExclamationTriangle, FaHeartbeat } from 'react-icons/fa';
+
 
 
 
@@ -14,7 +16,13 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
   const [messages, setMessages] = useAtom(messagesAtom);
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024); // Initial check
   const [messageFocused, setMessageFocused] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHoveredChalkboard, setIsHoveredChalkboard] = useState(false);
+  const [isHoveredThumbsUp, setIsHoveredThumbsUp] = useState(false);
+  const [isHoveredExclamation, setIsHoveredExclamation] = useState(false);
+  const [isHoveredHeartbeat, setIsHoveredHeartbeat] = useState(false);
+   const [isHoveredSend, setIsHoveredSend] = useState(false);
+
+
 
   // console.log(' chatComponent chat_ticker:', chat_ticker);
   //Chatbox scrolls down to new message
@@ -33,6 +41,8 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
     // Clean up event listener on component unmount
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+ 
 
   useEffect(() => {
     if (chatContentRef.current) {
@@ -173,6 +183,8 @@ function formatMessage(message) {
   });
 }
 
+
+
 //Function to click an icon and send a message
 const handleIconClick = (messageText) => {
   // Set the message state to the desired text
@@ -182,185 +194,200 @@ const handleIconClick = (messageText) => {
   sendMessageAutomatically(messageText);
 };
 
+
   
 return (
-    <>
-      <div className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container ${isLargeScreen ? 'fixed bottom-20 w-full top-20 lg:max-w-[calc(25%-2.3rem)]' : ''}`} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-        
-        {/* Chat Header with SVG */}
-       <div className="relative text-center shadow-lg rounded" style={{ paddingTop: 0, marginTop: 0, backgroundColor: 'rgba(79, 198, 235, 0.2'}}>
+  <>
+    <div className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container ${isLargeScreen ? 'fixed bottom-20 w-full top-20 lg:max-w-[calc(25%-2.3rem)]' : ''}`} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+      
+      {/* Chat Header with SVG */}
+      <div className="relative text-center shadow-lg rounded" style={{ paddingTop: 0, marginTop: 0, backgroundColor: 'rgba(255, 102, 101,0.2)'}}>
 
-          <div className= {isLargeScreen ? "h-[10vw] rounded max-h-[90px]" : " rounded h-[15vw]"} style={{ width: '100%', overflow: 'hidden' }}>
-            <svg width="100%" height="100%" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-              <defs>
-                <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" style={{ stopColor: '#5E5DF0', stopOpacity: 0.4 }} />
-                  <stop offset="100%" style={{ stopColor: '#FFFFFF', stopOpacity: 0.5 }} />
+        <div className= {isLargeScreen ? "h-[10vw] rounded max-h-[90px]" : " rounded h-[15vw]"} style={{ width: '100%', overflow: 'hidden' }}>
+          <svg width="100%" height="100%" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style={{ stopColor: '#FF6665', stopOpacity: 0.4 }} />
+                <stop offset="100%" style={{ stopColor: '#FFFFFF', stopOpacity: 0.5 }} />
+              </linearGradient>
+            </defs>
+            <path d={isLargeScreen ? "M0,0 L700,0 L500 60 Q100,150 0,80 Z" : "M0,0 L500,0 L500 40 Q60,120 0,70 Z"} fill={`url(#${gradientId})`} />
+          </svg>
+        </div>
 
-                </linearGradient>
-              </defs>
-              <path d={isLargeScreen ? "M0,0 L700,0 L500 60 Q100,150 0,80 Z" : "M0,0 L500,0 L500 40 Q60,120 0,70 Z"} fill={`url(#${gradientId})`} />
-            </svg>
+        <div className="absolute left-3 top-1/4 flex items-center">
+          <div className="w-10 h-10 flex justify-center items-center relative">
+            {/* Ensure the Image component is imported correctly for your setup */}
+            <Image src={botImage} alt="PNG" layout="fill" objectFit="cover" />
           </div>
-     <div className="absolute left-3 top-1/4 flex items-center">
-      <div className="w-10 h-10 flex justify-center items-center relative"> {/* Adjusted size of the image container */}
-        {/* Ensure the Image component is imported correctly for your setup */}
-        <Image src={botImage} alt="PNG" layout="fill" objectFit="cover" />
-      </div>
 
-            <div className="ml-3 text-white flex flex-col justify-center">
-              <div className="text-sm" style={{ alignSelf: 'flex-start' }}>Analyse</div>
-              <div className="text-lg" style={{ alignSelf: 'flex-start' }}>{chat_ticker}</div>
-            </div>
+          <div className="ml-3 text-white flex flex-col justify-center">
+            <div className="text-sm" style={{ alignSelf: 'flex-start' }}>Analyse</div>
+            <div className="text-lg" style={{ alignSelf: 'flex-start' }}>{chat_ticker}</div>
           </div>
         </div>
-        
-        {/* Chat Content Area */}
-        <div className="flex-grow p-3 overflow-y-auto" ref={chatContentRef} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
+      </div>
+      
+      {/* Chat Content Area */}
+      <div className="flex-grow p-3 overflow-y-auto" ref={chatContentRef} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
         {messages.map((message, index) => (
           <div key={index} className="text-left text-sm my-2 p-2 rounded-md" 
               style={message.role === 'user' ? 
-                      { background: 'linear-gradient(to right, rgba(80, 120, 235, 0.5), rgba(79, 198, 235, 0.5))', color: 'white' } : 
+                      { background: 'linear-gradient(to right, rgba(255, 102, 101, 0.5), rgba(224, 208, 139, 0.5))', color: 'white' } : 
                       { backgroundColor: 'rgba(200, 200, 200, 0.2)' }}>
-            {/* Call the formatMessage function */}
             {formatMessage(message.content[0].type === "text" ? message.content[0].text.value : '')}
           </div>
         ))}
-          {isTyping && (
-            <div className="flex space-x-1">
-              <span className="typing-indicator"></span>
-              <span className="typing-indicator"></span>
-              <span className="typing-indicator"></span>
-            </div>
-          )}
-        </div>
+        {isTyping && (
+          <div className="flex space-x-1">
+            <span className="typing-indicator"></span>
+            <span className="typing-indicator"></span>
+            <span className="typing-indicator"></span>
+          </div>
+        )}
+      </div>
 
-        {/* Chat Input Area */}
-      {/* Adjusted Chat Input Area with Icon above */}
-      <div className="flex flex-col items-center space-y-4 bg-gray-50 p-4 border-t border-gray-300" style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: '0 0 8px 8px' }}>
-        <div className="flex items-center justify-center space-x-4 mb-4">
+   <div className="bg-gray-50 p-4" style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: '0 0 8px 8px' }}>
+<div className="w-full flex">
+  <input
+    type="text"
+    placeholder="Type a message..."
+    className="message-input flex-grow p-2 bg-white focus:outline-none"
+    value={message}
+    onChange={(e) => setMessage(e.target.value)}
+    onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) { sendMessage(); }}}
+    onFocus={() => setMessageFocused(true)}
+    onBlur={() => setMessageFocused(false)}
+    style={{ flex: 1, minWidth: '60%', marginRight: '4px' }} // Adjusted style
+  />
+  <button
+    disabled={!message}
+    className="p-2 flex items-center justify-center"
+    style={{ flexShrink: 0, minWidth: '40px', background: 'none', border: 'none' }} // Adjusted style
+    onClick={sendMessage}
+    onMouseEnter={() => setIsHoveredSend(true)}
+    onMouseLeave={() => setIsHoveredSend(false)}
+  >
+    <MdOutlineSend
+      size={26}
+      className="send-icon"
+      style={{
+        color: '#3A3C3E',
+        transition: 'color 0.2s ease-in-out, transform 0.2s ease-in-out', // Ensure transition is applied for both properties
+          color: isHoveredSend ? '#6A849D' : '#3A3C3E',
+      }}
+    />
 
-        {/* Icon for sending a predefined message */}
-        <div
-          onClick={() => handleIconClick('Explain what this company does and their business model like Im in highschool')}
-          style={{ cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '24px', height: '24px' }}
-        >
-          <Image
-            src="/assets/icons/demonstration.png"
-            alt="Teach Icon"
-            width={24}
-            height={24}
-            layout="intrinsic"
-          />
-        </div>
-        <div
-          onClick={() => handleIconClick('Tell me all the aspects of this particular company that are positive in terms of its investment potential')}
-          style={{ cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '24px', height: '24px' }}
-        >
-          <Image
-            src="/assets/icons/authenticity.png"
-            alt="Positive Icon"
-            width={24}
-            height={24}
-            layout="intrinsic"
-          />
-        </div>
-        <div
-          onClick={() => handleIconClick('Tell me all the risks associated with investing in this particular company')}
-          style={{ cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '24px', height: '24px' }}
-        >
-          <Image
-            src="/assets/icons/warning.png"
-            alt="Risk Icon"
-            width={24}
-            height={24}
-            layout="intrinsic"
-          />
-        </div>
-        <div
-          onClick={() => handleIconClick('what is the health of this company')}
-          style={{ cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '24px', height: '24px' }}
-        >
-          <Image
-            src="/assets/icons/healthcare.png"
-            alt="Health Icon"
-            width={24}
-            height={24}
-            layout="intrinsic"
-          />
-        </div>
+
+  </button>
+</div>
+
+  <div className="flex justify-between items-center mt-4"> {/* Adjusted for even spacing among icons */}
+    {/* Icons for predefined messages */}
+<div 
+        onClick={() => handleIconClick('Explain what this company does and their business model like Im in highschool')}
+        style={{ cursor: 'pointer' }}
+        onMouseEnter={() => setIsHoveredChalkboard(true)}
+        onMouseLeave={() => setIsHoveredChalkboard(false)}
+      >
+        <FaChalkboardTeacher 
+          size={24} 
+          style={{ 
+            color: isHoveredChalkboard ? '#6A849D' : '#3A3C3E',
+          }} 
+        />
       </div>
-        <div className="w-full flex">
-          <input
-            type="text"
-            placeholder="Type a message..."
-            className="flex-grow p-2 border border-gray-300 rounded-l-md bg-white focus:outline-none focus:border-purple-500"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) { sendMessage(); }}}
-            onFocus={() => setMessageFocused(true)}
-            onBlur={() => setMessageFocused(false)}
-          />
-          <button disabled={!message} className="bg-black text-white rounded-r-md p-2 flex items-center" onClick={sendMessage}>
-            <FaPaperPlane size={25} className="icon text-white-500 hover:text-[#4FC6EB]" />
-          </button>
+
+      <div 
+        onClick={() => handleIconClick('Tell me all the aspects of this particular company that are positive in terms of its investment potential')}
+        style={{ cursor: 'pointer' }}
+        onMouseEnter={() => setIsHoveredThumbsUp(true)}
+        onMouseLeave={() => setIsHoveredThumbsUp(false)}
+      >
+        <FaThumbsUp 
+          size={24} 
+          style={{ 
+            color: isHoveredThumbsUp ? '#6A849D' : '#3A3C3E',
+          }} 
+        />
       </div>
+
+      <div 
+        onClick={() => handleIconClick('Tell me all the risks associated with investing in this particular company')}
+        style={{ cursor: 'pointer' }}
+        onMouseEnter={() => setIsHoveredExclamation(true)}
+        onMouseLeave={() => setIsHoveredExclamation(false)}
+      >
+        <FaExclamationTriangle 
+          size={24} 
+          style={{ 
+            color: isHoveredExclamation ? '#6A849D' : '#3A3C3E',
+          }} 
+        />
       </div>
+
+      <div 
+        onClick={() => handleIconClick('what is the health of this company')} 
+        style={{ cursor: 'pointer' }}
+        onMouseEnter={() => setIsHoveredHeartbeat(true)}
+        onMouseLeave={() => setIsHoveredHeartbeat(false)}
+      >
+        <FaHeartbeat 
+          size={24} 
+          style={{ 
+            color: isHoveredHeartbeat ? '#6A849D' : '#3A3C3E',
+    
+          }} 
+        />
+      </div>
+  </div>
+</div>
+
     </div>
 
-      {/* Style tags inclusion for specific styling */}
-      <style jsx>{`
- .icon:hover {
-    transform: scale(1.1); /* Scale the icon to 110% of its original size on hover */
-    transition: transform 0.2s; /* Smooth transition for the transform */
-  }
-    
+    {/* Style tags for specific styling */}
+    <style jsx>{`
 
-      .icon-wrapper:hover {
-        background: linear-gradient(135deg, #4FC6EB 0%, #6551BA 100%);
+    .message-input {
+      border: none;
+      border-bottom: 2px solid #ccc; /* Default gray border */
+      border-radius: 0;
+    }
+    .message-input:focus {
+      border-bottom: 2px solid #6A849D; /* Change to desired color on focus */
+    }
+     
+  
+      .chat-container {
+        height: 60vh;
       }
-
-      .icon {
-        color: white; /* Initial icon color */
-      }
-
-      .icon-wrapper:hover .icon {
-        color: transparent; /* Attempt to change icon color on hover - may not work as expected */
-      }
-
-
-      
+      @media (min-width: 1024px) {
         .chat-container {
-          height: 60vh; /* Adjusted for full view height */
+          height: 85vh;
         }
+      }
+      @keyframes blink {
+        0%, 100% { opacity: .2; }
+        50% { opacity: 1; }
+      }
+      .typing-indicator {
+        display: inline-block;
+        height: 8px;
+        width: 8px;
+        background-color: black;
+        border-radius: 9999px;
+        animation: blink 1.4s infinite ease-in-out;
+      }
+      .typing-indicator:nth-child(2) {
+        animation-delay: .2s;
+      }
+      .typing-indicator:nth-child(3) {
+        animation-delay: .4s;
+      }
+    `}</style>
+  </>
+);
 
-        @media (min-width: 1024px) {
-          .chat-container {
-            height: 85vh; /* Ensured consistency across screen sizes */
-          }
-        }
-
-        @keyframes blink {
-          0%, 100% { opacity: .2; }
-          50% { opacity: 1; }
-        }
-        .typing-indicator {
-          display: inline-block;
-          height: 8px;
-          width: 8px;
-          background-color: black;
-          border-radius: 9999px;
-          animation: blink 1.4s infinite ease-in-out;
-        }
-        .typing-indicator:nth-child(2) {
-          animation-delay: .2s;
-        }
-        .typing-indicator:nth-child(3) {
-          animation-delay: .4s;
-        }
-      `}</style>
-    </>
-  );
 };
 
 

@@ -379,23 +379,23 @@ const handleTimeFrameChange = (newTimeFrame) => {
             {/* Buttons Section */}
 <div className="flex justify-end mx-4 pb-4">
             <div 
-                className="rounded-lg inline-block" 
+                className="rounded-full inline-block" 
                 style={{ backgroundColor: 'rgba(169, 169, 169, 0.2)', padding: '3px' }}
             >
                 <button 
-                    className={`text-sm mr-2 px-3 py-1 rounded ${timeFrame === '1y' ? 'bg-white' : 'bg-transparent'}`} 
+                    className={`text-sm mr-2 px-3 py-1 rounded-full ${timeFrame === '1y' ? 'bg-white' : 'bg-transparent'}`} 
                     onClick={() => handleTimeFrameChange('1y')}
                 >
                     1 Year
                 </button>
                 <button 
-                    className={`text-sm mr-2 px-3 py-1 rounded ${timeFrame === '30d' ? 'bg-white' : 'bg-transparent'}`} 
+                    className={`text-sm mr-2 px-3 py-1 rounded-full ${timeFrame === '30d' ? 'bg-white' : 'bg-transparent'}`} 
                     onClick={() => handleTimeFrameChange('30d')}
                 >
                     30 Days
                 </button>
                 <button 
-                    className={`text-sm px-3 py-1 rounded ${timeFrame === '7d' ? 'bg-white' : 'bg-transparent'}`} 
+                    className={`text-sm px-3 py-1 rounded-full ${timeFrame === '7d' ? 'bg-white' : 'bg-transparent'}`} 
                     onClick={() => handleTimeFrameChange('7d')}
                 >
                     7 Days
