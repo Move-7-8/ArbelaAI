@@ -11,6 +11,7 @@ import {
     useToast,
   } from "@chakra-ui/react";
   import { useState } from "react";
+import { FaUser, FaEnvelope, FaTag, FaCommentAlt } from 'react-icons/fa';
 
   const initValues = { name: "", email: "", subject: "", message: "" };
   
@@ -20,6 +21,10 @@ import {
     const toast = useToast();
     const [state, setState] = useState(initState);
     const [touched, setTouched] = useState({});
+    const [nameActiveInput, setnameActiveInput] = useState('');
+    const [emailActiveInput, setEmailActiveInput] = useState('');
+    const [subjectActiveInput, setSubjectActiveInput] = useState('');
+    const [messageActiveInput, setMessageActiveInput] = useState('');
   
     const { values, isLoading, error } = state;
   
@@ -63,87 +68,127 @@ import {
   });
   
     return (
-      <Container maxW="450px" mt={12}>
-        <Heading>Contact</Heading>
-        {error && (
-          <Text color="red.300" my={4} fontSize="xl">
-            {error}
-          </Text>
-        )}
-  
-        <FormControl isRequired isInvalid={touched.name && !values.name} mb={5}>
-          <FormLabel>Name</FormLabel>
-          <Input
+<Container
+  maxW="70%"
+  mt="12"
+  p="8"
+  minH="65vh"
+  borderRadius="3rem"
+  boxShadow="xl"
+  centerContent
+  bg="rgba(255, 255, 255, 0.5)"
+  display="flex"
+  flexDirection="column"
+  alignItems="center"
+  justifyContent="flex-start"
+  mx="auto"
+  className="custom-container"
+  style={{ gap: '20px' }}
+>
+  <Heading  className="text-2xl text-[#3A3C3E] font-bold" mb="4">Contact Us</Heading>
+  {error && (
+    <Text color="red.300" my="4" fontSize="xl">
+      {error}
+    </Text>
+  )}
+
+  <form onSubmit={onSubmit} className="w-full" style={{ display: 'flex', flexDirection: 'column', gap: '20px', flex: '1' }}>
+    <div className="flex flex-col justify-around flex-grow" style={{ gap: '10px' }}>
+      {/* Name Input */}
+      <FormControl isRequired isInvalid={touched.name && !values.name}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <FaUser  size={22} style={{ color: '#6A849D' }} />
+          <input
+            className="w-full px-4 py-2 text-sm rounded-full border focus:outline-none focus:border-red-400 bg-gray-100 text-black"
+            style={{ borderWidth: "1px", height: "2.9rem", borderColor: nameActiveInput ? "rgba(255, 102, 101, 0.5)" : "transparent" }}
             type="text"
             name="name"
-            errorBorderColor="red.300"
-            value={values.name}
-            onChange={handleChange}
-            onBlur={onBlur}
+            placeholder="Name"
+            onFocus={() => setnameActiveInput(true)}
+            onBlur={() => setnameActiveInput(false)}
           />
-          <FormErrorMessage>Required</FormErrorMessage>
-        </FormControl>
-  
-        <FormControl isRequired isInvalid={touched.email && !values.email} mb={5}>
-          <FormLabel>Email</FormLabel>
-          <Input
+        </div>
+        <FormErrorMessage>Required</FormErrorMessage>
+      </FormControl>
+
+      {/* Email Input */}
+      <FormControl isRequired isInvalid={touched.email && !values.email}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <FaEnvelope size={22} style={{ color: '#6A849D' }} />
+          <input
+            className="w-full px-4 py-2 text-sm rounded-full border focus:outline-none focus:border-red-400 bg-gray-100 text-black"
+            style={{ borderWidth: "1px", height: "2.9rem", borderColor: emailActiveInput ? "rgba(255, 102, 101, 0.5)" : "transparent" }}
             type="email"
             name="email"
-            errorBorderColor="red.300"
-            value={values.email}
-            onChange={handleChange}
-            onBlur={onBlur}
+            placeholder="Email"
+            onFocus={() => setEmailActiveInput(true)}
+            onBlur={() => setEmailActiveInput(false)}
           />
-          <FormErrorMessage>Required</FormErrorMessage>
-        </FormControl>
-  
-        <FormControl
-          mb={5}
-          isRequired
-          isInvalid={touched.subject && !values.subject}
-        >
-          <FormLabel>Subject</FormLabel>
-          <Input
+        </div>
+        <FormErrorMessage>Required</FormErrorMessage>
+      </FormControl>
+
+      {/* Subject Input */}
+      <FormControl isRequired isInvalid={touched.subject && !values.subject}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <FaTag  size={22} style={{ color: '#6A849D' }} />
+          <input
+            className="w-full px-4 py-2 text-sm rounded-full border focus:outline-none focus:border-red-400 bg-gray-100 text-black"
+            style={{ borderWidth: "1px", height: "2.9rem", borderColor: subjectActiveInput ? "rgba(255, 102, 101, 0.5)" : "transparent" }}
             type="text"
             name="subject"
-            errorBorderColor="red.300"
-            value={values.subject}
-            onChange={handleChange}
-            onBlur={onBlur}
+            placeholder="Subject"
+            onFocus={() => setSubjectActiveInput(true)}
+            onBlur={() => setSubjectActiveInput(false)}
           />
-          <FormErrorMessage>Required</FormErrorMessage>
-        </FormControl>
-  
-        <FormControl
-          isRequired
-          isInvalid={touched.message && !values.message}
-          mb={5}
-        >
-          <FormLabel>Message</FormLabel>
-          <Textarea
-            type="text"
-            name="message"
-            rows={4}
-            errorBorderColor="red.300"
-            value={values.message}
-            onChange={handleChange}
-            onBlur={onBlur}
-          />
-          <FormErrorMessage>Required</FormErrorMessage>
-        </FormControl>
-  
-        <Button
-            type="submit" // Change to type submit for semantic HTML
-            variant="outline"
-            colorScheme="blue"
-            isLoading={isLoading}
-            disabled={
-            !values.name || !values.email || !values.subject || !values.message
-            }
-            onClick={onSubmit}
-        >
+        </div>
+        <FormErrorMessage>Required</FormErrorMessage>
+      </FormControl>
+
+      {/* Message Input */}
+      {/* Message Input */}
+<FormControl isRequired isInvalid={touched.message && !values.message}>
+  <div style={{ display: 'flex', alignItems: 'start', gap: '10px' }}>
+    <FaCommentAlt size={22} style={{ color: '#6A849D', marginTop: '11px' }} />
+    <textarea
+      className="w-full text-sm rounded-full px-4 border focus:outline-none focus:border-red-400 bg-gray-100 text-black"
+      style={{ 
+        height: "6rem",
+        borderWidth: "1px", 
+        borderColor: messageActiveInput ? "rgba(255, 102, 101, 0.5)" : "transparent", 
+        borderRadius: "9999px",
+        resize: "none",
+        paddingTop: "1rem" // Increased top padding to push down placeholder
+      }}
+      name="message"
+      placeholder="Type your message here"
+      onFocus={() => setMessageActiveInput(true)}
+      onBlur={() => setMessageActiveInput(false)}
+    ></textarea>
+  </div>
+  <FormErrorMessage>Required</FormErrorMessage>
+</FormControl>
+
+
+    </div>
+
+    {/* Submit Button */}
+    <div className="flex mb-4 justify-center">
+      <Button
+        type="submit"
+        variant="solid"
+        className="uppercase text-sm rounded-full py-1 px-3 w-32 transition duration-300 ease-in-out hover:scale-105 border border-[#FF6665] text-[#FF6665]"
+        isLoading={isLoading}
+        isDisabled={!values.name || !values.email || !values.subject || !values.message}
+        rounded="lg"
+        onClick={onSubmit}
+      >
         Submit
+        
       </Button>
-      </Container>
-    );
-  }
+    </div>
+  </form>
+</Container>
+
+  );
+};

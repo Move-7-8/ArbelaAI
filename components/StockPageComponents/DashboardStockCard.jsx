@@ -2,7 +2,6 @@
 
 
 import { useState } from 'react';
-import { FaThumbsUp } from 'react-icons/fa';
 import { MdLink } from 'react-icons/md';
 
 
@@ -60,8 +59,8 @@ function DashboardStockCard({ data,data2, industry,volatilityScore, liquiditySco
                           : Number(askPrice);
     const previousClose = Number(prevClose);
 
-    // console.log('current price 2', currentPrice)
-    // console.log('previous close 2', previousClose)
+    console.log('current price 2', currentPrice)
+    console.log('previous close 2', previousClose)
     // Calculate price change and percentage change
     const priceChange = currentPrice - previousClose;
     const percentageChange = parseFloat((((currentPrice - previousClose) / previousClose) * 100).toFixed(2));
@@ -199,23 +198,25 @@ function DashboardStockCard({ data,data2, industry,volatilityScore, liquiditySco
             // Actual Company Name and Description
             
         <div className="mb-2">
-         <div className="flex items-center text-xl font-bold text-[#3A3C3E]">
-          <span className="flex items-center">
-    {companyName} - {ticker}
-    {link !== 'Not Available' && (
+        <h2 className="text-xl font-bold text-[#3A3C3E]">{`${companyName} - ${ticker}`}</h2>
+<div>
+    <p className="text-sm text-gray-600 mt-2">{firstSentence}</p>
+  </div>
+  
+  {/* Link icon and "See More" text under the description */}
+  {link !== 'Not Available' && (
+    <div className="mt-2"> {/* Adjust the margin as needed */}
       <a href={link} target="_blank" rel="noopener noreferrer" 
          onMouseEnter={() => setHover(true)}
          onMouseLeave={() => setHover(false)}
-         style={{ display: 'inline-flex', alignItems: 'center', marginLeft: '4px' }}>
-        <MdLink size={16} style={{ color: hover ? '#6A849D' : '#3A3C3E' }} />
+         className="flex items-center space-x-2"> {/* Use flex to align icon and text */}
+           <span className="text-xs text-gray-600">Website</span> {/* "See More" text next to the link */}
+        <MdLink className="relative z-50"size={16} style={{ color: hover ? '#6A849D' : '#3A3C3E' }} />
       </a>
-    )}
-  </span>
-      </div>
-      <div className="flex items-center mt-2">
-        <p className="text-sm text-gray-600 flex-grow">{firstSentence}</p> {/* Company description */}
-      </div>
-        </div>
+    </div>
+  )}
+</div>
+
         )}
 
 

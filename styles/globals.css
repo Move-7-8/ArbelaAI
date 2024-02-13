@@ -127,8 +127,13 @@
 }
 
 .search_input {
-  @apply block w-full border border-gray-200 bg-white py-2.5 font-satoshi pl-5 pr-12 text-sm shadow-lg font-medium focus:border-black focus:outline-none  rounded-full focus:ring-0;
+  @apply block w-full border border-gray-200 bg-white py-2.5 font-satoshi pl-5 pr-12 text-sm shadow-lg font-medium  focus:outline-none  rounded-full focus:ring-0;
 }
+
+
+.custom-container {
+  @apply  backdrop-blur-lg shadow-xl rounded-lg;
+} 
 
 .copy_btn {
   @apply w-7 h-7 rounded-full bg-white/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur flex justify-center items-center cursor-pointer;
@@ -151,7 +156,9 @@
 
 }
 
-
+.search_input:focus {
+  border-color: #E0D08B;
+}
 .dropdown-menu {
   position: absolute; 
   right: 0; 

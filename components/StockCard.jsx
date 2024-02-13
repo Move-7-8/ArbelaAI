@@ -72,7 +72,7 @@ function StockCard({ company }) {
     <Link 
         href={linkPath} 
         className="stock_card cursor-pointer transform transition-transform duration-200 hover:scale-105  w-full max-w-sm mx-auto bg-white/30 border border-gray-200 rounded-lg shadow flex flex-col"
-        style={{  width: '270px' }} 
+        style={{   minWidth: '270px' }} 
     >
         <div className="px-5 mt-5 flex-grow flex flex-col justify-between">
             <div className="" style={{ height: '30px' }}>

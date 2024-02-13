@@ -156,9 +156,9 @@ const Feed = ({ preloadedData }) => {
                         backgroundColor: selected ? 'rgba(255, 102, 101, 0.5)' : '', 
                         borderColor: active ? 'rgba(255, 102, 101, 0.5)' : 'transparent',
 
-                          borderWidth: active ? '2px' : '1px', // Adjust border width for visibility
+                        borderWidth: active ? '2px' : '1px', // Adjust border width for visibility
                         borderStyle: 'solid',
-                        height: '2.9rem' 
+                        height: '3.6rem' 
                       }}
                     >
                       {industry.name}

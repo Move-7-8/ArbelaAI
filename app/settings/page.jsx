@@ -71,8 +71,7 @@ const SettingsPage = () => {
   
 
   return (
-    <div className="mt-20 mx-auto w-4/5">
-      <h1 className="text-2xl font-bold mb-4">Settings</h1>
+    <div className="mt-36 mx-auto w-4/5">
 
       <Form />
       {/* First Row: */}
