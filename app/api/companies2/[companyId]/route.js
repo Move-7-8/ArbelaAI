@@ -63,7 +63,7 @@ export async function POST(req, res) {
       //d. Get Balance Sheet
     'get-balance': {
         method: 'GET',
-        url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-balance-sheet',
+        url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-balance-sheet',
         params: {symbol: ticker},
         headers: {
           'X-RapidAPI-Key': apiKey,

@@ -12,6 +12,7 @@ import { FaComments } from 'react-icons/fa';
 
 const Page = () => {
   const [data, setData] = useState(null); 
+  const [data2, setData2] = useState(null);
   const [isLoading, setIsLoading] = useState(false); 
   
   // Search Params
@@ -57,15 +58,12 @@ const Page = () => {
           console.log('Complete Data from first API:', result1);
           setData(result1); // Assuming you want to keep this data
   
-          // After the first call completes, make the second POST request
+ // Second API call
           const response2 = await fetch(`/api/companies2/[${ticker}]`, {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            // Adjust the body as per the requirements of the second API endpoint
-            body: JSON.stringify({ 'ticker': ticker }), // Example, adjust as needed
-            signal: signal 
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 'ticker': ticker }),
+            signal: signal,
           });
 
           if (!response2.ok) {
@@ -73,11 +71,7 @@ const Page = () => {
           }
 
           const result2 = await response2.json();
-          console.log('Complete Data from second API:', result2);
-          // Update state with the new data, or combine it with the previous result as needed
-          setData(prevData => ({ ...prevData, ...result2 }));
-    
-
+          setData2(result2); // Use setData2 to store the result of the second fetch
         } catch (error) {
           if (error.name !== 'AbortError') {
             console.error('There was an error fetching the data!', error);
@@ -87,31 +81,27 @@ const Page = () => {
         }
       }
     };
-  
+
     fetchData();
-  
-    // Cleanup function for the effect
-    return () => {
-      controller.abort(); // Abort the fetch on component unmount
-    };
-  }, []);
+    return () => controller.abort();
+  }, [ticker]); 
+
   
   // CSS for controlling chatbox visibility
   const chatboxVisibility = showChatbox ? 'block' : 'hidden';
   const mobileChatboxStyle = `fixed inset-0 z-40 bg-black bg-opacity-50 ${chatboxVisibility} lg:hidden`;
   const desktopChatboxStyle = "hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4";
-
 return (
     <div className="flex flex-wrap w-full h-full">
         <div className="flex flex-col w-full mt-20 lg:w-3/4">
             <div className="flex flex-col lg:flex-row mt-3">
                 <div className="w-full lg:w-1/3 mb-4 flex-1 lg:mb-0">  
-                    <DashboardStockCard data={data} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
+                    <DashboardStockCard data={data}  data2={data2} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
                 </div>
                 <div className="w-full lg:flex-grow lg:overflow-y-scroll lg:h-screen">
                     <TradingChartContainer data={data}  />
-                    <FinancialStatements data={data} className="mt-4" />
-                    <NewsSection data={data} className="mt-4" />
+                    <FinancialStatements data={data} data2={data2}  className="mt-4" />
+                    <NewsSection data={data}  data2={data2}  className="mt-4" />
                 </div>
             </div>
         </div>

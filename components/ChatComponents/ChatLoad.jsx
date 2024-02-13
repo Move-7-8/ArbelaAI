@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
-import animationData from '../../public/assets/images/loading4.json';
+import animationData from '../../public/assets/images/loading.json';
 
 const ChatLoad = () => {
     // Helper function to determine initial container height

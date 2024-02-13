@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import StatementTable from './StatementTables';
 
-const FinancialStatements = ({ data }) => {
+const FinancialStatements = ({ data, data2 }) => {
     const [activeStatement, setActiveStatement] = useState('income');
 
         // Log the entire data object
@@ -16,7 +16,7 @@ const FinancialStatements = ({ data }) => {
 const renderTab = (title, statementType) => {
 
          const isActive = activeStatement === statementType;
-    const buttonClass = `text-sm mr-2 px-3 py-1 rounded ${isActive ? 'bg-white' : 'bg-transparent'}`;
+    const buttonClass = `text-sm mr-2 px-3 py-1 rounded-full ${isActive ? 'bg-white' : 'bg-transparent'}`;
 
        
       
@@ -41,37 +41,52 @@ const renderTab = (title, statementType) => {
         );
     }
 
+const balanceSheetData = activeStatement === 'balance' && data2 ? {
+  endDate: data.balanceSheet.endDate?.fmt || 'N/A',
+  TotalAssets: data2?.['get-balance']?.timeSeries?.annualTotalAssets[0]?.reportedValue?.fmt || 'Data not available',
+  CashCashEquivalentsFederalFundsSold: data2?.['get-balance']?.timeSeries?.annualCashCashEquivalentsAndFederalFundsSold[0]?.reportedValue?.fmt || 'Data not available',
+  CashAndCashEquivalents: data2?.['get-balance']?.timeSeries?.annualCashAndCashEquivalents[0]?.reportedValue?.fmt || 'Data not available',
+  MoneyMarketInvestments: data2?.['get-balance']?.timeSeries?.annualMoneyMarketInvestments[0]?.reportedValue?.fmt || 'Data not available',
+  SecuritiesAndInvestments: 'Data not available', // Assuming placeholder as instructed
+  LongTermEquityInvestment: data2?.['get-balance']?.timeSeries?.annualLongTermEquityInvestment[0]?.reportedValue?.fmt || 'Data not available',
+  DerivativeAssets: data2?.['get-balance']?.timeSeries?.annualDerivativeAssets[0]?.reportedValue?.fmt || 'Data not available',
+  NetLoan: data2?.['get-balance']?.timeSeries?.annualNetLoan[0]?.reportedValue?.fmt || 'Data not available',
+  Receivables: data2?.['get-balance']?.timeSeries?.annualReceivables[0]?.reportedValue?.fmt || 'Data not available',
+  PrepaidAssets: data2?.['get-balance']?.timeSeries?.annualPrepaidAssets[0]?.reportedValue?.fmt || 'Data not available',
+  NetPPE: data2?.['get-balance']?.timeSeries?.annualNetPPE[0]?.reportedValue?.fmt || 'Data not available',
+  GoodwillAndOtherIntangibleAssets: data2?.['get-balance']?.timeSeries?.annualGoodwillAndOtherIntangibleAssets[0]?.reportedValue?.fmt || 'Data not available',
+  DeferredAssets: 'Data not available', // Placeholder
+  DefinedPensionBenefit: data2?.['get-balance']?.timeSeries?.annualDefinedPensionBenefit[0]?.reportedValue?.fmt || 'Data not available',
+  AssetsHeldForSale: data2?.['get-balance']?.timeSeries?.annualAssetsHeldForSale[0]?.reportedValue?.fmt || 'Data not available',
+  OtherAssets: data2?.['get-balance']?.timeSeries?.annualOtherAssets[0]?.reportedValue?.fmt || 'Data not available',
+  TotalLiabilitiesNetMinorityInterest: data2?.['get-balance']?.timeSeries?.annualTotalLiabilitiesNetMinorityInterest[0]?.reportedValue?.fmt || 'Data not available',
+  TotalDeposits: data2?.['get-balance']?.timeSeries?.annualTotalDeposits[0]?.reportedValue?.fmt || 'Data not available',
+  PayablesAndAccruedExpenses: 'Data not available', // Placeholder
+  CurrentDebtAndCapitalLeaseObligation: 'Data not available', // Placeholder
+  TradingLiabilities: data2?.['get-balance']?.timeSeries?.annualTradingLiabilities[0]?.reportedValue?.fmt || 'Data not available',
+  DerivativeProductLiabilities: data2?.['get-balance']?.timeSeries?.annualDerivativeProductLiabilities[0]?.reportedValue?.fmt || 'Data not available',
+  LongTermDebtAndCapitalLeaseObligation: data2?.['get-balance']?.timeSeries?.annualLongTermDebtAndCapitalLeaseObligation[0]?.reportedValue?.fmt || 'Data not available',
+  CurrentProvisions: 'Data not available', // Placeholder
+  EmployeeBenefits: 'Data not available', // Placeholder
+  CurrentDeferredLiabilities: 'Data not available', // Placeholder
+  LiabilitiesOfDiscontinuedOperations: 'Data not available', // Placeholder
+  OtherLiabilities: data2?.['get-balance']?.timeSeries?.annualOtherLiabilities[0]?.reportedValue?.fmt || 'Data not available',
+  TotalEquityGrossMinorityInterest: data2?.['get-balance']?.timeSeries?.annualTotalEquityGrossMinorityInterest[0]?.reportedValue?.fmt || 'Data not available',
+  StockholdersEquity: data2?.['get-balance']?.timeSeries?.annualStockholdersEquity[0]?.reportedValue?.fmt || 'Data not available',
+  MinorityInterest: data2?.['get-balance']?.timeSeries?.annualMinorityInterest[0]?.reportedValue?.fmt || 'Data not available',
+  TotalCapitalization: data2?.['get-balance']?.timeSeries?.annualTotalCapitalization[0]?.reportedValue?.fmt || 'Data not available',
+  CommonStockEquity: data2?.['get-balance']?.timeSeries?.annualCommonStockEquity[0]?.reportedValue?.fmt || 'Data not available',
+  NetTangibleAssets: data2?.['get-balance']?.timeSeries?.annualNetTangibleAssets[0]?.reportedValue?.fmt || 'Data not available',
+  InvestedCapital: data2?.['get-balance']?.timeSeries?.annualInvestedCapital[0]?.reportedValue?.fmt || 'Data not available',
+  TangibleBookValue: data2?.['get-balance']?.timeSeries?.annualTangibleBookValue[0]?.reportedValue?.fmt || 'Data not available',
+  TotalDebt: data2?.['get-balance']?.timeSeries?.annualTotalDebt[0]?.reportedValue?.fmt || 'Data not available',
+  NetDebt: data2?.['get-balance']?.timeSeries?.annualNetDebt[0]?.reportedValue?.fmt || 'Data not available',
+  // Assuming placeholders for share data
+  ShareIssued: 'Data not available',
+  OrdinarySharesNumber: 'Data not available',
+  TreasurySharesNumber: 'Data not available',
+}: null;
 
-// Extract balance sheet data with conditions
-const balanceSheetData = activeStatement === 'balance' && data.balanceSheet ? {
-    endDate: data.balanceSheet.endDate?.fmt || 'N/A',
-    cash: data.balanceSheet.cash?.longFmt || 'Data not available',
-    shortTermInvestments: data.balanceSheet.shortTermInvestments?.longFmt || 'Data not available',
-    netReceivables: data.balanceSheet.netReceivables?.longFmt || 'Data not available',
-    otherCurrentAssets: data.balanceSheet.otherCurrentAssets?.longFmt || 'Data not available',
-    totalCurrentAssets: data.balanceSheet.totalCurrentAssets?.longFmt || 'Data not available',
-    longTermInvestments: data.balanceSheet.longTermInvestments?.longFmt || 'Data not available',
-    propertyPlantEquipment: data.balanceSheet.propertyPlantEquipment?.longFmt || 'Data not available',
-    goodWill: data.balanceSheet.goodWill?.longFmt || 'Data not available',
-    intangibleAssets: data.balanceSheet.intangibleAssets?.longFmt || 'Data not available',
-    otherAssets: data.balanceSheet.otherAssets?.longFmt || 'Data not available',
-    deferredLongTermAssetCharges: data.balanceSheet.deferredLongTermAssetCharges?.longFmt || 'Data not available',
-    totalAssets: data.balanceSheet.totalAssets?.longFmt || 'Data not available',
-    accountsPayable: data.balanceSheet.accountsPayable?.longFmt || 'Data not available',
-    shortLongTermDebt: data.balanceSheet.shortLongTermDebt?.longFmt || 'Data not available',
-    otherCurrentLiab: data.balanceSheet.otherCurrentLiab?.longFmt || 'Data not available',
-    longTermDebt: data.balanceSheet.longTermDebt?.longFmt || 'Data not available',
-    otherLiab: data.balanceSheet.otherLiab?.longFmt || 'Data not available',
-    minorityInterest: data.balanceSheet.minorityInterest?.longFmt || 'Data not available',
-    totalCurrentLiabilities: data.balanceSheet.totalCurrentLiabilities?.longFmt || 'Data not available',
-    totalLiab: data.balanceSheet.totalLiab?.longFmt || 'Data not available',
-    commonStock: data.balanceSheet.commonStock?.longFmt || 'Data not available',
-    retainedEarnings: data.balanceSheet.retainedEarnings?.longFmt || 'Data not available',
-    treasuryStock: data.balanceSheet.treasuryStock?.longFmt || 'Data not available',
-    otherStockholderEquity: data.balanceSheet.otherStockholderEquity?.longFmt || 'Data not available',
-    totalStockholderEquity: data.balanceSheet.totalStockholderEquity?.longFmt || 'Data not available',
-    netTangibleAssets: data.balanceSheet.netTangibleAssets?.longFmt || 'Data not available'
-} : null;
 
 
  const incomeStatementData = activeStatement === 'income' && data.financeAnalytics ? {
@@ -121,8 +136,8 @@ const balanceSheetData = activeStatement === 'balance' && data.balanceSheet ? {
 
     return (
         <div>
-            <div className="flex justify-center mt-8 mb-4">
-                <div className="inline-block" style={{ backgroundColor: 'rgba(169, 169, 169, 0.2)', padding: '3px', borderRadius: '8px' }}>
+            <div className="flex justify-center  mt-8 mb-4">
+                <div className="inline-block rounded-full" style={{ backgroundColor: 'rgba(169, 169, 169, 0.2)', padding: '3px' }}>
                     {renderTab("Balance Sheet", "balance")}
                     {renderTab("Income Statement", "income")}
                     {renderTab("Cash Flow", "cash")}

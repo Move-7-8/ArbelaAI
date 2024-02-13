@@ -2,18 +2,28 @@
 
 
 import { useState } from 'react';
+import { FaThumbsUp } from 'react-icons/fa';
+import { MdLink } from 'react-icons/md';
 
 
 
-function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) {
+function DashboardStockCard({ data,data2, industry,volatilityScore, liquidityScore }) {
 
     const companyName = data?.keyStatistics?.longName || 'Company Name Not Available';
     const ticker = data?.historic?.meta?.symbol  || 'Company Name Not Available';
     const marketCap = data?.price?.marketCap?.longFmt || 'Not Available';
     const askPrice = data?.financeAnalytics?.currentPrice|| 'Not Available';
     const prevClose = data?.historic?.meta?.chartPreviousClose || 'Not Available';
-    console.log('current price 1', askPrice)
-    console.log('previous close 1', prevClose)
+    const description = data2?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.longBusinessSummary || 'Not Available';
+    const firstSentence = description.split('.')[0] + '.';
+    const link = data2?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.website || 'Not Available';
+
+    console.log(link)
+
+    const [hover, setHover] = useState(false);
+
+   
+    console.log('finaldata', data2)
 
     const volume = data?.price?.regularMarketVolume?.longFmt || 'Not Available';
 
@@ -91,21 +101,18 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
         <div className="flex flex-col flex-1 rounded-md mx-auto lg-height-85vh" >
             {/* Align buttons to the left */}
         <div className="flex justify-center rounded mx-4 pr-2 pb-2">
-          <button
-    className={`w-28 px-3 py-1 rounded-full text-sm shadow hover:scale-105 transition-transform duration-300 mr-4 uppercase ${activeButton === 'button1' ? 'text-[#6A849D]' : 'bg-gray-100 text-[#6A849D]'}`}
-    style={{ backgroundColor: activeButton === 'button1' ? 'rgba(169, 169, 169, 0.2)' : '' }}
-    onClick={() => setActiveButton('button1')}
->
-    Summary
-</button>
-<button
-    className={`w-28 px-3 py-1 rounded-full shadow text-sm hover:scale-105 transition-transform duration-300 uppercase ${activeButton === 'button2' ? 'text-[#6A849D]' : 'bg-gray-100 text-[#6A849D]'}`}
-    style={{ backgroundColor: activeButton === 'button2' ? 'rgba(169, 169, 169, 0.2)' : '' }}
-    onClick={() => setActiveButton('button2')}
->
-    Ratio
-</button>
-
+        <button
+            className={`w-28 px-3 py-1 rounded-full text-sm shadow hover:scale-105 transition-transform duration-300 mr-4 uppercase border ${activeButton === 'button1' ? 'bg-[#6A849D] text-white border-[#6A849D]' : 'bg-white text-[#6A849D] border-[#6A849D]'}`}
+            onClick={() => setActiveButton('button1')}
+        >
+            Summary
+        </button>
+        <button
+            className={`w-28 px-3 py-1 rounded-full shadow text-sm hover:scale-105 transition-transform duration-300 uppercase border ${activeButton === 'button2' ? 'bg-[#6A849D] text-white border-[#6A849D]' : 'bg-white text-[#6A849D] border-[#6A849D]'}`}
+            onClick={() => setActiveButton('button2')}
+        >
+            Ratio
+        </button>
         </div>
   <style>
     {`
@@ -182,7 +189,7 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
 
 {activeButton === 'button1' && (
     <div className="flex flex-col flex-grow">
-        {!data ? (
+        {!data || !data2 ? (
             // Skeleton loaders for company name and description
             <div className="mb-2">
                 <div className="bg-gray-200 h-6 w-1/2 rounded"></div> {/* Skeleton for Company Name */}
@@ -190,11 +197,25 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
             </div>
         ) : (
             // Actual Company Name and Description
-            <div className="mb-2">
-          <h2 className="text-xl font-bold text-[#3A3C3E]">{`${companyName} - ${ticker}`}</h2> {/* Modified to include ticker */}
-
-                <p className="text-sm text-gray-600 2xl:mt-5 mt-2">This is a short description about the company.</p>
-            </div>
+            
+        <div className="mb-2">
+         <div className="flex items-center text-xl font-bold text-[#3A3C3E]">
+          <span className="flex items-center">
+    {companyName} - {ticker}
+    {link !== 'Not Available' && (
+      <a href={link} target="_blank" rel="noopener noreferrer" 
+         onMouseEnter={() => setHover(true)}
+         onMouseLeave={() => setHover(false)}
+         style={{ display: 'inline-flex', alignItems: 'center', marginLeft: '4px' }}>
+        <MdLink size={16} style={{ color: hover ? '#6A849D' : '#3A3C3E' }} />
+      </a>
+    )}
+  </span>
+      </div>
+      <div className="flex items-center mt-2">
+        <p className="text-sm text-gray-600 flex-grow">{firstSentence}</p> {/* Company description */}
+      </div>
+        </div>
         )}
 
 
@@ -218,7 +239,7 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
                     {/* Stock Price - Left Aligned */}
                     <div>
                         <span className="text-gray-500 uppercase text-xs block mb-2">Price</span>
-                        <span className="text-black font-bold text-l">{formatAskPrice(askPrice)}</span>
+                        <span className="text-black font-bold text-l text-[#3A3C3E]">{formatAskPrice(askPrice)}</span>
                     </div>
 
                     {/* Price Increase - Right Aligned */}
@@ -311,7 +332,7 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
           
     </div>
     {/* Buttons Container */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
     <button className="uppercase text-sm rounded-full py-1 px-3 w-32 transition duration-300 ease-in-out hover:scale-105 mb-4 ml-4 mr-4 border border-[#FF6665] text-[#FF6665]" 
             style={{ backgroundColor: 'white' }}>
         Portfolio

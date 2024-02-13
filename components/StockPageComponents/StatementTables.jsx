@@ -15,32 +15,47 @@ const StatementTable = ({ data, statementType }) => {
   if (statementType === 'balance') {
   // Extract balance sheet values directly
 const {
-  cash,
-  netReceivables,
-  totalCurrentAssets,
-  longTermInvestments,
-  otherCurrentAssets,
-  intangibleAssets,
-  otherAssets,
-  totalAssets,
-  accountsPayable,
-  longTermDebt,
-  totalCurrentLiabilities,
-  totalLiab,
-  commonStock,
-  retainedEarnings,
-  treasuryStock,
-  otherStockholderEquity,
-  totalStockholderEquity,
-  netTangibleAssets,
-  shortTermInvestments, // Add this line
-  propertyPlantEquipment, // Add this line
-  goodWill, // Add this line
-  deferredLongTermAssetCharges, // Add this line
-  shortLongTermDebt, // Add this line
-  otherCurrentLiab, // Add this line
-  otherLiab, // Add this line
-  minorityInterest // Add this line
+TotalAssets,
+    CashCashEquivalentsFederalFundsSold,
+    CashAndCashEquivalents,
+    MoneyMarketInvestments,
+    SecuritiesAndInvestments,
+    LongTermEquityInvestment,
+    DerivativeAssets,
+    NetLoan,
+    Receivables,
+    PrepaidAssets,
+    NetPPE,
+    GoodwillAndOtherIntangibleAssets,
+    DeferredAssets,
+    DefinedPensionBenefit,
+    AssetsHeldForSale,
+    OtherAssets,
+    TotalLiabilitiesNetMinorityInterest,
+    TotalDeposits,
+    PayablesAndAccruedExpenses,
+    CurrentDebtAndCapitalLeaseObligation,
+    TradingLiabilities,
+    DerivativeProductLiabilities,
+    LongTermDebtAndCapitalLeaseObligation,
+    CurrentProvisions,
+    EmployeeBenefits,
+    CurrentDeferredLiabilities,
+    LiabilitiesOfDiscontinuedOperations,
+    OtherLiabilities,
+    TotalEquityGrossMinorityInterest,
+    StockholdersEquity,
+    MinorityInterest,
+    TotalCapitalization,
+    CommonStockEquity,
+    NetTangibleAssets,
+    InvestedCapital,
+    TangibleBookValue,
+    TotalDebt,
+    NetDebt,
+    ShareIssued,
+    OrdinarySharesNumber,
+    TreasurySharesNumber,
 } = data;
 
   
@@ -48,32 +63,48 @@ const {
   // Define the rows of the table
   // Update rows for the balance sheet
     rows = [ 
-    { label: "Total Assets", value: totalAssets },
-    { label: "Cash", value: cash },
-    { label: "Short Term Investments", value: shortTermInvestments },
-    { label: "Net Receivables", value: netReceivables },
-    { label: "Other Current Assets", value: otherCurrentAssets },
-    { label: "Total Current Assets", value: totalCurrentAssets },
-    { label: "Long Term Investments", value: longTermInvestments },
-    { label: "Property Plant Equipment", value: propertyPlantEquipment },
-    { label: "GoodWill", value: goodWill },
-    { label: "Intangible Assets", value: intangibleAssets },
-    { label: "Other Assets", value: otherAssets },
-    { label: "Deferred Long Term Asset Charges", value: deferredLongTermAssetCharges },
-    { label: "Accounts Payable", value: accountsPayable },
-    { label: "Short/Long Term Debt", value: shortLongTermDebt },
-    { label: "Other Current Liabilities", value: otherCurrentLiab },
-    { label: "Long Term Debt", value: longTermDebt },
-    { label: "Other Liabilities", value: otherLiab },
-    { label: "Minority Interest", value: minorityInterest },
-    { label: "Total Current Liabilities", value: totalCurrentLiabilities },
-    { label: "Total Liabilities", value: totalLiab },
-    { label: "Common Stock", value: commonStock },
-    { label: "Retained Earnings", value: retainedEarnings },
-    { label: "Treasury Stock", value: treasuryStock },
-    { label: "Other Stockholder Equity", value: otherStockholderEquity },
-    { label: "Total Stockholder Equity", value: totalStockholderEquity },
-    { label: "Net Tangible Assets", value: netTangibleAssets }
+    { label: "Total Assets", value: TotalAssets },
+    { label: "Cash, Cash Equivalents & Federal Funds Sold", value: CashCashEquivalentsFederalFundsSold },
+    { label: "Cash And Cash Equivalents", value: CashAndCashEquivalents },
+    { label: "Money Market Investments", value: MoneyMarketInvestments },
+    { label: "Securities and Investments", value: SecuritiesAndInvestments },
+    { label: "Long Term Equity Investment", value: LongTermEquityInvestment },
+    { label: "Derivative Assets", value: DerivativeAssets },
+    { label: "Net Loan", value: NetLoan },
+    { label: "Receivables", value: Receivables },
+    { label: "Prepaid Assets", value: PrepaidAssets },
+    { label: "Net PPE", value: NetPPE },
+    { label: "Goodwill And Other Intangible Assets", value: GoodwillAndOtherIntangibleAssets },
+    { label: "Deferred Assets", value: DeferredAssets },
+    { label: "Defined Pension Benefit", value: DefinedPensionBenefit },
+    { label: "Assets Held for Sale", value: AssetsHeldForSale },
+    { label: "Other Assets", value: OtherAssets },
+    { label: "Total Liabilities", value: TotalLiabilitiesNetMinorityInterest },
+    { label: "Total Deposits", value: TotalDeposits },
+    { label: "Payables And Accrued Expenses", value: PayablesAndAccruedExpenses },
+    { label: "Current Debt And Capital Lease Obligation", value: CurrentDebtAndCapitalLeaseObligation },
+    { label: "Trading Liabilities", value: TradingLiabilities },
+    { label: "Derivative Product Liabilities", value: DerivativeProductLiabilities },
+    { label: "Long Term Debt And Capital Lease Obligation", value: LongTermDebtAndCapitalLeaseObligation },
+    { label: "Current Provisions", value: CurrentProvisions },
+    { label: "Employee Benefits", value: EmployeeBenefits },
+    { label: "Current Deferred Liabilities", value: CurrentDeferredLiabilities },
+    { label: "Liabilities of Discontinued Operations", value: LiabilitiesOfDiscontinuedOperations },
+    { label: "Other Liabilities", value: OtherLiabilities },
+    { label: "Total Equity Gross Minority Interest", value: TotalEquityGrossMinorityInterest },
+    { label: "Stockholders Equity", value: StockholdersEquity },
+    { label: "Minority Interest", value: MinorityInterest },
+    { label: "Total Capitalization", value: TotalCapitalization },
+    { label: "Common Stock Equity", value: CommonStockEquity },
+    { label: "Net Tangible Assets", value: NetTangibleAssets },
+    { label: "Invested Capital", value: InvestedCapital },
+    { label: "Tangible Book Value", value: TangibleBookValue },
+    { label: "Total Debt", value: TotalDebt },
+    { label: "Net Debt", value: NetDebt },
+    // Assuming placeholders for share data
+    { label: "Share Issued", value: ShareIssued },
+    { label: "Ordinary Shares Number", value: OrdinarySharesNumber },
+    { label: "Treasury Shares Number", value: TreasurySharesNumber },
 ].filter(row => row.value !== 'Data not available' && row.value !== null);
 
   } else if (statementType === 'income') {
@@ -163,7 +194,7 @@ return (
         Breakdown
       </th>
       <th style={{ 
-          textAlign: 'center', 
+          textAlign: 'right', 
           backgroundColor: 'rgba(200, 200, 200, 0.2)', // Updated background color
           padding: '10px', 
           fontSize: '14px'
@@ -188,7 +219,7 @@ return (
                 {row.label}
               </td>
               <td style={{ 
-                  textAlign: 'center', 
+                  textAlign: 'right', 
                   padding: '8px', 
                   fontSize: '12px'
               }}>

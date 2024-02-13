@@ -54,7 +54,7 @@ const Nav = () => {
         {session?.user ? (
           <>
             {/* Logged In User Links */}
-            <Link href="/catalog" className="nav_button">
+            <Link href="/catalog" className="nav_button text-[#3A3C3E]">
               Catalog
             </Link>
             {/* More links can be added here */}
