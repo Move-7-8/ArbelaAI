@@ -18,7 +18,7 @@ const CronTest = () => {
       }
 
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       // setResult(JSON.stringify(data, null, 2)); // Update result state with formatted data
     } catch (error) {
       console.error('There was an error!', error);

@@ -12,8 +12,8 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
     const marketCap = data?.price?.marketCap?.longFmt || 'Not Available';
     const askPrice = data?.financeAnalytics?.currentPrice|| 'Not Available';
     const prevClose = data?.historic?.meta?.chartPreviousClose || 'Not Available';
-    console.log('current price 1', askPrice)
-    console.log('previous close 1', prevClose)
+    // console.log('current price 1', askPrice)
+    // console.log('previous close 1', prevClose)
 
     const volume = data?.price?.regularMarketVolume?.longFmt || 'Not Available';
 
@@ -50,8 +50,8 @@ function DashboardStockCard({ data, industry,volatilityScore, liquidityScore }) 
                           : Number(askPrice);
     const previousClose = Number(prevClose);
 
-    console.log('current price 2', currentPrice)
-    console.log('previous close 2', previousClose)
+    // console.log('current price 2', currentPrice)
+    // console.log('previous close 2', previousClose)
     // Calculate price change and percentage change
     const priceChange = currentPrice - previousClose;
     const percentageChange = parseFloat((((currentPrice - previousClose) / previousClose) * 100).toFixed(2));

@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import OpenAI from "openai";
 
 export async function GET (request) {
-    console.log('Run retrieve route hit')
+    // console.log('Run retrieve route hit')
     const searchParams = request.nextUrl.searchParams;
     const threadId = searchParams.get('threadId');
     const runId = searchParams.get('runId');
@@ -16,7 +16,7 @@ export async function GET (request) {
 
     try {
         const run = await openai.beta.threads.runs.retrieve(threadId, runId);
-        console.log(run);
+        // console.log(run);
 
         return Response.json({run: run}, {status: 200});
     } catch (e) {

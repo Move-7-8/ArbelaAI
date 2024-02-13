@@ -58,23 +58,23 @@ export default function ThreadAssistant({ companyName, selectedDocuments, thread
   const { data: session, status } = useSession();
 
   const threadId= threadnumber
-  console.log('Thread Assistant threadID',threadId )
+//   console.log('Thread Assistant threadID',threadId )
   // Handler for file input changes
   const handleFileChange = (selectedFiles) => {
-    console.log('Handle File Change Triggered');
+    // console.log('Handle File Change Triggered');
     setFiles([...files, ...selectedFiles]);
 };
 
   // Handler for form submissions
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log('Handling form submission.');
+    // console.log('Handling form submission.');
     
     setIsSending(true);
     // Update chat messages with user input
     setChatMessages(prevMessages => [...prevMessages, { role: 'user', content: input }]);
     setInput('');
-    console.log('User message added to chat.');
+    // console.log('User message added to chat.');
 
     // Preparing data for API calls
     let formData = new FormData();
@@ -84,16 +84,16 @@ export default function ThreadAssistant({ companyName, selectedDocuments, thread
     formData.append('input', input);
 
     // Call the addMessage API route
-    console.log('Sending message to addMessage API endpoint.');
+    // console.log('Sending message to addMessage API endpoint.');
     const addMessageResponse = await fetch('/api/Assistant/addMessage', {
       method: 'POST',
       body: formData
     });
     const addMessageData = await addMessageResponse.json();
-    console.log('Message sent to addMessage API endpoint.');
+    // console.log('Message sent to addMessage API endpoint.');
 
     // Call the runAssistant API route
-    console.log('Invoking runAssistant API endpoint.');
+    // console.log('Invoking runAssistant API endpoint.');
     let formData_run = new FormData();
     if (assistantId) {
       formData_run.append('assistantId', assistantId);
@@ -107,7 +107,7 @@ export default function ThreadAssistant({ companyName, selectedDocuments, thread
     body: formData_run
     });
     const runAssistantData = await runAssistantResponse.json();
-    console.log('Received response from runAssistant API endpoint.');
+    // console.log('Received response from runAssistant API endpoint.');
 
     // Checking the status of the assistant's response
     let status = runAssistantData.status;
@@ -127,13 +127,13 @@ export default function ThreadAssistant({ companyName, selectedDocuments, thread
     const statusData = await statusResponse.json();
     status = statusData.status;
 
-    console.log('Checking assistant response status:', status);
+    // console.log('Checking assistant response status:', status);
     await new Promise(resolve => setTimeout(resolve, 1000));
     }
-    console.log('Assistant response processing completed.');
+    // console.log('Assistant response processing completed.');
 
     // Retrieve messages from the assistant
-    console.log('Fetching messages from listMessages API endpoint.');
+    // console.log('Fetching messages from listMessages API endpoint.');
     let formData_listMessage = new FormData();
     if (threadId) {
     formData_listMessage.append('threadId', threadId);
@@ -144,13 +144,13 @@ export default function ThreadAssistant({ companyName, selectedDocuments, thread
     body: formData_listMessage
     });
     const listMessagesData = await listMessagesResponse.json();
-    console.log('Messages retrieved from listMessages API endpoint.');
+    // console.log('Messages retrieved from listMessages API endpoint.');
     setIsSending(false);
 
     // Add the assistant's response to the chat
     if (listMessagesResponse.ok) {
     if (listMessagesData.messages) {
-        console.log('Adding assistant\'s message to the chat.');
+        // console.log('Adding assistant\'s message to the chat.');
         setChatMessages(prevMessages => [
         ...prevMessages,
         { role: 'assistant', content: listMessagesData.messages }
@@ -164,13 +164,13 @@ export default function ThreadAssistant({ companyName, selectedDocuments, thread
     }
 
     async function startAssistant() {
-    console.log('startAssistant function called');
-    console.log(`Assistant Name: ${assistantName} Assistant Model:${assistantModel} Assistant Description:${assistantDescription} Input Message:${inputmessage}`)
+    // console.log('startAssistant function called');
+    // console.log(`Assistant Name: ${assistantName} Assistant Model:${assistantModel} Assistant Description:${assistantDescription} Input Message:${inputmessage}`)
     if (!assistantName || !assistantModel || !assistantDescription || !inputmessage) {
         console.error('All fields must be filled');
         return;
     }
-        console.log('Initializing chat assistant.');
+        // console.log('Initializing chat assistant.');
         setStartLoading(true);
         setIsButtonDisabled(true);
 
@@ -178,7 +178,7 @@ export default function ThreadAssistant({ companyName, selectedDocuments, thread
     // Preparing file data for upload
     let fileIds = [];
     if (files.length > 0) {
-        console.log('Uploading files:', files.map(f => f.name).join(', '));
+        // console.log('Uploading files:', files.map(f => f.name).join(', '));
         const fileData = new FormData();
         files.forEach(file => fileData.append('file', file));
 
@@ -196,12 +196,12 @@ export default function ThreadAssistant({ companyName, selectedDocuments, thread
 
         // Collect file IDs from the response
         fileIds = uploadData.fileIds;
-        console.log(`Uploaded File IDs:`, fileIds);
+        // console.log(`Uploaded File IDs:`, fileIds);
     }
 
     // Create assistant
-    console.log('Creating assistant.');
-    console.log(`TWO: File IDs before creating assistant:`, fileIds);
+    // console.log('Creating assistant.');
+    // console.log(`TWO: File IDs before creating assistant:`, fileIds);
 
     const assistantData = new FormData();
     assistantData.set('assistantName', assistantName);
@@ -219,9 +219,9 @@ export default function ThreadAssistant({ companyName, selectedDocuments, thread
         body: assistantData,
     });
     const createAssistantData = await createAssistantResponse.json();
-    console.log(`#################################################################`)
-    console.log(`THREE: Create Assistant Response:`, createAssistantData);
-    console.log(`#################################################################`)
+    // console.log(`#################################################################`)
+    // console.log(`THREE: Create Assistant Response:`, createAssistantData);
+    // console.log(`#################################################################`)
 
     if (!createAssistantResponse.ok) {
         console.error('Error creating assistant:', createAssistantData.error);
@@ -257,7 +257,7 @@ export default function ThreadAssistant({ companyName, selectedDocuments, thread
     const threadId = threadnumber;
     
     // Run assistant
-    console.log('Running assistant.');
+    // console.log('Running assistant.');
     const runAssistantData = new FormData();
     runAssistantData.set('assistantId', assistantId);
     runAssistantData.set('threadId', threadId);
@@ -289,7 +289,7 @@ export default function ThreadAssistant({ companyName, selectedDocuments, thread
     });
     checkRunStatusData = await checkRunStatusResponse.json();
 
-    console.log('Run status:', checkRunStatusData.status);
+    // console.log('Run status:', checkRunStatusData.status);
 
     if (["cancelled", "cancelling", "failed", "expired"].includes(checkRunStatusData.status)) {
         console.error(`Run stopped due to status: ${checkRunStatusData.status}`);
@@ -300,19 +300,19 @@ export default function ThreadAssistant({ companyName, selectedDocuments, thread
     } while (checkRunStatusData.status !== 'completed');
 
     // Code after run completion
-    console.log('Get Messages from listMessages.');
+    // console.log('Get Messages from listMessages.');
     const listMessagesResponse = await fetch('/api/Assistant/listMessages', {
     method: 'POST',
     body: formData_checkRunStatus,
     });
     const listMessagesData = await listMessagesResponse.json();
-    ('**************************************************.');
-    console.log('Messages retrieved from listMessages API endpoint.');
-    console.log(listMessagesData);
-    console.log('**************************************************.');
+    // ('**************************************************.');
+    // console.log('Messages retrieved from listMessages API endpoint.');
+    // console.log(listMessagesData);
+    // console.log('**************************************************.');
 
     if (listMessagesResponse.ok) {
-    console.log('Message content:', listMessagesData.messages);
+    // console.log('Message content:', listMessagesData.messages);
     setChatMessages(prevMessages => [...prevMessages, { role: 'assistant', content: listMessagesData.messages }]);
     setIsButtonDisabled(false);
     } else {
@@ -323,7 +323,7 @@ export default function ThreadAssistant({ companyName, selectedDocuments, thread
     // setThreadId(threadId);
     setChatStarted(true);
     // setIsButtonDisabled(false);
-    console.log('Chat with assistant started successfully.');
+    // console.log('Chat with assistant started successfully.');
     }
     // React component return statement
     return (

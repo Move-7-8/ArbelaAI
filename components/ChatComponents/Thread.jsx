@@ -18,7 +18,7 @@ function Thread({ fileChangeCompleted, onThreadCreated }) {
 // In Thread.jsx
 useEffect(() => {
   if (fileChangeCompleted) {
-    console.log("Triggering handleCreate in Thread.jsx");
+    // console.log("Triggering handleCreate in Thread.jsx");
     handleCreate();
   }
 }, [fileChangeCompleted]);
@@ -33,11 +33,11 @@ useEffect(() => {
         const responseData = await response.json();
 
         const newThread = responseData.thread.id;
-        console.log("response", newThread);
+        // console.log("response", newThread);
         setThread(newThread);
         localStorage.setItem("thread", JSON.stringify(newThread));
         setMessage("Successfully created thread"); // Update message
-        console.log("Successfully created thread")
+        // console.log("Successfully created thread")
         onThreadCreated(); // Call the callback once the thread is created
 
     } catch (error) {

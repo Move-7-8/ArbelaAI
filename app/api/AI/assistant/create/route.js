@@ -3,8 +3,6 @@
     export async function GET() {
         console.log('create assistant')
         const openai = new OpenAI(process.env.OPENAI_API_KEY);
-        // console.log('TEST openAI', openai)
-        // console.log('TEST Key', process.env.OPENAI_API_KEY)
 
         try {
             const assistant = await openai.beta.assistants.create({
@@ -26,7 +24,6 @@
                 tools: [{type: 'retrieval'}],
                 model: 'gpt-4-1106-preview',
             });
-            console.log(assistant)
 
             return Response.json({ assistant: assistant})
 

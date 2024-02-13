@@ -2,8 +2,8 @@ import OpenAI from "openai";
 
 export async function POST (req) {
     const {message, threadId} = await req.json();
-    console.log('thread ID:', threadId)
-    console.log('Message:', message)
+    // console.log('thread ID:', threadId)
+    // console.log('Message:', message)
 
     if (!message || !threadId) 
         return Response.json(

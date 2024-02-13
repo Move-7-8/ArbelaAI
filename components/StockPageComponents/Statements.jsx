@@ -5,11 +5,11 @@ const FinancialStatements = ({ data }) => {
     const [activeStatement, setActiveStatement] = useState('income');
 
         // Log the entire data object
-    console.log('Full Data:', data);
+    // console.log('Full Data:', data);
 
     // Check if balanceSheet and financeAnalytics are present in the data
-    console.log('Balance Sheet Data:', data?.balanceSheet);
-    console.log('Finance Analytics Data:', data?.financeAnalytics);
+    // console.log('Balance Sheet Data:', data?.balanceSheet);
+    // console.log('Finance Analytics Data:', data?.financeAnalytics);
     
 
 

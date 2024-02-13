@@ -1,7 +1,7 @@
 import OpenAI from "openai";    
 
 export async function GET (req) {
-    console.log('Run create route hit')
+    // console.log('Run create route hit')
     const searchParams = req.nextUrl.searchParams;
     const threadId = searchParams.get('threadId');
     const assistantId = searchParams.get('assistantId');
@@ -26,7 +26,7 @@ export async function GET (req) {
                 assistant_id: assistantId,
             }
         );
-        console.log({run: run});
+        // console.log({run: run});
 
         return Response.json({run: run});
     } catch (e) {

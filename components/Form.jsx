@@ -1,76 +1,149 @@
-// import Link from 'next/link'
+import {
+    Button,
+    Container,
+    FormControl,
+    FormErrorMessage,
+    FormLabel,
+    Heading,
+    Input,
+    Text,
+    Textarea,
+    useToast,
+  } from "@chakra-ui/react";
+  import { useState } from "react";
 
-// const Form = ({
-//   type,
-//   post,
-//   setPost,
-//   submitting,
-//   handleSubmit
-// }) => {
-
-//   return (
-//     <section className="w-full max-w-full flex-start flex-col">
-//       <h1 className="head_text text-left">
-//         <span className="blue_gradient"> {type} Post </span>
-//       </h1>
-//       <p className="desc text-left max-w-md">
-//         {type} and share prompts with the world, and analyse 
-//         financial organisations.
-//       </p>
-
-//       <form
-//       onSubmit={handleSubmit}
-//       className="mt-10 w-full max-w-2xl flex flex-col gap-7 glassmorphism"
-//       >
-//         <label>
-//           <span className="font-satoshi font-semibold text-base text-gray-700">
-//           Your AI Prompt
-//           </span>
-
-//           <textarea 
-//           value={post.prompt}
-//           onChange={(e)=> setPost({ ...post,
-//           prompt: e.target.value})}
-//           placeholder="Write your prompt here..."
-//           required 
-//           className="form_textarea"
-//           />
-//           </label>
-//           <label>
-//           <span className="font-satoshi font-semibold text-base text-gray-700">
-//           Tag {` `}
-//           <span className="font-normal">
-//             (#product, #webdevelopment, #idea)</span>
-//           </span>
-
-//           <input 
-//           value={post.tag}
-//           onChange={(e)=> setPost({ ...post,
-//           tag: e.target.value})}
-//           placeholder="#tag"
-//           required 
-//           className="form_input"
-//           />
-//           </label>
-
-//           <div className="flex-end mx-3 mb-5 gap-4">
-//             <Link href="/" className="text-gray-500 text-sm" >
-//               Cancel
-//             </Link>
-//             <button
-//               type="submit"
-//               disabled={submitting}
-//               className="px-5 py-1.5 text-sm
-//               bg-primary-orange rounded-full text-white"
-//               >
-//                 {submitting ? `${type}...`: type}
-
-//             </button>
-//           </div>
-
-//       </form>
-//     </section>
-//   )
-// }
-
-// export default Form
+  const initValues = { name: "", email: "", subject: "", message: "" };
+  
+  const initState = { isLoading: false, error: "", values: initValues };
+  
+  export default function Home() {
+    const toast = useToast();
+    const [state, setState] = useState(initState);
+    const [touched, setTouched] = useState({});
+  
+    const { values, isLoading, error } = state;
+  
+    const onBlur = ({ target }) =>
+      setTouched((prev) => ({ ...prev, [target.name]: true }));
+  
+    const handleChange = ({ target }) =>
+      setState((prev) => ({
+        ...prev,
+        values: {
+          ...prev.values,
+          [target.name]: target.value,
+        },
+      }));
+  
+      const onSubmit = async (e) => {
+        e.preventDefault(); // Prevent default form submission
+        setState((prev) => ({ ...prev, isLoading: true }));
+        try {
+          await sendContactForm(values);
+          setState({ ...initState, values: initValues }); // Reset form
+          toast({
+            title: "Message sent.",
+            status: "success",
+            duration: 2000,
+            position: "top",
+          });
+        } catch (error) {
+          setState((prev) => ({ ...prev, isLoading: false, error: error.message }));
+        }
+      };
+      
+    const sendContactForm = async (data) =>
+    fetch("/api/email", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+    }).then((res) => {
+        if (!res.ok) throw new Error("Failed to send message");
+        return res.json();
+  });
+  
+    return (
+      <Container maxW="450px" mt={12}>
+        <Heading>Contact</Heading>
+        {error && (
+          <Text color="red.300" my={4} fontSize="xl">
+            {error}
+          </Text>
+        )}
+  
+        <FormControl isRequired isInvalid={touched.name && !values.name} mb={5}>
+          <FormLabel>Name</FormLabel>
+          <Input
+            type="text"
+            name="name"
+            errorBorderColor="red.300"
+            value={values.name}
+            onChange={handleChange}
+            onBlur={onBlur}
+          />
+          <FormErrorMessage>Required</FormErrorMessage>
+        </FormControl>
+  
+        <FormControl isRequired isInvalid={touched.email && !values.email} mb={5}>
+          <FormLabel>Email</FormLabel>
+          <Input
+            type="email"
+            name="email"
+            errorBorderColor="red.300"
+            value={values.email}
+            onChange={handleChange}
+            onBlur={onBlur}
+          />
+          <FormErrorMessage>Required</FormErrorMessage>
+        </FormControl>
+  
+        <FormControl
+          mb={5}
+          isRequired
+          isInvalid={touched.subject && !values.subject}
+        >
+          <FormLabel>Subject</FormLabel>
+          <Input
+            type="text"
+            name="subject"
+            errorBorderColor="red.300"
+            value={values.subject}
+            onChange={handleChange}
+            onBlur={onBlur}
+          />
+          <FormErrorMessage>Required</FormErrorMessage>
+        </FormControl>
+  
+        <FormControl
+          isRequired
+          isInvalid={touched.message && !values.message}
+          mb={5}
+        >
+          <FormLabel>Message</FormLabel>
+          <Textarea
+            type="text"
+            name="message"
+            rows={4}
+            errorBorderColor="red.300"
+            value={values.message}
+            onChange={handleChange}
+            onBlur={onBlur}
+          />
+          <FormErrorMessage>Required</FormErrorMessage>
+        </FormControl>
+  
+        <Button
+            type="submit" // Change to type submit for semantic HTML
+            variant="outline"
+            colorScheme="blue"
+            isLoading={isLoading}
+            disabled={
+            !values.name || !values.email || !values.subject || !values.message
+            }
+            onClick={onSubmit}
+        >
+        Submit
+      </Button>
+      </Container>
+    );
+  }

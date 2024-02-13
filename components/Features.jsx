@@ -6,7 +6,7 @@ const Features = () => {
     <div className='flex flex-col sm:flex-row justify-between'> 
       <div className='w-full sm:flex-1 feature p-4 m-2'> 
         <h3 className="features-header mb-4 font-bold">
-          Data Feeds
+          Our Data
         </h3>
         <Image 
           src="/assets/icons/features/data2.png"
@@ -15,12 +15,12 @@ const Features = () => {
           alt="Unstructured Data"
         />
         <p style={{ marginTop: '1rem' }}>
-          Our Data covers company statements, quarterly updates, news stories, and price movements for all US stocks.
+          Our Data covers live feeds, quarterly updates, news stories, and metrics for all ASX traded stocks.
         </p>
       </div>
       <div className='w-full sm:flex-1 feature p-4 m-2'> 
         <h3 className="features-header mb-4 font-bold">
-          Train Your own Model
+          Find Companies
         </h3>
         <Image 
           src="/assets/icons/features/model2.png"
@@ -29,7 +29,7 @@ const Features = () => {
           alt="Structured Data"
         />
         <p style={{ marginTop: '1rem' }}>
-          You can choose multiple data points to train your model on.
+          Use AI to search and filter companies based on your investment goals. Coming soon.
         </p>
       </div>
       <div className='w-full sm:flex-1 feature p-4 m-2'> 
@@ -43,7 +43,7 @@ const Features = () => {
           alt="Analysed Data"
         />
         <p style={{ marginTop: '1rem' }}>
-          Quickly extract information by talking with your model
+          Anlyse company data via our models that have been trained on each individual stock.
         </p>
       </div>
     </div>

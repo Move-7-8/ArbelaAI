@@ -16,7 +16,7 @@ const Landing = ({ setIsLandingVisible }) => {
                 <button 
                     className="analyse_button" 
                     onClick={() => setIsLandingVisible(false)}> 
-                    Get Started 
+                    Try It (FREE)
                 </button>
             </div>
             

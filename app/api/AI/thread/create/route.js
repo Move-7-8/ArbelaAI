@@ -1,11 +1,11 @@
 import OpenAI from "openai";    
 
 export async function GET () {
-    console.log('thread create route hit');
+    // console.log('thread create route hit');
     const openai = new OpenAI(process.env.OPENAI_API_KEY);
     try {
         const thread = await openai.beta.threads.create()
-        console.log(thread);
+        // console.log(thread);
 
         return Response.json({thread: thread}, {status: 200});
         } catch(e) {

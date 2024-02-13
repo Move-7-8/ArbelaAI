@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 const Home = () => {
   const [isLandingVisible, setIsLandingVisible] = useState(true);
   const [preloadedData, setPreloadedData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Add this line
 
   const toggleShowFeed = () => {
     setIsLandingVisible(false);
@@ -19,9 +20,9 @@ const Home = () => {
 
  
   const preloadData = async () => {
-    // setIsLoading(true); // Start loading
+    setIsLoading(true); // Start loading
     try {
-      const limit = 12; // Load initial 12 stocks
+      const limit = 12; // Load initial 12 items
       const response = await fetch(`/api/companies?limit=${limit}`, {
         method: 'POST',
         headers: {
@@ -38,10 +39,10 @@ const Home = () => {
     } catch (error) {
       console.error("Fetch error: ", error);
     } finally {
-      // setIsLoading(false); // End loading regardless of outcome
+      setIsLoading(false); // End loading regardless of outcome
     }
   };
-    
+      
   useEffect(() => {
     preloadData(); // Trigger data preloading on component mount
   }, []);
@@ -72,7 +73,7 @@ const Home = () => {
         classNames="fade"
         unmountOnExit
       >
-      <Feed preloadedData={preloadedData} />
+        {!isLoading ? <Feed preloadedData={preloadedData} /> : <div>Loading...</div>}
       </CSSTransition>
 
     </section>

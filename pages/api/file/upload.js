@@ -44,7 +44,7 @@ export const config = {
 };
 
 export default async function handler(req, res) {
-    console.log('PAGES API FILE RUNNIN');
+    // console.log('PAGES API FILE RUNNIN');
     if (req.method !== 'POST') {
         res.setHeader('Allow', 'POST');
         return res.status(405).end(`Method ${req.method} Not Allowed`);

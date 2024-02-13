@@ -61,9 +61,9 @@ function Run({ messageSent, onRunComplete, onRunFinal }) {
           onRunComplete(); // Call the callback function
         }
         
-        console.log('/////////////////////////////')
-        console.log('RUN STATUS',updatedRun.status )
-        console.log('/////////////////////////////')
+        // console.log('/////////////////////////////')
+        // console.log('RUN STATUS',updatedRun.status )
+        // console.log('/////////////////////////////')
       
 
         if (["cancelled", "failed", "completed", "expired"].includes(updatedRun.status)) {
@@ -148,7 +148,7 @@ function Run({ messageSent, onRunComplete, onRunFinal }) {
           return response.json();
         })
       .then((response) => {
-        console.log('RUN response', response.messages)
+        // console.log('RUN response', response.messages)
         let newMessages = response.messages;
 
         // Sort messages in descending order by createdAt
@@ -160,7 +160,7 @@ function Run({ messageSent, onRunComplete, onRunFinal }) {
         setMessages(newMessages);
       });
     } catch (error) {
-      console.log("error", error);
+      // console.log("error", error);
       setMessage("Error fetching messages");
     }
   };

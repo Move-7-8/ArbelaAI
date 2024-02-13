@@ -12,7 +12,7 @@ async function GET(request) {
   try {
     const response = await openai.beta.threads.messages.list(threadId);
 
-    console.log(response);
+    // console.log(response);
 
     return new Response(JSON.stringify({ messages: response.data }));
   } catch (e) {

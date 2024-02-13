@@ -5,7 +5,7 @@ export async function POST (request) {
 
     const body = await request.json(); // Parse the JSON body
     const fileId = body.fileIds; // Extract fileId from the body
-    console.log('file ID', fileId);
+    // console.log('file ID', fileId);
     // if (!assistantId) 
     //     return Response.json(
     //     { error: 'No assistant id provided' }, 

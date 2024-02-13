@@ -8,7 +8,7 @@ const StatementTable = ({ data, statementType }) => {
 
   // Extract endDate here so it's available for all statement types
   const { endDate } = data;
-  console.log(endDate);
+  // console.log(endDate);
 
   let rows = [];
 

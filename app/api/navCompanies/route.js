@@ -30,9 +30,9 @@ export async function POST(request) {
   const offset = request_data.offset;
   const searchText = request_data.searchText; 
 
-  console.log('Limit: ', limit);
-  console.log('Offset: ', offset);
-  console.log('Search Text: ', searchText);
+  // console.log('Limit: ', limit);
+  // console.log('Offset: ', offset);
+  // console.log('Search Text: ', searchText);
 
 
   // If there is searchText, add conditions for searching by Name or Ticker.
@@ -44,7 +44,7 @@ export async function POST(request) {
   
 
 
-  console.log('Companies Data Result: ', companiesData);
+  // console.log('Companies Data Result: ', companiesData);
   // Prepare and return the response.
   return new Response(JSON.stringify(companiesData), {
     status: 200,

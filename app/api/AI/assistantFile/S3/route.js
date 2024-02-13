@@ -1,9 +1,9 @@
 import AWS from 'aws-sdk';
 
 export async function POST (request) {
-    console.log("===============================");
-    console.log("S3 Route hit")
-    console.log("===============================");
+    // console.log("===============================");
+    // console.log("S3 Route hit")
+    // console.log("===============================");
     try {
         const req = await request.json()
         const fileKey = req.key;
@@ -31,7 +31,7 @@ export async function POST (request) {
             'Content-Disposition': `attachment; filename="${fileKey}"`,
         };
 
-        console.log('Assistant File Route Headers:', headers);
+        // console.log('Assistant File Route Headers:', headers);
 
         // Send the file data in the response
         return new Response(file.Body, {

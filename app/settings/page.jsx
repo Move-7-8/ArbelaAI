@@ -2,6 +2,8 @@
 import React from 'react';
 import {useState} from 'react'
 
+import Form from '@components/Form';
+
 const SettingsPage = () => {
   // State to hold form data
   const [formData, setFormData] = useState({
@@ -71,6 +73,8 @@ const SettingsPage = () => {
   return (
     <div className="mt-20 mx-auto w-4/5">
       <h1 className="text-2xl font-bold mb-4">Settings</h1>
+
+      <Form />
       {/* First Row: */}
       {/* <div className='w-full border-2 border-black flex flex-col p-4'>
         <div className="flex justify-between items-center">
@@ -156,10 +160,10 @@ const SettingsPage = () => {
     </div> */}
 
         {/* Contact Us / Leave Feedback Form */}
-      <div className='mt-10 w-full h-auto border-2 border-black'>
+      {/* <div className='mt-10 w-full h-auto border-2 border-black'>
         <div className="p-4">
-          <h2 className="text-xl font-semibold mb-2">Contact || Leave Feedback || Feature Recommendations</h2>
-          <form onSubmit={handleSubmit}>
+          <h2 className="text-xl font-semibold mb-2">Contact || Leave Feedback || Feature Recommendations</h2> */}
+          {/* <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
                 Name
@@ -209,10 +213,10 @@ const SettingsPage = () => {
               Send
             </button>
           </div>
-          </form>
+          </form> */}
         </div>
-      </div>
-      </div>
+      // </div>
+      // </div>
   );
 };
 

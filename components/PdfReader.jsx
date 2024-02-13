@@ -12,7 +12,7 @@ const PdfReader = ({ pdfUrl, selectedDocuments }) => {
     const [selectedDoc, setSelectedDoc] = useState(null);
     const [documents, setDocuments] = useState([]);
 
-    console.log(`SELECTED DOCUMENTS IN PDFREADER IS:${selectedDocuments} `)
+    // console.log(`SELECTED DOCUMENTS IN PDFREADER IS:${selectedDocuments} `)
     let arrayOfObjects
     try {
         arrayOfObjects = JSON.parse(selectedDocuments);
@@ -59,8 +59,8 @@ const PdfReader = ({ pdfUrl, selectedDocuments }) => {
         );
     }
 
-    console.log('Type of selectedDocuments:', typeof selectedDocuments);
-    console.log('Is Array:', Array.isArray(selectedDocuments));
+    // console.log('Type of selectedDocuments:', typeof selectedDocuments);
+    // console.log('Is Array:', Array.isArray(selectedDocuments));
 
     // If no document is selected, display the list of documents
     return (

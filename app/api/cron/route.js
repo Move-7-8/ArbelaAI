@@ -5,7 +5,7 @@ import {connectToDB} from '@utils/database'
 import Stock from '@models/stock';
 
 export async function GET() {
-    console.log('Cron job is hit');
+    // console.log('Cron job is hit');
     await connectToDB();
 
     // Read the JSON file
@@ -49,7 +49,7 @@ export async function GET() {
                 // Fetch stock details from the database
                 const stockDetails = await Stock.findOne({ Stock: ticker });
                 if (!stockDetails) {
-                    console.log(`Stock with Ticker: ${ticker} not found.`);
+                    // console.log(`Stock with Ticker: ${ticker} not found.`);
                     return;
                 }    
                 const apiUrl = `https://yahoo-finance127.p.rapidapi.com/price/${ticker}`;
@@ -130,7 +130,7 @@ export async function GET() {
                         completedRequests++;
                         // Calculate the completion percentage
                         let percentageComplete = ((completedRequests / tickers.length) * 100).toFixed(2);
-                        console.log(`Completed: ${percentageComplete / 2}% for ticker ${ticker}`);
+                        // console.log(`Completed: ${percentageComplete / 2}% for ticker ${ticker}`);
                 
                         //END NEW
                         completedRequests++;
@@ -153,7 +153,7 @@ export async function GET() {
         ///////////////////
 
         let averageVolatility = totalVolatility / validVolatilityCount;
-        console.log(`Average Volatility across all stocks: ${averageVolatility}%`);
+        // console.log(`Average Volatility across all stocks: ${averageVolatility}%`);
         
         // Sorting and scoring for Volatility
         validStocks.sort((a, b) => a.Volatility - b.Volatility);

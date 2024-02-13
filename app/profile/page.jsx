@@ -21,8 +21,8 @@ const MyProfile = () => {
         return;
       }
       const data = await response.json();
-      console.log('data fetched')
-      console.log(data)
+      // console.log('data fetched')
+      // console.log(data)
       setMyThreads(data);
         };
 

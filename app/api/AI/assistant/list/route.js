@@ -10,7 +10,6 @@ export async function GET() {
         });
 
         const assistants = response.data; 
-        console.log(assistants); 
         
         return Response.json({ assistants: assistants });
     } catch (e) {

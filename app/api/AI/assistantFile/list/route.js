@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import OpenAI from "openai";
 
 export async function GET (request) {
-    console.log('file list route hit')
+    // console.log('file list route hit')
     // const searchParams = request.nextUrl.searchParams;
     // const assistantId = searchParams.get('assistantId');
 
@@ -22,7 +22,7 @@ export async function GET (request) {
         // );
         // console.log(assistantFiles);
         for await (const file of list) {
-            console.log(file);
+            // console.log(file);
           }
                 return Response.json({Files: list}, {status: 200});
     } catch (e) {

@@ -15,6 +15,7 @@ const sortOptions = [
 ];
 
 const Feed = ({ preloadedData }) => {
+  // console.log('Feed Preloaded Data:', preloadedData);
 
   const [searchText, setSearchText] = useState('');
   // const [selectedCategory, setSelectedCategory] = useState(''); // Renamed to selectedCategory
@@ -32,7 +33,7 @@ const Feed = ({ preloadedData }) => {
 
  // Log preloadedData whenever it changes, including when the component mounts
   useEffect(() => {
-    console.log('Preloaded Data:', preloadedData);
+    // console.log('Preloaded Data:', preloadedData);
     // Here you might also set state based on preloadedData, for example:
     // setIndustries(preloadedData.industries || []);
   }, [preloadedData]);
@@ -112,15 +113,15 @@ const Feed = ({ preloadedData }) => {
                   {open ? <FaChevronUp className="h-4 w-4" /> : <FaChevronDown className="h-4 w-4" />}
                 </Listbox.Button>
                 {open && (
-  <Listbox.Options className="listbox-options absolute mt-2 z-10 bg-white overflow-auto shadow-lg rounded-full p-4" style={{ width: '140px', maxHeight: '20rem' }}>
-                    {sortOptions.map((option) => (
-                      <Listbox.Option key={option.id} value={option.name}>
-                        {({ active, selected }) => (
-                                <div className={`flex rounded-full justify-start items-center text-sm mb-2 cursor-pointer border px-4 py-2 bg-gray-100 ${selected ? 'bg-[rgba(255,102,101,0.5)] text-white' : 'text-black'} ${active ? 'border border-[rgba(255,102,101,0.5)]' : ''}`}>
-                            {option.name}
-                          </div>
-                        )}
-                      </Listbox.Option>
+                <Listbox.Options className="listbox-options absolute mt-2 z-10 bg-white overflow-auto shadow-lg rounded-full p-4" style={{ width: '140px', maxHeight: '20rem' }}>
+                  {sortOptions.map((option) => (
+                    <Listbox.Option key={option.id} value={option.name}>
+                      {({ active, selected }) => (
+                              <div className={`flex rounded-full justify-start items-center text-sm mb-2 cursor-pointer border px-4 py-2 bg-gray-100 ${selected ? 'bg-[rgba(255,102,101,0.5)] text-white' : 'text-black'} ${active ? 'border border-[rgba(255,102,101,0.5)]' : ''}`}>
+                          {option.name}
+                        </div>
+                      )}
+                    </Listbox.Option>
                     ))}
                   </Listbox.Options>
                 )}

@@ -15,7 +15,7 @@ const CreateModel = () => {
 const removeFile = (filename) => {
   setFiles(files.filter(file => file.name !== filename))
 }
-console.log(files)
+// console.log(files)
 
 //Handle the Form  
 const handleCompanyNameChange = (e) => {

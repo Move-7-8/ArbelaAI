@@ -47,7 +47,7 @@ export default function Home({data}) {
   const [triggerFileUploadFunction, setTriggerFileUploadFunction] = useState(false);
 
   const chat_ticker = data?.price?.symbol;
-  console.log('chat_ticker:', chat_ticker);
+  // console.log('chat_ticker:', chat_ticker);
   //Function to run the Assistant Create function on page load
   useEffect(() => {
     setTriggerCreate(true);
@@ -58,9 +58,9 @@ const afterAssistantCreate = () => {
   setTasksCompleted(prev => ({ ...prev, create: true }));
   checkAndHandleUpload();
   handleFileChangeTrigger(); // Verify if this is called
-  console.log("condition1 is pre:", condition1);
+  // console.log("condition1 is pre:", condition1);
   setcondition1(true);
-  console.log("condition1 is post: ", condition1);
+  // console.log("condition1 is post: ", condition1);
 };
 
 // const onFileChangeTrigger = () => {
@@ -75,9 +75,9 @@ const onFileUploadCompleted = () => {
   setTasksCompleted(prev => ({ ...prev, upload: true }));
   checkAndHandleUpload();
   setUploadCompleteTrigger(true); // Verify if this is called
-  console.log("condition1 is pre:", condition1);
+  // console.log("condition1 is pre:", condition1);
   setcondition2(true);
-  console.log("condition2 is post: ", condition2);
+  // console.log("condition2 is post: ", condition2);
 };
   
 //Track if the Run has loaded and trigger the ChatMessage to render

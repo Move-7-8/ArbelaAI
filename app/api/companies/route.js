@@ -32,10 +32,10 @@ export async function POST(request) {
   const searchText = request_data.searchText; 
   const category = request_data.category; 
 
-  console.log('Limit: ', limit);
-  console.log('Offset: ', offset);
-  console.log('Search Text: ', searchText);
-  console.log('Category: ', category);
+  // console.log('Limit: ', limit);
+  // console.log('Offset: ', offset);
+  // console.log('Search Text: ', searchText);
+  // console.log('Category: ', category);
 
   let query = {};
 
@@ -53,11 +53,11 @@ export async function POST(request) {
     query.GICsIndustryGroup = { $regex: industryName, $options: 'i' };
   }
   
-  console.log('Final Query: ', JSON.stringify(query, null, 2));
+  // console.log('Final Query: ', JSON.stringify(query, null, 2));
 
   // Execute a single query with the constructed conditions.
   const companiesData = await Stock.find(query).skip(offset).limit(limit).lean();
-  console.log('Companies Data Result: ', companiesData);
+  // console.log('Companies Data Result: ', companiesData);
 
   
 

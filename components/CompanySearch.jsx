@@ -47,7 +47,7 @@ const CompanySearch = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
-      console.log('company search data', data);
+      // console.log('company search data', data);
       setSearchResults(data);
     } catch (error) {
       console.error("Fetch error: ", error);

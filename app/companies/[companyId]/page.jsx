@@ -16,9 +16,9 @@ const Page = () => {
   
   // Search Params
   const searchParams = useSearchParams();
-  console.log('Page Search Params',searchParams )
+  // console.log('Page Search Params',searchParams )
   const ticker = searchParams.get('ticker');
-  console.log('Page Ticker',ticker )
+  // console.log('Page Ticker',ticker )
 
   const industry = searchParams.get('industry');
   const volatilityScore = searchParams.get('volatilityScore');
@@ -37,7 +37,7 @@ const Page = () => {
     const fetchData = async () => {
       if (!isLoading) {
         setIsLoading(true);
-        console.log('Fetching data...');
+        // console.log('Fetching data...');
 
         try {
           const response1 = await fetch(`/api/companies/[${ticker}]`, {
@@ -54,7 +54,7 @@ const Page = () => {
           }
   
           const result1 = await response1.json();
-          console.log('Complete Data from first API:', result1);
+          // console.log('Complete Data from first API:', result1);
           setData(result1); // Assuming you want to keep this data
   
           // After the first call completes, make the second POST request
@@ -73,7 +73,7 @@ const Page = () => {
           }
 
           const result2 = await response2.json();
-          console.log('Complete Data from second API:', result2);
+          // console.log('Complete Data from second API:', result2);
           // Update state with the new data, or combine it with the previous result as needed
           setData(prevData => ({ ...prevData, ...result2 }));
     

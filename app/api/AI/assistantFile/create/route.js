@@ -5,8 +5,8 @@ export async function GET (request) {
     const searchParams = request.nextUrl.searchParams;
     const assistantId = searchParams.get('assistantId');
     const fileId = searchParams.get('fileId');
-    console.log('assistant ID: ', assistantId);
-    console.log('AssistantFile Backend file ID: ', fileId);
+    // console.log('assistant ID: ', assistantId);
+    // console.log('AssistantFile Backend file ID: ', fileId);
     
     if (!assistantId || !fileId) 
         return Response.json(
@@ -26,7 +26,7 @@ export async function GET (request) {
                 file_id: fileId,
             }
         );
-        console.log('assistantFile', assistantFile);
+        // console.log('assistantFile', assistantFile);
 
         return Response.json({assistantFile: assistantFile}, {status: 200});
 

@@ -1,15 +1,15 @@
 export async function POST(req, res) {
-    console.log('BACKEND COMPANY2 ROUTE HIT');
+    // console.log('BACKEND COMPANY2 ROUTE HIT');
     const request_data = await req.json(); // Parsing JSON from the incoming request.
-    console.log('COMPANY2 REQ: ', request_data);
+    // console.log('COMPANY2 REQ: ', request_data);
   
     const ticker = request_data.ticker; // 
-    console.log('COMPANY2 TICKER: ', ticker);
+    // console.log('COMPANY2 TICKER: ', ticker);
   
     // Replace 'Your-RapidAPI-Key' and 'Your-RapidAPI-Host' with actual values from RapidAPI
     const apiKey = process.env.RAPID_API_KEY
     const apiHost = process.env.RAPID_API_HOST_2
-    console.log('COMPANY2 API KEY: ', apiHost);
+    // console.log('COMPANY2 API KEY: ', apiHost);
     // Array of API endpoint paths
     const paramsMap = {
       
@@ -63,7 +63,7 @@ export async function POST(req, res) {
       //d. Get Balance Sheet
     'get-balance': {
         method: 'GET',
-        url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-balance-sheet',
+        url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-balance-sheet',
         params: {symbol: ticker},
         headers: {
           'X-RapidAPI-Key': apiKey,
@@ -93,7 +93,7 @@ export async function POST(req, res) {
 
     // Use Promise.all to wait for all the fetch requests to complete
     const results = await Promise.all(fetchPromises);
-    console.log('COMPANY2 RESULTS', results);
+    // console.log('COMPANY2 RESULTS', results);
     // Convert the results array back into an object
     const resultObject = results.reduce((acc, { key, data }) => {
         acc[key] = data;

@@ -26,23 +26,23 @@ const AssistantFile = ({ condition1, condition2, symbol, fileChangeTrigger, onFi
 
   const searchParams = useSearchParams();
   const ticker = searchParams.get('ticker');
-  console.log('assistantfile ticker', ticker)
+  // console.log('assistantfile ticker', ticker)
   // In AssistantFile.jsx
   useEffect(() => {
     if (condition1 && condition2) {
-      console.log("condition 1 and 2 met, Triggering handleFileChange");
+      // console.log("condition 1 and 2 met, Triggering handleFileChange");
       handleFileChange();
     }
   }, [condition1, condition2]);
               
   const handleFileChange = async (event) => {
-    console.log('handle file change triggered')
-    console.log('assistantFile Symbol', symbol);
+    // console.log('handle file change triggered')
+    // console.log('assistantFile Symbol', symbol);
 
     // const fileKey = `pdf/${ticker}.csv`;
 
     const fileKey = `${ticker}_current_data.pdf`;
-    console.log('fileKey in AssistantFile', fileKey)
+    // console.log('fileKey in AssistantFile', fileKey)
     const response = await fetch(`/api/AI/assistantFile/S3`, {
       method: "POST",
       headers: {
@@ -51,14 +51,14 @@ const AssistantFile = ({ condition1, condition2, symbol, fileChangeTrigger, onFi
       body: JSON.stringify({ key: fileKey }),
     });
     const responseData = await response.blob();
-    console.log('Assistant File Response data:', responseData);
+    // console.log('Assistant File Response data:', responseData);
 
     const file = responseData
     // const file = event.target.files ? event.target.files[0] : null;
     if (file) {
       handleUpload(file);
     } else {
-      console.log("No file selected");
+      // console.log("No file selected");
     }
   };
 
@@ -79,7 +79,7 @@ const AssistantFile = ({ condition1, condition2, symbol, fileChangeTrigger, onFi
 
       const responseJSON = await response.json();
       const uploadedFile = responseJSON.file;
-      console.log('uploaded file', uploadedFile)
+      // console.log('uploaded file', uploadedFile)
     
       
         if (uploadedFile && uploadedFile.id) {
@@ -87,7 +87,7 @@ const AssistantFile = ({ condition1, condition2, symbol, fileChangeTrigger, onFi
           localStorage.setItem("file", uploadedFile.id);
           setUploadedFileInfo(uploadedFile); // Update the state here
           setMessage("Successfully uploaded file");
-          console.log('uploadedFile.id', uploadedFile.id)
+          // console.log('uploadedFile.id', uploadedFile.id)
 
           handleCreate(uploadedFile); // Pass uploadedFile directly
 
@@ -105,10 +105,10 @@ const AssistantFile = ({ condition1, condition2, symbol, fileChangeTrigger, onFi
 };
 
 const handleCreate = async (uploadedFile) => {
-  console.log('file', uploadedFile);
-  console.log('file id', uploadedFile.id);
-  console.log('assistant', assistant);
-  console.log('HANDLE CREATE TRIGGERED');
+  // console.log('file', uploadedFile);
+  // console.log('file id', uploadedFile.id);
+  // console.log('assistant', assistant);
+  // console.log('HANDLE CREATE TRIGGERED');
 
     if (!file || !assistant) {
       throw new Error("No file or assistant");
@@ -125,13 +125,13 @@ const handleCreate = async (uploadedFile) => {
       // console.log('RESPONSE RECEIVED', fileData)
       // console.log('======================================')
 
-      console.log("assistantFileReceived", assistantFile);
+      // console.log("assistantFileReceived", assistantFile);
       setAssistantFile(assistantFileId);
       localStorage.setItem("assistantFile", assistantFileId);
       onFileChangeComplete(); // Call the callback here
-      console.log('======================================')
-      console.log('C A L L  B A C K  T R I G G E R E D')
-      console.log('======================================')
+      // console.log('======================================')
+      // console.log('C A L L  B A C K  T R I G G E R E D')
+      // console.log('======================================')
 
     } catch (error) {
       console.error("Error creating assistant file:", error);
@@ -154,9 +154,9 @@ const handleCreate = async (uploadedFile) => {
         
         // Join the file IDs with a comma and a space
         const fileIds = assistantFiles.map(file => file.id).join(', ');
-        console.log("Assistant Files", fileIds);
+        // console.log("Assistant Files", fileIds);
         setMessage(`Assistant Files: ${fileIds}`);
-        console.log('MESSAGE: ', message)
+        // console.log('MESSAGE: ', message)
     } catch (error) {
         console.error("Error listing assistant files:", error);
         setMessage("Error listing assistant files");
@@ -186,7 +186,7 @@ const handleDelete = async () => {
           setMessage(data.message);
       }
   } catch (error) {
-      console.log("error", error);
+      // console.log("error", error);
       setMessage("Error deleting assistants");
   } finally {
       setDeleting(false);

@@ -23,7 +23,7 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
           setFiles(files.map(f => (f.name === file.name ? file : f)));
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           removeFile(file.name);
         });
   };

@@ -1,16 +1,16 @@
 import { useEffect } from 'react';
 
 const FileUpload = ({ data, onFileUploadCompleted }) => {
-    console.log('file upload component is rendered');
-    console.log('*********************************')
-    console.log('Received data in FileUpload DATA:', data);
-    console.log('*********************************')
+    // console.log('file upload component is rendered');
+    // console.log('*********************************')
+    // console.log('Received data in FileUpload DATA:', data);
+    // console.log('*********************************')
 
     const handleUpload = async () => {
         const bodyData = JSON.stringify(data)
-        console.log('*********************************')
-        console.log('Received data in FileUpload BODY:', bodyData);
-        console.log('*********************************')
+        // console.log('*********************************')
+        // console.log('Received data in FileUpload BODY:', bodyData);
+        // console.log('*********************************')
 
             try {
             
@@ -22,7 +22,7 @@ const FileUpload = ({ data, onFileUploadCompleted }) => {
                 body: bodyData // Convert your data to JSON and send in the request body
             });
             const responseData = await response.json();
-            console.log("Data received:", responseData);
+            // console.log("Data received:", responseData);
             onFileUploadCompleted(); // Call this after successful upload
 
         } catch (error) {

@@ -27,7 +27,7 @@ export const options = {
     // }),
     GoogleProvider({
       profile(profile) {
-        console.log("Profile Google: ", profile);
+        // console.log("Profile Google: ", profile);
 
         let userRole = "Google User";
         return {
@@ -61,25 +61,25 @@ export const options = {
           let foundUser = await User.findOne({ email: credentials.email }).lean().exec();
 
           if (foundUser) {
-            console.log("User Exists");
+            // console.log("User Exists");
     
             // If user exists, check password
             if (foundUser.password && credentials.password) {
               const match = await bcrypt.compare(credentials.password, foundUser.password);
               if (match) {
-                console.log("Good Pass");
+                // console.log("Good Pass");
                 delete foundUser.password; // Remove password before returning the user object
     
                 foundUser["role"] = "Existing User"; // Assign existing user role
                 return foundUser;
               }
             } else {
-              console.log("User registered through OAuth and does not have a password.");
+              // console.log("User registered through OAuth and does not have a password.");
               return null;
             }
           } else {
             // If user doesn't exist, create a new user
-            console.log("Creating new user");
+            // console.log("Creating new user");
     
             const hashedPassword = await bcrypt.hash(credentials.password, 10);
             const newUser = await User.create({
@@ -89,7 +89,7 @@ export const options = {
               role: "New User", // Assign new user role
             });
     
-            console.log("New user created");
+            // console.log("New user created");
             return newUser.toObject(); // Convert Mongoose model to plain object
           }
         } catch (error) {
@@ -142,11 +142,11 @@ export const options = {
     //     }
 
     async signIn({ user, account, profile, email, credentials }) {
-      console.log("signIn callback triggered");
+      // console.log("signIn callback triggered");
     
       // Depending on the provider, the relevant information will be in different objects
       const userEmail = user?.email || email?.email || profile?.email;
-      console.log("User Email:", userEmail);
+      // console.log("User Email:", userEmail);
     
       // Add any additional signIn logic here
     
