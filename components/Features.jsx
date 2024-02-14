@@ -6,7 +6,7 @@ const Features = () => {
     <div className='flex flex-col sm:flex-row justify-between'> 
       <div className='w-full sm:flex-1 feature p-4 m-2'> 
         <h3 className="features-header mb-4 font-bold">
-          Our Data
+          Quality Data
         </h3>
         <Image 
           src="/assets/icons/features/data2.png"

@@ -4,6 +4,7 @@ mail.setApiKey(process.env.SENDGRID_API_KEY);
 export async function POST(req, res) {
     if (req.method === 'POST') {
         const request = await req.json();
+        console.log('Backend email request:', request)
         // const req_data = request.Request;
         // console.log('Req Name:', request.name);
         if (!request.name || !request.email || !request.subject || !request.message) {
