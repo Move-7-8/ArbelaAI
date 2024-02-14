@@ -30,6 +30,7 @@ import { FaUser, FaEnvelope, FaTag, FaCommentAlt } from 'react-icons/fa';
     const onBlur = ({ target }) =>
       setTouched((prev) => ({ ...prev, [target.name]: true }));
 
+
     const handleChange = ({ target }) =>
       setState((prev) => ({
         ...prev,
