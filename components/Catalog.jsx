@@ -61,7 +61,7 @@ function Catalog({ searchText, selectedCategory, preloadedData }) {
     }, [searchText, selectedCategory, debounceSearch]);
 
  return (
- <div className="w-full px-24 pt-10 py-2">
+ <div className="w-full px-15 pt-10 py-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
                 {loading ? (
                     // Render adjusted skeleton loaders when loading

@@ -30,7 +30,7 @@ import { FaUser, FaEnvelope, FaTag, FaCommentAlt } from 'react-icons/fa';
   
     const onBlur = ({ target }) =>
       setTouched((prev) => ({ ...prev, [target.name]: true }));
-  
+
     const handleChange = ({ target }) =>
       setState((prev) => ({
         ...prev,
@@ -39,23 +39,23 @@ import { FaUser, FaEnvelope, FaTag, FaCommentAlt } from 'react-icons/fa';
           [target.name]: target.value,
         },
       }));
-  
-      const onSubmit = async (e) => {
-        e.preventDefault(); // Prevent default form submission
-        setState((prev) => ({ ...prev, isLoading: true }));
-        try {
-          await sendContactForm(values);
-          setState({ ...initState, values: initValues }); // Reset form
-          toast({
-            title: "Message sent.",
-            status: "success",
-            duration: 2000,
-            position: "top",
-          });
-        } catch (error) {
-          setState((prev) => ({ ...prev, isLoading: false, error: error.message }));
-        }
-      };
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setState((prev) => ({ ...prev, isLoading: true }));
+    try {
+      await sendContactForm(values);
+      setState({ ...initState }); // Reset state to initial
+      toast({
+        title: "Message sent.",
+        description: "We have received your message.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      setState((prev) => ({ ...prev, isLoading: false, error: error.message }));
+    }
+  };
       
     const sendContactForm = async (data) =>
     fetch("/api/email", {
