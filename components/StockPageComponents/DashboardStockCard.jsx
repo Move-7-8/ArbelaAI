@@ -97,27 +97,33 @@ function DashboardStockCard({ data,data2, industry,volatilityScore, liquiditySco
 
  return (
     
-        <div className="flex flex-col flex-1 rounded-md mx-auto lg-height-85vh" >
+        <div className="flex flex-col flex-1 rounded-md mx-auto lg-height-90vh" >
             {/* Align buttons to the left */}
-        <div className="flex justify-center rounded mx-4 pr-2 pb-2">
-        <button
-            className={`w-28 px-3 py-1 rounded-full text-sm shadow hover:scale-105 transition-transform duration-300 mr-4 uppercase border ${activeButton === 'button1' ? 'bg-[#6A849D] text-white border-[#6A849D]' : 'bg-white text-[#6A849D] border-[#6A849D]'}`}
-            onClick={() => setActiveButton('button1')}
-        >
-            Summary
-        </button>
-        <button
-            className={`w-28 px-3 py-1 rounded-full shadow text-sm hover:scale-105 transition-transform duration-300 uppercase border ${activeButton === 'button2' ? 'bg-[#6A849D] text-white border-[#6A849D]' : 'bg-white text-[#6A849D] border-[#6A849D]'}`}
-            onClick={() => setActiveButton('button2')}
-        >
-            Ratio
-        </button>
+      <div className="flex justify-center mx-4 pb-4">
+            <div 
+                className="rounded-full inline-block" 
+                style={{ backgroundColor: 'rgba(169, 169, 169, 0.2)', padding: '3px' }}
+            >
+            <button
+                className={`text-sm px-3 py-1 rounded-full mr-2 ${activeButton === 'button1' ? 'bg-white' : 'bg-transparent'}`}
+                onClick={() => setActiveButton('button1')}
+            >
+                Summary
+            </button>
+            <button
+                className={`text-sm px-3 py-1 rounded-full ${activeButton === 'button2' ? 'bg-white' : 'bg-transparent'}`}
+                onClick={() => setActiveButton('button2')}
+            >
+                Ratio
+            </button>
+            </div>
         </div>
+
   <style>
     {`
       @media (min-width: 1024px) {
-        .lg-height-85vh {
-          height: 85vh;
+        .lg-height-90vh {
+          height: 90vh;
         }
       }
     `}
@@ -179,7 +185,7 @@ function DashboardStockCard({ data,data2, industry,volatilityScore, liquiditySco
                     </div>
                     {/* Return on Equity */}
                     <div className="flex justify-between">
-                        <span className="text-sm text-gray-500">Return on Equity:</span>
+                        <span className="uppercase text-xs text-gray-500">Return on Equity:</span>
                         <span className="text-sm">{returnOnEquity}</span>
                     </div>
                 </div>
@@ -211,7 +217,7 @@ function DashboardStockCard({ data,data2, industry,volatilityScore, liquiditySco
          onMouseLeave={() => setHover(false)}
          className="flex items-center space-x-2"> {/* Use flex to align icon and text */}
            <span className="text-xs text-gray-600">Website</span> {/* "See More" text next to the link */}
-        <MdLink className="relative z-50"size={16} style={{ color: hover ? '#6A849D' : '#3A3C3E' }} />
+        <MdLink className="relative z-2"size={16} style={{ color: hover ? '#6A849D' : '#3A3C3E' }} />
       </a>
     </div>
   )}
@@ -290,9 +296,9 @@ function DashboardStockCard({ data,data2, industry,volatilityScore, liquiditySco
             <>
                  <div className="flex justify-between my-2">
                      
-                        <span className="text-gray-500 uppercase text-xs" style={{ minWidth: '100px' }}>Sector:</span>
+                        <span className="text-gray-500 uppercase text-xs" >Sector:</span>
                             <span className="text-sm" style={{
-                            maxWidth: 'calc(100% - 100px)',
+                            maxWidth: 'calc(100% - 150px)',
                             display: '-webkit-box',
                             WebkitLineClamp: '2',
                             WebkitBoxOrient: 'vertical',
@@ -333,20 +339,19 @@ function DashboardStockCard({ data,data2, industry,volatilityScore, liquiditySco
           
     </div>
     {/* Buttons Container */}
-    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
+    {/* <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
     <button className="uppercase text-sm rounded-full py-1 px-3 w-32 transition duration-300 ease-in-out hover:scale-105 mb-4 ml-4 mr-4 border border-[#FF6665] text-[#FF6665]" 
             style={{ backgroundColor: 'white' }}>
         Portfolio
-    </button>
+    </button> 
 
 
     {/* Right Aligned Button */}
-   <button className="text-white text-sm uppercase rounded-full py-1 px-3 w-32 transition duration-300 ease-in-out hover:scale-105 mb-4 ml-4 mr-4" 
+    {/* <button className="text-white text-sm uppercase rounded-full py-1 px-3 w-32 transition duration-300 ease-in-out hover:scale-105 mb-4 ml-4 mr-4" 
         style={{ backgroundColor: '#FF6665' }}>
         Analyse
-    </button>
-
-</div>
+    </button> 
+</div> */} 
 
 
 </div>

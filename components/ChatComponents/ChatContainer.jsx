@@ -285,61 +285,74 @@ return (
   <div className="flex justify-between items-center mt-4"> {/* Adjusted for even spacing among icons */}
     {/* Icons for predefined messages */}
 <div 
-        onClick={() => handleIconClick('Explain what this company does and their business model like Im in highschool')}
-        style={{ cursor: 'pointer' }}
-        onMouseEnter={() => setIsHoveredChalkboard(true)}
-        onMouseLeave={() => setIsHoveredChalkboard(false)}
-      >
-        <FaChalkboardTeacher 
-          size={24} 
-          style={{ 
-            color: isHoveredChalkboard ? '#6A849D' : '#3A3C3E',
-          }} 
-        />
-      </div>
+  onClick={() => handleIconClick('Explain what this company does and their business model like Im in highschool')}
+  onMouseEnter={() => setIsHoveredChalkboard(true)}
+  onMouseLeave={() => setIsHoveredChalkboard(false)}
+  className="cursor-pointer relative"
+>
+  <FaChalkboardTeacher 
+    size={24} 
+    style={{ color: isHoveredChalkboard ? '#6A849D' : '#3A3C3E' }}
+  />
+  {isHoveredChalkboard && (
+    <span className="absolute whitespace-nowrap bottom-full mb-2 px-2 py-1 border bg-white border border-3A3C3E text-black text-xs rounded-md">
+      Company Overview
+    </span>
+  )}
+</div>
 
-      <div 
-        onClick={() => handleIconClick('Tell me all the aspects of this particular company that are positive in terms of its investment potential')}
-        style={{ cursor: 'pointer' }}
-        onMouseEnter={() => setIsHoveredThumbsUp(true)}
-        onMouseLeave={() => setIsHoveredThumbsUp(false)}
-      >
-        <FaThumbsUp 
-          size={24} 
-          style={{ 
-            color: isHoveredThumbsUp ? '#6A849D' : '#3A3C3E',
-          }} 
-        />
-      </div>
+<div 
+  onClick={() => handleIconClick('Tell me all the aspects of this particular company that are positive in terms of its investment potential')}
+  onMouseEnter={() => setIsHoveredThumbsUp(true)}
+  onMouseLeave={() => setIsHoveredThumbsUp(false)}
+  className="cursor-pointer relative"
+>
+  <FaThumbsUp 
+    size={24} 
+    style={{ color: isHoveredThumbsUp ? '#6A849D' : '#3A3C3E' }}
+  />
+  {isHoveredThumbsUp && (
+    <span className="absolute whitespace-nowrap bottom-full mb-2 px-2 py-1 bg-white border border-3A3C3E text-black text-xs rounded-md">
+      Positive Aspects
+    </span>
+  )}
+</div>
 
-      <div 
-        onClick={() => handleIconClick('Tell me all the risks associated with investing in this particular company')}
-        style={{ cursor: 'pointer' }}
-        onMouseEnter={() => setIsHoveredExclamation(true)}
-        onMouseLeave={() => setIsHoveredExclamation(false)}
-      >
-        <FaExclamationTriangle 
-          size={24} 
-          style={{ 
-            color: isHoveredExclamation ? '#6A849D' : '#3A3C3E',
-          }} 
-        />
-      </div>
+<div 
+  onClick={() => handleIconClick('Tell me all the risks associated with investing in this particular company')}
+  onMouseEnter={() => setIsHoveredExclamation(true)}
+  onMouseLeave={() => setIsHoveredExclamation(false)}
+  className="cursor-pointer relative"
+>
+  <FaExclamationTriangle 
+    size={24} 
+    style={{ color: isHoveredExclamation ? '#6A849D' : '#3A3C3E' }}
+  />
+  {isHoveredExclamation && (
+    <span className="absolute whitespace-nowrap bottom-full mb-2 px-2 py-1 bg-white border border-3A3C3E text-black text-xs rounded-md">
+      Investment Risks
+    </span>
+  )}
+</div>
 
-      <div 
-        onClick={() => handleIconClick('what is the health of this company')} 
-        style={{ cursor: 'pointer' }}
-        onMouseEnter={() => setIsHoveredHeartbeat(true)}
-        onMouseLeave={() => setIsHoveredHeartbeat(false)}
-      >
-        <FaHeartbeat 
-          size={24} 
-          style={{ 
-            color: isHoveredHeartbeat ? '#6A849D' : '#3A3C3E',
-    
-          }} 
-        />
-      </div>
+<div 
+  onClick={() => handleIconClick('what is the health of this company')} 
+  onMouseEnter={() => setIsHoveredHeartbeat(true)}
+  onMouseLeave={() => setIsHoveredHeartbeat(false)}
+  className="cursor-pointer relative"
+>
+  <FaHeartbeat 
+    size={24} 
+    style={{ color: isHoveredHeartbeat ? '#6A849D' : '#3A3C3E' }}
+  />
+  {isHoveredHeartbeat && (
+  <span className="absolute right-0 translate-x-[-2%] whitespace-nowrap bottom-full mb-2 px-2 py-1 bg-white border border-3A3C3E text-black text-xs rounded-md">
+  Company Health
+</span>
+
+  )}
+</div>
+
   </div>
 </div>
 

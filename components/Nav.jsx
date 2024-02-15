@@ -11,6 +11,7 @@ const Nav = () => {
   const {data: session } = useSession();
   const [providers, setProviders ] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
+  
 
   const pathname = usePathname()
   const isCompanyPage = pathname.startsWith('/companies/');
