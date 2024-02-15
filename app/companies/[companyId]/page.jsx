@@ -92,10 +92,10 @@ const Page = () => {
   const mobileChatboxStyle = `fixed inset-0 z-40 bg-black bg-opacity-50 ${chatboxVisibility} lg:hidden`;
   const desktopChatboxStyle = "hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4";
 return (
-    <div className="flex flex-wrap w-full h-full">
-        <div className="flex flex-col w-full mt-20 lg:w-3/4">
+   <div className="flex flex-wrap w-full" >
+        <div className="flex flex-col w-full mt-20 lg:w-3/4" >
             <div className="flex flex-col lg:flex-row mt-3">
-                <div className="w-full lg:w-1/3 mb-4 flex-1 lg:mb-0">  
+                <div className="w-full lg:w-1/2 mb-4 lg:mb-0">  
                     <DashboardStockCard data={data}  data2={data2} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
                 </div>
                 <div className="w-full lg:flex-grow lg:overflow-y-scroll lg:h-screen">

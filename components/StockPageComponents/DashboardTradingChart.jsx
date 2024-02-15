@@ -411,7 +411,7 @@ const handleTimeFrameChange = (newTimeFrame) => {
             </div>
         ) : (
             // Chart container
-            <div className="trading-chart-container flex min-h-[15%] lg:min-h-[40%]" ref={chartRef} style={{ width: '100%' }}>
+            <div className="trading-chart-container flex min-h-[30vh] lg:min-h-[40vh]" ref={chartRef} style={{ width: '100%' }}>
                 {/* Chart will be attached to this div */}
             </div>
         )}

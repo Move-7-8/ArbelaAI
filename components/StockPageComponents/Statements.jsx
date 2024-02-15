@@ -22,7 +22,7 @@ const FinancialStatements = ({ data, data2 }) => {
     };
 
     // If data is not available, render skeleton loader
-    if (!data) {
+    if (!data2) {
         return (
             <div className="animate-pulse">
                 <div className="bg-gray-200 h-64 w-full mt-4 rounded"></div>
@@ -253,25 +253,29 @@ const FinancialStatements = ({ data, data2 }) => {
     } : null;
 
 
-    return (
-        <div>
-            <div className="flex justify-center  mt-8 mb-4">
-                <div className="inline-block rounded-full" style={{ backgroundColor: 'rgba(169, 169, 169, 0.2)', padding: '3px' }}>
-                    {renderTab("Balance Sheet", "balance")}
-                    {renderTab("Income Statement", "income")}
-                    {renderTab("Cash Flow", "cash")}
-                </div>
-            </div>
-            {activeStatement === 'balance' && balanceSheetData
-                ? <StatementTable data={balanceSheetData} statementType="balance" />
-                : activeStatement === 'income' && incomeStatementData
-                ? <StatementTable data={incomeStatementData} statementType="income" />
-                : activeStatement === 'cash' && cashflowData
-                ? <StatementTable data={cashflowData} statementType="cash" />
-                : <div>data not available for the selected statement.</div>
-            }
+return (
+<div>
+    <div className="flex justify-center mt-8 mb-4">
+        <div className="inline-flex rounded-full bg-gray-200 p-1 space-x-2"> {/* Use inline-flex and space-x for consistent spacing */}
+            {renderTab("Balance Sheet", "balance")}
+            {renderTab("Income Statement", "income")}
+            {renderTab("Cash Flow", "cash")}
         </div>
-    );
+    </div>
+    <div className="flex flex-col space-y-4 mb-4"> {/* This is good for vertical spacing */}
+        {activeStatement === 'balance' && balanceSheetData
+            ? <StatementTable data={balanceSheetData} statementType="balance" />
+            : activeStatement === 'income' && incomeStatementData
+            ? <StatementTable data={incomeStatementData} statementType="income" />
+            : activeStatement === 'cash' && cashflowData
+            ? <StatementTable data={cashflowData} statementType="cash" />
+            : <div className="text-center">Data not available for the selected statement.</div> // Center-align the fallback text
+        }
+    </div>
+</div>
+
+);
+
 };
 
 export default FinancialStatements;

@@ -7,20 +7,36 @@ const CompanySearch = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
+  const [isCardVisible, setIsCardVisible] = useState(false);
+
 
   const searchRef = useRef(null);
 
-  useEffect(() => {
-    const handleResize = () => {
-      // Automatically hide search input on screen resize if not on mobile
-      if (window.innerWidth >= 768 && showSearchInput) {
-        setShowSearchInput(false);
-      }
-    };
+useEffect(() => {
+  const handleResize = () => {
+    // Check if the window width is desktop size
+    if (window.innerWidth >= 768) {
+      // Show search input when in desktop size
+      setShowSearchInput(true);
+    } else {
+      // Optionally, hide the search input in mobile size if desired
+      // This line can be adjusted based on your UI logic needs
+      setShowSearchInput(false);
+    }
+  };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [showSearchInput]);
+  // Add event listener for resize events
+  window.addEventListener('resize', handleResize);
+
+  // Initial check to set the correct state based on the current window width
+  handleResize();
+
+  return () => {
+    // Cleanup the event listener on component unmount
+    window.removeEventListener('resize', handleResize);
+  };
+}, []);
+
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -68,16 +84,21 @@ const CompanySearch = () => {
     return () => clearTimeout(handler);
   }, [searchQuery]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (searchRef.current && !searchRef.current.contains(event.target) && showSearchInput) {
-        setShowSearchInput(false);
-      }
-    };
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (searchRef.current && !searchRef.current.contains(event.target)) {
+          // Hide both the search input and the NavStockCard when clicking outside
+          setShowSearchInput(false); // Consider removing this if you always want the search input visible on desktop
+          setIsCardVisible(false);
+        }
+      };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showSearchInput]);
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []); // Removed [showSearchInput] to avoid re-attaching the event listener unnecessarily
+
+
+
 
   return (
    <>
@@ -113,7 +134,9 @@ const CompanySearch = () => {
             </ul>
           )}
           {searchResults.length > 0 && (
-              <NavStockCard searchResults={searchResults}  />
+              <NavStockCard searchResults={searchResults} 
+              isCardVisible={isCardVisible} 
+              setIsCardVisible={setIsCardVisible} />
             )}
         </div>
       ) : null}
