@@ -309,11 +309,11 @@ return (
   onMouseLeave={() => setIsHoveredThumbsUp(false)}
   className="cursor-pointer relative"
 >
-  <FaThumbsUp 
+  <FaCheckCircle
     size={24} 
-    style={{ color: isHoveredThumbsUp ? '#6A849D' : '#3A3C3E' }}
+    style={{ color: isHoveredThumbsUp ? '#6A849D' : '#3A3C3E' }} // Consider renaming this state to match the new icon
   />
-  {isHoveredThumbsUp && (
+  {isHoveredThumbsUp && ( // Consider renaming this state to match the new icon
     <span className="absolute whitespace-nowrap bottom-full mb-2 px-2 py-1 bg-white border border-3A3C3E text-black text-xs rounded-md">
       Positive Aspects
     </span>

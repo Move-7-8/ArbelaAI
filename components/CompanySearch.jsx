@@ -9,6 +9,8 @@ const CompanySearch = () => {
   const [showSearchInput, setShowSearchInput] = useState(false);
   const [isCardVisible, setIsCardVisible] = useState(false);
 
+  const navStockCardRef = useRef(null); // Ref for the NavStockCard
+
 
   const searchRef = useRef(null);
 
@@ -84,19 +86,20 @@ useEffect(() => {
     return () => clearTimeout(handler);
   }, [searchQuery]);
 
+
     useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (searchRef.current && !searchRef.current.contains(event.target)) {
-          // Hide both the search input and the NavStockCard when clicking outside
-          setShowSearchInput(false); // Consider removing this if you always want the search input visible on desktop
-          setIsCardVisible(false);
-        }
-      };
+    const handleClickOutside = (event) => {
+      // Check if the click is outside both the search input and the NavStockCard
+      if (searchRef.current && !searchRef.current.contains(event.target) && 
+          (!navStockCardRef.current || !navStockCardRef.current.contains(event.target))) {
+        // Clear search query without hiding the search input or NavStockCard
+        setSearchQuery(''); // Clear the search query only
+      }
+    };
 
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []); // Removed [showSearchInput] to avoid re-attaching the event listener unnecessarily
-
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []); // Dependency array remains empty
 
 
 
@@ -134,9 +137,11 @@ useEffect(() => {
             </ul>
           )}
           {searchResults.length > 0 && (
-              <NavStockCard searchResults={searchResults} 
-              isCardVisible={isCardVisible} 
-              setIsCardVisible={setIsCardVisible} />
+              <div ref={navStockCardRef}> {/* Add the ref here */}
+                <NavStockCard searchResults={searchResults} 
+                isCardVisible={isCardVisible} 
+                setIsCardVisible={setIsCardVisible} />
+              </div>
             )}
         </div>
       ) : null}
