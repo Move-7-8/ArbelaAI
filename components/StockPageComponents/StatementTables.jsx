@@ -362,62 +362,127 @@ const StatementTable = ({ data, statementType }) => {
     } else if (statementType === 'income') {
     // Extract Income Statement Values
       const {
-    totalRevenue,
-    grossProfits,
-    ebitda,
-    operatingMargins,
-    profitMargins,
-    earningsGrowth,
-    returnOnAssets,
-    returnOnEquity,
-    revenuePerShare,
-    totalCashPerShare,
-    totalDebt,
-    debtToEquity,
-    currentRatio,
-    quickRatio,
+        TrailingBasicAverageShares,
+        TrailingBasicEPS,
+        TrailingCostOfRevenue,
+        TrailingDilutedAverageShares,
+        TrailingDilutedEPS,
+        TrailingGrossProfit,
+        TrailingInterestExpense,
+        TrailingNetIncome,
+        TrailingNetIncomeCommonStockholders,
+        TrailingNetIncomeContinuousOperations,
+        TrailingOperatingExpense,
+        TrailingOperatingIncome,
+        TrailingOtherIncomeExpense,
+        TrailingPretaxIncome,
+        TrailingResearchAndDevelopment,
+        TrailingSellingGeneralAndAdministration,
+        TrailingTaxProvision,
+        TrailingTotalRevenue
 
   } = data;
 
     // Income Statement
     rows = [
-    { label: "Total Revenue", value: totalRevenue },
-    { label: "Gross Profits", value: grossProfits },
-    { label: "EBITDA", value: ebitda },
-    { label: "Operating Margins", value: operatingMargins },
-    { label: "Profit Margins", value: profitMargins },
-    { label: "Earnings Growth", value: earningsGrowth },
-    { label: "Return on Assets", value: returnOnAssets },
-    { label: "Return on Equity", value: returnOnEquity },
-    { label: "Revenue Per Share", value: revenuePerShare },
-    { label: "Total Cash Per Share", value: totalCashPerShare },
-    { label: "Total Debt", value: totalDebt },
-    { label: "Debt to Equity", value: debtToEquity },
-    { label: "Current Ratio", value: currentRatio },
-    { label: "Quick Ratio", value: quickRatio },
+    // Revenue Section
+    { label: "Total Revenue", value: TrailingTotalRevenue },
+    { label: "Cost of Revenue", value: TrailingCostOfRevenue },
+    //Revenue Section TOTAL LINE:
+    { label: "Gross Profit", value: TrailingGrossProfit },
 
+    // Operating Expenses Section
+    { label: "Research and Development", value: TrailingResearchAndDevelopment },
+    { label: "Selling General and Administration", value: TrailingSellingGeneralAndAdministration },
+      //Operating Expenses Section TOTAL LINE:
+    { label: "Total Operating Expense", value: TrailingOperatingExpense },
+
+    // Income Section
+    { label: "Operating Income", value: TrailingOperatingIncome },
+    { label: "Interest Expense", value: TrailingInterestExpense },
+    { label: "Other Income Expense", value: TrailingOtherIncomeExpense },
+    { label: "Pretax Income", value: TrailingPretaxIncome },
+    { label: "Tax Provision", value: TrailingTaxProvision },
+    //Income Section TOTAL LINE:
+    { label: "Net Income", value: TrailingNetIncome },
+    { label: "Net Income Continuous Operations", value: TrailingNetIncomeContinuousOperations },
+    { label: "Net Income Common Stockholders", value: TrailingNetIncomeCommonStockholders },
+
+    // Earnings Per Share (EPS) Section
+    { label: "Basic Average Shares", value: TrailingBasicAverageShares },
+    { label: "Diluted Average Shares", value: TrailingDilutedAverageShares },
+    { label: "Basic EPS", value: TrailingBasicEPS },
+    { label: "Diluted EPS", value: TrailingDilutedEPS },
+  
   ].filter(row => row.value !== 'Data not available' && row.value !== null);
 
   } else if (statementType === 'cash') {
     // Extract cash flow statement values
     const {
-      operatingCashflow,
-      totalCash,
-      totalCashPerShare,
-      totalDebt,
-      debtToEquity,
-      freeCashflow,
-    } = data;
+      BeginningCashPosition,
+      CapitalExpenditure,
+      CashDividendsPaid,
+      CashFlowFromContinuingFinancingActivities,
+      ChangeInAccountPayable,
+      ChangeInCashSupplementalAsReported,
+      ChangeInInventory,
+      ChangeInWorkingCapital,
+      ChangesInAccountReceivables,
+      CommonStockIssuance,
+      DeferredIncomeTax,
+      DepreciationAndAmortization,
+      EndCashPosition,
+      FreeCashFlow,
+      InvestingCashFlow,
+      NetIncome,
+      NetOtherFinancingCharges,
+      NetOtherInvestingChanges,
+      OperatingCashFlow,
+      OtherNonCashItems,
+      PurchaseOfBusiness,
+      PurchaseOfInvestment,
+      RepaymentOfDebt,
+      RepurchaseOfCapitalStock,
+      SaleOfInvestment,
+      StockBasedCompensation,
+          } = data;
 
     // Cash Flow Statement
     rows = [
-      { label: "Operating Cashflow", value: operatingCashflow },
-      { label: "Total Cash", value: totalCash },
-      { label: "Total Cash Per Share", value: totalCashPerShare },
-      { label: "Total Debt", value: totalDebt },
-      { label: "Debt to Equity", value: debtToEquity },
-      { label: "Free Cashflow", value: freeCashflow },
+      // Operating Activities
+      { label: "Net Income", value: NetIncome },
+      { label: "Depreciation And Amortization", value: DepreciationAndAmortization },
+      { label: "Deferred Income Tax", value: DeferredIncomeTax },
+      { label: "Stock Based Compensation", value: StockBasedCompensation },
+      { label: "Change In Working Capital", value: ChangeInWorkingCapital },
+      { label: "Changes In Account Receivables", value: ChangesInAccountReceivables },
+      { label: "Change In Inventory", value: ChangeInInventory },
+      { label: "Change In Account Payable", value: ChangeInAccountPayable },
+      { label: "Other Non-Cash Items", value: OtherNonCashItems },
+      { label: "Operating Cash Flow", value: OperatingCashFlow },
 
+      // Investing Activities
+      { label: "Capital Expenditure", value: CapitalExpenditure },
+      { label: "Investing Cash Flow", value: InvestingCashFlow },
+      { label: "Purchase Of Business", value: PurchaseOfBusiness },
+      { label: "Purchase Of Investment", value: PurchaseOfInvestment },
+      { label: "Sale Of Investment", value: SaleOfInvestment },
+      { label: "Net Other Investing Changes", value: NetOtherInvestingChanges },
+
+      // Financing Activities
+      { label: "Cash Dividends Paid", value: CashDividendsPaid },
+      { label: "Common Stock Issuance", value: CommonStockIssuance },
+      { label: "Repayment Of Debt", value: RepaymentOfDebt },
+      { label: "Repurchase Of Capital Stock", value: RepurchaseOfCapitalStock },
+      { label: "Cash Flow From Continuing Financing Activities", value: CashFlowFromContinuingFinancingActivities },
+      { label: "Net Other Financing Charges", value: NetOtherFinancingCharges },
+
+      // Supplemental Information
+      { label: "Free Cash Flow", value: FreeCashFlow },
+      { label: "Change In Cash Supplemental As Reported", value: ChangeInCashSupplementalAsReported },
+      { label: "Beginning Cash Position", value: BeginningCashPosition },
+      { label: "End Cash Position", value: EndCashPosition },
+            
     ].filter(row => row.value !== 'Data not available' && row.value !== null);
   }
 
@@ -426,7 +491,7 @@ const StatementTable = ({ data, statementType }) => {
     return <div>No data available for the selected statement.</div>;
   }
 
-  // Functions to categorise rows (to add colours): 
+  // Functions to categorise balance sheet rows (to add colours): 
   //ASSETS
   const isAssetRow = (label) => {
     const assetsLabels = [

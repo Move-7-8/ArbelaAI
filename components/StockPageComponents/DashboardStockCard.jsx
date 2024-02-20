@@ -12,7 +12,9 @@ function DashboardStockCard({ data,data2, industry,volatilityScore, liquiditySco
     const ticker = data?.historic?.meta?.symbol  || 'Company Name Not Available';
     const marketCap = data?.price?.marketCap?.longFmt || 'Not Available';
     const askPrice = data?.financeAnalytics?.currentPrice|| 'Not Available';
-    const prevClose = data?.historic?.meta?.chartPreviousClose || 'Not Available';
+    const prevClose = data?.price?.regularMarketPreviousClose?.raw || 'Not Available';
+    const regularMarketChange = data?.price?.regularMarketChange?.raw || 'Not Available';
+
     const description = data2?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.longBusinessSummary || 'Not Available';
     const firstSentence = description.split('.')[0] + '.';
     const link = data2?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.website || 'Not Available';
@@ -62,23 +64,56 @@ function DashboardStockCard({ data,data2, industry,volatilityScore, liquiditySco
     console.log('current price 2', currentPrice)
     console.log('previous close 2', previousClose)
     // Calculate price change and percentage change
-    const priceChange = currentPrice - previousClose;
-    const percentageChange = parseFloat((((currentPrice - previousClose) / previousClose) * 100).toFixed(2));
+    // Calculate price change and percentage change
+    const priceChange = regularMarketChange;
+
+    const numericPriceChange = Number(priceChange) || 0;
+    const numericPreviousClose = Number(previousClose) || 0;
+    
+    // Calculate percentage change safely
+    let percentageChange = 0;
+    if (numericPreviousClose !== 0) {
+    percentageChange = ((numericPriceChange / numericPreviousClose) * 100).toFixed(2);
+    } else if (numericPriceChange !== 0) {
+    // Handle edge case where previousClose is 0 but there's a priceChange
+    percentageChange = Infinity; // Or handle as appropriate for your application
+    } else {
+    // This handles the case where both priceChange and previousClose are 0
+    // Ensuring percentageChange is explicitly set to 0 avoids the NaN issue
+    percentageChange = 0;
+    }
+
+    // Convert percentageChange to a number for safe comparison and display
+    percentageChange = parseFloat(percentageChange);
+
 
         // Custom function to format price change
-    const formatPriceChange = (change) => {
-        // Threshold for deciding the number of decimal places
-        const threshold = 0.01;
-
-        // If change is smaller than the threshold, use more decimal places
-        if (Math.abs(change) < threshold) {
-            return change.toFixed(4); // Adjust the number of decimal places as needed
-        }
-
-        // For larger changes, use two decimal places
-        return change.toFixed(2);
-    };
-
+        const formatPriceChange = (change) => {
+            // Convert change to a number to ensure numeric operations are valid
+            const numericChange = Number(change);
+        
+            // Return '0' directly if numericChange is 0 to avoid "NaN" display
+            if (numericChange === 0) return '0.00'; // Adjusted to return '0.00' for consistency
+        
+            // Ensure the number is not NaN before proceeding
+            if (isNaN(numericChange)) {
+                console.log('Change is not a number:', change);
+                return '0.00'; // Or any fallback value you prefer
+            }
+        
+            // Threshold for deciding the number of decimal places
+            const threshold = 0.01;
+        
+            // If change is smaller than the threshold, use more decimal places
+            if (Math.abs(numericChange) < threshold) {
+                return numericChange.toFixed(4); // Adjust the number of decimal places as needed
+            }
+        
+            // For larger changes, use two decimal places
+            console.log('change', numericChange)
+            return numericChange.toFixed(2);
+        };
+                
         // Define styles for positive and negative changes
     const positiveStyle = {
         backgroundColor: 'rgba(53, 168, 83, 0.5)', // green

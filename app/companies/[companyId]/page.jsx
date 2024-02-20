@@ -38,10 +38,10 @@ const Page = () => {
     const fetchData = async () => {
       if (!isLoading) {
         setIsLoading(true);
-        // console.log('Fetching data...');
 
         try {
-          const response1 = await fetch(`/api/companies/[${ticker}]`, {
+          // Initiate both fetch requests simultaneously
+          const fetchPromise1 = fetch(`/api/companies/[${ticker}]`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -50,28 +50,31 @@ const Page = () => {
             signal: signal 
           });
   
-          if (!response1.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-  
-          const result1 = await response1.json();
-          // console.log('Complete Data from first API:', result1);
-          setData(result1); // Assuming you want to keep this data
-  
- // Second API call
-          const response2 = await fetch(`/api/companies2/[${ticker}]`, {
+          const fetchPromise2 = fetch(`/api/companies2/[${ticker}]`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'ticker': ticker }),
             signal: signal,
           });
-
+  
+          // Wait for both fetch requests to complete
+          const [response1, response2] = await Promise.all([fetchPromise1, fetchPromise2]);
+  
+          // Check if both responses are ok
+          if (!response1.ok) {
+            throw new Error(`HTTP error! status: ${response1.status}`);
+          }
           if (!response2.ok) {
             throw new Error(`HTTP error! status: ${response2.status}`);
           }
-
+  
+          // Parse JSON from both responses
+          const result1 = await response1.json();
           const result2 = await response2.json();
-          setData2(result2); // Use setData2 to store the result of the second fetch
+  
+          // Update state with the results
+          setData(result1);
+          setData2(result2);
         } catch (error) {
           if (error.name !== 'AbortError') {
             console.error('There was an error fetching the data!', error);
@@ -81,12 +84,12 @@ const Page = () => {
         }
       }
     };
-
+  
     fetchData();
     return () => controller.abort();
   }, [ticker]); 
 
-  
+  console.log('RETURNED DATA:', data2 )
   // CSS for controlling chatbox visibility
   const chatboxVisibility = showChatbox ? 'block' : 'hidden';
   const mobileChatboxStyle = `fixed inset-0 z-40 bg-black bg-opacity-50 ${chatboxVisibility} lg:hidden`;
@@ -119,7 +122,7 @@ return (
       {/* Mobile chatbox with controlled visibility through CSS */}
       <div className={mobileChatboxStyle}>
         <div className="w-full fixed bottom-0 bg-white h-2/3 overflow-auto">
-          <Test data={data}/>
+          <Test data={data} data2={data2}/>
           <button onClick={toggleChatbox} className="absolute top-0 right-0 mt-2 mr-2 text-2xl text-gray-700">
             &times;
           </button>

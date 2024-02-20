@@ -34,7 +34,7 @@ export async function GET() {
 
         //TESTING
         // let tickers = stocks.map(stock => stock.Stock).slice(0, 2);
-        // console.log("Testing with first 10 tickers:", tickers);
+        console.log("Testing with first 10 tickers:", tickers);
 
         const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
         
@@ -73,10 +73,10 @@ export async function GET() {
                     const stockDetails = await Stock.findOne({ Stock: ticker });
                     if (stockDetails) {
                         
-                        let lastPrice = stockDetails.Price || 'N/A';
+                        stockDetails.LastPrice = apiData.regularMarketPreviousClose?.raw || 'N/A';
+                        stockDetails.RegularMarketChange = apiData.regularMarketChange?.raw || 'N/A';
                         stockDetails.Name = apiData.longName || 'N/A',
                         stockDetails.Price = apiData.regularMarketPrice?.raw || 'N/A',
-                        stockDetails.LastPrice = lastPrice, // Set the 'Last Price' to what was previously the 'Price'
                         stockDetails.MarketCapitalisation = apiData.marketCap?.raw || 'N/A',
                         stockDetails.fiftyTwoWeekHigh = apiData.fiftyTwoWeekHigh?.raw || 'N/A',
                         stockDetails.fiftyTwoWeekLow = apiData.fiftyTwoWeekLow?.raw || 'N/A',
@@ -94,7 +94,6 @@ export async function GET() {
                         const rangeVolatility = ((apiData.fiftyTwoWeekHigh - apiData.fiftyTwoWeekLow) / apiData.fiftyTwoWeekLow) * 100;
                         const percentageChangeVolatility = (apiData.fiftyTwoWeekChangePercent + apiData.twoHundredDayAverageChangePercent + apiData.fiftyDayAverageChangePercent) / 3;
                         const volatility = (0.5 * rangeVolatility) + (0.5 * percentageChangeVolatility);
-                        const change = ((apiData.regularMarketPrice?.raw - lastPrice) / lastPrice) * 100;
                         const liquidity = (0.8 * apiData.averageDailyVolume3Month) + (0.2 * apiData.regularMarketVolume);
                         const gicsIndustryGroup = gicsMapping[`${ticker}`] || 'N/A';
 
@@ -102,7 +101,6 @@ export async function GET() {
                         stockDetails.RangeVolatility = rangeVolatility || 'N/A',
                         stockDetails.PercentageChangeVolatility = percentageChangeVolatility || 'N/A',
                         stockDetails.Volatility = volatility || 'N/A',
-                        stockDetails.Change = change ,
                         stockDetails.Liquidity = liquidity || 'N/A'
                         stockDetails.GICsIndustryGroup = gicsIndustryGroup;
                         // stockDetails.Ding = 'Dong';
@@ -136,8 +134,7 @@ export async function GET() {
                         completedRequests++;
 
                         // Calculate the completion percentage
-                        // let percentageComplete = ((completedRequests / tickers.length) * 100).toFixed(2);
-                        // console.log(`Completed: ${percentageComplete}% for ticker ${ticker}`);
+                        console.log(`Completed: ${percentageComplete}% for ticker ${ticker}`);
                     }
 
                 } catch (error) {
@@ -231,7 +228,7 @@ export async function GET() {
         ////////////////////
         //  RETURN TO FRONT END: //
         ///////////////////
-
+            console.log('All stocks updated successfully.');
             return new Response(JSON.stringify( 'File updated successfully' ), { status: 200 });
 
         } catch (error) {

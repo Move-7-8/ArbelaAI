@@ -7,6 +7,10 @@ export async function POST (request) {
     try {
         const req = await request.json()
         const fileKey = req.key;
+        console.log("S3 Route hit")
+        console.log("req", req)
+        console.log("filekey", fileKey)
+
 
         AWS.config.update({
             accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -23,7 +27,7 @@ export async function POST (request) {
             Key: `${fileKey}`,
 
         }).promise();
-        // console.log('Assistant File Route File:', file);
+        console.log('Assistant File Route File:', file);
         // Set appropriate headers for the file
         const headers = {
             'Content-Type': file.ContentType,

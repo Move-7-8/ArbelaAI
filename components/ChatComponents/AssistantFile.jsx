@@ -26,6 +26,8 @@ const AssistantFile = ({ condition1, condition2, symbol, fileChangeTrigger, onFi
 
   const searchParams = useSearchParams();
   const ticker = searchParams.get('ticker');
+
+  console.log('4. Assistant File Triggered')
   // console.log('assistantfile ticker', ticker)
   // In AssistantFile.jsx
   useEffect(() => {
@@ -36,7 +38,7 @@ const AssistantFile = ({ condition1, condition2, symbol, fileChangeTrigger, onFi
   }, [condition1, condition2]);
               
   const handleFileChange = async (event) => {
-    // console.log('handle file change triggered')
+    console.log('handle file change triggered')
     // console.log('assistantFile Symbol', symbol);
 
     // const fileKey = `pdf/${ticker}.csv`;
@@ -63,6 +65,8 @@ const AssistantFile = ({ condition1, condition2, symbol, fileChangeTrigger, onFi
   };
 
   const handleUpload = async (file) => {
+    console.log('handle upload running')
+
     setUploading(true);
     try {
         const formData = new FormData();
@@ -121,18 +125,11 @@ const handleCreate = async (uploadedFile) => {
       const fileData = await response.json();
       const assistantFile = fileData.assistantFile;
       const assistantFileId = fileData.assistantFile.id;
-      // console.log('======================================')
-      // console.log('RESPONSE RECEIVED', fileData)
-      // console.log('======================================')
 
-      // console.log("assistantFileReceived", assistantFile);
       setAssistantFile(assistantFileId);
       localStorage.setItem("assistantFile", assistantFileId);
       onFileChangeComplete(); // Call the callback here
-      // console.log('======================================')
-      // console.log('C A L L  B A C K  T R I G G E R E D')
-      // console.log('======================================')
-
+      console.log('onFileChangeComplete Triggered')
     } catch (error) {
       console.error("Error creating assistant file:", error);
     } finally {

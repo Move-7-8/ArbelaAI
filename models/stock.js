@@ -16,7 +16,7 @@ const stockSchema = new Schema({
   LastPrice: {
     type: Schema.Types.Mixed, // Assuming last price is also a number
   },
-  Change: {
+  RegularMarketChange: {
     type: Schema.Types.Mixed,
   },
   MarketCapitalisation: {

@@ -29,7 +29,23 @@ export async function POST(req, res) {
           'X-RapidAPI-Host': apiHost
         }
       },
-    
+
+      //c. Get Income Statement  
+      'get-income': {
+        method: 'GET',
+        url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials',
+        params: {
+          symbol: ticker, 
+          currencyCode: 'AUD'
+        
+        },
+        headers: {
+          'X-RapidAPI-Key': apiKey,
+          'X-RapidAPI-Host': apiHost
+        }
+      },
+
+
       //b. Get News endpoint  
         //Recent news articles, 
         'get-news': {
@@ -49,28 +65,51 @@ export async function POST(req, res) {
         },
         
       //c. Get similarities
-      //Filter for only Aus stocks
-      'get-similar': {
+      'get-cashflow': {
         method: 'GET',
-        url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-similarities',
-        params: {symbol: ticker},
-        headers: {
-          'X-RapidAPI-Key': apiKey,
-          'X-RapidAPI-Host': apiHost
-      }
-      },
-      
-      //d. Get Balance Sheet
-    'get-balance': {
-        method: 'GET',
-        url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-balance-sheet',
-        params: {symbol: ticker},
+        url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow',
+        params: {
+          symbol: ticker, 
+          currencyCode: 'AUD'
+        
+        },
         headers: {
           'X-RapidAPI-Key': apiKey,
           'X-RapidAPI-Host': apiHost
         }
       },
+
+      //d. Get Balance Sheet
+      'get-balance': {
+          method: 'GET',
+          url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-balance-sheet',
+          params: {
+            symbol: ticker, 
+            currencyCode: 'AUD'
+          
+          },
+            headers: {
+            'X-RapidAPI-Key': apiKey,
+            'X-RapidAPI-Host': apiHost
+          }
+        },
   };
+
+
+        //Filter for only Aus stocks, only for catalog page
+      // 'get-similar': {
+      //   method: 'GET',
+      //   url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-similarities',
+      //   params: {symbol: ticker},
+      //   headers: {
+      //     'X-RapidAPI-Key': apiKey,
+      //     'X-RapidAPI-Host': apiHost
+      // }
+      // },
+
+      console.log('ticker', ticker);
+      console.log('paramsMap', paramsMap);
+
 
   try {
     // Convert paramsMap into an array of fetch promises

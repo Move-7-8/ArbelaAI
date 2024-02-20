@@ -15,7 +15,7 @@ const sortOptions = [
 ];
 
 const Feed = ({ preloadedData }) => {
-  // console.log('Feed Preloaded Data:', preloadedData);
+  console.log('Feed Preloaded Data:', preloadedData);
 
   const [searchText, setSearchText] = useState('');
   // const [selectedCategory, setSelectedCategory] = useState(''); // Renamed to selectedCategory

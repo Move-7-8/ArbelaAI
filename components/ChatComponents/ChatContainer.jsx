@@ -6,6 +6,7 @@ import botImage from '../../public/assets/images/user1.png';
 import Image from 'next/image';
 import { MdOutlineSend } from 'react-icons/md';
 import { FaChalkboardTeacher, FaThumbsUp, FaExclamationTriangle, FaHeartbeat } from 'react-icons/fa';
+import Spinner from './Spinner'; // Assume you have a Spinner component
 
 
 
@@ -20,9 +21,7 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
   const [isHoveredThumbsUp, setIsHoveredThumbsUp] = useState(false);
   const [isHoveredExclamation, setIsHoveredExclamation] = useState(false);
   const [isHoveredHeartbeat, setIsHoveredHeartbeat] = useState(false);
-   const [isHoveredSend, setIsHoveredSend] = useState(false);
-
-
+  const [isHoveredSend, setIsHoveredSend] = useState(false);
 
   // console.log(' chatComponent chat_ticker:', chat_ticker);
   //Chatbox scrolls down to new message
@@ -122,6 +121,7 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
   };
 
     //Function to send a message automatically when an icon is clicked 
+//Function to send a message automatically when an icon is clicked
 const sendMessageAutomatically = async (messageText) => {
   if (!thread) return;
   setSending(true);
@@ -132,10 +132,8 @@ const sendMessageAutomatically = async (messageText) => {
     });
 
     const newMessage = response.data.message;
-    // console.log("newMessage", newMessage);
     setMessages(prevMessages => [...prevMessages, newMessage]);
-    // This line should clear the input field after sending the message
-    setMessage(""); 
+    // Removed setMessage(""); as it's not needed
     onMessageSent(); // Optionally, if you have actions to perform after sending
   } catch (error) {
     console.error("error", error);
@@ -156,6 +154,8 @@ function formatMessage(message) {
   const processedMessage = normalizedMessage.replace(/\*\*(.*?)\*\*/g, '<br><br><strong>$1</strong>');
   // Split the processed message into sections based on double newlines for paragraphs
   const sections = processedMessage.split(/\n\n+/);
+
+
   return sections.map((section, index) => {
     // Check for numbered lists
     if (/^\d+\./m.test(section) || /^\-\s/m.test(section)) {
@@ -187,12 +187,10 @@ function formatMessage(message) {
 
 //Function to click an icon and send a message
 const handleIconClick = (messageText) => {
-  // Set the message state to the desired text
-  setMessage(messageText);
-  
-  // Simulate a send action
+  // Directly send the message without updating the input field
   sendMessageAutomatically(messageText);
 };
+
 
 
   
@@ -230,14 +228,18 @@ return (
       
       {/* Chat Content Area */}
       <div className="flex-grow p-3 overflow-y-auto" ref={chatContentRef} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
-        {messages.map((message, index) => (
+        {fetching ? (
+            <Spinner /> // Show spinner while fetching
+          ) : (
+            messages.map((message, index) => (
           <div key={index} className="text-left text-sm my-2 p-2 rounded-md" 
               style={message.role === 'user' ? 
                       { background: 'linear-gradient(to right, rgba(255, 102, 101, 0.5), rgba(224, 208, 139, 0.5))', color: 'white' } : 
                       { backgroundColor: 'rgba(200, 200, 200, 0.2)' }}>
             {formatMessage(message.content[0].type === "text" ? message.content[0].text.value : '')}
           </div>
-        ))}
+            ))
+        )}
         {isTyping && (
           <div className="flex space-x-1">
             <span className="typing-indicator"></span>
@@ -285,7 +287,7 @@ return (
   <div className="flex justify-between items-center mt-4"> {/* Adjusted for even spacing among icons */}
     {/* Icons for predefined messages */}
 <div 
-  onClick={() => handleIconClick('Explain what this company does and their business model like Im in highschool')}
+  onClick={() => handleIconClick('Simply explain what this company does and what their business model is.')}
   onMouseEnter={() => setIsHoveredChalkboard(true)}
   onMouseLeave={() => setIsHoveredChalkboard(false)}
   className="cursor-pointer relative"
@@ -302,7 +304,7 @@ return (
 </div>
 
 <div 
-  onClick={() => handleIconClick('Tell me all the aspects of this particular company that are positive in terms of its investment potential')}
+  onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
   onMouseEnter={() => setIsHoveredThumbsUp(true)}
   onMouseLeave={() => setIsHoveredThumbsUp(false)}
   className="cursor-pointer relative"
@@ -319,7 +321,7 @@ return (
 </div>
 
 <div 
-  onClick={() => handleIconClick('Tell me all the risks associated with investing in this particular company')}
+  onClick={() => handleIconClick('What are the risks associated with investing in this company')}
   onMouseEnter={() => setIsHoveredExclamation(true)}
   onMouseLeave={() => setIsHoveredExclamation(false)}
   className="cursor-pointer relative"
@@ -336,7 +338,7 @@ return (
 </div>
 
 <div 
-  onClick={() => handleIconClick('what is the health of this company')} 
+  onClick={() => handleIconClick('What is the health of this company')} 
   onMouseEnter={() => setIsHoveredHeartbeat(true)}
   onMouseLeave={() => setIsHoveredHeartbeat(false)}
   className="cursor-pointer relative"

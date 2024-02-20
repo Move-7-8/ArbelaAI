@@ -22,7 +22,7 @@ import {
   runAtom,
 } from "@/atom";
 
-export default function Home({data}) {
+export default function Home({data, data2}) {
   // Atom State
   const [, setAssistant] = useAtom(assistantAtom);
   const [, setFile] = useAtom(fileAtom);
@@ -46,7 +46,11 @@ export default function Home({data}) {
   const [fileUploadTrigger, setFileUploadTrigger] = useState(false);
   const [triggerFileUploadFunction, setTriggerFileUploadFunction] = useState(false);
 
+  const [showChatContainer, setShowChatContainer] = useState(false);
+
   const chat_ticker = data?.price?.symbol;
+
+  console.log('0. Test page is loading')
   // console.log('chat_ticker:', chat_ticker);
   //Function to run the Assistant Create function on page load
   useEffect(() => {
@@ -72,6 +76,7 @@ const afterAssistantCreate = () => {
 
 //Trigger AssistantFile when both necessary conditions are met
 const onFileUploadCompleted = () => {
+  console.log('1. onFileUploadCompleted called')
   setTasksCompleted(prev => ({ ...prev, upload: true }));
   checkAndHandleUpload();
   setUploadCompleteTrigger(true); // Verify if this is called
@@ -87,12 +92,16 @@ const handleRunCompletion = () => {
 
 const handleRunFinalization = () => {
   setChatcondition(false); // Set Chatcondition to false when run is completed
-  'OLA PENDEJO, CHAT  CONDITION IS FALSE'
+
 };
 
 // Check if both tasks are completed
 const checkAndHandleUpload = () => {
+  console.log('2. checkAndHandleUpload called')
+
   if (tasksCompleted.create && tasksCompleted.upload) {
+    console.log('3. Both tasks completed')
+
     handleFileUploadInAssistantFile(); // Function to trigger upload in AssistantFile
     setTasksCompleted({ create: false, upload: false }); // Reset after triggering
   }
@@ -123,9 +132,25 @@ const handleFileChangeTrigger = () => {
 
     // Callback function to be called from Thread.jsx after final function is complete
     const handleThreadCreated = () => {
+      console.log('setting thread created', isThreadCreated)
       setIsThreadCreated(true);
+      console.log('setting thread created2', isThreadCreated)
+
     };
-  
+
+    // useEffect to log the state update
+    useEffect(() => {
+      console.log('After setting thread created:', isThreadCreated);
+    }, [isThreadCreated]);
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setShowChatContainer(true);
+      }, 5000); // Wait for 5 seconds
+    
+      return () => clearTimeout(timer); // Clean up the timer when the component unmounts or the effect reruns
+    }, []); // Empty dependency array means this runs once after the initial render
+    
 
   // Load default data
   useEffect(() => {
@@ -161,10 +186,8 @@ const handleFileChangeTrigger = () => {
     <main className="flex flex-col">
       <div className="flex flex-row  mt-3 gap-x-10">
         <div className="flex flex-col w-full">
-          {/* Assistant, FileUpload, AssistantFile, Thread are Service Components */}
-          {/* They are triggered once on render of company page */}
           <Assistant onFileChangeTrigger={afterAssistantCreate} triggerCreate={triggerCreate} setTriggerCreate={setTriggerCreate} />
-          <FileUpload data={data} onFileUploadCompleted={onFileUploadCompleted} />
+          <FileUpload data={data} data2={data2} onFileUploadCompleted={onFileUploadCompleted} />
           <AssistantFile 
             onFileChangeTrigger={handleFileChangeTrigger} 
             tasksCompleted={tasksCompleted}
@@ -173,13 +196,14 @@ const handleFileChangeTrigger = () => {
             fileChangeTrigger={fileChangeTrigger}   
             condition1={condition1}
             condition2={condition2}
-            // symbol={symbol}
           />
           <Thread fileChangeCompleted={fileChangeCompleted} onThreadCreated={handleThreadCreated}/>
-          {/* Run is a Service Component, ChatContainer is not */}
-          {/* Run is triggered on ChatContainer 'Send' button click */}
-          {/* Conditional Rendering between load screen and chatbox*/}
-          {isThreadCreated ? <ChatContainer onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} /> : <ChatLoad />}
+          {showChatContainer ? 
+            <ChatContainer onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} /> : 
+            <ChatLoad />
+          }
+          {/* <ChatContainer onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} /> */}
+
           <Run messageSent={messageSent} onRunComplete={handleRunCompletion} onRunFinal={handleRunFinalization} />
         </div>
         {/* Chat */}

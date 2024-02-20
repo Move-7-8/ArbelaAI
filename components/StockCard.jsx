@@ -11,6 +11,8 @@ function StockCard({ company }) {
     };
 
     // Convert the Strings to Numerical
+
+    console.log('Company:', company);
     const Price = +company.Price;
 
     const MarketCapitalisation = +company.MarketCapitalisation;
