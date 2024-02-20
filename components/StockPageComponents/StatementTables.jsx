@@ -642,22 +642,24 @@ const StatementTable = ({ data, statementType }) => {
         {/* Conditional Rendering for Balance Sheet Sections */}
         {statementType === 'balance' && (
           <>
-            {/* Assets Section Header with Toggle */}
-            <tr onClick={() => toggleSection('assets')} style={{ cursor: 'pointer', backgroundColor: '#f0f0f0' }}>
-              <td colSpan="2">Assets</td>
-            </tr>
-            {visibleSections.assets && rows.filter(row => isAssetRow(row.label)).map(renderRow)}
-  
-            {/* Liabilities Section Header with Toggle */}
-            <tr onClick={() => toggleSection('liabilities')} style={{ cursor: 'pointer', backgroundColor: '#f0f0f0' }}>
-              <td colSpan="2">Liabilities</td>
-            </tr>
-            {visibleSections.liabilities && rows.filter(row => isLiabilityRow(row.label)).map(renderRow)}
-  
-            {/* Equity Section Header with Toggle */}
-            <tr onClick={() => toggleSection('equity')} style={{ cursor: 'pointer', backgroundColor: '#f0f0f0' }}>
-              <td colSpan="2">Equity</td>
-            </tr>
+        {/* Assets Section Header with Toggle */}
+        <tr onClick={() => toggleSection('assets')} style={{ cursor: 'pointer', backgroundColor: '#f0f0f0' }}>
+          <td colSpan="2" style={{ fontWeight: 'bold', fontSize: 'smaller', paddingLeft: '7px', color: '#3A3C3E' }}>Assets</td>
+        </tr>
+        {visibleSections.assets && rows.filter(row => isAssetRow(row.label)).map(renderRow)}
+
+        {/* Liabilities Section Header with Toggle */}
+        <tr onClick={() => toggleSection('liabilities')} style={{ cursor: 'pointer', backgroundColor: '#f0f0f0' }}>
+          <td colSpan="2" style={{ fontWeight: 'bold', fontSize: 'smaller', paddingLeft: '7px', color: '#3A3C3E' }}>Liabilities</td>
+        </tr>
+        {visibleSections.liabilities && rows.filter(row => isLiabilityRow(row.label)).map(renderRow)}
+
+        {/* Equity Section Header with Toggle */}
+        <tr onClick={() => toggleSection('equity')} style={{ cursor: 'pointer', backgroundColor: '#f0f0f0' }}>
+          <td colSpan="2" style={{ fontWeight: 'bold', fontSize: 'smaller', paddingLeft: '7px', color: '#3A3C3E' }}>Equity</td>
+        </tr>
+
+
             {visibleSections.equity && rows.filter(row => isEquityRow(row.label)).map(renderRow)}
           </>
         )}
@@ -673,19 +675,19 @@ const StatementTable = ({ data, statementType }) => {
     let rowStyle = {};
   
     if (isAssetRow(row.label)) {
-      rowStyle.backgroundColor = 'rgba(144, 238, 144, 0.3)';
+      rowStyle.backgroundColor = 'rgba(53, 168, 83, 0.1)';
     } else if (isLiabilityRow(row.label)) {
-      rowStyle.backgroundColor = 'rgba(255, 182, 193, 0.3)';
+      rowStyle.backgroundColor = 'rgba(255, 0, 0, 0.1)';
     } else if (isEquityRow(row.label)) {
-      rowStyle.backgroundColor = 'rgba(173, 216, 230, 0.3)';
+      rowStyle.backgroundColor = 'rgba(106, 132, 157, 0.1)';
     }
   
     if (row.label === "Total Assets") {
-      rowStyle.backgroundColor = 'rgba(124, 252, 0, 0.5)';
+      rowStyle.backgroundColor = 'rgba(53, 168, 83, 0.3)';
     } else if (row.label === "Total Liabilities") {
-      rowStyle.backgroundColor = 'rgba(255, 99, 71, 0.5)';
+      rowStyle.backgroundColor = 'rgba(255, 0, 0, 0.3)';
     } else if (row.label === "Stockholders Equity") {
-      rowStyle.backgroundColor = 'rgba(30, 144, 255, 0.5)';
+      rowStyle.backgroundColor = 'rgba(106, 132, 157, 0.3)';
     }
   
     return (

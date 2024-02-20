@@ -107,14 +107,16 @@ return (
         </div>
         {/* Conditional Chatbox Popup Icon for small screens */}
         {!showChatbox && ( 
-            <div className="fixed right-4 bottom-4 z-50 lg:hidden">
-                <button 
-                    onClick={toggleChatbox} 
-                    className="text-4xl text-black p-3 bg-white rounded-full shadow-lg focus:outline-none"
-                >
-                    <FaComments />
-                </button>
-            </div>
+            <div className="fixed bottom-0 left-0 bg-white right-0 z-50 lg:hidden flex justify-end items-center p-4 bg-transparent">
+  <button 
+    onClick={toggleChatbox} 
+    className="text-4xl text-black p-3 focus:outline-none"
+    style={{ marginRight: 'auto', marginLeft: 'auto' }} // Center the button horizontally
+  >
+    <FaComments />
+  </button>
+</div>
+
         )}
       {/* Mobile chatbox with controlled visibility through CSS */}
       <div className={mobileChatboxStyle}>

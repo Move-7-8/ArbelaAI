@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import botImage from '../../public/assets/images/user1.png';
 import Image from 'next/image';
 import { MdOutlineSend } from 'react-icons/md';
-import { FaChalkboardTeacher, FaThumbsUp, FaExclamationTriangle, FaHeartbeat } from 'react-icons/fa';
+import { FaChalkboardTeacher, FaThumbsUp, FaExclamationTriangle, FaHeartbeat, FaBalanceScale, FaCheckCircle } from 'react-icons/fa';
 
 
 
@@ -303,15 +303,15 @@ return (
 
 <div 
   onClick={() => handleIconClick('Tell me all the aspects of this particular company that are positive in terms of its investment potential')}
-  onMouseEnter={() => setIsHoveredThumbsUp(true)}
-  onMouseLeave={() => setIsHoveredThumbsUp(false)}
+  onMouseEnter={() => setIsHoveredThumbsUp(true)} // Consider renaming this state to match the new icon
+  onMouseLeave={() => setIsHoveredThumbsUp(false)} // Consider renaming this state to match the new icon
   className="cursor-pointer relative"
 >
-  <FaThumbsUp 
+  <FaCheckCircle
     size={24} 
-    style={{ color: isHoveredThumbsUp ? '#6A849D' : '#3A3C3E' }}
+    style={{ color: isHoveredThumbsUp ? '#6A849D' : '#3A3C3E' }} // Consider renaming this state to match the new icon
   />
-  {isHoveredThumbsUp && (
+  {isHoveredThumbsUp && ( // Consider renaming this state to match the new icon
     <span className="absolute whitespace-nowrap bottom-full mb-2 px-2 py-1 bg-white border border-3A3C3E text-black text-xs rounded-md">
       Positive Aspects
     </span>

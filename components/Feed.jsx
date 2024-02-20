@@ -31,6 +31,16 @@ const Feed = ({ preloadedData }) => {
 
 };
 
+  // This effect logs preloadedData whenever it changes, including when the component mounts
+  useEffect(() => {
+    // This checks if preloadedData is defined before attempting to log it or use it
+    if (preloadedData !== undefined) {
+      console.log('Preloaded Data:', preloadedData);
+      // Perform other actions with preloadedData, like setting state
+    }
+  }, [preloadedData]);
+
+
  // Log preloadedData whenever it changes, including when the component mounts
   useEffect(() => {
     // console.log('Preloaded Data:', preloadedData);
