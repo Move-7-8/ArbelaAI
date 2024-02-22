@@ -4,7 +4,7 @@ import { messagesAtom, threadAtom } from "@/atom";
 import { useAtom } from "jotai";
 import React, { useState, useEffect} from "react";
 
-function Thread({ fileChangeCompleted, onThreadCreated }) {
+function Thread({ fileChangeCompleted, onThreadCreated, newThreadFunctionCaller }) {
   // Atom State
   const [thread, setThread] = useAtom(threadAtom);
   const [, setMessages] = useAtom(messagesAtom);
@@ -38,6 +38,7 @@ useEffect(() => {
         setThread(newThread);
         localStorage.setItem("thread", JSON.stringify(newThread));
         onThreadCreated(); // Call the callback once the thread is created
+        newThreadFunctionCaller()
         console.log("Successfully created thread in thread")
 
     } catch (error) {

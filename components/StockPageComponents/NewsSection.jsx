@@ -46,37 +46,37 @@ const NewsSection = ({ data2 }) => {
     return (
         <div>
             <h2 className="text-lg font-semibold mb-4 uppercase mt-8 text-gray-500">Company News</h2>
-<div className="grid md:grid-cols-2 gap-4">
-  {newsArray2.length === 0 ? renderSkeletonCards() : newsArray2.slice(0, visibleCount).map((item, index) => (
-    <a key={index} href={item.content?.clickThroughUrl?.url} target="_blank" rel="noopener noreferrer"
-       className="block rounded-lg overflow-hidden shadow-lg relative min-h-[200px] group">
-        <div className="absolute inset-0 bg-cover bg-center filter blur-sm group-hover:blur-none transition duration-300 ease-in-out"
-             style={{
-                 backgroundImage: `url(${getThumbnailUrl(item)})`,
-                 backgroundColor: '#333', // Fallback dark grey background if no image
-             }}>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-90 rounded-t-lg" style={{ height: '53%' }}>
-            <div className="p-4 flex flex-col justify-between h-full">
-                {/* Article Title with Tooltip Trigger */}
-                <div className="relative group">
-                   <h3 className="text-black text-sm font-semibold overflow-hidden" style={{ display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', textOverflow: 'ellipsis' }}>
-                      {titleCase(item.content?.title)}
-                  </h3>
-                  {/* Tooltip Content */}
-                  <span className="absolute bottom-full mb-2 hidden group-hover:block px-2 py-1 border border-3A3C3E bg-white text-black text-xs rounded-md">
-                      {titleCase(item.content?.title)}
-                  </span>
-                </div>
-                <div className="text-black text-xs mt-1">
-                    <p>By {item.content?.provider?.displayName}</p>
-                    <p>Updated {getTimeAgo(item?.content?.pubDate)}</p>
-                </div>
+            <div className="grid md:grid-cols-2 gap-4">
+            {newsArray2.length === 0 ? renderSkeletonCards() : newsArray2.slice(0, visibleCount).map((item, index) => (
+                <a key={index} href={item.content?.clickThroughUrl?.url} target="_blank" rel="noopener noreferrer"
+                className="block rounded-lg overflow-hidden shadow-lg relative min-h-[200px] group">
+                    <div className="absolute inset-0 bg-cover bg-center filter blur-sm group-hover:blur-none transition duration-300 ease-in-out"
+                        style={{
+                            backgroundImage: `url(${getThumbnailUrl(item)})`,
+                            backgroundColor: '#333', // Fallback dark grey background if no image
+                        }}>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-90 rounded-t-lg" style={{ height: '53%' }}>
+                        <div className="p-4 flex flex-col justify-between h-full">
+                            {/* Article Title with Tooltip Trigger */}
+                            <div className="relative group">
+                            <h3 className="text-black text-sm font-semibold overflow-hidden" style={{ display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', textOverflow: 'ellipsis' }}>
+                                {titleCase(item.content?.title)}
+                            </h3>
+                            {/* Tooltip Content */}
+                            <span className="absolute bottom-full mb-2 hidden group-hover:block px-2 py-1 border border-3A3C3E bg-white text-black text-xs rounded-md">
+                                {titleCase(item.content?.title)}
+                            </span>
+                            </div>
+                            <div className="text-black text-xs mt-1">
+                                <p>By {item.content?.provider?.displayName}</p>
+                                <p>Updated {getTimeAgo(item?.content?.pubDate)}</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            ))}
             </div>
-        </div>
-    </a>
-  ))}
-</div>
 
 
 

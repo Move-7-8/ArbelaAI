@@ -17,8 +17,10 @@ const Page = () => {
   
   // Search Params
   const searchParams = useSearchParams();
+
   // console.log('Page Search Params',searchParams )
   const ticker = searchParams.get('ticker');
+
   // console.log('Page Ticker',ticker )
 
   const industry = searchParams.get('industry');
@@ -26,6 +28,9 @@ const Page = () => {
   const liquidityScore = searchParams.get('liquidityScore');
   const [showChatbox, setShowChatbox] = useState(false);
   const toggleChatbox = () => setShowChatbox(!showChatbox);
+
+  console.log('Volatility Score:', volatilityScore);
+  console.log('Liquidity Score:', liquidityScore);
 
   // This CSS class determines whether the chatbox is visible
   const chatboxClass = showChatbox ? "block" : "hidden";

@@ -17,19 +17,28 @@ const endpoints = [
   { key: 'historic', path: `historic/${ticker}/1d/1y` },
   { key: 'historic30Days', path: `historic/${ticker}/1h/30d` }, // 30 days at 1-hour intervals
   { key: 'historic7Days', path: `historic/${ticker}/30m/7d` }, // 7 days at 30-minute intervals
-  { key: 'balanceSheet', path: `balance-sheet/${ticker}` },
-  { key: 'earnings', path: `earnings/${ticker}` },
+  // { key: 'balanceSheet', path: `balance-sheet/${ticker}` },
+  // { key: 'earnings', path: `earnings/${ticker}` },
   { key: 'financeAnalytics', path: `finance-analytics/${ticker}` },
-  { key: 'news', path: `news/${ticker}` },
-  { key: 'earningsTrend', path: `earnings-trend/${ticker}` },
+  // { key: 'news', path: `news/${ticker}` },
+  // { key: 'earningsTrend', path: `earnings-trend/${ticker}` },
   { key: 'keyStatistics', path: `key-statistics/${ticker}` }
 ];
 
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
   try {
-    // Iterate over each endpoint and fetch the data
-    const allDataPromises = endpoints.map(async ({ key, path }) => { // Use destructuring to get key and path
-        const apiUrl = `https://yahoo-finance127.p.rapidapi.com/${path}`;
-        console.log(`Requesting URL: ${apiUrl}`); // Log the URL being requested
+    // Initialize an empty array to hold the fetched data
+    const allData = [];
+
+    // Loop through each endpoint, wait for a delay, and then fetch the data
+    for (const { key, path } of endpoints) {
+      await delay(50); // Wait for 200ms before each request, adjust this value as needed
+
+      const apiUrl = `https://yahoo-finance127.p.rapidapi.com/${path}`;
+      console.log(`Requesting URL: ${apiUrl}`);
 
       const response = await fetch(apiUrl, {
         method: 'GET',
@@ -45,15 +54,13 @@ const endpoints = [
       }
 
       const jsonData = await response.json();
-      // return new Response ({ [key]: jsonData }); // Return an object with a key
-      return { [key]: jsonData }; // Return an object with a key
-    });
-      
-      const allData = await Promise.all(allDataPromises);
-      const organizedData = allData.reduce((acc, data) => ({ ...acc, ...data }), {});
-      
-      // console.log('Organized Data:', organizedData);
-      return new Response(JSON.stringify(organizedData), { status: 200 });
+      allData.push({ [key]: jsonData }); // Accumulate fetched data
+    }
+
+    const organizedData = allData.reduce((acc, data) => ({ ...acc, ...data }), {});
+    console.log('Organized Data:', organizedData);
+    return new Response(JSON.stringify(organizedData), { status: 200 });
+
   } catch (error) {
     console.error('Error:', error);
     return new Response(JSON.stringify({ error: 'Server Error' }), { status: 500 });

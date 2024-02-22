@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import botImage from '../../public/assets/images/user1.png';
 import Image from 'next/image';
 import { MdOutlineSend } from 'react-icons/md';
-import { FaChalkboardTeacher, FaThumbsUp, FaExclamationTriangle, FaHeartbeat } from 'react-icons/fa';
+import { FaChalkboardTeacher, FaCheckCircle, FaThumbsUp, FaExclamationTriangle, FaHeartbeat } from 'react-icons/fa';
 import Spinner from './Spinner'; // Assume you have a Spinner component
 
 
@@ -23,7 +23,7 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
   const [isHoveredHeartbeat, setIsHoveredHeartbeat] = useState(false);
   const [isHoveredSend, setIsHoveredSend] = useState(false);
 
-  // console.log(' chatComponent chat_ticker:', chat_ticker);
+  //console.log(' chatComponent chat_ticker:', chat_ticker);
   //Chatbox scrolls down to new message
 
   const chatContentRef = useRef(null);
@@ -41,7 +41,6 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
- 
 
   useEffect(() => {
     if (chatContentRef.current) {
@@ -197,10 +196,7 @@ const handleIconClick = (messageText) => {
 return (
   <>
     <div className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container ${isLargeScreen ? 'fixed bottom-20 w-full top-20 lg:max-w-[calc(25%-2.3rem)]' : ''}`} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-      
-      {/* Chat Header with SVG */}
       <div className="relative text-center shadow-lg rounded" style={{ paddingTop: 0, marginTop: 0, backgroundColor: 'rgba(255, 102, 101,0.2)'}}>
-
         <div className= {isLargeScreen ? "h-[10vw] rounded max-h-[90px]" : " rounded h-[15vw]"} style={{ width: '100%', overflow: 'hidden' }}>
           <svg width="100%" height="100%" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
             <defs>
@@ -212,21 +208,16 @@ return (
             <path d={isLargeScreen ? "M0,0 L700,0 L500 60 Q100,150 0,80 Z" : "M0,0 L500,0 L500 40 Q60,120 0,70 Z"} fill={`url(#${gradientId})`} />
           </svg>
         </div>
-
         <div className="absolute left-3 top-1/4 flex items-center">
           <div className="w-10 h-10 flex justify-center items-center relative">
-            {/* Ensure the Image component is imported correctly for your setup */}
             <Image src={botImage} alt="PNG" layout="fill" objectFit="cover" />
           </div>
-
           <div className="ml-3 text-white flex flex-col justify-center">
             <div className="text-sm" style={{ alignSelf: 'flex-start' }}>Analyse</div>
             <div className="text-lg" style={{ alignSelf: 'flex-start' }}>{chat_ticker}</div>
           </div>
         </div>
       </div>
-      
-      {/* Chat Content Area */}
       <div className="flex-grow p-3 overflow-y-auto" ref={chatContentRef} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
         {fetching ? (
             <Spinner /> // Show spinner while fetching
@@ -321,7 +312,7 @@ return (
 </div>
 
 <div 
-  onClick={() => handleIconClick('What are the risks associated with investing in this company')}
+  onClick={() => handleIconClick('Make an argument for the  financial risks that pertain to the operations of this company and its investment prospects')}
   onMouseEnter={() => setIsHoveredExclamation(true)}
   onMouseLeave={() => setIsHoveredExclamation(false)}
   className="cursor-pointer relative"

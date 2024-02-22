@@ -59,6 +59,26 @@ const stockSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  RangeVolatility: {
+    type: Schema.Types.Mixed, // Stored as a formatted string as per your existing code
+  },
+  PercentageChangeVolatility: {
+    type: Schema.Types.Mixed,
+  },
+  Volatility: {
+    type: Schema.Types.Mixed,
+  },
+  Liquidity: {
+    type: Schema.Types.Mixed,
+  },
+  VolatilityScore: {
+    type: Schema.Types.Mixed,
+  },
+  LiquidityScore: {
+    type: Schema.Types.Mixed,
+  },
+
+
 });
   
   const Stock = models.Stock || model("Stock", stockSchema);
