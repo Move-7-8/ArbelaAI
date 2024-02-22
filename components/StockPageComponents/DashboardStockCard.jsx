@@ -364,7 +364,7 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
                             <span className="text-sm">{volatilityScore}</span>
                         </div>
                         <div className="flex justify-between my-2">
-                            <span className="text-gray-500 uppercase text-xs">Dividend Score:</span>
+                            <span className="text-gray-500 uppercase text-xs">Liquidity Score:</span>
                             <span className="text-sm">{liquidityScore}</span>
                         </div>
                         </>
