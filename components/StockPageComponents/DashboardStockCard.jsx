@@ -130,9 +130,15 @@ function DashboardStockCard({ data,data2, industry,volatilityScore, liquiditySco
     const [activeButton, setActiveButton] = useState('button1');
 
 
+    const handleLinkClick = (e, url) => {
+    e.preventDefault(); // Prevent the default anchor tag behavior
+    window.open(url, '_blank', 'noopener,noreferrer'); // Open the link in a new tab
+    };
+
+
  return (
     
-        <div className="flex flex-col flex-1 rounded-md mx-auto lg-height-90vh" >
+        <div className="flex flex-col flex-1 rounded-md mx-auto lg-height-80vh" >
             {/* Align buttons to the left */}
       <div className="flex justify-center mx-4 pb-4">
             <div 
@@ -157,8 +163,8 @@ function DashboardStockCard({ data,data2, industry,volatilityScore, liquiditySco
   <style>
     {`
       @media (min-width: 1024px) {
-        .lg-height-90vh {
-          height: 90vh;
+        .lg-height-80vh {
+          height: 80vh;
         }
       }
     `}
@@ -227,36 +233,34 @@ function DashboardStockCard({ data,data2, industry,volatilityScore, liquiditySco
             </div>
         )}
 
-{activeButton === 'button1' && (
-    <div className="flex flex-col flex-grow">
-        {!data || !data2 ? (
-            // Skeleton loaders for company name and description
-            <div className="mb-2">
-                <div className="bg-gray-200 h-6 w-1/2 rounded"></div> {/* Skeleton for Company Name */}
-                <div className="bg-gray-200 h-4 mt-2 w-3/4 rounded mt-2"></div> {/* Skeleton for Company Description */}
-            </div>
-        ) : (
-            // Actual Company Name and Description
-            
-        <div className="mb-2">
-        <h2 className="text-xl font-bold text-[#3A3C3E]">{`${companyName} - ${ticker}`}</h2>
-<div>
-    <p className="text-sm text-gray-600 mt-2">{firstSentence}</p>
-  </div>
-  
-  {/* Link icon and "See More" text under the description */}
-  {link !== 'Not Available' && (
-    <div className="mt-2"> {/* Adjust the margin as needed */}
-      <a href={link} target="_blank" rel="noopener noreferrer" 
-         onMouseEnter={() => setHover(true)}
-         onMouseLeave={() => setHover(false)}
-         className="flex items-center space-x-2"> {/* Use flex to align icon and text */}
-           <span className="text-xs text-gray-600">Website</span> {/* "See More" text next to the link */}
-        <MdLink className="relative z-2"size={16} style={{ color: hover ? '#6A849D' : '#3A3C3E' }} />
-      </a>
-    </div>
-  )}
-</div>
+        {activeButton === 'button1' && (
+            <div className="flex flex-col flex-grow">
+                {!data || !data2 ? (
+                    // Skeleton loaders for company name and description
+                    <div className="mb-2">
+                        <div className="bg-gray-200 h-6 w-1/2 rounded"></div> {/* Skeleton for Company Name */}
+                        <div className="bg-gray-200 h-4 mt-2 w-3/4 rounded mt-2"></div> {/* Skeleton for Company Description */}
+                    </div>
+                ) : (
+                    // Actual Company Name and Description
+                    
+                <div className="mb-2">
+                <h2 className="text-xl font-bold text-[#3A3C3E]">{`${companyName} - ${ticker}`}</h2>
+        <div>
+            <p className="text-sm text-gray-600 mt-2">{firstSentence}</p>
+        </div>
+        
+        {link !== 'Not Available' && (
+        <div className="mt-2">
+            <a href={link} 
+            onClick={(e) => handleLinkClick(e, link)}
+            className="text-xs relative z-2 text-gray-600 underline hover:text-[#6A849D] transition-colors duration-300">
+            Website
+            </a>
+        </div>
+        )}
+
+        </div>
 
         )}
 
@@ -333,7 +337,7 @@ function DashboardStockCard({ data,data2, industry,volatilityScore, liquiditySco
                      
                         <span className="text-gray-500 uppercase text-xs" >Sector:</span>
                             <span className="text-sm" style={{
-                            maxWidth: 'calc(100% - 150px)',
+                            maxWidth: 'calc(100% - 130px)',
                             display: '-webkit-box',
                             WebkitLineClamp: '2',
                             WebkitBoxOrient: 'vertical',

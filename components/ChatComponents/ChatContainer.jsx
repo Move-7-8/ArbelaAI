@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import botImage from '../../public/assets/images/user1.png';
 import Image from 'next/image';
 import { MdOutlineSend } from 'react-icons/md';
-import { FaChalkboardTeacher, FaThumbsUp, FaExclamationTriangle, FaHeartbeat } from 'react-icons/fa';
+import { FaChalkboardTeacher, FaThumbsUp, FaExclamationTriangle, FaHeartbeat, FaCheckCircle } from 'react-icons/fa';
 import Spinner from './Spinner'; // Assume you have a Spinner component
 
 

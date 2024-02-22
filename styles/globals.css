@@ -151,7 +151,7 @@
 .nav_button {
   display: flex;       /* Enables flexbox */
   align-items: center; /* Vertically centers the content */
-  margin-right: 30px;  /* Adds space to the right */
+  /* margin-right: 30px;  Adds space to the right */
   margin-top: -2px; 
 
 }

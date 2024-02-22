@@ -89,17 +89,19 @@ useEffect(() => {
 
     useEffect(() => {
     const handleClickOutside = (event) => {
-      // Check if the click is outside both the search input and the NavStockCard
       if (searchRef.current && !searchRef.current.contains(event.target) && 
           (!navStockCardRef.current || !navStockCardRef.current.contains(event.target))) {
-        // Clear search query without hiding the search input or NavStockCard
-        setSearchQuery(''); // Clear the search query only
+        setShowSearchInput(false); // Hide the search input
+        setSearchQuery(''); // Clear the search query
+        setSearchResults([]); // Optionally clear the search results
+        // If you want to hide the NavStockCard as well, adjust setIsCardVisible accordingly
+        setIsCardVisible(false); // Assuming you want to hide this as well when clicking outside
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []); // Dependency array remains empty
+  }, []); // Make sure the effect does not have dependencies on states that change frequently
 
 
 
@@ -109,9 +111,10 @@ useEffect(() => {
       {/* Conditionally render the search icon only if the search input is not shown */}
       {!showSearchInput && (
         <div className="md:hidden">
-          <button onClick={() => setShowSearchInput(true)} className="p-2">
-            <FaSearch className="text-xl" />
-          </button>
+        <button aria-label="Search" style={{ color: '#6A849D' }}>
+          <FaSearch  size={23} className="mt-1 mr-2" />
+        </button>
+
         </div>
       )}
 
