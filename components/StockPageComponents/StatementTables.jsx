@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import { FaChevronDown } from 'react-icons/fa';
 
 
 const StatementTable = ({ data, statementType }) => {
@@ -7,14 +8,23 @@ const StatementTable = ({ data, statementType }) => {
       assets: true,
       liabilities: true,
       equity: true,
-    });
+      revenue: true,
+      operatingExpenses: true,
+      income: true,
+      eps: true, 
+      operatingActivities: true,
+      investingActivities: true,
+      financingActivities: true,
+      supplementalInformation: true, 
+        });
   
-    const toggleSection = (section) => {
-      setVisibleSections((prevVisibleSections) => ({
-        ...prevVisibleSections,
-        [section]: !prevVisibleSections[section],
-      }));
-    };
+      const toggleSection = (section) => {
+        setVisibleSections((prevVisibleSections) => ({
+          ...prevVisibleSections,
+          [section]: !prevVisibleSections[section],
+        }));
+      };
+
   
   if (!data) {
     return <div>No data available</div>;
@@ -675,6 +685,76 @@ const StatementTable = ({ data, statementType }) => {
     ];
     return equityLabels.includes(label);
   };
+
+  // Define functions to check if a row belongs to a specific Income Statement section
+
+    const isRevenueRow = (label) => {
+      return ['Total Revenue', 'Cost of Revenue', 'Gross Profit'].includes(label);
+    };
+
+    const isOperatingExpenseRow = (label) => {
+      return ['Research and Development', 'Selling General and Administration', 'Total Operating Expense'].includes(label);
+    };
+
+    const isIncomeRow = (label) => {
+      return ['Operating Income', 'Interest Expense', 'Other Income Expense', 'Pretax Income', 'Tax Provision', 'Net Income', 'Net Income Continuous Operations', 'Net Income Common Stockholders'].includes(label);
+    };
+
+    const isEpsRow = (label) => {
+      return ['Basic Average Shares', 'Diluted Average Shares', 'Basic EPS', 'Diluted EPS'].includes(label);
+    };
+
+      const isOperatingActivityRow = (label) => {
+    const operatingActivitiesLabels = [
+      "Net Income",
+      "Depreciation And Amortization",
+      "Deferred Income Tax",
+      "Stock Based Compensation",
+      "Change In Working Capital",
+      "Changes In Account Receivables",
+      "Change In Inventory",
+      "Change In Account Payable",
+      "Other Non-Cash Items",
+      "Operating Cash Flow", // This might be your total line
+    ];
+    return operatingActivitiesLabels.includes(label);
+  };
+
+  const isInvestingActivityRow = (label) => {
+    const investingActivitiesLabels = [
+      "Capital Expenditure",
+      "Investing Cash Flow",
+      "Purchase Of Business",
+      "Purchase Of Investment",
+      "Sale Of Investment",
+      "Net Other Investing Changes", // This might be your total line
+    ];
+    return investingActivitiesLabels.includes(label);
+  };
+
+  const isFinancingActivityRow = (label) => {
+    const financingActivitiesLabels = [
+      "Cash Dividends Paid",
+      "Common Stock Issuance",
+      "Repayment Of Debt",
+      "Repurchase Of Capital Stock",
+      "Cash Flow From Continuing Financing Activities",
+      "Net Other Financing Charges", // This might be your total line
+    ];
+    return financingActivitiesLabels.includes(label);
+  };
+
+  const isSupplementalInformationRow = (label) => {
+  const supplementalInformationLabels = [
+    "Free Cash Flow",
+    "Change In Cash Supplemental As Reported",
+    "Beginning Cash Position",
+    "End Cash Position",
+  ];
+  return supplementalInformationLabels.includes(label);
+};
+
+
   
   return (
     <table className="statement-table p-4" style={{ 
@@ -689,7 +769,7 @@ const StatementTable = ({ data, statementType }) => {
               textAlign: 'left', 
               backgroundColor: 'rgba(200, 200, 200, 0.2)', // Updated background color
               padding: '10px', 
-              fontSize: '14px'
+              fontSize: '15px'
           }}>
             Breakdown
           </th>
@@ -697,7 +777,7 @@ const StatementTable = ({ data, statementType }) => {
               textAlign: 'right', 
               backgroundColor: 'rgba(200, 200, 200, 0.2)', // Updated background color
               padding: '10px', 
-              fontSize: '14px'
+              fontSize: '15px'
           }}>
             {endDate || ''}
           </th>
@@ -708,29 +788,122 @@ const StatementTable = ({ data, statementType }) => {
         {statementType === 'balance' && (
           <>
         {/* Assets Section Header with Toggle */}
-        <tr onClick={() => toggleSection('assets')} style={{ cursor: 'pointer', backgroundColor: '#f0f0f0' }}>
-          <td colSpan="2" style={{ fontWeight: 'bold', fontSize: 'smaller', paddingLeft: '7px', color: '#3A3C3E' }}>Assets</td>
+        <tr onClick={() => toggleSection('assets')} className="cursor-pointer bg-gray-100">
+          <td className="font-bold text-sm text-gray-800 p-2">Assets</td>
+          <td className="p-2 flex justify-end">
+            <FaChevronDown className={`transition-transform ${visibleSections.assets ? 'rotate-180' : 'rotate-0'}`} />
+          </td>
         </tr>
+
         {visibleSections.assets && rows.filter(row => isAssetRow(row.label)).map(renderRow)}
 
         {/* Liabilities Section Header with Toggle */}
-        <tr onClick={() => toggleSection('liabilities')} style={{ cursor: 'pointer', backgroundColor: '#f0f0f0' }}>
-          <td colSpan="2" style={{ fontWeight: 'bold', fontSize: 'smaller', paddingLeft: '7px', color: '#3A3C3E' }}>Liabilities</td>
+        <tr onClick={() => toggleSection('liabilities')} className="cursor-pointer bg-gray-100">
+          <td className="font-bold text-sm text-gray-800 p-2">Liabilities</td>
+          <td className="p-2 flex justify-end">
+            <FaChevronDown className={`transition-transform ${visibleSections.liabilities ? 'rotate-180' : 'rotate-0'}`} />
+          </td>
         </tr>
         {visibleSections.liabilities && rows.filter(row => isLiabilityRow(row.label)).map(renderRow)}
 
         {/* Equity Section Header with Toggle */}
-        <tr onClick={() => toggleSection('equity')} style={{ cursor: 'pointer', backgroundColor: '#f0f0f0' }}>
-          <td colSpan="2" style={{ fontWeight: 'bold', fontSize: 'smaller', paddingLeft: '7px', color: '#3A3C3E' }}>Equity</td>
+        <tr onClick={() => toggleSection('equity')} className="cursor-pointer bg-gray-100">
+          <td className="font-bold text-sm text-gray-800 p-2">Equity</td>
+          <td className="p-2 flex justify-end">
+            <FaChevronDown className={`transition-transform ${visibleSections.equity ? 'rotate-180' : 'rotate-0'}`} />
+          </td>
         </tr>
+        {visibleSections.equity && rows.filter(row => isEquityRow(row.label)).map(renderRow)}
 
-
-            {visibleSections.equity && rows.filter(row => isEquityRow(row.label)).map(renderRow)}
+     
           </>
         )}
   
         {/* Non-Balance Sheet Rows (Income Statement and Cash Flow Statement) */}
-        {statementType !== 'balance' && rows.map(renderRow)}
+
+        {/* Income Statement Sections */}
+          {statementType === 'income' && (
+            <>
+              {/* Revenue Section */}
+              <tr onClick={() => toggleSection('revenue')} className="cursor-pointer bg-gray-100">
+                <td className="font-bold text-sm text-gray-800 p-2">Revenue</td>
+                <td className="p-2 flex justify-end">
+                  <FaChevronDown className={`transition-transform ${visibleSections.revenue ? 'rotate-180' : 'rotate-0'}`} />
+                </td>
+              </tr>
+              {visibleSections.revenue && rows.filter(row => row.label === "Total Revenue" || row.label === "Cost of Revenue" || row.label === "Gross Profit").map(renderRow)}
+
+              {/* Operating Expenses Section */}
+              <tr onClick={() => toggleSection('operatingExpenses')} className="cursor-pointer bg-gray-100">
+                <td className="font-bold text-sm text-gray-800 p-2">Operating Expenses</td>
+                <td className="p-2 flex justify-end">
+                  <FaChevronDown className={`transition-transform ${visibleSections.operatingExpenses ? 'rotate-180' : 'rotate-0'}`} />
+                </td>
+              </tr>
+              {visibleSections.operatingExpenses && rows.filter(row => isOperatingExpenseRow(row.label)).map(renderRow)}
+
+              {/* Income Section */}
+              <tr onClick={() => toggleSection('income')} className="cursor-pointer bg-gray-100">
+                <td className="font-bold text-sm text-gray-800 p-2">Income</td>
+                <td className="p-2 flex justify-end">
+                  <FaChevronDown className={`transition-transform ${visibleSections.income ? 'rotate-180' : 'rotate-0'}`} />
+                </td>
+              </tr>
+              {visibleSections.income && rows.filter(row => isIncomeRow(row.label)).map(renderRow)}
+
+
+              {/* Earnings Per Share (EPS) Section */}
+              <tr onClick={() => toggleSection('eps')} className="cursor-pointer bg-gray-100">
+                <td className="font-bold text-sm text-gray-800 p-2">Earnings Per Share</td>
+                <td className="p-2 flex justify-end">
+                  <FaChevronDown className={`transition-transform ${visibleSections.eps ? 'rotate-180' : 'rotate-0'}`} />
+                </td>
+              </tr>
+              {visibleSections.eps && rows.filter(row => row.label.includes("EPS") || row.label.includes("Shares")).map(renderRow)}
+            </>
+          )}
+
+      {statementType === 'cash' && (
+  <>
+    {/* Operating Activities Section with Toggle */}
+    <tr onClick={() => toggleSection('operatingActivities')} className="cursor-pointer bg-gray-100">
+      <td className="font-bold text-sm text-gray-800 p-2">Operating Activities</td>
+      <td className="p-2 flex justify-end">
+        <FaChevronDown className={`transition-transform ${visibleSections.operatingActivities ? 'rotate-180' : 'rotate-0'}`} />
+      </td>
+    </tr>
+    {visibleSections.operatingActivities && rows.filter(row => isOperatingActivityRow(row.label)).map(renderRow)}
+
+    {/* Investing Activities Section with Toggle */}
+    <tr onClick={() => toggleSection('investingActivities')} className="cursor-pointer bg-gray-100">
+      <td className="font-bold text-sm text-gray-800 p-2">Investing Activities</td>
+      <td className="p-2 flex justify-end">
+        <FaChevronDown className={`transition-transform ${visibleSections.investingActivities ? 'rotate-180' : 'rotate-0'}`} />
+      </td>
+    </tr>
+    {visibleSections.investingActivities && rows.filter(row => isInvestingActivityRow(row.label)).map(renderRow)}
+
+    {/* Financing Activities Section with Toggle */}
+    <tr onClick={() => toggleSection('financingActivities')} className="cursor-pointer bg-gray-100">
+      <td className="font-bold text-sm text-gray-800 p-2">Financing Activities</td>
+      <td className="p-2 flex justify-end">
+        <FaChevronDown className={`transition-transform ${visibleSections.financingActivities ? 'rotate-180' : 'rotate-0'}`} />
+      </td>
+    </tr>
+    {visibleSections.financingActivities && rows.filter(row => isFinancingActivityRow(row.label)).map(renderRow)}
+
+    {/* Supplemental Information Section with Toggle */}
+    <tr onClick={() => toggleSection('supplementalInformation')} className="cursor-pointer bg-gray-100">
+      <td className="font-bold text-sm text-gray-800 p-2">Supplemental Information</td>
+      <td className="p-2 flex justify-end">
+        <FaChevronDown className={`transition-transform ${visibleSections.supplementalInformation ? 'rotate-180' : 'rotate-0'}`} />
+      </td>
+    </tr>
+    {visibleSections.supplementalInformation && rows.filter(row => isSupplementalInformationRow(row.label)).map(renderRow)}
+  </>
+)}
+
+
       </tbody>
     </table>
   );
@@ -748,13 +921,63 @@ const StatementTable = ({ data, statementType }) => {
     }
   
     if (row.label === "Total Assets") {
-      rowStyle.backgroundColor = 'rgba(53, 168, 83, 0.3)';
+      rowStyle.backgroundColor = 'rgba(53, 168, 83, 0.2)';
     } else if (row.label === "Total Liabilities") {
-      rowStyle.backgroundColor = 'rgba(255, 0, 0, 0.3)';
+      rowStyle.backgroundColor = 'rgba(255, 0, 0, 0.2)';
     } else if (row.label === "Stockholders Equity") {
-      rowStyle.backgroundColor = 'rgba(106, 132, 157, 0.3)';
+      rowStyle.backgroundColor = 'rgba(106, 132, 157, 0.2)';
     }
+
+      // Highlighting for Income Statement Sections
+    if (statementType === 'income') {
+    if (isRevenueRow(row.label)) {
+        rowStyle.backgroundColor = 'rgba(224, 208, 139, 0.1)'; // Updated color for Revenue
+    
+        } else if (isOperatingExpenseRow(row.label)) {
+            rowStyle.backgroundColor = 'rgba(255, 0, 0, 0.1)';
+        } else if (isIncomeRow(row.label)) {
+            rowStyle.backgroundColor = 'rgba(53, 168, 83, 0.1)'; // Light green for Income rows
+            // Highlighting Total lines with stronger colors specifically for the Income Statement
+            if (row.label === "Gross Profit" || row.label === "Total Operating Expense" || row.label === "Net Income" || row.label === "Net Income Continuous Operations" || row.label === "Net Income Common Stockholders") {
+                rowStyle.backgroundColor = 'rgba(53, 168, 83, 0.3)'; // Darker green for specific total lines
+            }
+        } else if (isEpsRow(row.label)) {
+            rowStyle.backgroundColor = 'rgba(106, 132, 157, 0.1)';
+        }
+    } else if (statementType === 'cash') {
+        if (isIncomeRow(row.label)) {
+            // Optionally set a different color or leave it without special coloring
+            rowStyle.backgroundColor = ''; // No specific color for "Net Income" in Cash Flow
+        }
+    }
+
+     // Adding color coding for cash flow sections
+  if (statementType === 'cash') {
+    if (isOperatingActivityRow(row.label)) {
+      rowStyle.backgroundColor = 'rgba(224, 208, 139, 0.1)';  // Yellow for operating activities
+    } else if (isInvestingActivityRow(row.label)) {
+      rowStyle.backgroundColor = 'rgba(53, 168, 83, 0.1)'; // Orange for investing activities
+    } else if (isFinancingActivityRow(row.label)) {
+      rowStyle.backgroundColor = 'rgba(255, 0, 0, 0.1)'; // Light blue for financing activities
+    } else if (isSupplementalInformationRow(row.label)) {
+      rowStyle.backgroundColor = 'rgba(106, 132, 157, 0.1)';// Purple for supplemental information
+    }
+  }
+
+
+    // Highlighting Total lines with stronger colors
+    if (statementType === 'income') {
+        if (row.label === "Gross Profit") {
+             rowStyle.backgroundColor = 'rgba(224, 208, 139, 0.2)';
+        } else if (row.label === "Total Operating Expense") {
+            rowStyle.backgroundColor = 'rgba(255, 0, 0, 0.2)';
+        } else if (row.label === "Net Income" || row.label === "Net Income Continuous Operations" || row.label === "Net Income Common Stockholders") {
+            rowStyle.backgroundColor = 'rgba(53, 168, 83, 0.2)'; // Green for Net Income related rows
+        }
+    }
+
   
+
     return (
       <tr key={index} style={rowStyle}>
         <td style={{ textAlign: 'left', padding: '8px', fontSize: '12px' }}>

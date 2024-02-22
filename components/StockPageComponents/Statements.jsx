@@ -45,7 +45,9 @@ const FinancialStatements = ({ data, data2 }) => {
     const defaultReportedValue = { reportedValue: { fmt: 'Data not available' } };
 
     const balanceSheetData = activeStatement === 'balance' && data2 ? {
-        endDate: data.balanceSheet.endDate?.fmt || 'N/A',
+
+        endDate: data2?.['get-balance']?.balanceSheetHistory?.balanceSheetStatements?.[0]?.endDate?.fmt || 'N/A',
+
         // TotalAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTotalAssets, defaultReportedValue),
         // CashCashEquivalentsFederalFundsSold: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCashCashEquivalentsAndFederalFundsSold, defaultReportedValue),
         // CashAndCashEquivalents: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCashAndCashEquivalents, defaultReportedValue),
@@ -218,6 +220,8 @@ const FinancialStatements = ({ data, data2 }) => {
     } : null;
 
     const incomeStatementData = activeStatement === 'income' && data2 ? {
+
+        endDate: data2?.['get-balance']?.balanceSheetHistory?.balanceSheetStatements?.[0]?.endDate?.fmt || 'N/A',
         TrailingBasicAverageShares: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingBasicAverageShares, defaultReportedValue),
         TrailingBasicEPS: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingBasicEPS, defaultReportedValue),
         TrailingCostOfRevenue: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingCostOfRevenue, defaultReportedValue),
@@ -240,6 +244,8 @@ const FinancialStatements = ({ data, data2 }) => {
 
 
     const cashflowData = activeStatement === 'cash' && data2  ? {
+
+        endDate: data2?.['get-balance']?.balanceSheetHistory?.balanceSheetStatements?.[0]?.endDate?.fmt || 'N/A',
         BeginningCashPosition: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingBeginningCashPosition, defaultReportedValue),
         CapitalExpenditure: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingCapitalExpenditure, defaultReportedValue),
         CashDividendsPaid: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingCashDividendsPaid, defaultReportedValue),

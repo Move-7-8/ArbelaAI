@@ -6,6 +6,8 @@ import { usePathname } from 'next/navigation';
 import {useState, useEffect} from 'react';
 import {signIn, signOut, useSession, getProviders } from 'next-auth/react';
 import CompanySearch from '@components/CompanySearch';
+import { MdGridView } from 'react-icons/md';
+
 
 const Nav = () => {
   const {data: session } = useSession();
@@ -55,11 +57,10 @@ const Nav = () => {
         {session?.user ? (
           <>
             {/* Logged In User Links */}
-            <Link href="/catalog" className="nav_button text-[#3A3C3E]">
-              Catalog
-            </Link>
-            {/* More links can be added here */}
-            {/* Profile and Dropdown */}
+          <Link href="/catalog" className="nav_button text-[#3A3C3E]">
+            <span className="hidden md:inline">Catalog</span>
+            <MdGridView className="inline md:hidden mr-2 " size={33} style={{ color: '#6A849D' }}/>
+          </Link>
             <div onClick={() => setToggleDropdown((prev) => !prev)} className="cursor-pointer">
               <Image
                 src={session?.user.image || "/assets/images/profile.png"}

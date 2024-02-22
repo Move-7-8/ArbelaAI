@@ -8,7 +8,8 @@ import DashboardStockCard from '@components/StockPageComponents/DashboardStockCa
 import TradingChartContainer from '@components/StockPageComponents/DashboardTradingChart';
 import FinancialStatements from '@components/StockPageComponents/Statements';
 import NewsSection from '@components/StockPageComponents/NewsSection';
-import { FaComments } from 'react-icons/fa';
+import Image from 'next/image'; // Make sure to import Image from 'next/image'
+import chatImage from '../../../public/assets/images/conversation.png'; // Correct path to your image
 
 const Page = () => {
   const [data, setData] = useState(null); 
@@ -100,30 +101,50 @@ const Page = () => {
   const mobileChatboxStyle = `fixed inset-0 z-40 bg-black bg-opacity-50 ${chatboxVisibility} lg:hidden`;
   const desktopChatboxStyle = "hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4";
 return (
-   <div className="flex flex-wrap w-full" >
-        <div className="flex flex-col w-full mt-20 lg:w-3/4" >
-            <div className="flex flex-col lg:flex-row mt-3">
-                <div className="w-full lg:w-1/2 mb-4 lg:mb-0">  
-                    <DashboardStockCard data={data}  data2={data2} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
-                </div>
-                <div className="w-full lg:flex-grow lg:overflow-y-scroll lg:h-screen">
-                    <TradingChartContainer data={data}  />
-                    <FinancialStatements data={data} data2={data2}  className="mt-4" />
-                    <NewsSection data={data}  data2={data2}  className="mt-4" />
-                </div>
+    <div className="flex flex-wrap w-full">
+        <div className="flex flex-col w-full mt-20 lg:w-3/4">
+          <div className="flex flex-wrap lg:flex-nowrap w-full ">
+            {/* Spacer for Stock Card */}
+            <div className="hidden lg:block lg:w-1/4 lg:h-screen"></div>
+
+            {/* Stock Card */}
+            <div className="w-full lg:fixed lg:w-1/4 lg:top-20 lg:left-0 lg:h-screen lg:overflow-y-auto mb-4">
+              <DashboardStockCard data={data} data2={data2} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
             </div>
+
+            {/* Statements and Chart Section */}
+            
+          <div className="w-full lg:ml-[16%] lg:overflow-y-scroll lg:h-screen pb-[65px] lg:pb-0">
+            <TradingChartContainer data={data} />
+            <FinancialStatements data={data} data2={data2} className="mt-4" />
+            <NewsSection data={data} data2={data2} className="mt-4" />
+          </div>
+
+          </div>
         </div>
         {/* Conditional Chatbox Popup Icon for small screens */}
         {!showChatbox && ( 
-            <div className="fixed bottom-0 left-0 bg-white right-0 z-50 lg:hidden flex justify-end items-center p-4 bg-transparent">
-  <button 
-    onClick={toggleChatbox} 
-    className="text-4xl text-black p-3 focus:outline-none"
-    style={{ marginRight: 'auto', marginLeft: 'auto' }} // Center the button horizontally
-  >
-    <FaComments />
+           <div 
+        className="fixed bottom-0 left-0 right-0 z-50 lg:hidden flex justify-end items-center"
+        style={{
+          padding: '0.7rem', // Reduced padding
+          height: '65px', // Explicit height, adjust as needed
+          background: 'rgba(255, 255, 255, 0.15)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.3)',
+          borderRadius: '5px',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        }}
+      >
+
+  <button onClick={toggleChatbox} className="text-4xl text-black p-3 focus:outline-none" style={{ marginRight: 'auto', marginLeft: 'auto' }}>
+      {/* Adjust width and height as necessary */}
+      <div className="relative" style={{ width: '40px', height: '40px' }}> {/* Set the size of the parent div */}
+          <Image src={chatImage} alt="Chat Icon" layout="fill" objectFit="cover" />
+      </div>
   </button>
-</div>
+  </div>
 
         )}
       {/* Mobile chatbox with controlled visibility through CSS */}
