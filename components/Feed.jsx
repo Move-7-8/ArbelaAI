@@ -3,22 +3,22 @@
 import { useState, useEffect, Fragment } from 'react';
 import Catalog from './Catalog';
 import { Listbox } from '@headlessui/react';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa'; // Importing ChevronDown icon from FontAwesome
+import { FaChevronDown, FaChevronUp, FaLongArrowAltDown, FaLongArrowAltUp, FaSortDown, FaSortUp } from 'react-icons/fa'; // Importing ChevronDown icon from FontAwesome
 // import { categoryMap } from '../constants'; // Import your categoryMap
 import Sort from './Sort'; // Adjust the path if necessary
 
 
 
 const sortOptions = [
-  { id: 1, name: 'Alphabetical' },
-  { id: 2, name: 'Size UP' },
-  { id: 3, name: 'Size DOWN' },
-  { id: 4, name: 'Liquidity UP' },
-  { id: 5, name: 'Liquidity DOWN' },
-  { id: 6, name: 'Volatility UP' },
-  { id: 7, name: 'Volatility DOWN' },
-
+  { id: 1, name: 'Alphabetical', icon: null },
+  { id: 2, name: 'Size UP', icon:<FaLongArrowAltUp />},
+  { id: 3, name: 'Size DOWN', icon: <FaLongArrowAltDown /> },
+  { id: 4, name: 'Liquidity UP', icon:<FaLongArrowAltUp /> },
+  { id: 5, name: 'Liquidity DOWN', icon: <FaLongArrowAltDown /> },
+  { id: 6, name: 'Volatility UP', icon: <FaLongArrowAltUp />},
+  { id: 7, name: 'Volatility DOWN', icon: <FaLongArrowAltDown /> },
 ];
+
 
 const Feed = ({ preloadedData }) => {
 
@@ -139,14 +139,14 @@ const Feed = ({ preloadedData }) => {
                       <Listbox.Option key={industry.id} value={industry} as={Fragment}>
                           {({ active, selected }) => (
                           <div 
-                            className={`flex rounded-full justify-start items-center text-sm cursor-pointer border px-4 py-2 ${selected ? 'bg-blue-500 text-white' : 'bg-gray-100 text-black'}`}
+                            className={`flex rounded-full justify-start items-center text-xs cursor-pointer border px-4 py-2 ${selected ? 'bg-blue-500 text-white' : 'bg-gray-100 text-black'}`}
                             style={{ 
                               backgroundColor: selected ? 'rgba(255, 102, 101, 0.5)' : '', 
                               borderColor: active ? 'rgba(255, 102, 101, 0.5)' : 'transparent',
 
                               borderWidth: active ? '2px' : '1px', // Adjust border width for visibility
                               borderStyle: 'solid',
-                              height: '3.6rem' 
+                              height: '3.2rem' 
                             }}
                           >
                             {industry.name}
