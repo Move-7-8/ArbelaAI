@@ -48,7 +48,7 @@ const Home = () => {
   }, []);
 
 
-  return (
+    return (
     <section className="w-full flex-center flex-col mt-20 pt-10">
       <h1 className="head_text text-center">
         <div className="landing-header text-center">Perform AI Powered Research</div>

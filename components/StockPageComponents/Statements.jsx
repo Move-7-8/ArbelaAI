@@ -217,6 +217,9 @@ const FinancialStatements = ({ data, data2 }) => {
         NotesReceivable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNotesReceivable, defaultReportedValue),
         CurrentNotesPayable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCurrentNotesPayable, defaultReportedValue),
         TreasuryStock: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTreasuryStock, defaultReportedValue),
+        LiabilitiesOfDiscontinuedOperations: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualLiabilitiesOfDiscontinuedOperations, defaultReportedValue),
+        SecuritiesAndInvestments:findFirstValidData(data2?.['get-balance']?.timeSeries?.annualSecuritiesAndInvestments, defaultReportedValue),
+        DeferredAssets:findFirstValidData(data2?.['get-balance']?.timeSeries?.annualDeferredAssets, defaultReportedValue)
     } : null;
 
     const incomeStatementData = activeStatement === 'income' && data2 ? {
@@ -284,7 +287,7 @@ return (
             {renderTab("Cash Flow", "cash")}
         </div>
     </div>
-    <div className="flex flex-col space-y-4 mb-4"> {/* This is good for vertical spacing */}
+    <div className="flex flex-col space-y-4 mb-4 p-4 sm:p-0"> {/* This is good for vertical spacing */}
         {activeStatement === 'balance' && balanceSheetData
             ? <StatementTable data={balanceSheetData} statementType="balance" />
             : activeStatement === 'income' && incomeStatementData

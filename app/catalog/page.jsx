@@ -40,8 +40,9 @@ const CatalogFeed = () => {
   return (
     <section className='mt-16'>
       <div className='mb-2 mt-12 text-center'>
-        <h1 className='mb-4 text-7xl font-black text-black'>Find a Company</h1>
-        <p className='text-lg text-black'>Select an ASX listed company you want to analyse </p>
+        <h1 className='mb-4 text-7xl font-black' style={{ color: '#3A3C3E' }}>Find a Company</h1>
+        <p className='text-lg' style={{ color: '#3A3C3E' }}>Select an ASX listed company you want to analyse</p>
+
       </div>
 
       <Feed
@@ -55,6 +56,7 @@ const CatalogFeed = () => {
     </section>
   );
 }
+
 
 
 export default CatalogFeed;

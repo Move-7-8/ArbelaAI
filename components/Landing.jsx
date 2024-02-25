@@ -20,7 +20,7 @@ const Landing = ({ setIsLandingVisible }) => {
                 </button>
             </div>
             
-            <h2 className="supported-by-button  mb-4 text-l font-bold">Supported By</h2>
+            <h2 className="text-gray-500 uppercase text-md mb-4 mt-4">Supported By</h2>
             <InvestorLogos/>
             <CronTest/>
             {/* <Test /> */}

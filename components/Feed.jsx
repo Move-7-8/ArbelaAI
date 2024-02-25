@@ -124,16 +124,26 @@ const Feed = ({ preloadedData }) => {
                 </Listbox.Button>
                 {open && (
                 <Listbox.Options className="listbox-options absolute mt-2 z-10 bg-white overflow-auto shadow-lg rounded-full p-4" style={{ width: '140px', maxHeight: '20rem' }}>
-                  {sortOptions.map((option) => (
+                {sortOptions.map((option) => (
                     <Listbox.Option key={option.id} value={option.name}>
-                      {({ active, selected }) => (
-                              <div className={`flex rounded-full justify-start items-center text-sm mb-2 cursor-pointer border px-4 py-2 bg-gray-100 ${selected ? 'bg-[rgba(255,102,101,0.5)] text-white' : 'text-black'} ${active ? 'border border-[rgba(255,102,101,0.5)]' : ''}`}>
-                          {option.name}
-                        </div>
-                      )}
+                        {({ active, selected }) => (
+                            <div 
+                                className={`flex rounded-full justify-start items-center text-xs cursor-pointer rounded-full border px-4 py-2 mb-2 ${selected ? 'bg-blue-500 text-white' : 'bg-gray-100 text-black'}`} // Added mb-2 for margin bottom
+                                style={{ 
+                                    backgroundColor: selected ? 'rgba(255, 102, 101, 0.5)' : '', 
+                                    borderColor: active ? 'rgba(255, 102, 101, 0.5)' : 'transparent',
+                                    borderWidth: active ? '2px' : '1px',
+                                    borderStyle: 'solid',
+                                    height: '2.8rem'  // Adjusted height for consistency
+                                }}
+                            >
+                                {option.name}
+                            </div>
+                        )}
                     </Listbox.Option>
-                    ))}
-                  </Listbox.Options>
+                ))}
+            </Listbox.Options>
+
                 )}
               </div>
             </>
@@ -161,14 +171,14 @@ const Feed = ({ preloadedData }) => {
                 <Listbox.Option key={industry.id} value={industry} as={Fragment}>
                   {({ active, selected }) => (
                     <div 
-                      className={`flex rounded-full justify-start items-center text-sm cursor-pointer rounded-full border px-4 py-2 ${selected ? 'bg-blue-500 text-white' : 'bg-gray-100 text-black'}`}
+                      className={`flex rounded-full justify-start items-center text-xs cursor-pointer rounded-full border px-4 py-2 ${selected ? 'bg-blue-500 text-white' : 'bg-gray-100 text-black'}`}
                       style={{ 
                         backgroundColor: selected ? 'rgba(255, 102, 101, 0.5)' : '', 
                         borderColor: active ? 'rgba(255, 102, 101, 0.5)' : 'transparent',
 
                         borderWidth: active ? '2px' : '1px', // Adjust border width for visibility
                         borderStyle: 'solid',
-                        height: '3.6rem' 
+                        height: '3.2rem' 
                       }}
                     >
                       {industry.name}

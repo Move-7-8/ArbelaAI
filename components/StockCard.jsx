@@ -97,7 +97,7 @@ function StockCard({ company }) {
 
             </div>
             <div className="mb-5" style={{ height: '25px' }}>
-               <span className="text-xs text-gray-900 overflow-hidden" style={{
+               <span className="text-xs mt-2 text-gray-900 overflow-hidden" style={{
                 display: '-webkit-box',
                 WebkitLineClamp: '2',
                 WebkitBoxOrient: 'vertical'
