@@ -356,8 +356,8 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
                             <span className="text-sm">{volume}</span>
                         </div>
                         <div className="flex justify-between my-2">
-                            <span className="text-gray-500 uppercase text-xs">Dividend Yield:</span>
-                            <span className="text-sm">{dividendYield}</span>
+                        <span className="text-gray-500 uppercase text-xs">Dividend Yield:</span>
+                        <span className="text-sm">{(dividendYield * 100).toFixed(2)}%</span>
                         </div>
                         <div className="flex justify-between my-2">
                             <span className="text-gray-500 uppercase text-xs">Volatility Score:</span>

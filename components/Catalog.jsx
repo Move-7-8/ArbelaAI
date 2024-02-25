@@ -4,7 +4,7 @@ import debounce from 'lodash.debounce';
 import StockCard from './StockCard';
 import { categoryMap } from '../constants';
 
-function Catalog({ searchText, selectedCategory, preloadedData }) {
+function Catalog({ searchText, selectedCategory, preloadedData, sortBy }) {
     const [tickers, setTickers] = useState(preloadedData || []);
     const [visibleCount, setVisibleCount] = useState(12);
     const [selectedCompany, setSelectedCompany] = useState(null);
@@ -12,15 +12,16 @@ function Catalog({ searchText, selectedCategory, preloadedData }) {
 
     const selectCompany = (company) => setSelectedCompany(company);
     const itemPerLoad = 12;
-
+    console.log('Catalog Sort By', sortBy);
     const fetchData = async (shouldAppend = false, searchQuery = '') => {
         setLoading(true);
         try {
             const offset = shouldAppend ? tickers.length : 0;
             const limit = itemPerLoad;
+            const sortby = sortBy;
             // Determine the API endpoint based on the context of the search
             const apiRoute = searchQuery ? 'api/navCompanies' : 'api/companies';
-            const bodyContent = { limit, offset, searchText: searchQuery, category: selectedCategory };
+            const bodyContent = { limit, offset, searchText: searchQuery, category: selectedCategory, sortby: sortby };
 
             const response = await fetch(`/${apiRoute}?limit=${limit}&offset=${offset}`, {
                 method: 'POST',
@@ -41,7 +42,7 @@ function Catalog({ searchText, selectedCategory, preloadedData }) {
         // Fetch data on component mount or when preloadedData changes
         setLoading(true);
         fetchData();
-    }, [preloadedData]);
+    }, [preloadedData, sortBy]);
 
     const handleLoadMore = () => {
         fetchData(true).then(() => setVisibleCount(prevCount => prevCount + itemPerLoad));

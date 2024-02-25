@@ -1,5 +1,6 @@
-import { NextRequest } from 'next/server';
+//api/industries/route.js
 
+import { NextRequest } from 'next/server';
 import {connectToDB} from '@utils/database'
 import Stock from '@models/stock';
 

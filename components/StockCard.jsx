@@ -12,7 +12,6 @@ function StockCard({ company }) {
 
     // Convert the Strings to Numerical
 
-    console.log('Company:', company);
     const Price = +company.Price;
 
     const MarketCapitalisation = +company.MarketCapitalisation;
@@ -37,9 +36,6 @@ function StockCard({ company }) {
     const liquidity = +company.Liquidity;
     const volatilityScore = +company.VolatilityScore;
     const liquidityScore = +company.LiquidityScore;
-    console.log('volatilityScore:', volatilityScore);
-    console.log('liquidityScore:', liquidityScore);
-    console.log(`Liquidity Score for ${company.Name}:`, liquidityScore);
 
 
     // Relative Calculations

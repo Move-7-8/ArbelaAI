@@ -111,43 +111,48 @@ export async function POST(req, res) {
       console.log('paramsMap', paramsMap);
 
 
-  try {
-    // Convert paramsMap into an array of fetch promises
-    const fetchPromises = Object.entries(paramsMap).map(([key, endpoint]) => {
-        const url = new URL(endpoint.url);
-        Object.keys(endpoint.params).forEach(key => url.searchParams.append(key, endpoint.params[key]));
+      try {
+        const fetchPromises = Object.entries(paramsMap).map(([key, endpoint]) => {
+            const url = new URL(endpoint.url);
+            Object.keys(endpoint.params).forEach(paramKey => url.searchParams.append(paramKey, endpoint.params[paramKey]));
 
-        return fetch(url.toString(), {
-            method: endpoint.method,
-            headers: endpoint.headers,
-            body: endpoint.method === 'POST' ? JSON.stringify(endpoint.data) : null
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`API request for ${key} failed with status: ${response.status}`);
-            }
-            return response.json().then(data => ({ key, data }));
+            return fetch(url.toString(), {
+                method: endpoint.method,
+                headers: endpoint.headers,
+                body: endpoint.method === 'POST' ? JSON.stringify(endpoint.data) : null
+            })
+            .then(response => {
+                if (response.status === 302) {
+                    console.log(`Redirect occurred for ${key}. Handling redirect...`);
+                    return null; // Or handle the redirect appropriately
+                }
+                if (!response.ok) {
+                    throw new Error(`API request for ${key} failed with status: ${response.status}`);
+                }
+                return response.json().then(data => ({ key, data }));
+            })
+            .catch(error => {
+                console.error(`Error fetching ${key}:`, error);
+                return null; // Skip this result but continue with others
+            });
         });
-    });
 
-    // Use Promise.all to wait for all the fetch requests to complete
-    const results = await Promise.all(fetchPromises);
-    // console.log('COMPANY2 RESULTS', results);
-    // Convert the results array back into an object
-    const resultObject = results.reduce((acc, { key, data }) => {
-        acc[key] = data;
-        return acc;
-    }, {});
+        const results = await Promise.all(fetchPromises);
+        const filteredResults = results.filter(result => result !== null); // Remove failed requests
 
-    // Send the combined result back
-    return new Response(JSON.stringify(resultObject), { status: 200 });
+        const resultObject = filteredResults.reduce((acc, { key, data }) => {
+            acc[key] = data;
+            return acc;
+        }, {});
 
-} catch (error) {
-    console.error('Error:', error);
-    return new Response('Server Error', { status: 500 });
-
+        // Send the combined result back
+        return new Response(JSON.stringify(resultObject), { status: 200 });
+    } catch (error) {
+        console.error('Error:', error);
+        return new Response('Server Error', { status: 500 });
+    }
 }
-}
+
   //1. For Catalog page, to use with filters/ sort by (METHOD: GET)
       //a. get-movers 
       //May need to apply a filter to ensure that only Australian stocks are called   
