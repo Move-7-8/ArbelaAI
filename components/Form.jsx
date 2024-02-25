@@ -88,12 +88,12 @@ import { FaUser, FaEnvelope, FaTag, FaCommentAlt } from 'react-icons/fa';
         className="custom-container"
         style={{ gap: '20px' }}
       >
-        <Heading  className="text-2xl text-[#3A3C3E] font-bold" mb="4">Contact Us</Heading>
-        {error && (
-          <Text color="red.300" my="4" fontSize="xl">
-            {error}
-          </Text>
-        )}
+     <Heading className="text-2xl text-[#3A3C3E] font-bold mb-4 text-center">Contact Us</Heading>
+{error && (
+  <Text color="red.300" my="4" fontSize="xl" className="text-center">
+    {error}
+  </Text>
+)}
 
         <form onSubmit={onSubmit} className="w-full" style={{ display: 'flex', flexDirection: 'column', gap: '20px', flex: '1' }}>
           <div className="flex flex-col justify-around flex-grow" style={{ gap: '10px' }}>
@@ -102,7 +102,7 @@ import { FaUser, FaEnvelope, FaTag, FaCommentAlt } from 'react-icons/fa';
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <FaUser  size={22} style={{ color: '#6A849D' }} />
                 <input
-                  className="w-full px-4 py-2 text-sm rounded-full border focus:outline-none focus:border-red-400 bg-gray-100 text-black"
+                  className="w-full px-4 py-2 text-sm rounded-md border focus:outline-none focus:border-red-400 bg-gray-100 text-black"
                   style={{ borderWidth: "1px", height: "2.9rem", borderColor: nameActiveInput ? "rgba(255, 102, 101, 0.5)" : "transparent" }}
                   type="text"
                   name="name"
@@ -121,7 +121,7 @@ import { FaUser, FaEnvelope, FaTag, FaCommentAlt } from 'react-icons/fa';
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <FaEnvelope size={22} style={{ color: '#6A849D' }} />
                 <input
-                  className="w-full px-4 py-2 text-sm rounded-full border focus:outline-none focus:border-red-400 bg-gray-100 text-black"
+                  className="w-full px-4 py-2 text-sm rounded-md border focus:outline-none focus:border-red-400 bg-gray-100 text-black"
                   style={{ borderWidth: "1px", height: "2.9rem", borderColor: emailActiveInput ? "rgba(255, 102, 101, 0.5)" : "transparent" }}
                   type="email"
                   name="email"
@@ -141,7 +141,7 @@ import { FaUser, FaEnvelope, FaTag, FaCommentAlt } from 'react-icons/fa';
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <FaTag  size={22} style={{ color: '#6A849D' }} />
                 <input
-                  className="w-full px-4 py-2 text-sm rounded-full border focus:outline-none focus:border-red-400 bg-gray-100 text-black"
+                  className="w-full px-4 py-2 text-sm rounded-md border focus:outline-none focus:border-red-400 bg-gray-100 text-black"
                   style={{ borderWidth: "1px", height: "2.9rem", borderColor: subjectActiveInput ? "rgba(255, 102, 101, 0.5)" : "transparent" }}
                   type="text"
                   name="subject"
@@ -161,12 +161,11 @@ import { FaUser, FaEnvelope, FaTag, FaCommentAlt } from 'react-icons/fa';
               <div style={{ display: 'flex', alignItems: 'start', gap: '10px' }}>
                 <FaCommentAlt size={22} style={{ color: '#6A849D', marginTop: '11px' }} />
                 <textarea
-                  className="w-full text-sm rounded-full px-4 border focus:outline-none focus:border-red-400 bg-gray-100 text-black"
+                  className="w-full text-sm rounded-md px-4 border focus:outline-none focus:border-red-400 bg-gray-100 text-black"
                   style={{ 
                     height: "6rem",
                     borderWidth: "1px", 
                     borderColor: messageActiveInput ? "rgba(255, 102, 101, 0.5)" : "transparent", 
-                    borderRadius: "9999px",
                     resize: "none",
                     paddingTop: "1rem" // Increased top padding to push down placeholder
                   }}
@@ -188,7 +187,7 @@ import { FaUser, FaEnvelope, FaTag, FaCommentAlt } from 'react-icons/fa';
           <Button
             type="submit"
             variant="solid"
-            className={`uppercase text-sm rounded-full py-1 px-3 w-32 transition duration-300 ease-in-out hover:scale-105 ${formSubmitted ? 'text-white' : 'border border-[#FF6665] text-[#FF6665]'}`}
+            className={`uppercase text-sm rounded-md py-1 px-3 w-32 transition duration-300 ease-in-out hover:scale-105 ${formSubmitted ? 'text-white' : 'border border-[#FF6665] text-[#FF6665]'}`}
             isLoading={isLoading}
             isDisabled={!values.name || !values.email || !values.subject || !values.message || formSubmitted}
             rounded="lg"

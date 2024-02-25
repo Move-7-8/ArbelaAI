@@ -111,7 +111,7 @@ useEffect(() => {
       {/* Conditionally render the search icon only if the search input is not shown */}
       {!showSearchInput && (
         <div className="md:hidden">
-        <button aria-label="Search" style={{ color: '#6A849D' }}>
+        <button aria-label="Search" style={{ color: '#3A3C3E' }}>
           <FaSearch  size={23} className="mt-1 mr-2" />
         </button>
 

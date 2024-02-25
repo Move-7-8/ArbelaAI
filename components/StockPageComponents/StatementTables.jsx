@@ -367,7 +367,10 @@ const StatementTable = ({ data, statementType }) => {
   { label: "Total Partnership Capital", value: TotalPartnershipCapital },
   { label: "Stockholders Equity", value: StockholdersEquity },
 
-  ].filter(row => row.value !== 'Data not available' && row.value !== null); // Assuming the filter applies to the entire array
+ ].filter(row => row.value !== 'Data not available' && row.value !== null);
+
+  console.log("Raw Data", data);
+// Assuming the filter applies to the entire array
 
     } else if (statementType === 'income') {
     // Extract Income Statement Values
@@ -789,7 +792,7 @@ const StatementTable = ({ data, statementType }) => {
           <>
         {/* Assets Section Header with Toggle */}
         <tr onClick={() => toggleSection('assets')} className="cursor-pointer bg-gray-100">
-          <td className="font-bold text-sm text-gray-800 p-2">Assets</td>
+          <td className="text-gray-500 uppercase text-xs p-2">Assets</td>
           <td className="p-2 flex justify-end">
             <FaChevronDown className={`transition-transform ${visibleSections.assets ? 'rotate-180' : 'rotate-0'}`} />
           </td>
@@ -799,7 +802,7 @@ const StatementTable = ({ data, statementType }) => {
 
         {/* Liabilities Section Header with Toggle */}
         <tr onClick={() => toggleSection('liabilities')} className="cursor-pointer bg-gray-100">
-          <td className="font-bold text-sm text-gray-800 p-2">Liabilities</td>
+          <td className="text-gray-500 uppercase text-xs p-2">Liabilities</td>
           <td className="p-2 flex justify-end">
             <FaChevronDown className={`transition-transform ${visibleSections.liabilities ? 'rotate-180' : 'rotate-0'}`} />
           </td>
@@ -808,7 +811,7 @@ const StatementTable = ({ data, statementType }) => {
 
         {/* Equity Section Header with Toggle */}
         <tr onClick={() => toggleSection('equity')} className="cursor-pointer bg-gray-100">
-          <td className="font-bold text-sm text-gray-800 p-2">Equity</td>
+          <td className="text-gray-500 uppercase text-xs p-2">Equity</td>
           <td className="p-2 flex justify-end">
             <FaChevronDown className={`transition-transform ${visibleSections.equity ? 'rotate-180' : 'rotate-0'}`} />
           </td>
@@ -826,7 +829,7 @@ const StatementTable = ({ data, statementType }) => {
             <>
               {/* Revenue Section */}
               <tr onClick={() => toggleSection('revenue')} className="cursor-pointer bg-gray-100">
-                <td className="font-bold text-sm text-gray-800 p-2">Revenue</td>
+                <td className="text-gray-500 uppercase text-xs p-2">Revenue</td>
                 <td className="p-2 flex justify-end">
                   <FaChevronDown className={`transition-transform ${visibleSections.revenue ? 'rotate-180' : 'rotate-0'}`} />
                 </td>
@@ -835,7 +838,7 @@ const StatementTable = ({ data, statementType }) => {
 
               {/* Operating Expenses Section */}
               <tr onClick={() => toggleSection('operatingExpenses')} className="cursor-pointer bg-gray-100">
-                <td className="font-bold text-sm text-gray-800 p-2">Operating Expenses</td>
+                <td className="text-gray-500 uppercase text-xs p-2">Operating Expenses</td>
                 <td className="p-2 flex justify-end">
                   <FaChevronDown className={`transition-transform ${visibleSections.operatingExpenses ? 'rotate-180' : 'rotate-0'}`} />
                 </td>
@@ -844,7 +847,7 @@ const StatementTable = ({ data, statementType }) => {
 
               {/* Income Section */}
               <tr onClick={() => toggleSection('income')} className="cursor-pointer bg-gray-100">
-                <td className="font-bold text-sm text-gray-800 p-2">Income</td>
+                <td className="text-gray-500 uppercase text-xs p-2">Income</td>
                 <td className="p-2 flex justify-end">
                   <FaChevronDown className={`transition-transform ${visibleSections.income ? 'rotate-180' : 'rotate-0'}`} />
                 </td>
@@ -854,7 +857,7 @@ const StatementTable = ({ data, statementType }) => {
 
               {/* Earnings Per Share (EPS) Section */}
               <tr onClick={() => toggleSection('eps')} className="cursor-pointer bg-gray-100">
-                <td className="font-bold text-sm text-gray-800 p-2">Earnings Per Share</td>
+                <td className="text-gray-500 uppercase text-xs p-2">Earnings Per Share</td>
                 <td className="p-2 flex justify-end">
                   <FaChevronDown className={`transition-transform ${visibleSections.eps ? 'rotate-180' : 'rotate-0'}`} />
                 </td>
@@ -867,7 +870,7 @@ const StatementTable = ({ data, statementType }) => {
   <>
     {/* Operating Activities Section with Toggle */}
     <tr onClick={() => toggleSection('operatingActivities')} className="cursor-pointer bg-gray-100">
-      <td className="font-bold text-sm text-gray-800 p-2">Operating Activities</td>
+      <td className="text-gray-500 uppercase text-xs p-2">Operating Activities</td>
       <td className="p-2 flex justify-end">
         <FaChevronDown className={`transition-transform ${visibleSections.operatingActivities ? 'rotate-180' : 'rotate-0'}`} />
       </td>
@@ -876,7 +879,7 @@ const StatementTable = ({ data, statementType }) => {
 
     {/* Investing Activities Section with Toggle */}
     <tr onClick={() => toggleSection('investingActivities')} className="cursor-pointer bg-gray-100">
-      <td className="font-bold text-sm text-gray-800 p-2">Investing Activities</td>
+      <td className="text-gray-500 uppercase text-xs p-2">Investing Activities</td>
       <td className="p-2 flex justify-end">
         <FaChevronDown className={`transition-transform ${visibleSections.investingActivities ? 'rotate-180' : 'rotate-0'}`} />
       </td>
@@ -885,7 +888,7 @@ const StatementTable = ({ data, statementType }) => {
 
     {/* Financing Activities Section with Toggle */}
     <tr onClick={() => toggleSection('financingActivities')} className="cursor-pointer bg-gray-100">
-      <td className="font-bold text-sm text-gray-800 p-2">Financing Activities</td>
+      <td className="text-gray-500 uppercase text-xs p-2">Financing Activities</td>
       <td className="p-2 flex justify-end">
         <FaChevronDown className={`transition-transform ${visibleSections.financingActivities ? 'rotate-180' : 'rotate-0'}`} />
       </td>
@@ -894,7 +897,7 @@ const StatementTable = ({ data, statementType }) => {
 
     {/* Supplemental Information Section with Toggle */}
     <tr onClick={() => toggleSection('supplementalInformation')} className="cursor-pointer bg-gray-100">
-      <td className="font-bold text-sm text-gray-800 p-2">Supplemental Information</td>
+      <td className="text-gray-500 uppercase text-xs p-2">Supplemental Information</td>
       <td className="p-2 flex justify-end">
         <FaChevronDown className={`transition-transform ${visibleSections.supplementalInformation ? 'rotate-180' : 'rotate-0'}`} />
       </td>

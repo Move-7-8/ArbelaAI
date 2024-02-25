@@ -116,7 +116,7 @@ return (
 
             {/* Statements and Chart Section */}
             
-          <div className="w-full lg:ml-[16%] lg:overflow-y-scroll lg:h-screen pb-[65px] lg:pb-0">
+          <div className="w-full lg:ml-[15.5%] lg:overflow-y-scroll lg:h-screen pb-[65px] lg:pb-0">
           {data && (
             <TradingChartContainer data={data} />
             )}
@@ -148,7 +148,7 @@ return (
 
   <button onClick={toggleChatbox} className="text-4xl text-black p-3 focus:outline-none" style={{ marginRight: 'auto', marginLeft: 'auto' }}>
       {/* Adjust width and height as necessary */}
-      <div className="relative" style={{ width: '40px', height: '40px' }}> {/* Set the size of the parent div */}
+      <div className="relative" style={{ width: '32px', height: '32px' }}> {/* Set the size of the parent div */}
           <Image src={chatImage} alt="Chat Icon" layout="fill" objectFit="cover" />
       </div>
   </button>

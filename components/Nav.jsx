@@ -59,11 +59,11 @@ const Nav = () => {
             {/* Logged In User Links */}
           <Link href="/catalog" className="nav_button text-[#3A3C3E]">
             <span className="hidden md:inline">Catalog</span>
-            <MdGridView className="inline md:hidden mr-2 " size={33} style={{ color: '#6A849D' }}/>
+            <MdGridView className="inline md:hidden mr-2 " size={33} style={{ color: '#3A3C3E' }}/>
           </Link>
             <div onClick={() => setToggleDropdown((prev) => !prev)} className="cursor-pointer">
               <Image
-                src={session?.user.image || "/assets/images/profile.png"}
+                src={session?.user.image || "/assets/images/profile1.png"}
                 width={37}
                 height={37}
                 className="rounded-full"
