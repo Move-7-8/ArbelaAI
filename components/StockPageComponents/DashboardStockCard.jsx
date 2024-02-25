@@ -367,26 +367,12 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
                             Ranks assets on a scale of 1-10 on how volatile they are. 
                         </span>
                         </div>
-<<<<<<< HEAD
-                        <div className="flex justify-between my-2">
-                        <span className="text-gray-500 uppercase text-xs">Dividend Yield:</span>
-                        <span className="text-sm">{(dividendYield * 100).toFixed(2)}%</span>
-                        </div>
-                        <div className="flex justify-between my-2">
-                            <span className="text-gray-500 uppercase text-xs">Volatility Score:</span>
-                            <span className="text-sm">{volatilityScore}</span>
-                        </div>
-                        <div className="flex justify-between my-2">
-                            <span className="text-gray-500 uppercase text-xs">Liquidity Score:</span>
-                            <span className="text-sm">{liquidityScore}</span>
-=======
                         <div className="flex justify-between my-2 relative group">
                         <span className="text-gray-500 uppercase text-xs">Liquidity Score:</span>
                         <span className="text-sm">{liquidityScore}</span>
                         <span className="tooltiptext  border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -translate-x-1/2 left-1/2 bottom-full mb-2">
                             Ranks assets on a scale of 1-10 on how liquid they are.
                         </span>
->>>>>>> d31a2ae0f4fea2f08a855dada05ad0c6bde9e3a5
                         </div>
 
                         </>
