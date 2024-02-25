@@ -71,7 +71,6 @@ const afterAssistantCreate = () => {
 //   console.log('=============================')
 //   console.log("onFileChangeTrigger called");
 //   console.log('=============================')
-
 // }
 
 //Trigger AssistantFile when both necessary conditions are met
@@ -130,23 +129,33 @@ const handleFileChangeTrigger = () => {
     }
   }, [messageSent]);
 
-    // Callback function to be called from Thread.jsx after final function is complete
-    const handleThreadCreated = () => {
-      console.log('setting thread created', isThreadCreated)
-      setIsThreadCreated(true);
-      console.log('setting thread created2', isThreadCreated)
+  
+  // Callback function to be called from Thread.jsx after final function is complete
+  const handleThreadCreated = () => {
+    console.log('setting thread created', isThreadCreated) // Logs the current state before the update
+    setIsThreadCreated(true); // Schedules the state to be updated
+    console.log('setting thread created2', isThreadCreated) // Still logs the current state, update not yet applied
+  };
 
-    };
-
-    // useEffect to log the state update
-    useEffect(() => {
-      console.log('After setting thread created:', isThreadCreated);
-    }, [isThreadCreated]);
+  const newThreadFunctionCaller = () => {
+    setShowChatContainer(true)
+    console.log('new thread function caller has turned showChat', showChatContainer)
+  }
+  
+  useEffect(() => {
+    console.log('After setting thread created:', isThreadCreated);
+    // Any code here will execute after `isThreadCreated` has been updated.
+  }, [isThreadCreated]);
+    
+  // useEffect to log the state update
+    // useEffect(() => {
+    //   console.log('After setting thread created:', isThreadCreated);
+    // }, [isThreadCreated]);
 
     useEffect(() => {
       const timer = setTimeout(() => {
         setShowChatContainer(true);
-      }, 5000); // Wait for 5 seconds
+      }, 11000); // Wait for 5 seconds
     
       return () => clearTimeout(timer); // Clean up the timer when the component unmounts or the effect reruns
     }, []); // Empty dependency array means this runs once after the initial render
@@ -198,17 +207,22 @@ const handleFileChangeTrigger = () => {
             condition2={condition2}
           />
           <Thread fileChangeCompleted={fileChangeCompleted} onThreadCreated={handleThreadCreated}/>
-          {showChatContainer ? 
+
+          {
+            !showChatContainer ? 
+              <ChatLoad key={`chatLoad-${isThreadCreated}`} /> : 
+              <ChatContainer key={`chatContainer-${isThreadCreated}`} onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} />
+          }
+
+
+          {/* {showChatContainer ? 
             <ChatContainer onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} /> : 
             <ChatLoad />
-          }
+          } */}
           {/* <ChatContainer onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} /> */}
 
-          <Run messageSent={messageSent} onRunComplete={handleRunCompletion} onRunFinal={handleRunFinalization} />
+          <Run messageSent={messageSent} onRunComplete={handleRunCompletion} onRunFinal={handleRunFinalization} newThreadFunctionCaller={newThreadFunctionCaller} />
         </div>
-        {/* Chat */}
-        {/* <div className="w-full"> */}
-        {/* </div> */}
       </div>
     </main>
   );

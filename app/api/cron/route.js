@@ -33,8 +33,8 @@ export async function GET() {
         let tickers = stocks.map(stock => stock.Stock);
 
         //TESTING
-        // let tickers = stocks.map(stock => stock.Stock).slice(0, 2);
-        console.log("Testing with first 10 tickers:", tickers);
+        // let tickers = stocks.map(stock => stock.Stock).slice(0, 20);
+        console.log("Testing with first 20 tickers:", tickers);
 
         const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
         
@@ -91,39 +91,50 @@ export async function GET() {
                         stockDetails.regularMarketChangePercent = apiData.regularMarketChangePercent?.raw || 'N/A'
 
                         // Calculated fields
-                        const rangeVolatility = ((apiData.fiftyTwoWeekHigh - apiData.fiftyTwoWeekLow) / apiData.fiftyTwoWeekLow) * 100;
-                        const percentageChangeVolatility = (apiData.fiftyTwoWeekChangePercent + apiData.twoHundredDayAverageChangePercent + apiData.fiftyDayAverageChangePercent) / 3;
-                        const volatility = (0.5 * rangeVolatility) + (0.5 * percentageChangeVolatility);
-                        const liquidity = (0.8 * apiData.averageDailyVolume3Month) + (0.2 * apiData.regularMarketVolume);
+                        const rangeVolatility = (((apiData.fiftyTwoWeekHigh?.raw - apiData.fiftyTwoWeekLow?.raw) / apiData.fiftyTwoWeekLow?.raw) * 100).toFixed(2);
+                        const percentageChangeVolatility = ((apiData.fiftyTwoWeekChangePercent?.raw + apiData.twoHundredDayAverageChangePercent?.raw + apiData.fiftyDayAverageChangePercent?.raw) / 3).toFixed(2);
+                        const volatility = ((0.5 * parseFloat(rangeVolatility)) + (0.5 * parseFloat(percentageChangeVolatility))).toFixed(2);
+                        const liquidity = ((0.8 * apiData.averageDailyVolume3Month?.raw) + (0.2 * apiData.regularMarketVolume?.raw)).toFixed(2);
                         const gicsIndustryGroup = gicsMapping[`${ticker}`] || 'N/A';
-
+                        
+                        console.log("stockDetails.Price:", stockDetails.Price);
+                        console.log("rangeVolatility:", rangeVolatility);
+                        console.log("percentageChangeVolatility:", percentageChangeVolatility);
+                        console.log("volatility:", volatility);
+                        console.log("liquidity:", liquidity);
+                        console.log("gicsIndustryGroup:", gicsIndustryGroup);
+                        
                         // Updating stock object with calculated fields
                         stockDetails.RangeVolatility = rangeVolatility || 'N/A',
                         stockDetails.PercentageChangeVolatility = percentageChangeVolatility || 'N/A',
                         stockDetails.Volatility = volatility || 'N/A',
                         stockDetails.Liquidity = liquidity || 'N/A'
                         stockDetails.GICsIndustryGroup = gicsIndustryGroup;
-                        // stockDetails.Ding = 'Dong';
 
                         // Add the stock's volatility to the total if it's valid
                         if (!isNaN(volatility) && !isNaN(liquidity)) {
-                            totalVolatility += volatility;
+                            totalVolatility += parseFloat(volatility);
                             validVolatilityCount++;  // Increment the count here
                             validStocks.push({
-                                ...stock, 
+                                ...stockDetails.toObject(), // Convert Mongoose document to a plain JavaScript object if necessary
                                 Volatility: volatility,
                                 Liquidity: liquidity
-                            }); 
+                            });
                         }
+
+                        console.log(`totalVolatility ${totalVolatility} validVolatilityCount ${validVolatilityCount} .`);
                         
                         //START NEW
                         await stockDetails.save()
                         .then(updatedDocument => {
+                          console.log(`Successfully updated stock details for ${ticker}`);
+                          // Optionally, log the updated document or just a confirmation message
+                        //   console.log(updatedDocument);
                         })
                         .catch(error => {
-                            console.error(`Error updating stock details for ${ticker}: ${error}`);
+                          console.error(`Error updating stock details for ${ticker}: ${error}`);
                         });
-                    
+                                          
                         // If you want to increment a completion counter or perform other logic after saving, do it here
                         completedRequests++;
                         // Calculate the completion percentage
@@ -150,7 +161,9 @@ export async function GET() {
         ///////////////////
 
         let averageVolatility = totalVolatility / validVolatilityCount;
-        // console.log(`Average Volatility across all stocks: ${averageVolatility}%`);
+        console.log(`totalVolatility: ${totalVolatility}`);
+        console.log(`validVolatilityCount: ${validVolatilityCount}`);
+        console.log(`Average Volatility across all stocks: ${averageVolatility}`);
         
         // Sorting and scoring for Volatility
         validStocks.sort((a, b) => a.Volatility - b.Volatility);
@@ -162,12 +175,26 @@ export async function GET() {
         }
         
         // Sorting and scoring for Liquidity
-        validStocks.sort((a, b) => b.Liquidity - a.Liquidity); // Assuming higher liquidity is better
+        validStocks.sort((a, b) => a.Liquidity - b.Liquidity); // Assuming higher liquidity is better
         const liquidityBinSize = Math.ceil(validStocks.length / 10);
         for (let i = 0; i < validStocks.length; i++) {
             validStocks[i].LiquidityScore = Math.ceil((i + 1) / liquidityBinSize);
         }
         
+        // Assuming validStocks contains all the modified stockDetails objects
+        for (let stock of validStocks) {
+            // Assuming 'stock' contains the MongoDB document _id or some unique identifier in 'Stock'
+            await Stock.findOneAndUpdate(
+                { _id: stock._id }, // or {_id: stock._id} if you use MongoDB _id
+                { $set: { VolatilityScore: stock.VolatilityScore, LiquidityScore: stock.LiquidityScore } },
+                { new: true } // This option returns the document after update was applied
+            ).then(updatedDocument => {
+                console.log(`Successfully updated scores for ${stock.Stock}`);
+            }).catch(error => {
+                console.error(`Error updating scores for ${stock.Stock}:`, error);
+            });
+        }
+                
 
         ////////////////////
         //  REWRITE DB: //

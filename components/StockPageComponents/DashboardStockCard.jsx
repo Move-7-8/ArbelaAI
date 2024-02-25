@@ -6,7 +6,7 @@ import { MdLink } from 'react-icons/md';
 
 
 
-function DashboardStockCard({ data,data2, industry,volatilityScore, liquidityScore }) {
+function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityScore }) {
 
     const companyName = data?.keyStatistics?.longName || 'Company Name Not Available';
     const ticker = data?.historic?.meta?.symbol  || 'Company Name Not Available';
@@ -331,7 +331,6 @@ function DashboardStockCard({ data,data2, industry,volatilityScore, liquiditySco
 
                 </>
             ) : (
-            // Actual data fields
             <>
                  <div className="flex justify-between my-2">
                      
