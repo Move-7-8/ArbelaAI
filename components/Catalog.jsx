@@ -19,6 +19,7 @@ function Catalog({ searchText, selectedCategory, preloadedData, sortBy }) {
             const offset = shouldAppend ? tickers.length : 0;
             const limit = itemPerLoad;
             const sortby = sortBy;
+            
             // Determine the API endpoint based on the context of the search
             const apiRoute = searchQuery ? 'api/navCompanies' : 'api/companies';
             const bodyContent = { limit, offset, searchText: searchQuery, category: selectedCategory, sortby: sortby };

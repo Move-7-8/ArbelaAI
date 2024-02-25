@@ -24,6 +24,7 @@ export async function GET() {
 }
 
 export async function POST(request) {
+  console.log('Companies POST request received')
   await connectToDB();
 
   const request_data = await request.json(); // Parsing JSON from the incoming request.

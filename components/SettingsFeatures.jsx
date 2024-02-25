@@ -1,0 +1,64 @@
+import React from 'react';
+import {
+  Container,
+  Heading,
+  Text,
+  List,
+  ListItem,
+  ListIcon,
+  Box,
+  Flex,
+  VStack,
+} from '@chakra-ui/react';
+import { FaCheckCircle } from 'react-icons/fa';
+
+const SettingsFeatures = () => {
+  return (
+    <Container
+      maxW="70%"
+      mt="12"
+      p="8"
+      minH="65vh"
+      borderRadius="3rem"
+      boxShadow="xl"
+      centerContent
+      bg="rgba(255, 255, 255, 0.5)"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="flex-start"
+      mx="auto"
+      className="custom-container"
+      style={{ gap: '20px' }}
+    >
+      <Heading className="text-2xl text-[#3A3C3E] font-bold mb-4 text-center">Upcoming Features</Heading>
+      <Box textAlign="center" mb={8}>
+        <Text fontSize="md" color="gray.600">
+          We'll be rolling out features according to community feedback. Below are some of the upcoming ideas to improve the platform.
+        </Text>
+      </Box>
+      <List spacing={26} textAlign="left" style={{ width: '100%' }}>
+        {[
+          { title: "AI based company search:", description: "Search and filter investments using natural language to find the best companies to meet your goals, portfolio, or thesis." },
+          { title: "New Data points:", description: "More data points including annual reports and earnings calls." },
+          { title: "Better LLMs:", description: "Testing on newer models with larger context windows." },
+          { title: "New Assets:", description: "Expanding from ASX listed stocks into US stocks, Digital Assets, and Commodities." }
+        ].map((feature, index) => (
+          <ListItem key={index}>
+            <VStack spacing={4} align="start"> {/* Adjusted alignment and spacing here */}
+              <Flex align="center" gap={2}>
+                <ListIcon as={FaCheckCircle} color="green.500" />
+                <Text as="b">{feature.title}</Text>
+              </Flex>
+              <Text fontSize="sm" color="gray.600">
+                {feature.description}
+              </Text>
+            </VStack>
+          </ListItem>
+        ))}
+      </List>
+    </Container>
+  );
+};
+
+export default SettingsFeatures;

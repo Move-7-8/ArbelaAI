@@ -88,7 +88,11 @@ import { FaUser, FaEnvelope, FaTag, FaCommentAlt } from 'react-icons/fa';
         className="custom-container"
         style={{ gap: '20px' }}
       >
-     <Heading className="text-2xl text-[#3A3C3E] font-bold mb-4 text-center">Contact Us</Heading>
+     <Heading className="text-2xl text-[#3A3C3E] font-bold mb-4 text-center">Contact Us </Heading>
+     <Text fontSize="sm" textAlign="center" color="gray.600" mb={4}>
+      We encourage feedback and feature ideas from our community!
+    </Text>
+
 {error && (
   <Text color="red.300" my="4" fontSize="xl" className="text-center">
     {error}

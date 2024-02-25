@@ -23,6 +23,7 @@ export async function GET() {
 }
 
 export async function POST(request) {
+  console.log('NavCompanies POST request received')
   await connectToDB();
 
   const request_data = await request.json(); // Parsing JSON from the incoming request.
@@ -36,12 +37,18 @@ export async function POST(request) {
 
 
   // If there is searchText, add conditions for searching by Name or Ticker.
+  // const companiesData = await Stock.find(
+  //   searchText ? { Name: { $regex: searchText, $options: 'i' } } : {}
+  // ).skip(offset).limit(limit).lean();
+
+//   const companiesData = await Stock.find(
+//     searchText ? { $or: [{ Name: { $regex: searchText, $options: 'i' } }, { Ticker: { $regex: searchText, $options: 'i' } }] } : {}
+// ).skip(offset).limit(limit).lean();
+
   const companiesData = await Stock.find(
-    searchText ? { Name: { $regex: searchText, $options: 'i' } } : {}
+    searchText ? { $or: [{ Name: { $regex: searchText, $options: 'i' } }, { Stock: { $regex: searchText, $options: 'i' } }] } : {}
   ).skip(offset).limit(limit).lean();
 
-
-  
 
 
   // console.log('Companies Data Result: ', companiesData);
