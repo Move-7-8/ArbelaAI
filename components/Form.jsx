@@ -72,8 +72,8 @@ import { FaUser, FaEnvelope, FaTag, FaCommentAlt } from 'react-icons/fa';
   
     return (
       <Container
-        maxW="70%"
         mt="12"
+        mb="22"
         p="8"
         minH="65vh"
         borderRadius="3rem"
