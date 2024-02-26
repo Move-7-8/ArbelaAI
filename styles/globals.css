@@ -79,7 +79,7 @@
 } */
 
 .app {
-  @apply relative z-10 flex justify-center items-center flex-col max-w-none w-full mx-auto sm:px-4 px-1 ;
+  @apply relative z-10 flex justify-center  flex-col max-w-none w-full mx-auto sm:px-4 px-1 ;
 }
 
 

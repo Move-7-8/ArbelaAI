@@ -4,7 +4,7 @@ import Provider from 'components/Provider'
 
 
 export const metadata = {
-    title: "HAL AI", 
+    title: "Arbela", 
     description: "Use AI to discover and analyse ASX companies"
 }
 

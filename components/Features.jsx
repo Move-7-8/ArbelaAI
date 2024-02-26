@@ -3,8 +3,8 @@ import Image from 'next/image';
 
 const Features = () => {
   return (
-    <div className='flex flex-col sm:flex-row justify-between'> 
-      <div className='w-full sm:flex-1 feature p-4 m-2'> 
+    <div className='flex flex-col sm:flex-row justify-between space-x-0 sm:space-x-6'> 
+      <div className='w-full sm:flex-1 feature p-4 mb-4'> 
         <h3 className="features-header mb-4 font-bold">
           Quality Data
         </h3>
@@ -18,7 +18,7 @@ const Features = () => {
           Our Data covers live feeds, quarterly updates, news stories, and metrics for all ASX traded stocks.
         </p>
       </div>
-      <div className='w-full sm:flex-1 feature p-4 m-2'> 
+      <div className='w-full sm:flex-1 feature p-4 mb-4'> 
         <h3 className="features-header mb-4 font-bold">
           Find Companies
         </h3>
@@ -32,8 +32,8 @@ const Features = () => {
           Use AI to search and filter companies based on your investment goals. Coming soon.
         </p>
       </div>
-      <div className='w-full sm:flex-1 feature p-4 m-2'> 
-        <h3 className="features-header mb-4 font-bold">
+      <div className='w-full sm:flex-1 feature p-4 mb-4'> 
+        <h3 className="features-header mb-4 font-bold ">
           Analyse Companies
         </h3>
         <Image 

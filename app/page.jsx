@@ -9,6 +9,7 @@ const Home = () => {
   const [isLandingVisible, setIsLandingVisible] = useState(true);
   const [preloadedData, setPreloadedData] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Add this line
+  const [isScreenLarge, setIsScreenLarge] = useState(window.innerWidth > 1024); // Assuming 'large' is > 1024px
 
   const toggleShowFeed = () => {
     setIsLandingVisible(false);
@@ -18,7 +19,10 @@ const Home = () => {
     setIsLandingVisible(true);
   }, []);
 
- 
+  const handleResize = () => {
+    setIsScreenLarge(window.innerWidth > 1024);
+  };
+
   const preloadData = async () => {
     setIsLoading(true); // Start loading
     try {
@@ -44,12 +48,20 @@ const Home = () => {
   };
       
   useEffect(() => {
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
+  useEffect(() => {
     preloadData(); // Trigger data preloading on component mount
   }, []);
 
 
     return (
-    <section className="w-full flex-center flex-col mt-20 pt-10">
+      <section className={`w-full ${isLandingVisible || isScreenLarge ? "flex-center" : ""} flex-col mt-20 pt-10`}>
       <h1 className="head_text text-center">
         <div className="landing-header text-center">Perform AI Powered Research</div>
         <div className="landing-header text-center"> On The Stock Market</div>
