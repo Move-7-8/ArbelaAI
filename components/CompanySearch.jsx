@@ -74,6 +74,8 @@ useEffect(() => {
     }
   };
 
+  
+
   useEffect(() => {
     const handler = setTimeout(() => {
       if (searchQuery.trim()) {
@@ -102,6 +104,12 @@ useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []); // Make sure the effect does not have dependencies on states that change frequently
+
+
+  const handleCompanySelected = () => {
+  setSearchQuery(''); // Clear the search query
+  setIsCardVisible(false); // Hide the NavStockCard
+};
 
 
 
@@ -140,12 +148,15 @@ useEffect(() => {
             </ul>
           )}
           {searchResults.length > 0 && (
-              <div ref={navStockCardRef}> {/* Add the ref here */}
-                <NavStockCard searchResults={searchResults} 
+            <div ref={navStockCardRef}> {/* Add the ref here */}
+              <NavStockCard 
+                searchResults={searchResults} 
                 isCardVisible={isCardVisible} 
-                setIsCardVisible={setIsCardVisible} />
-              </div>
-            )}
+                setIsCardVisible={setIsCardVisible}
+                onCompanySelect={handleCompanySelected} // Pass the function as a prop
+              />
+            </div>
+          )}
         </div>
       ) : null}
     </div>

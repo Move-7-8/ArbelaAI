@@ -6,13 +6,13 @@ const Sort = ({ sortBy, setSortBy, sortOptions }) => {
   const currentSortOption = sortOptions.find(option => option.name === sortBy);
 
   return (
-    <div className="flex items-center flex-shrink-0 space-x-2">
+    <div className="flex flex-end items-center flex-shrink-0 space-x-2">
       <span className="text-gray-500 text-sm whitespace-nowrap">Sort by:</span>
       <Listbox value={sortBy} onChange={setSortBy}>
         {({ open }) => (
           <>
             <div className="relative ml-2">
-              <Listbox.Button className="dropdown-button-sort flex items-center justify-between text-sm h-10 px-3 shadow-md rounded-full text-gray-500" style={{ minWidth: '140px' }}>
+              <Listbox.Button className="dropdown-button-sort flex items-center justify-between text-sm h-10 px-3 shadow-md rounded-full text-gray-500" style={{ minWidth: '160px' }}>
                 {/* Adjusted layout for text and icon in the button */}
                 <div className="flex items-center">
                   {currentSortOption ? (

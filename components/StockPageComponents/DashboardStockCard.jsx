@@ -139,7 +139,7 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
 
  return (
     
-        <div className="flex flex-col flex-1 rounded-md mx-auto lg-height-80vh" >
+        <div className="flex flex-col flex-1 rounded-md mx-auto lg-height-82vh" >
             {/* Align buttons to the left */}
       <div className="flex justify-center mx-4 pb-4">
             <div 
@@ -164,8 +164,8 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
   <style>
     {`
       @media (min-width: 1024px) {
-        .lg-height-80vh {
-          height: 80vh;
+        .lg-height-82vh {
+          height: 82vh;
         }
       }
     `}
@@ -333,27 +333,25 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
                 </>
             ) : (
             <>
-                 <div className="flex justify-between my-2">
-                     
-                        <span className="text-gray-500 uppercase text-xs" >Sector:</span>
-                            <span className="text-sm" style={{
-                            maxWidth: 'calc(100% - 100px)',
-                       
-                        }}>
-                            {industry || 'N/A'}
-                        </span>
+                <div className="flex justify-between items-center my-2" style={{ maxWidth: '100%' }}>
+                <span className="text-gray-500 uppercase text-xs flex-shrink-0">Sector:</span>
+                <div className="flex-grow text-right ml-4">
+                    <span className="text-sm">
+                    {industry || 'N/A'}
+                    </span>
+                </div>
+                </div>
 
-                 </div>
-                 <div className="flex justify-between my-2">
+                 <div className="flex  items-center justify-between my-2">
                     <span className="text-gray-500 uppercase text-xs">Market Cap:</span>
                     <span className="text-sm">${marketCap}</span> {/* Added dollar sign here */}
                 </div>
-                <div className="flex justify-between my-2">
+                <div className="flex items-center justify-between my-2">
                     <span className="text-gray-500 uppercase text-xs">24hr Volume:</span>
                     <span className="text-sm">${volume}</span> {/* And here */}
                 </div>
 
-                        <div className="flex justify-between my-2 relative group">
+                        <div className="flex items-center justify-between my-2 relative group">
                         <span className="text-gray-500 uppercase text-xs">Dividend Yield:</span>
                         <span className="text-sm">{dividendYield}</span>
                         <span className="tooltiptext  border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -translate-x-1/2 left-1/2 bottom-full mb-2">
@@ -361,14 +359,14 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
                         </span>
                         </div>
 
-                        <div className="flex justify-between my-2 relative group">
+                        <div className="flex items-center justify-between my-2 relative group">
                         <span className="text-gray-500 uppercase text-xs">Volatility Score:</span>
                         <span className="text-sm">{volatilityScore}</span>
                         <span className="tooltiptext border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -translate-x-1/2 left-1/2 bottom-full mb-2">
                             Ranks assets on a scale of 1-10 on how volatile they are. 
                         </span>
                         </div>
-                        <div className="flex justify-between my-2 relative group">
+                        <div className="flex items-center justify-between my-2 relative group">
                         <span className="text-gray-500 uppercase text-xs">Liquidity Score:</span>
                         <span className="text-sm">{liquidityScore}</span>
                         <span className="tooltiptext  border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -translate-x-1/2 left-1/2 bottom-full mb-2">
