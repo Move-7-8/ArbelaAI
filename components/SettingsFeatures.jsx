@@ -18,7 +18,7 @@ const SettingsFeatures = () => {
    
       mt="12"
       mb="32" // Added bottom margin
-      p="12"
+      p="22"
       minH="60vh"
       borderRadius="3rem"
       boxShadow="xl"
@@ -32,7 +32,7 @@ const SettingsFeatures = () => {
       className="custom-container"
     >
       <Heading className="text-2xl text-[#3A3C3E] font-bold mb-4 text-center">Upcoming Features</Heading>
-      <Box textAlign="center" mb={42}>
+      <Box textAlign="center" mb={16}>
         <Text fontSize="md" color="gray.600">
           We'll be rolling out features according to community feedback. Below are some of the upcoming ideas to improve the platform.
         </Text>

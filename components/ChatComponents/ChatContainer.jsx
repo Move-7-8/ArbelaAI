@@ -370,7 +370,7 @@ return (
       }
       @media (min-width: 1024px) {
         .chat-container {
-          height: 88vh;
+          height: 89vh;
         }
       }
       @keyframes blink {

@@ -136,17 +136,20 @@ return (
           WebkitBackdropFilter: 'blur(10px)',
           border: '1px solid rgba(255, 255, 255, 0.3)',
           borderRadius: '5px',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 -6px 4px rgba(0, 0, 0, 0.1)',
+          
+
+          
         }}
       >
 
-  <button onClick={toggleChatbox} className="text-4xl text-black p-3 focus:outline-none" style={{ marginRight: 'auto', marginLeft: 'auto' }}>
-      {/* Adjust width and height as necessary */}
-      <div className="relative" style={{ width: '32px', height: '32px' }}> {/* Set the size of the parent div */}
-          <Image src={chatImage} alt="Chat Icon" layout="fill" objectFit="cover" />
+      <button onClick={toggleChatbox} className="text-4xl text-black p-3 focus:outline-none" style={{ marginRight: 'auto', marginLeft: 'auto' }}>
+          {/* Adjust width and height as necessary */}
+          <div className="relative" style={{ width: '32px', height: '32px' }}> {/* Set the size of the parent div */}
+              <Image src={chatImage} alt="Chat Icon" layout="fill" objectFit="cover" />
+          </div>
+      </button>
       </div>
-  </button>
-  </div>
 
         )}
       {/* Mobile chatbox with controlled visibility through CSS */}

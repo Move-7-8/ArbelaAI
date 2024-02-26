@@ -46,7 +46,7 @@ const NewsSection = ({ data2 }) => {
     };
 
     return (
-        <div>
+        <div className="md:p-0 p-4">
             <h2 className="text-lg font-semibold mb-4 uppercase mt-8 text-gray-500">Company News</h2>
             <div className="grid md:grid-cols-2 mb-4 gap-4">
                 {newsArray2.length === 0 ? (

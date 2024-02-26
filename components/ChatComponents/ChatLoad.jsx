@@ -3,7 +3,7 @@ import Lottie from 'react-lottie';
 import animationData from '../../public/assets/images/loading.json';
 
 const ChatLoad = () => {
-    const calculateInitialHeight = () => window.innerWidth >= 1024 ? '85vh' : '60vh';
+    const calculateInitialHeight = () => window.innerWidth >= 1024 ? '89vh' : '60vh';
     const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024); // Initial check
     const [containerHeight, setContainerHeight] = useState(calculateInitialHeight());
     const [showTypingText, setShowTypingText] = useState(false); // State to control typing text visibility
@@ -47,7 +47,7 @@ const ChatLoad = () => {
     };
 
     return (
-        <div className={`bg-gray-100 mb-2 bg-opacity-50 m-4 rounded-lg shadow-lg overflow-hidden flex flex-col items-center justify-center ${isLargeScreen ? 'fixed bottom-20 w-full top-20 lg:max-w-[calc(25%-2.3rem)]' : ''}`}
+        <div className={`bg-gray-100 mb-2 bg-opacity-50 m-4 rounded-lg shadow-lg overflow-hidden flex flex-col items-center justify-center ${isLargeScreen ? 'fixed bottom-20 w-full top-16 lg:max-w-[calc(25%-2.3rem)]' : ''}`}
              style={{ height: containerHeight, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
             <div style={{
                 opacity: 1,

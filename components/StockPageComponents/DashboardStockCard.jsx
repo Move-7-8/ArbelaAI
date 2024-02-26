@@ -251,15 +251,17 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
             <p className="text-sm text-gray-600 mt-2">{firstSentence}</p>
         </div>
         
-        {link !== 'Not Available' && (
-        <div className="mt-2">
-            <a href={link} 
-            onClick={(e) => handleLinkClick(e, link)}
-            className="text-xs relative z-2 text-gray-600 underline hover:text-[#6A849D] transition-colors duration-300">
-            Website
-            </a>
-        </div>
-        )}
+{link !== 'Not Available' && (
+    <div className="mt-2">
+        <a href={link} 
+        onClick={(e) => handleLinkClick(e, link)}
+        className="text-xs relative z-2 bg-gray-200 rounded px-2 py-1 transition-colors duration-300 hover:bg-[#6A849D] hover:text-white">
+        Website
+        </a>
+    </div>
+)}
+
+
 
         </div>
 
@@ -354,7 +356,7 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
                         <div className="flex items-center justify-between my-2 relative group">
                         <span className="text-gray-500 uppercase text-xs">Dividend Yield:</span>
                         <span className="text-sm">{dividendYield}</span>
-                        <span className="tooltiptext  border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -translate-x-1/2 left-1/2 bottom-full mb-2">
+                        <span className="tooltiptext  border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bottom-full mb-2">
                             Percentage of the share paid in dividends.
                         </span>
                         </div>
@@ -362,14 +364,14 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
                         <div className="flex items-center justify-between my-2 relative group">
                         <span className="text-gray-500 uppercase text-xs">Volatility Score:</span>
                         <span className="text-sm">{volatilityScore}</span>
-                        <span className="tooltiptext border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -translate-x-1/2 left-1/2 bottom-full mb-2">
+                        <span className="tooltiptext border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bottom-full mb-2">
                             Ranks assets on a scale of 1-10 on how volatile they are. 
                         </span>
                         </div>
                         <div className="flex items-center justify-between my-2 relative group">
                         <span className="text-gray-500 uppercase text-xs">Liquidity Score:</span>
                         <span className="text-sm">{liquidityScore}</span>
-                        <span className="tooltiptext  border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -translate-x-1/2 left-1/2 bottom-full mb-2">
+                        <span className="tooltiptext  border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300  bottom-full mb-2">
                             Ranks assets on a scale of 1-10 on how liquid they are.
                         </span>
                         </div>
