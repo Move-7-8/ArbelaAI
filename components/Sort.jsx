@@ -13,7 +13,7 @@ const Sort = ({ sortBy, setSortBy, sortOptions }) => {
           <>
             <div className="relative ml-2">
               <Listbox.Button className="dropdown-button-sort flex items-center justify-between text-sm h-10 px-3 shadow-md rounded-full text-gray-500" style={{ minWidth: '140px' }}>
-                {/* Adjusted layout for text and icon */}
+                {/* Adjusted layout for text and icon in the button */}
                 <div className="flex items-center">
                   {currentSortOption ? (
                     <>
@@ -31,9 +31,10 @@ const Sort = ({ sortBy, setSortBy, sortOptions }) => {
                   {sortOptions.map((option) => (
                     <Listbox.Option key={option.id} value={option.name}>
                       {({ active, selected }) => (
-                        <div className={`flex items-center justify-start rounded-full text-xs mb-2 cursor-pointer px-4 py-2 ${selected ? 'bg-[rgba(255,102,101,0.5)] text-white' : 'bg-gray-100 text-black'} ${active ? 'border border-[rgba(255,102,101,0.5)]' : ''}`}
+                        <div className={`flex items-center justify-between rounded-full text-xs mb-2 cursor-pointer px-4 py-2 ${selected ? 'bg-[rgba(255,102,101,0.5)] text-white' : 'bg-gray-100 text-black'} ${active ? 'border border-[rgba(255,102,101,0.5)]' : ''}`}
                          style={{ height: '3.2rem' }}>
-                          {option.name.replace(" UP", "").replace(" DOWN", "")} {option.icon}
+                          <span>{option.name.replace(" UP", "").replace(" DOWN", "")}</span>
+                          <span className="ml-2">{option.icon}</span>
                         </div>
                       )}
                     </Listbox.Option>
