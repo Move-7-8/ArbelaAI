@@ -195,7 +195,7 @@ const handleIconClick = (messageText) => {
   
 return (
   <>
-    <div className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container ${isLargeScreen ? 'fixed bottom-20 w-full top-20 lg:max-w-[calc(25%-2.3rem)]' : ''}`} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+    <div className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container ${isLargeScreen ? 'fixed bottom-20 w-full top-16 lg:max-w-[calc(25%-2.3rem)]' : ''}`} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
       <div className="relative text-center shadow-lg rounded" style={{ paddingTop: 0, marginTop: 0, backgroundColor: 'rgba(255, 102, 101,0.2)'}}>
         <div className= {isLargeScreen ? "h-[10vw] rounded max-h-[90px]" : " rounded h-[15vw]"} style={{ width: '100%', overflow: 'hidden' }}>
           <svg width="100%" height="100%" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
@@ -369,7 +369,7 @@ return (
       }
       @media (min-width: 1024px) {
         .chat-container {
-          height: 87vh;
+          height: 88vh;
         }
       }
       @keyframes blink {
