@@ -27,7 +27,7 @@ const TradingChartContainer = ({ data }) => {
         switch (timeFrame) {
             case '7d':
                 return {
-                    volumes: data?.historic7Days?.indicators?.quote[0]?.volume.map(vol => vol === null ? 0 : vol) || [],
+                    volumes: data?.historic7Days?.indicators?.quote[0]?.volume?.map(vol => vol === null ? 0 : vol) || [],
                     timestamps: data?.historic7Days?.timestamp || [],
                     closingPrices: processClosingPrices(data?.historic7Days?.indicators?.quote[0]?.close || []),
                      askPriceRaw: data?.historic7Days?.financeAnalytics?.currentPrice?.raw,

@@ -32,7 +32,7 @@ const SettingsFeatures = () => {
       className="custom-container"
     >
       <Heading className="text-2xl text-[#3A3C3E] font-bold mb-4 text-center">Upcoming Features</Heading>
-      <Box textAlign="center" mb={8}>
+      <Box textAlign="center" mb={42}>
         <Text fontSize="md" color="gray.600">
           We'll be rolling out features according to community feedback. Below are some of the upcoming ideas to improve the platform.
         </Text>
@@ -40,7 +40,7 @@ const SettingsFeatures = () => {
       <List spacing={26} textAlign="left" style={{ width: '100%' }}>
         {[
           { title: "AI based company search", description: "Search and filter investments using natural language to find the best companies to meet your goals, portfolio, or thesis." },
-          { title: "New Data points", description: "More data points including annual reports and earnings calls." },
+          { title: "New Data points", description: "More data points including annual reports and earnings calls. This will provide insight into strategy and key team members of companies." },
           { title: "Better LLMs", description: "Testing on newer models with larger context windows." },
           { title: "New Assets", description: "Expanding from ASX listed stocks into US stocks, Digital Assets, and Commodities." }
         ].map((feature, index) => (

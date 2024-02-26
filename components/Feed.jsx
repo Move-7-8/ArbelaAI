@@ -103,7 +103,7 @@ const Feed = ({ preloadedData }) => {
   
   return (
     <section>
-      <div className="feed">
+      <div className="feed ">
 
         {/* Search and Sort Section */}
         <div className="flex space-x-8 w-full mx-4">

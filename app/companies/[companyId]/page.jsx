@@ -109,23 +109,17 @@ return (
 
             {/* Stock Card */}
             <div className="w-full lg:fixed lg:w-1/4 lg:top-20 lg:left-0 lg:h-screen lg:overflow-y-auto mb-4">
-            {data && data2 && (
               <DashboardStockCard data={data} data2={data2} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
-            )}
             </div>
 
             {/* Statements and Chart Section */}
             
           <div className="w-full lg:ml-[15.5%] lg:overflow-y-scroll lg:h-screen pb-[65px] lg:pb-0">
-          {data && (
             <TradingChartContainer data={data} />
-            )}
-          {data && data2 && (
             <>
               <FinancialStatements data={data} data2={data2} className="mt-4" />
               <NewsSection data={data} data2={data2} className="mt-4" />
             </>
-          )}
           </div>
 
           </div>

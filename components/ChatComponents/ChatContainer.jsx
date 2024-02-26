@@ -147,10 +147,16 @@ const gradientId = `gradient-${Math.random().toString(36).substr(2, 9)}`;
 
 ///Formatting the bold and paragraphs of the message content
 function formatMessage(message) {
+
+  // First, remove annotations like &#8203;``【oaicite:1】``&#8203;and &#8203;``【oaicite:0】``&#8203;
+  const messageWithoutAnnotations = message.replace(/\【\d+†source】/g, '');
+
   // Normalize line breaks: Replace single newlines with double newlines for spacing
-  const normalizedMessage = message.replace(/(?<!\n)\n(?!\n)/g, '\n\n');
+  const normalizedMessage = messageWithoutAnnotations.replace(/(?<!\n)\n(?!\n)/g, '\n\n');
+  
   // Further process the message for bold text, ensuring it's preceded by a newline for spacing
   const processedMessage = normalizedMessage.replace(/\*\*(.*?)\*\*/g, '<br><br><strong>$1</strong>');
+  
   // Split the processed message into sections based on double newlines for paragraphs
   const sections = processedMessage.split(/\n\n+/);
 
@@ -182,17 +188,12 @@ function formatMessage(message) {
   });
 }
 
-
-
 //Function to click an icon and send a message
 const handleIconClick = (messageText) => {
   // Directly send the message without updating the input field
   sendMessageAutomatically(messageText);
 };
 
-
-
-  
 return (
   <>
     <div className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container ${isLargeScreen ? 'fixed bottom-20 w-full top-20 lg:max-w-[calc(25%-2.3rem)]' : ''}`} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
