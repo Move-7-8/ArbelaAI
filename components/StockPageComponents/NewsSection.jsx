@@ -50,7 +50,7 @@ const NewsSection = ({ data2 }) => {
             <h2 className="text-lg font-semibold mb-4 uppercase mt-8 text-gray-500">Company News</h2>
             <div className="grid md:grid-cols-2 mb-4 gap-4">
                 {newsArray2.length === 0 ? (
-                    isLoading ? renderSkeletonCards() : <div className="text-center text-gray-700">No news for this company.</div>
+                    isLoading ? renderSkeletonCards() : <div className="text-gray-700">There is currently no news for this company.</div>
                 ) : (
                     newsArray2.slice(0, visibleCount).map((item, index) => (
                         <a key={index} href={item.content?.clickThroughUrl?.url} target="_blank" rel="noopener noreferrer"

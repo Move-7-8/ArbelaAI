@@ -337,10 +337,10 @@ nav {
   /* ... (other styles) ... */
 }
 
-.dropdown-button-sort {
+/* .dropdown-button-sort {
   width: 100%; /* Adjust width as needed */
   /* ... (other styles) ... */
-}
+
 
 .listbox-options {
   background: rgba(255, 255, 255, 0.8); /* Adjusted opacity for a more solid background */

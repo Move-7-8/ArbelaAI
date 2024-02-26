@@ -103,26 +103,26 @@ const Feed = ({ preloadedData }) => {
   
   return (
     <section>
-      <div className="feed">
+      <div className="sm: p-4 feed">
 
-        {/* Search and Sort Section */}
-        <div className="flex space-x-8 w-full mx-4">
-          <form className="relative flex-center w-full" style={{ width: '40rem' }}>
-            <input
-              type="text"
-              placeholder="Search by company name"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              required
-              className="search_input peer rounded-full w-full"
-            />
-          </form>
-          <Sort sortBy={sortBy} setSortBy={setSortBy} sortOptions={sortOptions} />
-        </div>
+            {/* Search and Sort Section - Adjusted for mobile responsiveness */}
+      <div className="flex flex-col space-y-4 w-full mx-4 md:flex-row md:space-x-8 md:space-y-0">
+        <form className="relative w-full">
+          <input
+            type="text"
+            placeholder="Search by company name"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            required
+            className="search_input peer rounded-full w-full"
+          />
+        </form>
+        <Sort sortBy={sortBy} setSortBy={setSortBy} sortOptions={sortOptions} />
+      </div>
 
-        {/* Filters Section */}
-      <div className="flex space-x-4 w-full">
-        <Listbox value={selectedCategory} onChange={setSelectedCategory} className="w-full max-w-xs">
+        {/* Filters Section - Adjusted for mobile responsiveness */}
+      <div className="flex flex-col space-y-4 w-full mx-4 md:flex-row md:space-x-4 md:space-y-0">
+        <Listbox value={selectedCategory} onChange={setSelectedCategory} className="w-full">
           {({ open }) => (
             <>
               <div className="relative w-full">

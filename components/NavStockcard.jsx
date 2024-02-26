@@ -1,14 +1,18 @@
+'use client';
+
 import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
 
-const NavStockCard = ({ searchResults, isCardVisible, setIsCardVisible }) => {
+
+const NavStockCard = ({ searchResults, isCardVisible, onCompanySelect, setIsCardVisible }) => {
   const cardRef = useRef(null);
+
 
   const truncateCompanyName = (name) => {
     return name.length > 20 ? `${name.substring(0, 20)}...` : name;
   };
 
-  useEffect(() => {
+    useEffect(() => {
     const handleClickOutside = (event) => {
       if (cardRef.current && !cardRef.current.contains(event.target)) {
         setIsCardVisible(false);
@@ -53,10 +57,14 @@ const NavStockCard = ({ searchResults, isCardVisible, setIsCardVisible }) => {
           }
         };
 
-        return (
+return (
           <li key={company.id} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+            {/* Adjusted Link usage based on Next.js guidelines */}
             <Link href={linkPath} passHref>
-              <div className="flex justify-between items-center">
+              <div onClick={() => {
+                setIsCardVisible(false); // Hide the card
+                onCompanySelect(); // Additionally, clear the search content
+              }} className="flex justify-between items-center" style={{cursor: "pointer"}}>
                 <span className="text-gray-900 font-medium">{truncateCompanyName(company.Name)}</span>
                 <span className="text-sm text-gray-500">{company.Stock}</span>
               </div>
@@ -67,5 +75,4 @@ const NavStockCard = ({ searchResults, isCardVisible, setIsCardVisible }) => {
     </ul>
   );
 };
-
 export default NavStockCard;
