@@ -115,13 +115,11 @@ return (
             {/* Statements and Chart Section */}
             
           <div className="w-full lg:ml-[15.5%] lg:overflow-y-scroll lg:h-screen pb-[65px] lg:pb-0">
-          
             <TradingChartContainer data={data} />
             <>
               <FinancialStatements data={data} data2={data2} className="mt-4" />
               <NewsSection data={data} data2={data2} className="mt-4" />
             </>
-      
           </div>
 
           </div>

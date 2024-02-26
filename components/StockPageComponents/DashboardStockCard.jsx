@@ -19,12 +19,13 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
     const firstSentence = description.split('.')[0] + '.';
     const link = data2?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.website || 'Not Available';
 
-    console.log(link)
+    console.log('DASHBOARD STOCK CARD RENDERED')
 
     const [hover, setHover] = useState(false);
 
-   
-    console.log('finaldata', data2)
+    console.log('Dashboard Data 1', data)
+
+    console.log('Dashboard Data 2', data2)
 
     const volume = data?.price?.regularMarketVolume?.longFmt || 'Not Available';
 

@@ -9,8 +9,24 @@ const Home = () => {
   const [isLandingVisible, setIsLandingVisible] = useState(true);
   const [preloadedData, setPreloadedData] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Add this line
-  const [isScreenLarge, setIsScreenLarge] = useState(window.innerWidth > 1024); // Assuming 'large' is > 1024px
+  const [isScreenLarge, setIsScreenLarge] = useState(false); // Default to false
 
+  useEffect(() => {
+    const checkIfScreenLarge = () => window.innerWidth > 1024;
+    // Set initial value
+    setIsScreenLarge(checkIfScreenLarge());
+  
+    const handleResize = () => {
+      setIsScreenLarge(checkIfScreenLarge());
+    };
+  
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+  
+    // Cleanup listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+    
   const toggleShowFeed = () => {
     setIsLandingVisible(false);
   };
@@ -18,10 +34,6 @@ const Home = () => {
   useEffect(() => {
     setIsLandingVisible(true);
   }, []);
-
-  const handleResize = () => {
-    setIsScreenLarge(window.innerWidth > 1024);
-  };
 
   const preloadData = async () => {
     setIsLoading(true); // Start loading
@@ -47,14 +59,6 @@ const Home = () => {
     }
   };
       
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-
-    // Cleanup listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-
   useEffect(() => {
     preloadData(); // Trigger data preloading on component mount
   }, []);
