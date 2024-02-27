@@ -26,6 +26,7 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
   //console.log(' chatComponent chat_ticker:', chat_ticker);
   //Chatbox scrolls down to new message
 
+  console.log('thread', thread)
   const chatContentRef = useRef(null);
 
     // Function to update `isLargeScreen` based on window width

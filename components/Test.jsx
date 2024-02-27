@@ -138,7 +138,7 @@ const handleFileChangeTrigger = () => {
 
   const newThreadFunctionCaller = () => {
     setShowChatContainer(true)
-    console.log('new thread function caller has turned showChat', showChatContainer)
+    console.log('new thread function caller has turned on showChat', showChatContainer)
   }
   
   useEffect(() => {
@@ -146,18 +146,22 @@ const handleFileChangeTrigger = () => {
     // Any code here will execute after `isThreadCreated` has been updated.
   }, [isThreadCreated]);
     
+  useEffect(() => {
+    console.log('showChatContainer updated to:', showChatContainer);
+  }, [showChatContainer]);
+  
   // useEffect to log the state update
     // useEffect(() => {
     //   console.log('After setting thread created:', isThreadCreated);
     // }, [isThreadCreated]);
 
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        setShowChatContainer(true);
-      }, 11000); // Wait for 5 seconds
+    // useEffect(() => {
+    //   const timer = setTimeout(() => {
+    //     setShowChatContainer(true);
+    //   }, 11000); // Wait for 5 seconds
     
-      return () => clearTimeout(timer); // Clean up the timer when the component unmounts or the effect reruns
-    }, []); // Empty dependency array means this runs once after the initial render
+    //   return () => clearTimeout(timer); // Clean up the timer when the component unmounts or the effect reruns
+    // }, []); // Empty dependency array means this runs once after the initial render
     
 
   // Load default data
@@ -205,13 +209,13 @@ const handleFileChangeTrigger = () => {
             condition1={condition1}
             condition2={condition2}
           />
-          <Thread fileChangeCompleted={fileChangeCompleted} onThreadCreated={handleThreadCreated}/>
+          <Thread fileChangeCompleted={fileChangeCompleted} onThreadCreated={handleThreadCreated} newThreadFunctionCaller={newThreadFunctionCaller}/>
 
-          {
+          {/* {
             !showChatContainer ? 
-              <ChatLoad key={`chatLoad-${isThreadCreated}`} /> : 
-              <ChatContainer key={`chatContainer-${isThreadCreated}`} onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} />
-          }
+              <ChatLoad key={`chatLoad-${showChatContainer}`} /> :  */}
+              <ChatContainer key={`chatContainer-${showChatContainer}`} onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} />
+          {/* } */}
 
 
           {/* {showChatContainer ? 
@@ -220,7 +224,7 @@ const handleFileChangeTrigger = () => {
           } */}
           {/* <ChatContainer onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} /> */}
 
-          <Run messageSent={messageSent} onRunComplete={handleRunCompletion} onRunFinal={handleRunFinalization} newThreadFunctionCaller={newThreadFunctionCaller} />
+          <Run messageSent={messageSent} onRunComplete={handleRunCompletion} onRunFinal={handleRunFinalization}  />
         </div>
       </div>
     </main>

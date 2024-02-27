@@ -38,8 +38,9 @@ useEffect(() => {
         setThread(newThread);
         localStorage.setItem("thread", JSON.stringify(newThread));
         onThreadCreated(); // Call the callback once the thread is created
+        console.log("Console log 1")
         newThreadFunctionCaller()
-        console.log("Successfully created thread in thread")
+        console.log("Console log 2")
 
     } catch (error) {
         console.error(error);

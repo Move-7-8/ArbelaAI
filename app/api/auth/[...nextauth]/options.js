@@ -35,6 +35,8 @@ export const options = {
           placeholder: "Sign Up password",
         },
       },
+
+
       async authorize(credentials) {
         //Check this is working correctly
         try {
@@ -97,61 +99,36 @@ export const options = {
       }
       return session;
     },
-    // async signIn({ profile}) {
-    //     console.log("signIn callback triggered");
-    //     console.log("Profile:", profile);
-      
-    //     try {
-    //         await connectToDB();
-    
-    //         // check if user already exists
-    //         const userExists = await User.findOne({ email: profile.email });
-    
-    //         // if not, create a new document and save user in MongoDB
-    //         if (!userExists) {
-    //           await User.create({
-    //             email: profile.email,
-    //             username: profile.name.replace(" ", "").toLowerCase(),
-    //             image: profile.picture,
-    //           });
-    //         }
-    //         return true;
-
-    //     } catch (error) {
-    //         console.log(error);
-    //         return false
-
-    //     }
 
     // Add this inside your signIn callback
     async signIn({ user, account, profile, email, credentials }) {
       await connectToDB(); // Ensure database connection
-
+      
+      // Determine the user's email from the provided information
       const userEmail = user?.email || email?.email || profile?.email;
-
+      
       // Check if user exists in your database
       let foundUser = await User.findOne({ email: userEmail }).lean().exec();
-
+      
       if (!foundUser) {
         // User does not exist, so create a new user
         const newUser = await User.create({
           email: userEmail,
-          name: user?.name || profile?.name, // Adjust according to what you want to save
-          image: user?.image || profile?.image,
-          // Any other fields you want to include
-          authMethod: 'google',
+          name: user?.name || profile?.name, // Use the name provided by Google
+          image: user?.image || profile?.image, // Use the image provided by Google
+          authMethod: 'google', // Indicate the authentication method used
+          // Add any other fields you need for your user model
         });
-
-        // console.log("New Google user created:", newUser);
+        
+        console.log("New Google user created:", newUser);
       } else {
-        // User exists, you might want to update their information
-        // Or simply proceed as the user is already created
+        // User exists - Optionally, update user's information or just proceed
+        console.log('User exists:', foundUser);
+        // Here you can update user's profile if needed
       }
-    
-      return true;
+      
+      return true; // Returning true continues the sign-in process
     }
-    
-    // }
 
 
   },
