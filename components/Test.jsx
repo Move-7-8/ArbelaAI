@@ -50,7 +50,6 @@ export default function Home({data, data2}) {
 
   const chat_ticker = data?.price?.symbol;
 
-  console.log('0. Test page is loading')
   // console.log('chat_ticker:', chat_ticker);
   //Function to run the Assistant Create function on page load
   useEffect(() => {

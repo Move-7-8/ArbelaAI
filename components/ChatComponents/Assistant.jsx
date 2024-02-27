@@ -67,7 +67,7 @@ const Assistant = ({ onFileChangeTrigger, triggerCreate, setTriggerCreate }) => 
           const data = await response.json();
     
           const assistants = data.assistants;
-          console.log("assistants", assistants);
+          // console.log("assistants", assistants);
     
           // Join the assistant names with a comma and a space
           const assistantIds = assistants.map(a => a.id).join(', ');

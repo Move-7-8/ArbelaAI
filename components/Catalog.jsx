@@ -12,7 +12,6 @@ function Catalog({ searchText, selectedCategory, preloadedData, sortBy }) {
 
     const selectCompany = (company) => setSelectedCompany(company);
     const itemPerLoad = 12;
-    console.log('Catalog Sort By', sortBy);
     const fetchData = async (shouldAppend = false, searchQuery = '') => {
         setLoading(true);
         try {

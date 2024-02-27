@@ -35,7 +35,7 @@ const Feed = ({ preloadedData }) => {
 // };
 
   useEffect(() => {
-    console.log("Feed received preloadedData:", preloadedData);
+    // console.log("Feed received preloadedData:", preloadedData);
   }, [preloadedData]);
   
   // This effect logs preloadedData whenever it changes, including when the component mounts
@@ -110,7 +110,7 @@ const Feed = ({ preloadedData }) => {
         <form className="relative w-full">
           <input
             type="text"
-            placeholder="Search by company name"
+            placeholder="Search by company name or ticker"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             required

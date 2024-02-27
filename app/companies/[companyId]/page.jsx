@@ -30,8 +30,8 @@ const Page = () => {
   const [showChatbox, setShowChatbox] = useState(false);
   const toggleChatbox = () => setShowChatbox(!showChatbox);
 
-  console.log('Volatility Score:', volatilityScore);
-  console.log('Liquidity Score:', liquidityScore);
+  // console.log('Volatility Score:', volatilityScore);
+  // console.log('Liquidity Score:', liquidityScore);
 
   // This CSS class determines whether the chatbox is visible
   const chatboxClass = showChatbox ? "block" : "hidden";
@@ -95,7 +95,6 @@ const Page = () => {
     return () => controller.abort();
   }, [ticker]); 
 
-  console.log('RETURNED DATA:', data2 )
   // CSS for controlling chatbox visibility
   const chatboxVisibility = showChatbox ? 'block' : 'hidden';
   const mobileChatboxStyle = `fixed inset-0 z-40 bg-black bg-opacity-50 ${chatboxVisibility} lg:hidden`;
@@ -114,7 +113,7 @@ return (
 
             {/* Statements and Chart Section */}
             
-          <div className="w-full lg:ml-[15.5%] lg:overflow-y-scroll lg:h-screen pb-[65px] lg:pb-0">
+          <div className="w-full lg:ml-[15.5%∫] lg:overflow-y-scroll lg:h-screen pb-[65px] lg:pb-0">
             <TradingChartContainer data={data} />
             <>
               <FinancialStatements data={data} data2={data2} className="mt-4" />

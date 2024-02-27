@@ -41,7 +41,6 @@ import { FaUser, FaEnvelope, FaTag, FaCommentAlt } from 'react-icons/fa';
       }));
 
     const onSubmit = async (e) => {
-      console.log('onSubmit called');
       e.preventDefault(); // Prevent default form submission
       setState((prev) => ({ ...prev, isLoading: true }));
       try {

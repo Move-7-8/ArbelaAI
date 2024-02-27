@@ -8,26 +8,8 @@ import bcrypt from "bcrypt";
 
 export const options = {
   providers: [
-    // GitHubProvider({
-    //   profile(profile) {
-    //     console.log("Profile GitHub: ", profile);
-
-    //     let userRole = "GitHub User";
-    //     if (profile?.email == "jake@claritycoders.com") {
-    //       userRole = "admin";
-    //     }
-
-    //     return {
-    //       ...profile,
-    //       role: userRole,
-    //     };
-    //   },
-    //   clientId: process.env.GITHUB_ID,
-    //   clientSecret: process.env.GITHUB_Secret,
-    // }),
     GoogleProvider({
       profile(profile) {
-        // console.log("Profile Google: ", profile);
 
         let userRole = "Google User";
         return {
@@ -45,12 +27,12 @@ export const options = {
         email: {
           label: "email:",
           type: "text",
-          placeholder: "Sign Up || Sign In email",
+          placeholder: "Sign Up email",
         },
         password: {
           label: "password:",
           type: "password",
-          placeholder: "Sign Up || Sign In password",
+          placeholder: "Sign Up password",
         },
       },
       async authorize(credentials) {
@@ -141,14 +123,30 @@ export const options = {
 
     //     }
 
+    // Add this inside your signIn callback
     async signIn({ user, account, profile, email, credentials }) {
-      // console.log("signIn callback triggered");
-    
-      // Depending on the provider, the relevant information will be in different objects
+      await connectToDB(); // Ensure database connection
+
       const userEmail = user?.email || email?.email || profile?.email;
-      // console.log("User Email:", userEmail);
-    
-      // Add any additional signIn logic here
+
+      // Check if user exists in your database
+      let foundUser = await User.findOne({ email: userEmail }).lean().exec();
+
+      if (!foundUser) {
+        // User does not exist, so create a new user
+        const newUser = await User.create({
+          email: userEmail,
+          name: user?.name || profile?.name, // Adjust according to what you want to save
+          image: user?.image || profile?.image,
+          // Any other fields you want to include
+          authMethod: 'google',
+        });
+
+        // console.log("New Google user created:", newUser);
+      } else {
+        // User exists, you might want to update their information
+        // Or simply proceed as the user is already created
+      }
     
       return true;
     }
