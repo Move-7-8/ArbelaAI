@@ -139,50 +139,49 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
 
  return (
     
-        <div className="flex flex-col flex-1 rounded-md mx-auto lg-height-82vh" >
-            {/* Align buttons to the left */}
-      <div className="flex justify-center mx-4 pb-4">
-            <div 
-                className="rounded-full inline-block" 
+    <div className="flex flex-col flex-1 rounded-md mx-auto lg-height-80vh">
+        {/* Align buttons to the left */}
+        <div className="flex justify-center mx-4 pb-4">
+            <div
+                className="rounded-full inline-block"
                 style={{ backgroundColor: 'rgba(169, 169, 169, 0.2)', padding: '3px' }}
             >
-            <button
-                className={`text-sm px-3 py-1 rounded-full mr-2 ${activeButton === 'button1' ? 'bg-white' : 'bg-transparent'}`}
-                onClick={() => setActiveButton('button1')}
-            >
-                Summary
-            </button>
-            <button
-                className={`text-sm px-3 py-1 rounded-full ${activeButton === 'button2' ? 'bg-white' : 'bg-transparent'}`}
-                onClick={() => setActiveButton('button2')}
-            >
-                Ratio
-            </button>
+                <button
+                    className={`text-sm px-3 py-1 rounded-full mr-2 ${activeButton === 'button1' ? 'bg-white' : 'bg-transparent'}`}
+                    onClick={() => setActiveButton('button1')}
+                >
+                    Summary
+                </button>
+                <button
+                    className={`text-sm px-3 py-1 rounded-full ${activeButton === 'button2' ? 'bg-white' : 'bg-transparent'}`}
+                    onClick={() => setActiveButton('button2')}
+                >
+                    Ratio
+                </button>
             </div>
         </div>
-
   <style>
     {`
-      @media (min-width: 1024px) {
-        .lg-height-82vh {
-          height: 82vh;
+        @media (min-width: 1024px) {
+        .lg-height-80vh {
+            min-height: 80vh; /* Allows growth beyond 82vh if content requires, but not smaller */
         }
-      }
+        }
+
     `}
   </style>
 
-    <div className="flex mx-4 mb-4 flex-col  relative rounded-md  p-2" style={{minHeight:'100%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-        {/* Blurred Background */}
-        <div className="absolute inset-0 bg-opacity-50" style={{  filter: 'blur(1px)' }}></div>
+        <div className="flex flex-1 mx-4 mb-4 flex-col relative rounded-md p-2" style={{ minHeight: '0%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+            {/* Blurred Background */}
+            <div className="absolute inset-0 bg-opacity-50" style={{ filter: 'blur(1px)' }}></div>
 
-
-    {/* Content Container */}
-    <div className="flex flex-col flex-grow p-4">
-        {activeButton === 'button2' && (
-            <div className="flex flex-col flex-grow">
-                {/* Financial Ratios Header */}
-                <div className="mb-4">
-                 <h2 className="text-xl font-bold mb-2 text-[#3A3C3E]">Financial Ratios</h2>
+            {/* Content Container */}
+            <div className="flex flex-col flex-grow p-4">
+                {activeButton === 'button2' && (
+                    <div className="flex flex-col flex-grow">
+                        {/* Financial Ratios Header */}
+                        <div className="mb-4">
+                            <h2 className="text-xl font-bold mb-2 text-[#3A3C3E]">Financial Ratios</h2>
 
                     <p className="text-sm text-gray-600">Key financial ratios of the company.</p>
                 </div>

@@ -107,13 +107,13 @@ return (
             <div className="hidden lg:block lg:w-1/4 lg:h-screen"></div>
 
             {/* Stock Card */}
-            <div className="w-full lg:fixed lg:w-1/4 lg:top-20 lg:left-0 lg:h-screen lg:overflow-y-auto mb-4">
+            <div className="w-full flex lg:bottom-0 lg:fixed lg:w-1/4 lg:top-20 lg:left-0  lg:overflow-y-auto mb-4">
               <DashboardStockCard data={data} data2={data2} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
             </div>
 
             {/* Statements and Chart Section */}
             
-          <div className="w-full lg:ml-[15.5%∫] lg:overflow-y-scroll lg:h-screen pb-[65px] lg:pb-0">
+          <div className="w-full lg:ml-[15.5%] lg:overflow-y-scroll lg:h-screen pb-[65px] lg:pb-0">
             <TradingChartContainer data={data} />
             <>
               <FinancialStatements data={data} data2={data2} className="mt-4" />
