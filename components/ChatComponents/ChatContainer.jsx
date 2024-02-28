@@ -47,6 +47,7 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
   useEffect(() => {
     // Reset messages when the chat_ticker changes, indicating a change in company page
     setMessages([]);
+    console.log('Messages Cleared')
   }, [chat_ticker]); // Dependency array includes chat_ticker to trigger effect on change
   
 

@@ -27,7 +27,6 @@ const AssistantFile = ({ condition1, condition2, symbol, fileChangeTrigger, onFi
   const searchParams = useSearchParams();
   const ticker = searchParams.get('ticker');
 
-  console.log('4. Assistant File Triggered')
   // console.log('assistantfile ticker', ticker)
   // In AssistantFile.jsx
   useEffect(() => {
