@@ -31,8 +31,19 @@
                 model: 'gpt-4-1106-preview',
             });
 
-            return Response.json({ assistant: assistant})
-
+            // res.setHeader('Content-Type', 'application/json');
+            // res.setHeader('Cache-Control', 'no-store'); // Ensure this response is not cached
+            // res.status(200).json({ assistant });
+    
+            const response = new Response(JSON.stringify({ assistant: assistant }), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-store', // Ensure this response is not cached
+                },
+            });
+    
+            return response;
+    
         } catch (e) {
             console.log(e)
              return Response.json({ error: e })

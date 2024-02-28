@@ -13,7 +13,6 @@ const Assistant = ({ onFileChangeTrigger, triggerCreate, setTriggerCreate }) => 
     const [deleting, setDeleting] = useState(false);
     const [message, setMessage] = useState(''); // Declare message state
 
-
     useEffect(() => {
       if (triggerCreate) {
         handleCreate();
