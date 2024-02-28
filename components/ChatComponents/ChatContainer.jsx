@@ -9,8 +9,6 @@ import { FaChalkboardTeacher, FaCheckCircle, FaThumbsUp, FaExclamationTriangle, 
 import Spinner from './Spinner'; // Assume you have a Spinner component
 
 
-
-
 function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
   // Atom State
   const [thread] = useAtom(threadAtom);
@@ -28,6 +26,9 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
 
   console.log('thread', thread)
   const chatContentRef = useRef(null);
+
+  
+  
 
     // Function to update `isLargeScreen` based on window width
   useEffect(() => {

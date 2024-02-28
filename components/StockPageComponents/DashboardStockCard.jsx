@@ -171,7 +171,7 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
     `}
   </style>
 
-        <div className="flex flex-1 mx-4 mb-4 flex-col relative rounded-md p-2" style={{ minHeight: '0%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+        <div className="flex flex-1 mx-4 mb-2 flex-col relative rounded-md p-2" style={{ minHeight: '0%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
             {/* Blurred Background */}
             <div className="absolute inset-0 bg-opacity-50" style={{ filter: 'blur(1px)' }}></div>
 
