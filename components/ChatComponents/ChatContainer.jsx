@@ -10,6 +10,7 @@ import Spinner from './Spinner'; // Assume you have a Spinner component
 
 
 function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
+
   // Atom State
   const [thread] = useAtom(threadAtom);
   const [messages, setMessages] = useAtom(messagesAtom);
@@ -21,10 +22,6 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
   const [isHoveredHeartbeat, setIsHoveredHeartbeat] = useState(false);
   const [isHoveredSend, setIsHoveredSend] = useState(false);
 
-  //console.log(' chatComponent chat_ticker:', chat_ticker);
-  //Chatbox scrolls down to new message
-
-  console.log('thread', thread)
   const chatContentRef = useRef(null);
 
   
@@ -49,6 +46,12 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
       chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
     }
   }, [messages]); 
+
+  useEffect(() => {
+    // Reset messages when the chat_ticker changes, indicating a change in company page
+    setMessages([]);
+  }, [chat_ticker]); // Dependency array includes chat_ticker to trigger effect on change
+  
 
   // State
   const [message, setMessage] = useState("");
@@ -76,9 +79,9 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
             setMessages([]); // Set messages to an empty array or handle as needed
             return;
           }
-          
           // throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
         const data = await response.json();
         // console.log('data', data)
         let newMessages = data.messages;
@@ -88,6 +91,7 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
           (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
         );
         setMessages(newMessages);
+
       } catch (error) {
         // console.log("error", error);
       } finally {
@@ -121,7 +125,7 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
     }
   };
 
-    //Function to send a message automatically when an icon is clicked 
+//Function to send a message automatically when an icon is clicked 
 //Function to send a message automatically when an icon is clicked
 const sendMessageAutomatically = async (messageText) => {
   if (!thread) return;
@@ -244,118 +248,116 @@ return (
       </div>
 
    <div className="bg-gray-50 p-4" style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: '0 0 8px 8px' }}>
-<div className="w-full flex">
-  <input
-    type="text"
-    placeholder="Type a message..."
-    className="message-input flex-grow p-2 bg-white focus:outline-none"
-    value={message}
-    onChange={(e) => setMessage(e.target.value)}
-    onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) { sendMessage(); }}}
-    onFocus={() => setMessageFocused(true)}
-    onBlur={() => setMessageFocused(false)}
-    style={{ flex: 1, minWidth: '60%', marginRight: '4px' }} // Adjusted style
-  />
-  <button
-    disabled={!message}
-    className="p-2 flex items-center justify-center"
-    style={{ flexShrink: 0, minWidth: '40px', background: 'none', border: 'none' }} // Adjusted style
-    onClick={sendMessage}
-    onMouseEnter={() => setIsHoveredSend(true)}
-    onMouseLeave={() => setIsHoveredSend(false)}
-  >
-    <MdOutlineSend
-      size={26}
-      className="send-icon"
-      style={{
-        color: '#3A3C3E',
-        transition: 'color 0.2s ease-in-out, transform 0.2s ease-in-out', // Ensure transition is applied for both properties
-          color: isHoveredSend ? '#6A849D' : '#3A3C3E',
-      }}
-    />
-
-
-  </button>
-</div>
-
-  <div className="flex justify-between items-center mt-4"> {/* Adjusted for even spacing among icons */}
-    {/* Icons for predefined messages */}
-<div 
-  onClick={() => handleIconClick('Simply explain what this company does and what their business model is.')}
-  onMouseEnter={() => setIsHoveredChalkboard(true)}
-  onMouseLeave={() => setIsHoveredChalkboard(false)}
-  className="cursor-pointer relative"
->
-  <FaChalkboardTeacher 
-    size={24} 
-    style={{ color: isHoveredChalkboard ? '#6A849D' : '#3A3C3E' }}
-  />
-  {isHoveredChalkboard && (
-    <span className="absolute whitespace-nowrap bottom-full mb-2 px-2 py-1 border bg-white border border-3A3C3E text-black text-xs rounded-md">
-      Company Overview
-    </span>
-  )}
-</div>
-
-<div 
-  onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
-  onMouseEnter={() => setIsHoveredThumbsUp(true)}
-  onMouseLeave={() => setIsHoveredThumbsUp(false)}
-  className="cursor-pointer relative"
->
-  <FaCheckCircle
-    size={24} 
-    style={{ color: isHoveredThumbsUp ? '#6A849D' : '#3A3C3E' }} // Consider renaming this state to match the new icon
-  />
-  {isHoveredThumbsUp && ( // Consider renaming this state to match the new icon
-    <span className="absolute whitespace-nowrap bottom-full mb-2 px-2 py-1 bg-white border border-3A3C3E text-black text-xs rounded-md">
-      Positive Aspects
-    </span>
-  )}
-</div>
-
-<div 
-  onClick={() => handleIconClick('Make an argument for the  financial risks that pertain to the operations of this company and its investment prospects')}
-  onMouseEnter={() => setIsHoveredExclamation(true)}
-  onMouseLeave={() => setIsHoveredExclamation(false)}
-  className="cursor-pointer relative"
->
-  <FaExclamationTriangle 
-    size={24} 
-    style={{ color: isHoveredExclamation ? '#6A849D' : '#3A3C3E' }}
-  />
-  {isHoveredExclamation && (
-    <span className="absolute whitespace-nowrap bottom-full mb-2 px-2 py-1 bg-white border border-3A3C3E text-black text-xs rounded-md">
-      Investment Risks
-    </span>
-  )}
-</div>
-
-<div 
-  onClick={() => handleIconClick('What is the health of this company')} 
-  onMouseEnter={() => setIsHoveredHeartbeat(true)}
-  onMouseLeave={() => setIsHoveredHeartbeat(false)}
-  className="cursor-pointer relative"
->
-  <FaHeartbeat 
-    size={24} 
-    style={{ color: isHoveredHeartbeat ? '#6A849D' : '#3A3C3E' }}
-  />
-  {isHoveredHeartbeat && (
-  <span className="absolute right-0 translate-x-[-2%] whitespace-nowrap bottom-full mb-2 px-2 py-1 bg-white border border-3A3C3E text-black text-xs rounded-md">
-  Company Health
-</span>
-
-  )}
-</div>
-
-  </div>
-</div>
-
+    <div className="w-full flex">
+      <input
+        type="text"
+        placeholder="Type a message..."
+        className="message-input flex-grow p-2 bg-white focus:outline-none"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) { sendMessage(); }}}
+        onFocus={() => setMessageFocused(true)}
+        onBlur={() => setMessageFocused(false)}
+        style={{ flex: 1, minWidth: '60%', marginRight: '4px' }} // Adjusted style
+      />
+      <button
+        disabled={!message}
+        className="p-2 flex items-center justify-center"
+        style={{ flexShrink: 0, minWidth: '40px', background: 'none', border: 'none' }} // Adjusted style
+        onClick={sendMessage}
+        onMouseEnter={() => setIsHoveredSend(true)}
+        onMouseLeave={() => setIsHoveredSend(false)}
+      >
+        <MdOutlineSend
+          size={26}
+          className="send-icon"
+          style={{
+            color: '#3A3C3E',
+            transition: 'color 0.2s ease-in-out, transform 0.2s ease-in-out', // Ensure transition is applied for both properties
+              color: isHoveredSend ? '#6A849D' : '#3A3C3E',
+          }}
+        />
+      </button>
     </div>
 
-    {/* Style tags for specific styling */}
-    <style jsx>{`
+      <div className="flex justify-between items-center mt-4"> {/* Adjusted for even spacing among icons */}
+        {/* Icons for predefined messages */}
+      <div 
+        onClick={() => handleIconClick('Simply explain what this company does and what their business model is.')}
+        onMouseEnter={() => setIsHoveredChalkboard(true)}
+        onMouseLeave={() => setIsHoveredChalkboard(false)}
+        className="cursor-pointer relative"
+      >
+        <FaChalkboardTeacher 
+          size={24} 
+          style={{ color: isHoveredChalkboard ? '#6A849D' : '#3A3C3E' }}
+        />
+        {isHoveredChalkboard && (
+          <span className="absolute whitespace-nowrap bottom-full mb-2 px-2 py-1 border bg-white border border-3A3C3E text-black text-xs rounded-md">
+            Company Overview
+          </span>
+        )}
+      </div>
+
+      <div 
+        onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
+        onMouseEnter={() => setIsHoveredThumbsUp(true)}
+        onMouseLeave={() => setIsHoveredThumbsUp(false)}
+        className="cursor-pointer relative"
+      >
+        <FaCheckCircle
+          size={24} 
+          style={{ color: isHoveredThumbsUp ? '#6A849D' : '#3A3C3E' }} // Consider renaming this state to match the new icon
+        />
+        {isHoveredThumbsUp && ( // Consider renaming this state to match the new icon
+          <span className="absolute whitespace-nowrap bottom-full mb-2 px-2 py-1 bg-white border border-3A3C3E text-black text-xs rounded-md">
+            Positive Aspects
+          </span>
+        )}
+      </div>
+
+      <div 
+        onClick={() => handleIconClick('Make an argument for the  financial risks that pertain to the operations of this company and its investment prospects')}
+        onMouseEnter={() => setIsHoveredExclamation(true)}
+        onMouseLeave={() => setIsHoveredExclamation(false)}
+        className="cursor-pointer relative"
+      >
+        <FaExclamationTriangle 
+          size={24} 
+          style={{ color: isHoveredExclamation ? '#6A849D' : '#3A3C3E' }}
+        />
+        {isHoveredExclamation && (
+          <span className="absolute whitespace-nowrap bottom-full mb-2 px-2 py-1 bg-white border border-3A3C3E text-black text-xs rounded-md">
+            Investment Risks
+          </span>
+        )}
+      </div>
+
+      <div 
+        onClick={() => handleIconClick('What is the health of this company')} 
+        onMouseEnter={() => setIsHoveredHeartbeat(true)}
+        onMouseLeave={() => setIsHoveredHeartbeat(false)}
+        className="cursor-pointer relative"
+      >
+        <FaHeartbeat 
+          size={24} 
+          style={{ color: isHoveredHeartbeat ? '#6A849D' : '#3A3C3E' }}
+        />
+        {isHoveredHeartbeat && (
+        <span className="absolute right-0 translate-x-[-2%] whitespace-nowrap bottom-full mb-2 px-2 py-1 bg-white border border-3A3C3E text-black text-xs rounded-md">
+        Company Health
+      </span>
+
+        )}
+      </div>
+
+        </div>
+      </div>
+
+      </div>
+
+      {/* Style tags for specific styling */}
+      <style jsx>{`
 
     .message-input {
       border: none;
@@ -372,7 +374,7 @@ return (
       }
       @media (min-width: 1024px) {
         .chat-container {
-          height: 87vh;
+          height: 89vh;
         }
       }
       @keyframes blink {
@@ -394,6 +396,7 @@ return (
         animation-delay: .4s;
       }
     `}</style>
+    
   </>
 );
 

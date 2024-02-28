@@ -43,15 +43,15 @@ export default function Home({data, data2}) {
   const [messageSent, setMessageSent] = useState(false);
   const [triggerCreate, setTriggerCreate] = useState(false);
   const [isThreadCreated, setIsThreadCreated] = useState(false);
-  const [fileUploadTrigger, setFileUploadTrigger] = useState(false);
-  const [triggerFileUploadFunction, setTriggerFileUploadFunction] = useState(false);
 
   const [showChatContainer, setShowChatContainer] = useState(false);
+  
+  // State to load in of chat
+  const [timer, setTimer] = useState(false);
+  const [chatTickerDefined, setChatTickerDefined] = useState(false);
 
   const chat_ticker = data?.price?.symbol;
 
-  // console.log('chat_ticker:', chat_ticker);
-  //Function to run the Assistant Create function on page load
   useEffect(() => {
     setTriggerCreate(true);
   }, []);
@@ -61,16 +61,10 @@ const afterAssistantCreate = () => {
   setTasksCompleted(prev => ({ ...prev, create: true }));
   checkAndHandleUpload();
   handleFileChangeTrigger(); // Verify if this is called
-  // console.log("condition1 is pre:", condition1);
-  setcondition1(true);
-  // console.log("condition1 is post: ", condition1);
-};
 
-// const onFileChangeTrigger = () => {
-//   console.log('=============================')
-//   console.log("onFileChangeTrigger called");
-//   console.log('=============================')
-// }
+  setcondition1(true);
+
+};
 
 //Trigger AssistantFile when both necessary conditions are met
 const onFileUploadCompleted = () => {
@@ -78,12 +72,9 @@ const onFileUploadCompleted = () => {
   setTasksCompleted(prev => ({ ...prev, upload: true }));
   checkAndHandleUpload();
   setUploadCompleteTrigger(true); // Verify if this is called
-  // console.log("condition1 is pre:", condition1);
   setcondition2(true);
-  // console.log("condition2 is post: ", condition2);
 };
   
-//Track if the Run has loaded and trigger the ChatMessage to render
 const handleRunCompletion = () => {
   setChatcondition(true);
 };
@@ -137,7 +128,9 @@ const handleFileChangeTrigger = () => {
   };
 
   const newThreadFunctionCaller = () => {
-    setShowChatContainer(true)
+    if (!showChatContainer) {
+      setShowChatContainer(true)
+    }
     console.log('new thread function caller has turned on showChat', showChatContainer)
   }
   
@@ -150,20 +143,6 @@ const handleFileChangeTrigger = () => {
     console.log('showChatContainer updated to:', showChatContainer);
   }, [showChatContainer]);
   
-  // useEffect to log the state update
-    // useEffect(() => {
-    //   console.log('After setting thread created:', isThreadCreated);
-    // }, [isThreadCreated]);
-
-    // useEffect(() => {
-    //   const timer = setTimeout(() => {
-    //     setShowChatContainer(true);
-    //   }, 11000); // Wait for 5 seconds
-    
-    //   return () => clearTimeout(timer); // Clean up the timer when the component unmounts or the effect reruns
-    // }, []); // Empty dependency array means this runs once after the initial render
-    
-
   // Load default data
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -194,6 +173,20 @@ const handleFileChangeTrigger = () => {
     }
   }, []);
 
+    // Timer state setup to switch to true after 10 seconds
+    useEffect(() => {
+      if (chat_ticker) {
+        // Once chat_ticker is defined, wait for 5 seconds to update chatTickerDefined
+        const timer = setTimeout(() => {
+          setChatTickerDefined(true);
+        }, 7000); // Wait for 5 seconds
+  
+        // Cleanup function to clear the timeout if the component unmounts
+        return () => clearTimeout(timer);
+      }
+    }, [chat_ticker]); // Depend on chat_ticker
+    
+
   return (
     <main className="flex flex-col">
       <div className="flex flex-row  mt-3 gap-x-10">
@@ -211,18 +204,11 @@ const handleFileChangeTrigger = () => {
           />
           <Thread fileChangeCompleted={fileChangeCompleted} onThreadCreated={handleThreadCreated} newThreadFunctionCaller={newThreadFunctionCaller}/>
 
-          {/* {
-            !showChatContainer ? 
-              <ChatLoad key={`chatLoad-${showChatContainer}`} /> :  */}
-              <ChatContainer key={`chatContainer-${showChatContainer}`} onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} />
-          {/* } */}
-
-
-          {/* {showChatContainer ? 
-            <ChatContainer onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} /> : 
-            <ChatLoad />
-          } */}
-          {/* <ChatContainer onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} /> */}
+          {
+          !chatTickerDefined ?
+            <ChatLoad  />  :
+              <ChatContainer  onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} />  
+          }
 
           <Run messageSent={messageSent} onRunComplete={handleRunCompletion} onRunFinal={handleRunFinalization}  />
         </div>

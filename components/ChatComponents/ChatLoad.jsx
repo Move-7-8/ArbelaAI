@@ -64,4 +64,3 @@ const ChatLoad = () => {
 };
 
 export default ChatLoad;
-
