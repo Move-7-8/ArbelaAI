@@ -51,7 +51,6 @@ export default function Home({data, data2}) {
   const [chatTickerDefined, setChatTickerDefined] = useState(false);
 
   const chat_ticker = data?.price?.symbol;
-  console.log('Test Triggered')
 
   useEffect(() => {
     setTriggerCreate(true);
@@ -181,7 +180,6 @@ const handleFileChangeTrigger = () => {
         const timer = setTimeout(() => {
           setChatTickerDefined(true);
         }, 7000); // Wait for 5 seconds
-        console.log('Chat Ticker cleared')
         // Cleanup function to clear the timeout if the component unmounts
         return () => clearTimeout(timer);
       }

@@ -28,7 +28,7 @@ const Assistant = ({ onFileChangeTrigger, triggerCreate, setTriggerCreate }) => 
           const data = await response.json();
 
           const newAssistant = data.assistant;
-          // console.log("newAssistant", newAssistant);
+          console.log("newAssistant", newAssistant);
           setAssistant(newAssistant);
           localStorage.setItem("assistant", JSON.stringify(newAssistant));
           setMessage("Successfully created assistant");
