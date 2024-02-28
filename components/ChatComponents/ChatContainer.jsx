@@ -24,6 +24,9 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
 
   const chatContentRef = useRef(null);
 
+  
+  
+
     // Function to update `isLargeScreen` based on window width
   useEffect(() => {
     const handleResize = () => {

@@ -107,7 +107,7 @@ return (
             <div className="hidden lg:block lg:w-1/4 lg:h-screen"></div>
 
             {/* Stock Card */}
-            <div className="w-full flex lg:bottom-0 lg:fixed lg:w-1/4 lg:top-20 lg:left-0  lg:overflow-y-auto mb-4">
+            <div className="w-full flex lg:bottom-0 lg:fixed lg:w-1/4 lg:top-20 lg:left-0  lg:overflow-y-auto mb-2">
               <DashboardStockCard data={data} data2={data2} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
             </div>
 
