@@ -21,13 +21,14 @@ const Assistant = ({ onFileChangeTrigger, triggerCreate, setTriggerCreate }) => 
     }, [triggerCreate, setTriggerCreate]);
   
     const handleCreate = async () => {
+        console.log('Assistant handle Create')
         setCreating(true);
         try {
           const response = await fetch("/api/AI/assistant/create");
           const data = await response.json();
+          console.log('Assistant data returned', data)
 
           const newAssistant = data.assistant;
-          console.log("newAssistant", newAssistant);
           setAssistant(newAssistant);
           localStorage.setItem("assistant", JSON.stringify(newAssistant));
           setMessage("Successfully created assistant");
@@ -73,6 +74,7 @@ const Assistant = ({ onFileChangeTrigger, triggerCreate, setTriggerCreate }) => 
 
         //   const assistantNames = assistants.map(a => a.name).join(', ');
           setMessage(`Assistants: ${assistantIds}`);
+          console.log('Assistant',assistantIds )
         } catch (error) {
           console.log("error", error);
           setMessage("Error listing assistants");
