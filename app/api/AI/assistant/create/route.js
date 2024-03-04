@@ -1,11 +1,10 @@
 import OpenAI from 'openai' 
 
-export async function GET() {
-    console.log('2. Back end hit')
-    const openai = new OpenAI(process.env.OPENAI_API_KEY);
-
-    try {
-        const assistant = await openai.beta.assistants.create({
+export async function POST(req, res) {
+      const openai = new OpenAI(process.env.OPENAI_API_KEY);
+  
+      try {
+          const assistant = await openai.beta.assistants.create({
             instructions: 
             `You are a professional stock analyst.
             You will be asked questions about the stock you have been trained on, and you will answer them in the following format: 
@@ -30,6 +29,7 @@ export async function GET() {
             tools: [{type: 'retrieval'}],
             model: 'gpt-4-1106-preview',
         });
+
         console.log('3. Back end Assistant Create', assistant.id )
 
         return new Response(JSON.stringify({ assistant: assistant }), {
@@ -54,9 +54,8 @@ export async function GET() {
                 'Expires': '0'
             },
         });
+        }
     }
-}
-
 
 //  import OpenAI from 'openai' 
 
