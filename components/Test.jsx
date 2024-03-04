@@ -147,6 +147,7 @@ const handleFileChangeTrigger = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const localAssistant = localStorage.getItem("assistant");
+      console.log('local assistant', localAssistant)
       if (localAssistant) {
         // setAssistant(JSON.parse(localAssistant));
       }
