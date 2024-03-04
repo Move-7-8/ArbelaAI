@@ -22,6 +22,7 @@ const Assistant = ({ onFileChangeTrigger, triggerCreate, setTriggerCreate }) => 
     }, [triggerCreate, setTriggerCreate]);
   
     const handleCreate = async () => {
+        console.log('1. Handle Create in Assistant.jsx')
         setCreating(true);
         try {
           const response = await fetch("/api/AI/assistant/create", {
@@ -29,6 +30,8 @@ const Assistant = ({ onFileChangeTrigger, triggerCreate, setTriggerCreate }) => 
 
           });
           const data = await response.json();
+          console.log('2. Data Returned in Assistant.jsx')
+          console.log('2.', data.assistant)
 
           const newAssistant = data.assistant;
           // console.log("newAssistant", newAssistant);

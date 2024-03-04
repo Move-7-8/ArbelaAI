@@ -1,7 +1,6 @@
 import OpenAI from 'openai' 
 
 export async function GET() {
-    console.log('create assistant')
     const openai = new OpenAI(process.env.OPENAI_API_KEY);
 
     try {

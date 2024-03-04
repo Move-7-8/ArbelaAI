@@ -68,7 +68,6 @@ const afterAssistantCreate = () => {
 
 //Trigger AssistantFile when both necessary conditions are met
 const onFileUploadCompleted = () => {
-  console.log('1. onFileUploadCompleted called')
   setTasksCompleted(prev => ({ ...prev, upload: true }));
   checkAndHandleUpload();
   setUploadCompleteTrigger(true); // Verify if this is called
@@ -86,10 +85,8 @@ const handleRunFinalization = () => {
 
 // Check if both tasks are completed
 const checkAndHandleUpload = () => {
-  console.log('2. checkAndHandleUpload called')
 
   if (tasksCompleted.create && tasksCompleted.upload) {
-    console.log('3. Both tasks completed')
 
     handleFileUploadInAssistantFile(); // Function to trigger upload in AssistantFile
     setTasksCompleted({ create: false, upload: false }); // Reset after triggering
@@ -122,32 +119,26 @@ const handleFileChangeTrigger = () => {
   
   // Callback function to be called from Thread.jsx after final function is complete
   const handleThreadCreated = () => {
-    console.log('setting thread created', isThreadCreated) // Logs the current state before the update
     setIsThreadCreated(true); // Schedules the state to be updated
-    console.log('setting thread created2', isThreadCreated) // Still logs the current state, update not yet applied
   };
 
   const newThreadFunctionCaller = () => {
     if (!showChatContainer) {
       setShowChatContainer(true)
     }
-    console.log('new thread function caller has turned on showChat', showChatContainer)
   }
   
   useEffect(() => {
-    console.log('After setting thread created:', isThreadCreated);
     // Any code here will execute after `isThreadCreated` has been updated.
   }, [isThreadCreated]);
     
   useEffect(() => {
-    console.log('showChatContainer updated to:', showChatContainer);
   }, [showChatContainer]);
   
   // Load default data
   useEffect(() => {
     if (typeof window !== "undefined") {
       const localAssistant = localStorage.getItem("assistant");
-      console.log('local assistant', localAssistant)
       if (localAssistant) {
         // setAssistant(JSON.parse(localAssistant));
       }
