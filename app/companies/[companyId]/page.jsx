@@ -30,8 +30,22 @@ const Page = () => {
   const [showChatbox, setShowChatbox] = useState(false);
   const toggleChatbox = () => setShowChatbox(!showChatbox);
 
-  // console.log('Volatility Score:', volatilityScore);
-  // console.log('Liquidity Score:', liquidityScore);
+  // Utility function to fetch data with retry logic
+  const fetchWithRetry = async (url, options, retries = 3, backoff = 300) => {
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      return await response.json(); // Assuming the server response is JSON
+    } catch (error) {
+      if (retries > 0) {
+        console.log(`Retrying... attempts left: ${retries}`);
+        await new Promise(resolve => setTimeout(resolve, backoff)); // Wait for a bit before retrying
+        return fetchWithRetry(url, options, retries - 1, backoff * 2); // Exponential backoff
+      } else {
+        throw error; // Rethrow after all retries are used
+      }
+    }
+  };
 
   // This CSS class determines whether the chatbox is visible
   const chatboxClass = showChatbox ? "block" : "hidden";
@@ -40,44 +54,27 @@ const Page = () => {
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
-  
+
     const fetchData = async () => {
       if (!isLoading) {
         setIsLoading(true);
 
         try {
-          // Initiate both fetch requests simultaneously
-          const fetchPromise1 = fetch(`/api/companies/[${ticker}]`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 'ticker': ticker }),
-            signal: signal 
-          });
-  
-          const fetchPromise2 = fetch(`/api/companies2/[${ticker}]`, {
+          // Options common to both fetch requests
+          const fetchOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'ticker': ticker }),
             signal: signal,
-          });
-  
+          };
+
+          // Use fetchWithRetry for both fetch calls
+          const fetchPromise1 = fetchWithRetry(`/api/companies/[${ticker}]`, fetchOptions);
+          const fetchPromise2 = fetchWithRetry(`/api/companies2/[${ticker}]`, fetchOptions);
+
           // Wait for both fetch requests to complete
-          const [response1, response2] = await Promise.all([fetchPromise1, fetchPromise2]);
-  
-          // Check if both responses are ok
-          if (!response1.ok) {
-            throw new Error(`HTTP error! status: ${response1.status}`);
-          }
-          if (!response2.ok) {
-            throw new Error(`HTTP error! status: ${response2.status}`);
-          }
-  
-          // Parse JSON from both responses
-          const result1 = await response1.json();
-          const result2 = await response2.json();
-  
+          const [result1, result2] = await Promise.all([fetchPromise1, fetchPromise2]);
+
           // Update state with the results
           setData(result1);
           setData2(result2);
@@ -90,10 +87,12 @@ const Page = () => {
         }
       }
     };
-  
+
     fetchData();
+    // Correctly placed controller.abort() for cleanup
     return () => controller.abort();
-  }, [ticker]); 
+  }, [ticker]); // Ensure dependencies are correctly listed
+
 
   // CSS for controlling chatbox visibility
   const chatboxVisibility = showChatbox ? 'block' : 'hidden';
