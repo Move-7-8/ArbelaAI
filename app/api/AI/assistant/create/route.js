@@ -1,6 +1,7 @@
 import OpenAI from 'openai' 
 
 export async function GET() {
+    console.log('2. Back end hit')
     const openai = new OpenAI(process.env.OPENAI_API_KEY);
 
     try {
@@ -29,6 +30,7 @@ export async function GET() {
             tools: [{type: 'retrieval'}],
             model: 'gpt-4-1106-preview',
         });
+        console.log('3. Back end Assistant Create', assistant.id )
 
         return new Response(JSON.stringify({ assistant: assistant }), {
             status: 200,

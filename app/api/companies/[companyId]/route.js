@@ -1,9 +1,7 @@
 import fetch from 'node-fetch'; // Ensure node-fetch is imported
 
 export async function POST(req, res) {
-  console.log('BACKEND TEST ROUTE HIT');
   const request_data = await req.json(); // Parsing JSON from the incoming request.
-  console.log('REQ: ', request_data);
 
   const ticker = request_data.ticker; // 
 
@@ -38,7 +36,6 @@ function delay(ms) {
       await delay(50); // Wait for 200ms before each request, adjust this value as needed
 
       const apiUrl = `https://yahoo-finance127.p.rapidapi.com/${path}`;
-      console.log(`Requesting URL: ${apiUrl}`);
 
       const response = await fetch(apiUrl, {
         method: 'GET',
@@ -58,7 +55,6 @@ function delay(ms) {
     }
 
     const organizedData = allData.reduce((acc, data) => ({ ...acc, ...data }), {});
-    console.log('Organized Data:', organizedData);
     return new Response(JSON.stringify(organizedData), { status: 200 });
 
   } catch (error) {

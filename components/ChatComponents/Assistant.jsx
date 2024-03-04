@@ -30,8 +30,8 @@ const Assistant = ({ onFileChangeTrigger, triggerCreate, setTriggerCreate }) => 
 
           });
           const data = await response.json();
-          console.log('2. Data Returned in Assistant.jsx')
-          console.log('2.', data.assistant)
+          console.log('4. Data Returned in Assistant.jsx')
+          console.log('4.', data.assistant)
 
           const newAssistant = data.assistant;
           // console.log("newAssistant", newAssistant);

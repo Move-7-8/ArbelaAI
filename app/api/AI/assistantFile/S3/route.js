@@ -27,7 +27,6 @@ export async function POST (request) {
             Key: `${fileKey}`,
 
         }).promise();
-        console.log('Assistant File Route File:', file);
         // Set appropriate headers for the file
         const headers = {
             'Content-Type': file.ContentType,
