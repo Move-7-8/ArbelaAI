@@ -169,6 +169,7 @@ const handleDelete = async () => {
 
       const response = await fetch(`/api/AI/assistantFile/delete`, {
           method: 'POST',
+          cache: 'no-store',
           headers: {
               'Content-Type': 'application/json'
           },

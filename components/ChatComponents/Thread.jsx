@@ -27,7 +27,10 @@ useEffect(() => {
   const handleCreate = async () => {
     setCreating(true);
     try {
-        const response = await fetch("/api/AI/thread/create");
+        const response = await fetch("/api/AI/thread/create", 
+        {            
+          cache: 'no-store',
+      });
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }

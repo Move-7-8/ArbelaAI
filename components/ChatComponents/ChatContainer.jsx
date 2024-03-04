@@ -66,7 +66,9 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
       if (!thread) return;
   
       try {
-        const response = await fetch(`/api/AI/message/list?threadId=${thread}`);
+        const response = await fetch(`/api/AI/message/list?threadId=${thread}`, {
+          cache: 'no-store',
+        });
         // console.log('response status: ', response.status)
         if (!response.ok) {
           if (response.status === 404) {
