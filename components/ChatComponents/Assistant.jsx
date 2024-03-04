@@ -114,41 +114,6 @@ const Assistant = ({ onFileChangeTrigger, triggerCreate, setTriggerCreate }) => 
     };
             
     return null
-    // return (
-    //   <div className="flex flex-col mb-8">
-
-    //       <div className="flex flex-row gap-x-4 w-full">
-    //           <button
-    //           onClick={handleCreate}
-    //           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-    //           >
-    //           {creating ? "Creating..." : "Create"}
-    //           </button>
-    //           {/* <button
-    //           onClick={handleModify}
-    //           disabled={!assistant || !file}
-    //           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-    //           >
-    //           {modifying ? "Modifying..." : "Modify"}
-    //           </button> */}
-    //           {/* <button
-    //           onClick={handleList}
-    //           className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
-    //           >
-    //           {listing ? "Listing..." : "List"}
-    //           </button> */}
-    //           {/* <button
-    //           onClick={handleDelete}
-    //           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-    //           >
-    //           {deleting ? "Deleting..." : "Delete"}
-    //           </button> */}
-    //       </div>
-    //       {/* {message && <div className="mt-4 text-center text-lg">{message}</div>}
-    //       <p className="font-semibold mb-4">Assistant ID: {assistant?.id}</p> */}
-
-    //   </div>
-    // );
 }
 
 export default Assistant;
