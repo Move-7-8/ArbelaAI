@@ -31,11 +31,28 @@ export async function GET() {
             model: 'gpt-4-1106-preview',
         });
 
-        return Response.json({ assistant: assistant})
+        return new Response(JSON.stringify({ assistant: assistant }), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+                // Prevent caching of the response
+                'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            },
+        });
 
     } catch (e) {
-        console.log(e)
-         return Response.json({ error: e })
+        console.log(e);
+        return new Response(JSON.stringify({ error: e }), {
+            status: 500,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            },
+        });
     }
 }
 
