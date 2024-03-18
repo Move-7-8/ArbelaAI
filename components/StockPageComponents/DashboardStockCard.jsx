@@ -48,6 +48,7 @@ function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore,
     const returnOnEquity = data?.financeAnalytics?.returnOnEquity?.raw || 'N/A'
     const dividendYield = data?.keyStatistics?.trailingAnnualDividendYield?.raw || 'N/A'
 
+
     const formatAskPrice = (askPriceObj) => {
         // Check if askPriceObj is an object with a 'raw' property
         if (askPriceObj && typeof askPriceObj === 'object' && 'raw' in askPriceObj) {
@@ -135,8 +136,11 @@ function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore,
     window.open(url, '_blank', 'noopener,noreferrer'); // Open the link in a new tab
     };
 
-    return (
-    <div className="flex flex-col flex-1 rounded-md mx-auto lg-height-80vh">
+
+ return (
+    
+    <div style={{ marginRight: `${marginRightValue}px` }} className="flex flex-col flex-1 rounded-md mx-auto lg-height-80vh">
+        
         {/* Align buttons to the left */}
         <div className="flex justify-center mx-4 pb-4">
             <div

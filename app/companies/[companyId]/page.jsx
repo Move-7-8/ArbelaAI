@@ -15,8 +15,26 @@ const Page = () => {
   const [cacheData, setCacheData] = useState(null); 
   const [data, setData] = useState(null); 
   const [data2, setData2] = useState(null);
-  // const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false); 
   
+
+
+  const [widthDiff, setWidthDiff] = useState(0);
+
+  const handleWidthChange = (newWidth) => {
+    setWidthDiff(newWidth);
+    console.log(`Width Difference from Page.jsx: ${newWidth}`);
+  };
+
+  // Add useEffect to log widthDiff whenever it changes
+  useEffect(() => {
+    console.log(`Width Difference in Page.jsx: ${widthDiff}px`);
+  }, [widthDiff]);
+
+   // Calculate 75% of widthDiff for marginRight
+    const marginRightValue = widthDiff * 0.75;
+
+
   // Search Params
   const searchParams = useSearchParams();
   const ticker = searchParams.get('ticker');
@@ -134,18 +152,21 @@ const Page = () => {
   const chatboxVisibility = showChatbox ? 'block' : 'hidden';
   const mobileChatboxStyle = `fixed inset-0 z-40 bg-black bg-opacity-50 ${chatboxVisibility} lg:hidden`;
   const desktopChatboxStyle = "hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4";
-  return (
-      <div className="flex flex-wrap w-full">
-          <div className="flex flex-col w-full mt-20 lg:w-3/4">
-            <div className="flex flex-wrap lg:flex-nowrap w-full ">
-              {/* Spacer for Stock Card */}
-              <div className="hidden lg:block lg:w-1/4 lg:h-screen"></div>
+
+  
+
+  
+return (
+    <div className="flex flex-wrap w-full">
+        <div className="flex flex-col w-full mt-20 lg:w-3/4">
+          <div className="flex flex-wrap lg:flex-nowrap w-full ">
+            {/* Spacer for Stock Card */}
+            <div className="hidden lg:block lg:w-1/4 lg:h-screen"></div>
 
               {/* Stock Card */}
               <div className="w-full flex lg:bottom-0 lg:fixed lg:w-1/4 lg:top-20 lg:left-0  lg:overflow-y-auto mb-2">
-                <DashboardStockCard cacheData={cacheData} data={data} data2={data2} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
+                <DashboardStockCard widthDiff={marginRightValue} cacheData={cacheData} data={data} data2={data2} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
               </div>
-
             {/* Statements and Chart Section */}
             <div className="w-full lg:ml-[15.5%] lg:overflow-y-scroll lg:h-screen pb-[65px] lg:pb-0">
               <TradingChartContainer cacheData={cacheData} data={data} />
@@ -180,22 +201,23 @@ const Page = () => {
         </button>
         </div>
 
-          )}
-        {/* Mobile chatbox with controlled visibility through CSS */}
-        <div className={mobileChatboxStyle}>
-          <div className="w-full fixed bottom-0 bg-white h-2/3 overflow-auto">
-            <Test data={data} data2={data2}/>
-            <button onClick={toggleChatbox} className="absolute top-0 right-0 mt-2 mr-2 text-2xl text-gray-700">
-              &times;
-            </button>
-          </div>
-        </div>
-        {/* Desktop chatbox always visible */}
-        <div className={desktopChatboxStyle}>
-          <Test data={data}/>
+        )}
+      {/* Mobile chatbox with controlled visibility through CSS */}
+      <div className={mobileChatboxStyle}>
+        <div className="w-full fixed bottom-0 bg-white h-2/3 overflow-auto">
+          <Test data={data} data2={data2} onWidthChange={handleWidthChange}/>
+          <button onClick={toggleChatbox} className="absolute top-0 right-0 mt-2 mr-2 text-2xl text-gray-700">
+            &times;
+          </button>
         </div>
       </div>
+      {/* Desktop chatbox always visible */}
+      <div className={desktopChatboxStyle}>
+        <Test data={data} onWidthChange={handleWidthChange}/>
+      </div>
+    </div>
   );
 };
+
 
 export default Page;

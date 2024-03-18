@@ -22,7 +22,7 @@ import {
   runAtom,
 } from "@/atom";
 
-export default function Home({data, data2}) {
+export default function Home({data, data2, onWidthChange}) {
   // Atom State
   const [, setAssistant] = useAtom(assistantAtom);
   const [, setFile] = useAtom(fileAtom);
@@ -199,7 +199,7 @@ const handleFileChangeTrigger = () => {
           {
           !chatTickerDefined ?
             <ChatLoad  />  :
-              <ChatContainer  onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} />  
+              <ChatContainer onWidthChange={onWidthChange}  onMessageSent={handleMessageSent} chatCondition={Chatcondition} chat_ticker={chat_ticker} />  
           }
 
           <Run messageSent={messageSent} onRunComplete={handleRunCompletion} onRunFinal={handleRunFinalization}  />

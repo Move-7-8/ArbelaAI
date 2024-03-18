@@ -312,8 +312,6 @@ const TradingChartContainer = ({ data, cacheData}) => {
         .attr("fill", "rgba(211, 211, 211, 0.7)");
 
 
-
-        // Tooltip container
         const tooltip = d3.select(chartRef.current)
                         .append("div")
                         .attr("class", "tooltip")
@@ -325,8 +323,8 @@ const TradingChartContainer = ({ data, cacheData}) => {
                         .style("text-align", "left")
                         .style("position", "absolute")
                         .style("pointer-events", "none")
-                        .style("font-size", "12px"); // Smaller font size
-
+                        .style("font-size", "12px") // Smaller font size
+                        .style("z-index", "1000"); // Ensure a high z-index
 
         // Append area for the gradient effect under the line
         svg.append('path')
