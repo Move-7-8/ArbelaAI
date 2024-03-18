@@ -934,7 +934,7 @@ const StatementTable = ({ data, statementType }) => {
       // Highlighting for Income Statement Sections
     if (statementType === 'income') {
     if (isRevenueRow(row.label)) {
-        rowStyle.backgroundColor = 'rgba(224, 208, 139, 0.1)'; // Updated color for Revenue
+        rowStyle.backgroundColor = 'rgba(106, 132, 157, 0.1)';
     
         } else if (isOperatingExpenseRow(row.label)) {
             rowStyle.backgroundColor = 'rgba(255, 0, 0, 0.1)';
@@ -945,7 +945,8 @@ const StatementTable = ({ data, statementType }) => {
                 rowStyle.backgroundColor = 'rgba(53, 168, 83, 0.3)'; // Darker green for specific total lines
             }
         } else if (isEpsRow(row.label)) {
-            rowStyle.backgroundColor = 'rgba(106, 132, 157, 0.1)';
+          rowStyle.backgroundColor = 'rgba(224, 208, 139, 0.1)'; // Updated color for Revenue
+            
         }
     } else if (statementType === 'cash') {
         if (isIncomeRow(row.label)) {
@@ -971,7 +972,7 @@ const StatementTable = ({ data, statementType }) => {
     // Highlighting Total lines with stronger colors
     if (statementType === 'income') {
         if (row.label === "Gross Profit") {
-             rowStyle.backgroundColor = 'rgba(224, 208, 139, 0.2)';
+             rowStyle.backgroundColor = 'rgba(106, 132, 157, 0.2)';
         } else if (row.label === "Total Operating Expense") {
             rowStyle.backgroundColor = 'rgba(255, 0, 0, 0.2)';
         } else if (row.label === "Net Income" || row.label === "Net Income Continuous Operations" || row.label === "Net Income Common Stockholders") {

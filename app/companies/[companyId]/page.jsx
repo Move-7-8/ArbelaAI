@@ -1,6 +1,6 @@
  'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import Test from '@components/Test';
@@ -16,6 +16,24 @@ const Page = () => {
   const [data2, setData2] = useState(null);
   const [isLoading, setIsLoading] = useState(false); 
   
+
+
+  const [widthDiff, setWidthDiff] = useState(0);
+
+  const handleWidthChange = (newWidth) => {
+    setWidthDiff(newWidth);
+    console.log(`Width Difference from Page.jsx: ${newWidth}`);
+  };
+
+  // Add useEffect to log widthDiff whenever it changes
+  useEffect(() => {
+    console.log(`Width Difference in Page.jsx: ${widthDiff}px`);
+  }, [widthDiff]);
+
+   // Calculate 75% of widthDiff for marginRight
+    const marginRightValue = widthDiff * 0.75;
+
+
   // Search Params
   const searchParams = useSearchParams();
 
@@ -99,6 +117,10 @@ const Page = () => {
   const chatboxVisibility = showChatbox ? 'block' : 'hidden';
   const mobileChatboxStyle = `fixed inset-0 z-40 bg-black bg-opacity-50 ${chatboxVisibility} lg:hidden`;
   const desktopChatboxStyle = "hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4";
+
+  
+
+  
 return (
     <div className="flex flex-wrap w-full">
         <div className="flex flex-col w-full mt-20 lg:w-3/4">
@@ -108,12 +130,11 @@ return (
 
             {/* Stock Card */}
             <div className="w-full flex lg:bottom-0 lg:fixed lg:w-1/4 lg:top-20 lg:left-0  lg:overflow-y-auto mb-2">
-              <DashboardStockCard data={data} data2={data2} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
+              <DashboardStockCard widthDiff={marginRightValue} data={data} data2={data2} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
             </div>
-
             {/* Statements and Chart Section */}
             
-          <div className="w-full lg:ml-[15.5%] lg:overflow-y-scroll lg:h-screen pb-[65px] lg:pb-0">
+          <div style={{ marginRight: `${widthDiff}px` }}  className="w-full lg:ml-[15.5%] lg:overflow-y-scroll lg:h-screen pb-[65px] lg:pb-0">
             <TradingChartContainer data={data} />
             <>
               <FinancialStatements data={data} data2={data2} className="mt-4" />
@@ -154,7 +175,7 @@ return (
       {/* Mobile chatbox with controlled visibility through CSS */}
       <div className={mobileChatboxStyle}>
         <div className="w-full fixed bottom-0 bg-white h-2/3 overflow-auto">
-          <Test data={data} data2={data2}/>
+          <Test data={data} data2={data2} onWidthChange={handleWidthChange}/>
           <button onClick={toggleChatbox} className="absolute top-0 right-0 mt-2 mr-2 text-2xl text-gray-700">
             &times;
           </button>
@@ -162,10 +183,11 @@ return (
       </div>
       {/* Desktop chatbox always visible */}
       <div className={desktopChatboxStyle}>
-        <Test data={data}/>
+        <Test data={data} onWidthChange={handleWidthChange}/>
       </div>
     </div>
   );
 };
+
 
 export default Page;

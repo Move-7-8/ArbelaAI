@@ -5,11 +5,30 @@ import React, { useEffect, useRef, useState } from "react";
 import botImage from '../../public/assets/images/user1.png';
 import Image from 'next/image';
 import { MdOutlineSend } from 'react-icons/md';
-import { FaChalkboardTeacher, FaCheckCircle, FaThumbsUp, FaExclamationTriangle, FaHeartbeat } from 'react-icons/fa';
+import { FaChalkboardTeacher, FaCheckCircle, FaThumbsUp, FaExclamationTriangle, FaHeartbeat, FaPaperPlane, FaAngleDoubleUp, FaAngleDoubleDown, FaAngleDoubleLeft, FaGripLinesVertical } from 'react-icons/fa';
 import Spinner from './Spinner'; // Assume you have a Spinner component
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
-function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
+// Utility function to convert rem to pixels, moved outside to prevent re-definitions
+function convertRemToPixels(rem) {    
+  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+}
+
+// Similarly, these calculations can be moved outside if they don't depend on props
+// But if they do, consider using useEffect or useCallback hooks inside the component
+const calculateMinWidth = () => {
+  const viewportWidth = window.innerWidth;
+  const minWidth = viewportWidth * 0.25 - convertRemToPixels(2); // Example adjustment
+  return minWidth;
+};
+
+const calculateMaxWidth = () => {
+  return calculateMinWidth() * 1.15;
+};
+
+
+function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChange }) {
 
   // Atom State
   const [thread] = useAtom(threadAtom);
@@ -21,8 +40,15 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker }) {
   const [isHoveredExclamation, setIsHoveredExclamation] = useState(false);
   const [isHoveredHeartbeat, setIsHoveredHeartbeat] = useState(false);
   const [isHoveredSend, setIsHoveredSend] = useState(false);
+  const [showExtraIcons, setShowExtraIcons] = useState(false);
+  const [widthDiff, setWidthDiff] = useState(0);
+
+
 
   const chatContentRef = useRef(null);
+
+
+
 
   
   
@@ -201,15 +227,105 @@ const handleIconClick = (messageText) => {
   sendMessageAutomatically(messageText);
 };
 
+
+const containerRef = useRef(null);
+
+// Adjust the calculateMinWidth function to not enforce the 300px minimum on small screens
+const calculateMinWidth = () => {
+  // You can adjust this logic based on your specific needs
+  if (window.innerWidth >= 1024) {
+    return Math.max(window.innerWidth * 0.25 - convertRemToPixels(2.3), 250);
+  } else {
+    // For smaller screens, consider a lower min width or allow it to be more flexible
+    return window.innerWidth * 0.4; // Example adjustment, adapt as needed
+  }
+};
+
+  const calculateMaxWidth = () => {
+    return calculateMinWidth() * 2.0;
+  };
+
+  // Responsive width state
+  const [width, setWidth] = useState(calculateMinWidth());
+
+  useEffect(() => {
+    // Function to adjust chat container width responsively
+    const handleResize = () => {
+      // Update width only if the window is larger than 'lg' breakpoint to prevent override by fixed width on smaller screens
+      if (window.innerWidth >= 1024) {
+        setWidth(calculateMinWidth());
+      } else {
+        // Allow full width on smaller screens
+        setWidth('60%');
+      }
+    };
+
+    // Add event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+    // Clean up event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleMouseDown = (e) => {
+    e.preventDefault(); // Prevent default action
+    const startX = e.clientX;
+    const startWidth = width !== '100%' ? width : containerRef.current.offsetWidth;
+
+  const handleMouseMove = (e) => {
+    if (window.innerWidth >= 1024) {
+      const deltaX = startX - e.clientX;
+      let newWidth = startWidth + deltaX;
+
+      newWidth = Math.max(calculateMinWidth(), Math.min(newWidth, calculateMaxWidth()));
+      setWidth(newWidth);
+        const minWidth = calculateMinWidth();
+        const additionalWidth = newWidth - minWidth;
+            // Now use `onWidthChange` directly since it's destructured from props
+        onWidthChange(additionalWidth);
+
+     
+
+      // Log the width difference to the console
+      console.log(`Width Difference: ${additionalWidth}px`);
+    }
+  };
+
+
+    const handleMouseUp = () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+
 return (
   <>
-    <div className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col chat-container ${isLargeScreen ? 'fixed bottom-20 w-full top-16 lg:max-w-[calc(25%-2.3rem)]' : ''}`} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-      <div className="relative text-center shadow-lg rounded" style={{ paddingTop: 0, marginTop: 0, backgroundColor: 'rgba(255, 102, 101,0.2)'}}>
-        <div className= {isLargeScreen ? "h-[10vw] rounded max-h-[90px]" : " rounded h-[15vw]"} style={{ width: '100%', overflow: 'hidden' }}>
+
+    <div 
+      ref={containerRef} 
+      className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col gradient1 chat-container ${isLargeScreen ? 'fixed bottom-20 top-16 right-0' : ''}`} 
+      style={{ 
+        width: `${width}px`, 
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        position: 'fixed', // Keep it fixed to the viewport
+      }}
+    >
+<div 
+        className="absolute left-0 top-0 bottom-0 cursor-ew-resize z-10" 
+        onMouseDown={handleMouseDown} 
+        style={{ width: '20px', left: '-20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} // Adjust as necessary
+      >
+      <FaGripLinesVertical size={85} style={{ color: 'lightgrey' }} />
+      </div>
+      <div className="relative text-center shadow-lg rounded" style={{ paddingTop: 0, marginTop: 0, backgroundColor: 'rgba(255, 102, 101, 0.2)'}}>
+        <div className= {isLargeScreen ? "h-[10vw] rounded max-h-[88px]" : " rounded h-[15vw]"} style={{ width: '100%', overflow: 'hidden' }}>
           <svg width="100%" height="100%" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
             <defs>
               <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style={{ stopColor: '#FF6665', stopOpacity: 0.4 }} />
+            <stop offset="0%" style={{ stopColor: 'rgba(255, 102, 101, 0.9)' }} />
                 <stop offset="100%" style={{ stopColor: '#FFFFFF', stopOpacity: 0.5 }} />
               </linearGradient>
             </defs>
@@ -226,15 +342,17 @@ return (
           </div>
         </div>
       </div>
-      <div className="flex-grow p-3 overflow-y-auto" ref={chatContentRef} style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
+      <div className="flex-grow p-3 overflow-y-auto" ref={chatContentRef} style={{  backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
         {fetching ? (
             <Spinner /> // Show spinner while fetching
           ) : (
             messages.map((message, index) => (
           <div key={index} className="text-left text-sm my-2 p-2 rounded-md" 
-              style={message.role === 'user' ? 
-                      { background: 'linear-gradient(to right, rgba(255, 102, 101, 0.5), rgba(224, 208, 139, 0.5))', color: 'white' } : 
-                      { backgroundColor: 'rgba(200, 200, 200, 0.2)' }}>
+          style={message.role === 'user' ? 
+            { background: 'linear-gradient(to right, rgba(255, 102, 101, 0.6), rgba(255, 102, 101, 0.6))', color: 'white' } : 
+            { backgroundColor: 'rgba(255, 255, 255)', color: 'black' }}
+
+          >
             {formatMessage(message.content[0].type === "text" ? message.content[0].text.value : '')}
           </div>
             ))
@@ -247,110 +365,193 @@ return (
           </div>
         )}
       </div>
-
-   <div className="bg-gray-50 p-4" style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: '0 0 8px 8px' }}>
-    <div className="w-full flex">
+   <div className="p-4">
+    <div className={`flex items-center rounded-full bg-white p-1 overflow-hidden ${messageFocused ? 'ring-2 ring-[#E0D08B]' : ''}`}>
       <input
         type="text"
         placeholder="Type a message..."
-        className="message-input flex-grow p-2 bg-white focus:outline-none"
+        className="flex-grow p-2 bg-white focus:outline-none rounded-l-full flex-1 min-w-0"
+        style={{ fontSize: '14px' }}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) { sendMessage(); }}}
         onFocus={() => setMessageFocused(true)}
         onBlur={() => setMessageFocused(false)}
-        style={{ flex: 1, minWidth: '60%', marginRight: '4px' }} // Adjusted style
       />
       <button
         disabled={!message}
-        className="p-2 flex items-center justify-center"
-        style={{ flexShrink: 0, minWidth: '40px', background: 'none', border: 'none' }} // Adjusted style
+        className="absolute right-4 flex items-center justify-center bg-white border-none rounded-full"
         onClick={sendMessage}
         onMouseEnter={() => setIsHoveredSend(true)}
         onMouseLeave={() => setIsHoveredSend(false)}
       >
-        <MdOutlineSend
-          size={26}
-          className="send-icon"
-          style={{
-            color: '#3A3C3E',
-            transition: 'color 0.2s ease-in-out, transform 0.2s ease-in-out', // Ensure transition is applied for both properties
-              color: isHoveredSend ? '#6A849D' : '#3A3C3E',
-          }}
-        />
+        <span className="transition-transform duration-200 ease-in-out hover:scale-110 mr-4">
+          <FaPaperPlane size={20} className="send-icon text-gray-800" />
+        </span>
       </button>
     </div>
+{/* Adjusted "See More" Toggle Button for closer proximity */}
+<div className="flex justify-center mt-2"> {/* Ensure there's no margin-top */}
+  <button
+    className="px-1 py-0 focus:outline-none transition duration-150 ease-in-out" /* Minimized padding */
+    onClick={() => setShowExtraIcons(!showExtraIcons)}
+  >
+    {showExtraIcons ? (
+      <FaAngleDoubleDown className="text-[#3A3C3E] text-xl" />
+    ) : (
+      <FaAngleDoubleUp className="text-[#3A3C3E] text-xl" />
+    )}
+  </button>
+</div>
 
-      <div className="flex justify-between items-center mt-4"> {/* Adjusted for even spacing among icons */}
+
+
+    {/* Conditionally render extra icons */}
+    {showExtraIcons && (
+      <div className="flex justify-between items-center transition-opacity duration-300 opacity-100 mb-4">
+        <div 
+  onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
+  onMouseEnter={() => setIsHoveredThumbsUp(true)}
+  onMouseLeave={() => setIsHoveredThumbsUp(false)}
+  className="flex flex-col items-center cursor-pointer relative space-y-1"
+>
+  <FaCheckCircle
+    size={17} 
+    className="text-[#3A3C3E] hover:text-[#6A849D]" // Adjusted to use className for consistency
+  />
+  <span className="text-xs">Overview</span>
+  {isHoveredThumbsUp && (
+    <span className="absolute whitespace-nowrap bottom-0 mb-8 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+      Positive Aspects
+    </span>
+  )}
+</div>
+        <div 
+  onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
+  onMouseEnter={() => setIsHoveredThumbsUp(true)}
+  onMouseLeave={() => setIsHoveredThumbsUp(false)}
+  className="flex flex-col items-center cursor-pointer relative space-y-1"
+>
+  <FaCheckCircle
+    size={17} 
+    className="text-[#3A3C3E] hover:text-[#6A849D]" // Adjusted to use className for consistency
+  />
+  <span className="text-xs">Positive</span>
+  {isHoveredThumbsUp && (
+    <span className="absolute whitespace-nowrap bottom-0 mb-8 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+      Positive Aspects
+    </span>
+  )}
+</div>
+        <div 
+  onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
+  onMouseEnter={() => setIsHoveredThumbsUp(true)}
+  onMouseLeave={() => setIsHoveredThumbsUp(false)}
+  className="flex flex-col items-center cursor-pointer relative space-y-1"
+>
+  <FaCheckCircle
+    size={17} 
+    className="text-[#3A3C3E] hover:text-[#6A849D]" // Adjusted to use className for consistency
+  />
+  <span className="text-xs">Risks</span>
+  {isHoveredThumbsUp && (
+    <span className="absolute whitespace-nowrap bottom-0 mb-8 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+      Positive Aspects
+    </span>
+  )}
+</div>
+        <div 
+  onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
+  onMouseEnter={() => setIsHoveredThumbsUp(true)}
+  onMouseLeave={() => setIsHoveredThumbsUp(false)}
+  className="flex flex-col items-center cursor-pointer relative space-y-1"
+>
+  <FaCheckCircle
+    size={17} 
+    className="text-[#3A3C3E] hover:text-[#6A849D]" // Adjusted to use className for consistency
+  />
+  <span className="text-xs">Health</span>
+  {isHoveredThumbsUp && (
+    <span className="absolute whitespace-nowrap bottom-0 mb-8 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+      Positive Aspects
+    </span>
+  )}
+</div>
+      </div>
+    )}
+
+
+      <div className="flex justify-between items-center mt-2"> {/* Adjusted for even spacing among icons */}
         {/* Icons for predefined messages */}
       <div 
-        onClick={() => handleIconClick('Simply explain what this company does and what their business model is.')}
-        onMouseEnter={() => setIsHoveredChalkboard(true)}
-        onMouseLeave={() => setIsHoveredChalkboard(false)}
-        className="cursor-pointer relative"
-      >
-        <FaChalkboardTeacher 
-          size={24} 
-          style={{ color: isHoveredChalkboard ? '#6A849D' : '#3A3C3E' }}
-        />
-        {isHoveredChalkboard && (
-          <span className="absolute whitespace-nowrap bottom-full mb-2 px-2 py-1 border bg-white border border-3A3C3E text-black text-xs rounded-md">
-            Company Overview
-          </span>
-        )}
-      </div>
-
-      <div 
-        onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
-        onMouseEnter={() => setIsHoveredThumbsUp(true)}
-        onMouseLeave={() => setIsHoveredThumbsUp(false)}
-        className="cursor-pointer relative"
-      >
-        <FaCheckCircle
-          size={24} 
-          style={{ color: isHoveredThumbsUp ? '#6A849D' : '#3A3C3E' }} // Consider renaming this state to match the new icon
-        />
-        {isHoveredThumbsUp && ( // Consider renaming this state to match the new icon
-          <span className="absolute whitespace-nowrap bottom-full mb-2 px-2 py-1 bg-white border border-3A3C3E text-black text-xs rounded-md">
-            Positive Aspects
-          </span>
-        )}
-      </div>
-
-      <div 
-        onClick={() => handleIconClick('Make an argument for the  financial risks that pertain to the operations of this company and its investment prospects')}
-        onMouseEnter={() => setIsHoveredExclamation(true)}
-        onMouseLeave={() => setIsHoveredExclamation(false)}
-        className="cursor-pointer relative"
-      >
-        <FaExclamationTriangle 
-          size={24} 
-          style={{ color: isHoveredExclamation ? '#6A849D' : '#3A3C3E' }}
-        />
-        {isHoveredExclamation && (
-          <span className="absolute whitespace-nowrap bottom-full mb-2 px-2 py-1 bg-white border border-3A3C3E text-black text-xs rounded-md">
-            Investment Risks
-          </span>
-        )}
-      </div>
-
-      <div 
-        onClick={() => handleIconClick('What is the health of this company')} 
-        onMouseEnter={() => setIsHoveredHeartbeat(true)}
-        onMouseLeave={() => setIsHoveredHeartbeat(false)}
-        className="cursor-pointer relative"
-      >
-        <FaHeartbeat 
-          size={24} 
-          style={{ color: isHoveredHeartbeat ? '#6A849D' : '#3A3C3E' }}
-        />
-        {isHoveredHeartbeat && (
-        <span className="absolute right-0 translate-x-[-2%] whitespace-nowrap bottom-full mb-2 px-2 py-1 bg-white border border-3A3C3E text-black text-xs rounded-md">
-        Company Health
+    onClick={() => handleIconClick('Simply explain what this company does and what their business model is.')}
+    onMouseEnter={() => setIsHoveredChalkboard(true)}
+    onMouseLeave={() => setIsHoveredChalkboard(false)}
+    className="flex flex-col items-center cursor-pointer relative space-y-1"
+  >
+    <FaChalkboardTeacher size={17} className="text-[#3A3C3E] hover:text-[#6A849D]" />
+    <span className="text-xs">Overview</span>
+    {isHoveredChalkboard && (
+      <span className="absolute whitespace-nowrap bottom-0 mb-8 px-2 py-1 border bg-white border-3A3C3E text-black text-xs rounded-md">
+        Company Overview
       </span>
+    )}
+  </div>
 
-        )}
-      </div>
+<div 
+  onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
+  onMouseEnter={() => setIsHoveredThumbsUp(true)}
+  onMouseLeave={() => setIsHoveredThumbsUp(false)}
+  className="flex flex-col items-center cursor-pointer relative space-y-1"
+>
+  <FaCheckCircle
+    size={17} 
+    className="text-[#3A3C3E] hover:text-[#6A849D]" // Adjusted to use className for consistency
+  />
+  <span className="text-xs">Positive</span>
+  {isHoveredThumbsUp && (
+    <span className="absolute whitespace-nowrap bottom-0 mb-8 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+      Positive Aspects
+    </span>
+  )}
+</div>
+
+<div 
+  onClick={() => handleIconClick('Make an argument for the financial risks that pertain to the operations of this company and its investment prospects')}
+  onMouseEnter={() => setIsHoveredExclamation(true)}
+  onMouseLeave={() => setIsHoveredExclamation(false)}
+  className="flex flex-col items-center cursor-pointer relative space-y-1"
+>
+  <FaExclamationTriangle
+    size={17}
+    className="text-[#3A3C3E] hover:text-[#6A849D]"
+  />
+  <span className="text-xs">Risks</span>
+  {isHoveredExclamation && (
+    <span className="absolute whitespace-nowrap bottom-0 mb-8 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+      Investment Risks
+    </span>
+  )}
+</div>
+
+<div 
+  onClick={() => handleIconClick('What is the health of this company')} 
+  onMouseEnter={() => setIsHoveredHeartbeat(true)}
+  onMouseLeave={() => setIsHoveredHeartbeat(false)}
+  className="flex flex-col items-center cursor-pointer relative space-y-1"
+>
+  <FaHeartbeat
+    size={17}
+    className="text-[#3A3C3E] hover:text-[#6A849D]"
+  />
+  <span className="text-xs">Health</span>
+  {isHoveredHeartbeat && (
+    <span className="absolute whitespace-nowrap bottom-0 mb-8 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+      Company Health
+    </span>
+  )}
+</div>
+
 
         </div>
       </div>
@@ -375,7 +576,7 @@ return (
       }
       @media (min-width: 1024px) {
         .chat-container {
-          height: 89vh;
+          height: 88vh;
         }
       }
       @keyframes blink {

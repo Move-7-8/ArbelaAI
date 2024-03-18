@@ -6,7 +6,7 @@ import { MdLink } from 'react-icons/md';
 
 
 
-function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityScore }) {
+function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityScore, widthDiff }) {
 
     const companyName = data?.keyStatistics?.longName || 'Company Name Not Available';
     const ticker = data?.historic?.meta?.symbol  || 'Company Name Not Available';
@@ -39,6 +39,7 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
     const returnOnAssets = data?.financeAnalytics?.returnOnAssets?.raw || 'N/A'
     const returnOnEquity = data?.financeAnalytics?.returnOnEquity?.raw || 'N/A'
     const dividendYield = data?.keyStatistics?.trailingAnnualDividendYield?.raw || 'N/A'
+    const marginRightValue = widthDiff * 0.25;
 
 
     const formatAskPrice = (askPriceObj) => {
@@ -139,7 +140,8 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
 
  return (
     
-    <div className="flex flex-col flex-1 rounded-md mx-auto lg-height-80vh">
+    <div style={{ marginRight: `${marginRightValue}px` }} className="flex flex-col flex-1 rounded-md mx-auto lg-height-80vh">
+        
         {/* Align buttons to the left */}
         <div className="flex justify-center mx-4 pb-4">
             <div
