@@ -25,8 +25,6 @@ const Assistant = ({ onFileChangeTrigger, triggerCreate, setTriggerCreate }) => 
       try {
         const response = await fetch("/api/AI/assistant/create", { method: 'POST' });
         const data = await response.json();
-          console.log('4. Data Returned in Assistant.jsx')
-          console.log('4.', data.assistant)
 
           const newAssistant = data.assistant;
           // console.log("newAssistant", newAssistant);

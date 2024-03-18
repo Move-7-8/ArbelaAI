@@ -1,35 +1,43 @@
 "use client"
-
-
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MdLink } from 'react-icons/md';
 
+function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore, liquidityScore }) {
+    const [isLiveDataLoaded, setIsLiveDataLoaded] = useState(false);
+    console.log('Dashboard Stock Card cacheData',cacheData )
+    useEffect(() => {
+        if (data) {
+            setIsLiveDataLoaded(true); // Set to true once data is loaded
+        }
+    }, [data]); // Depend on data to trigger the effect
 
+    // Prepare your data values, preferring live data if available, otherwise falling back to cache
+   
+    console.log('Dashboard cacheData', cacheData?.price?.marketCap?.longFmt)
+    console.log('Dashboard liveData', data?.price?.marketCap?.longFmt)
 
-function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityScore }) {
+    const companyName = data?.keyStatistics?.longName || cacheData?.keyStatistics?.longName || 'Company Name Not Available';
+    const ticker = data?.historic?.meta?.symbol || cacheData?.historic?.meta?.symbol || 'Ticker Not Available';
+    const marketCap = data?.price?.marketCap?.longFmt || cacheData?.price?.marketCap?.longFmt || 'Not Available';
+    // const marketCap = cacheData?.price?.marketCap?.longFmt || 'Not Available';
 
-    const companyName = data?.keyStatistics?.longName || 'Company Name Not Available';
-    const ticker = data?.historic?.meta?.symbol  || 'Company Name Not Available';
-    const marketCap = data?.price?.marketCap?.longFmt || 'Not Available';
-    const askPrice = data?.financeAnalytics?.currentPrice|| 'Not Available';
-    const prevClose = data?.price?.regularMarketPreviousClose?.raw || 'Not Available';
-    const regularMarketChange = data?.price?.regularMarketChange?.raw || 'Not Available';
+    const askPrice = data?.financeAnalytics?.currentPrice || cacheData?.financeAnalytics?.currentPrice || 'Not Available';
+    const prevClose = data?.price?.regularMarketPreviousClose?.raw || cacheData?.price?.regularMarketPreviousClose?.raw || 'Not Available';
+    const regularMarketChange = data?.price?.regularMarketChange?.raw || cacheData?.price?.regularMarketChange?.raw || 'Not Available';
 
-    const description = data2?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.longBusinessSummary || 'Not Available';
-    const firstSentence = description.split('.')[0] + '.';
-    const link = data2?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.website || 'Not Available';
+    const description = cacheData?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.longBusinessSummary ||
+    data2?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.longBusinessSummary || 
+    'Not Available';
+    const shortDescription = description.length > 200 ? description.substring(0, 200) + '...' : description;
+    const link = cacheData?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.website ||
+    data2?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.website || 
+    'Not Available';
 
-    console.log('DASHBOARD STOCK CARD RENDERED')
+    // const [hover, setHover] = useState(false);
+    const volume = data?.price?.regularMarketVolume?.longFmt || cacheData?.price?.regularMarketVolume?.longFmt || 'Not Available';
 
-    const [hover, setHover] = useState(false);
-
-    console.log('Dashboard Data 1', data)
-
-    console.log('Dashboard Data 2', data2)
-
-    const volume = data?.price?.regularMarketVolume?.longFmt || 'Not Available';
-
-    //New Data for Ratios Connor added: 
+    //New Data for Ratios Connor added:
+    //No need for cached data here 
     const EPS = data?.keyStatistics?.epsCurrentYear?.raw || 'N/A'
     const peRatioLagging = data?.keyStatistics?.priceEpsCurrentYear?.raw || 'N/A'
     const peRatioForward = data?.keyStatistics?.forwardPE?.raw || 'N/A'
@@ -40,11 +48,10 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
     const returnOnEquity = data?.financeAnalytics?.returnOnEquity?.raw || 'N/A'
     const dividendYield = data?.keyStatistics?.trailingAnnualDividendYield?.raw || 'N/A'
 
-
     const formatAskPrice = (askPriceObj) => {
         // Check if askPriceObj is an object with a 'raw' property
         if (askPriceObj && typeof askPriceObj === 'object' && 'raw' in askPriceObj) {
-            return `$${Number(askPriceObj.raw).toFixed(3)}`; // Use raw value
+            return `$${Number(askPriceObj.raw).toFixed(2)}`; // Use raw value
         }
 
         // If askPriceObj is a number, format it to three decimal places
@@ -62,8 +69,6 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
                           : Number(askPrice);
     const previousClose = Number(prevClose);
 
-    console.log('current price 2', currentPrice)
-    console.log('previous close 2', previousClose)
     // Calculate price change and percentage change
     // Calculate price change and percentage change
     const priceChange = regularMarketChange;
@@ -87,7 +92,6 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
     // Convert percentageChange to a number for safe comparison and display
     percentageChange = parseFloat(percentageChange);
 
-
         // Custom function to format price change
         const formatPriceChange = (change) => {
             // Convert change to a number to ensure numeric operations are valid
@@ -98,7 +102,6 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
         
             // Ensure the number is not NaN before proceeding
             if (isNaN(numericChange)) {
-                console.log('Change is not a number:', change);
                 return '0.00'; // Or any fallback value you prefer
             }
         
@@ -111,7 +114,6 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
             }
         
             // For larger changes, use two decimal places
-            console.log('change', numericChange)
             return numericChange.toFixed(2);
         };
                 
@@ -126,19 +128,14 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
         color: 'red'
     };
 
-
-
     const [activeButton, setActiveButton] = useState('button1');
-
 
     const handleLinkClick = (e, url) => {
     e.preventDefault(); // Prevent the default anchor tag behavior
     window.open(url, '_blank', 'noopener,noreferrer'); // Open the link in a new tab
     };
 
-
- return (
-    
+    return (
     <div className="flex flex-col flex-1 rounded-md mx-auto lg-height-80vh">
         {/* Align buttons to the left */}
         <div className="flex justify-center mx-4 pb-4">
@@ -160,17 +157,16 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
                 </button>
             </div>
         </div>
-  <style>
-    {`
-        @media (min-width: 1024px) {
-        .lg-height-80vh {
-            min-height: 80vh; /* Allows growth beyond 82vh if content requires, but not smaller */
-        }
-        }
+        <style>
+            {`
+                @media (min-width: 1024px) {
+                .lg-height-80vh {
+                    min-height: 80vh; /* Allows growth beyond 82vh if content requires, but not smaller */
+                }
+                }
 
-    `}
-  </style>
-
+            `}
+        </style>
         <div className="flex flex-1 mx-4 mb-2 flex-col relative rounded-md p-2" style={{ minHeight: '0%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
             {/* Blurred Background */}
             <div className="absolute inset-0 bg-opacity-50" style={{ filter: 'blur(1px)' }}></div>
@@ -235,41 +231,34 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
 
         {activeButton === 'button1' && (
             <div className="flex flex-col flex-grow">
-                {!data || !data2 ? (
+                {!cacheData ? (
                     // Skeleton loaders for company name and description
                     <div className="mb-2">
                         <div className="bg-gray-200 h-6 w-1/2 rounded"></div> {/* Skeleton for Company Name */}
-                        <div className="bg-gray-200 h-4 mt-2 w-3/4 rounded mt-2"></div> {/* Skeleton for Company Description */}
+                        <div className="bg-gray-200 h-4 w-3/4 rounded mt-2"></div> {/* Skeleton for Company Description */}
                     </div>
                 ) : (
                     // Actual Company Name and Description
                     
                 <div className="mb-2">
-                <h2 className="text-xl font-bold text-[#3A3C3E]">{`${companyName} - ${ticker}`}</h2>
-        <div>
-            <p className="text-sm text-gray-600 mt-2">{firstSentence}</p>
+                <h2 className="text-xl font-bold text-[#3A3C3E]">{`${companyName}  (${ticker})`}</h2>
+            <div>
+            <p className="text-sm text-gray-600 mt-2">{shortDescription}</p>
         </div>
         
-{link !== 'Not Available' && (
-    <div className="mt-2">
-        <a href={link} 
-        onClick={(e) => handleLinkClick(e, link)}
-        className="text-xs relative z-2 bg-gray-200 rounded px-2 py-1 transition-colors duration-300 hover:bg-[#6A849D] hover:text-white">
-        Website
-        </a>
-    </div>
-)}
-
-
-
-        </div>
-
+        {link !== 'Not Available' && (
+            <div className="mt-2">
+                <a href={link} 
+                onClick={(e) => handleLinkClick(e, link)}
+                className="text-xs relative z-2 bg-gray-200 rounded px-2 py-1 transition-colors duration-300 hover:bg-[#6A849D] hover:text-white">
+                Website
+                </a>
+            </div>
         )}
-
-
-        {/* Price and Increase Display */}
+        </div>
+        )}
         <div className="mt-2 flex justify-between items-center w-full">
-            {!data ? (
+            {!cacheData ? (
                 // Skeleton loader displayed when data is not available
                 <>
                     {/* Skeleton for Stock Price */}
@@ -287,7 +276,7 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
                     {/* Stock Price - Left Aligned */}
                     <div>
                         <span className="text-gray-500 uppercase text-xs block mb-2">Price</span>
-                        <span className="text-black font-bold text-l text-[#3A3C3E]">{formatAskPrice(askPrice)}</span>
+                        <span className="font-bold text-l text-[#3A3C3E]">{formatAskPrice(askPrice)}</span>
                     </div>
 
                     {/* Price Increase - Right Aligned */}
@@ -317,90 +306,69 @@ function DashboardStockCard({ data, data2, industry, volatilityScore, liquidityS
                 </>
             )}
         </div>
-<div className="flex flex-col flex-grow space-y-4 md:justify-between">
-  {/* Top Divider */}
-  <div className="border-t border-gray-300 mt-4"></div>
-            {/* Conditional Rendering for Skeleton or Actual Data */}
-            {!data ? (
-                // Skeleton Loaders
-                <>
-                {Array.from({ length: 6 }).map((_, index) => (
-                    <div key={index} className="flex justify-between my-2 sm:space-x-2 md:space-x-4 lg:space-x-6">
-                        <span className="bg-gray-200 h-4 sm:w-2/3 md:w-1/2 lg:w-1/2 rounded"></span>
-                        <span className="bg-gray-200 h-4 sm:w-2/3 md:w-1/2 lg:w-1/2 rounded"></span>
-                    </div>
-                ))}
-
-                </>
-            ) : (
-            <>
-                <div className="flex justify-between items-center my-2" style={{ maxWidth: '100%' }}>
-                <span className="text-gray-500 uppercase text-xs flex-shrink-0">Sector:</span>
-                <div className="flex-grow text-right ml-4">
-                    <span className="text-sm">
-                    {industry || 'N/A'}
-                    </span>
-                </div>
-                </div>
-
-                 <div className="flex  items-center justify-between my-2">
-                    <span className="text-gray-500 uppercase text-xs">Market Cap:</span>
-                    <span className="text-sm">${marketCap}</span> {/* Added dollar sign here */}
-                </div>
-                <div className="flex items-center justify-between my-2">
-                    <span className="text-gray-500 uppercase text-xs">24hr Volume:</span>
-                    <span className="text-sm">${volume}</span> {/* And here */}
-                </div>
-
-                        <div className="flex items-center justify-between my-2 relative group">
-                        <span className="text-gray-500 uppercase text-xs">Dividend Yield:</span>
-                        <span className="text-sm">{dividendYield}</span>
-                        <span className="tooltiptext  border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bottom-full mb-2">
-                            Percentage of the share paid in dividends.
-                        </span>
-                        </div>
-
-                        <div className="flex items-center justify-between my-2 relative group">
-                        <span className="text-gray-500 uppercase text-xs">Volatility Score:</span>
-                        <span className="text-sm">{volatilityScore}</span>
-                        <span className="tooltiptext border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bottom-full mb-2">
-                            Ranks assets on a scale of 1-10 on how volatile they are. 
-                        </span>
-                        </div>
-                        <div className="flex items-center justify-between my-2 relative group">
-                        <span className="text-gray-500 uppercase text-xs">Liquidity Score:</span>
-                        <span className="text-sm">{liquidityScore}</span>
-                        <span className="tooltiptext  border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300  bottom-full mb-2">
-                            Ranks assets on a scale of 1-10 on how liquid they are.
-                        </span>
-                        </div>
-
+        <div className="flex flex-col flex-grow space-y-4 md:justify-between">
+        {/* Top Divider */}
+        <div className="border-t border-gray-300 mt-4"></div>
+                    {/* Conditional Rendering for Skeleton or Actual Data */}
+                    {!cacheData ? (
+                        // Skeleton Loaders
+                        <>
+                        {Array.from({ length: 6 }).map((_, index) => (
+                            <div key={index} className="flex justify-between my-2 sm:space-x-2 md:space-x-4 lg:space-x-6">
+                                <span className="bg-gray-200 h-4 sm:w-2/3 md:w-1/2 lg:w-1/2 rounded"></span>
+                                <span className="bg-gray-200 h-4 sm:w-2/3 md:w-1/2 lg:w-1/2 rounded"></span>
+                            </div>
+                        ))}
                         </>
-                    )}
+                    ) : (
+                    <>
+                        <div className="flex justify-between items-center my-2" style={{ maxWidth: '100%' }}>
+                        <span className="text-gray-500 uppercase text-xs flex-shrink-0">Sector:</span>
+                        <div className="flex-grow text-right ml-4">
+                            <span className="text-sm">
+                            {industry || 'N/A'}
+                            </span>
+                        </div>
+                        </div>
+                        <div className="flex  items-center justify-between my-2">
+                            <span className="text-gray-500 uppercase text-xs">Market Cap:</span>
+                            <span className="text-sm">${marketCap}</span> {/* Added dollar sign here */}
+                        </div>
+                        <div className="flex items-center justify-between my-2">
+                            <span className="text-gray-500 uppercase text-xs">24hr Volume:</span>
+                            <span className="text-sm">${volume}</span> {/* And here */}
+                        </div>
+                            <div className="flex items-center justify-between my-2 relative group">
+                            <span className="text-gray-500 uppercase text-xs">Dividend Yield:</span>
+                            <span className="text-sm">
+                            {dividendYield !== undefined ? `${Number(dividendYield).toFixed(2)}%` : 'N/A'}
+                            </span>
+                            <span className="tooltiptext  border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bottom-full mb-2">
+                                Percentage of the share paid in dividends.
+                            </span>
+                            </div>
+                            <div className="flex items-center justify-between my-2 relative group">
+                            <span className="text-gray-500 uppercase text-xs">Volatility Score:</span>
+                            <span className="text-sm">{volatilityScore}</span>
+                            <span className="tooltiptext border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bottom-full mb-2">
+                                Ranks assets on a scale of 1-10 on how volatile they are. 
+                            </span>
+                            </div>
+                            <div className="flex items-center justify-between my-2 relative group">
+                            <span className="text-gray-500 uppercase text-xs">Liquidity Score:</span>
+                            <span className="text-sm">{liquidityScore}</span>
+                            <span className="tooltiptext  border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300  bottom-full mb-2">
+                                Ranks assets on a scale of 1-10 on how liquid they are.
+                            </span>
+                            </div>
+                            </>
+                        )}
+                        </div>
+                    </div>   
+                    )}     
+                </div>      
             </div>
-             </div>   
-  
-            )}     
-        </div>      
-          
-    </div>
-    {/* Buttons Container */}
-    {/* <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
-    <button className="uppercase text-sm rounded-full py-1 px-3 w-32 transition duration-300 ease-in-out hover:scale-105 mb-4 ml-4 mr-4 border border-[#FF6665] text-[#FF6665]" 
-            style={{ backgroundColor: 'white' }}>
-        Portfolio
-    </button> 
-
-
-    {/* Right Aligned Button */}
-    {/* <button className="text-white text-sm uppercase rounded-full py-1 px-3 w-32 transition duration-300 ease-in-out hover:scale-105 mb-4 ml-4 mr-4" 
-        style={{ backgroundColor: '#FF6665' }}>
-        Analyse
-    </button> 
-</div> */} 
-
-
-</div>
+        </div>
     );
 }
 

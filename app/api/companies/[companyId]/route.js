@@ -2,30 +2,27 @@ import fetch from 'node-fetch'; // Ensure node-fetch is imported
 
 export async function POST(req, res) {
   const request_data = await req.json(); // Parsing JSON from the incoming request.
+  const ticker = request_data.ticker; 
 
-  const ticker = request_data.ticker; // 
+
 
   // Replace 'Your-RapidAPI-Key' and 'Your-RapidAPI-Host' with actual values from RapidAPI
   const apiKey = process.env.RAPID_API_KEY
   const apiHost = process.env.RAPID_API_HOST
   
-// Array of API endpoint paths
-const endpoints = [
-  { key: 'price', path: `price/${ticker}` },
-  { key: 'historic', path: `historic/${ticker}/1d/1y` },
-  { key: 'historic30Days', path: `historic/${ticker}/1h/30d` }, // 30 days at 1-hour intervals
-  { key: 'historic7Days', path: `historic/${ticker}/30m/7d` }, // 7 days at 30-minute intervals
-  // { key: 'balanceSheet', path: `balance-sheet/${ticker}` },
-  // { key: 'earnings', path: `earnings/${ticker}` },
-  { key: 'financeAnalytics', path: `finance-analytics/${ticker}` },
-  // { key: 'news', path: `news/${ticker}` },
-  // { key: 'earningsTrend', path: `earnings-trend/${ticker}` },
-  { key: 'keyStatistics', path: `key-statistics/${ticker}` }
-];
+  // Array of API endpoint paths
+  const endpoints = [
+    { key: 'price', path: `price/${ticker}` },
+    { key: 'historic', path: `historic/${ticker}/1d/1y` },
+    { key: 'historic30Days', path: `historic/${ticker}/1h/30d` }, // 30 days at 1-hour intervals
+    { key: 'historic7Days', path: `historic/${ticker}/30m/7d` }, // 7 days at 30-minute intervals
+    { key: 'financeAnalytics', path: `finance-analytics/${ticker}` },
+    { key: 'keyStatistics', path: `key-statistics/${ticker}` }
+  ];
 
-function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+  function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
   try {
     // Initialize an empty array to hold the fetched data
@@ -55,6 +52,7 @@ function delay(ms) {
     }
 
     const organizedData = allData.reduce((acc, data) => ({ ...acc, ...data }), {});
+
     return new Response(JSON.stringify(organizedData), { status: 200 });
 
   } catch (error) {
@@ -62,4 +60,3 @@ function delay(ms) {
     return new Response(JSON.stringify({ error: 'Server Error' }), { status: 500 });
   }
 }
-

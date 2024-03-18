@@ -27,7 +27,7 @@ export async function POST(req, res) {
             `, 
             name: 'Stock Analyst',
             tools: [{type: 'retrieval'}],
-            model: 'gpt-4-1106-preview',
+            model: 'gpt-4-0125-preview',
         });
 
         console.log('3. Back end Assistant Create', assistant.id )

@@ -10,6 +10,9 @@ const stockSchema = new Schema({
   GICsIndustryGroup: {
     type: String,
   },
+  Exchange: {
+    type: String,
+  },
   Price: {
     type: Schema.Types.Mixed,
   },
@@ -77,7 +80,15 @@ const stockSchema = new Schema({
   LiquidityScore: {
     type: Schema.Types.Mixed,
   },
-
+  historicData: [{
+    date: Date,
+    open: Number,
+    close: Number,
+    high: Number,
+    low: Number,
+    volume: Number,
+    // Add other fields as necessary based on the API response
+  }],
 
 });
   

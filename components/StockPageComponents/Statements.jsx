@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import StatementTable from './StatementTables';
 
-const FinancialStatements = ({ data, data2 }) => {
+const FinancialStatements = ({ data, data2, cacheData }) => {
     console.log('data2', data2)
     const [activeStatement, setActiveStatement] = useState('income');
 
@@ -22,7 +22,7 @@ const FinancialStatements = ({ data, data2 }) => {
     };
 
     // If data is not available, render skeleton loader
-    if (!data2) {
+    if (!cacheData) {
         return (
             <div className="animate-pulse">
                 <div className="bg-gray-200 h-64 w-full mt-4 rounded"></div>
@@ -47,37 +47,6 @@ const FinancialStatements = ({ data, data2 }) => {
     const balanceSheetData = activeStatement === 'balance' && data2 ? {
 
         endDate: data2?.['get-balance']?.balanceSheetHistory?.balanceSheetStatements?.[0]?.endDate?.fmt || 'N/A',
-
-        // TotalAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTotalAssets, defaultReportedValue),
-        // CashCashEquivalentsFederalFundsSold: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCashCashEquivalentsAndFederalFundsSold, defaultReportedValue),
-        // CashAndCashEquivalents: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCashAndCashEquivalents, defaultReportedValue),
-        // MoneyMarketInvestments: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualMoneyMarketInvestments, defaultReportedValue),
-        // LongTermEquityInvestment: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualLongTermEquityInvestment, defaultReportedValue),
-        // DerivativeAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualDerivativeAssets, defaultReportedValue),
-        // NetLoan: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNetLoan, defaultReportedValue),
-        // Receivables: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualReceivables, defaultReportedValue),
-        // PrepaidAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualPrepaidAssets, defaultReportedValue),
-        // NetPPE: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNetPPE, defaultReportedValue),
-        // GoodwillAndOtherIntangibleAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualGoodwillAndOtherIntangibleAssets, defaultReportedValue),
-        // DefinedPensionBenefit: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualDefinedPensionBenefit, defaultReportedValue),
-        // AssetsHeldForSale: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualAssetsHeldForSale, defaultReportedValue),
-        // OtherAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherAssets, defaultReportedValue),
-        // TotalLiabilitiesNetMinorityInterest: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTotalLiabilitiesNetMinorityInterest, defaultReportedValue),
-        // TotalDeposits: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTotalDeposits, defaultReportedValue),
-        // TradingLiabilities: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTradingLiabilities, defaultReportedValue),
-        // DerivativeProductLiabilities: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualDerivativeProductLiabilities, defaultReportedValue),
-        // LongTermDebtAndCapitalLeaseObligation: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualLongTermDebtAndCapitalLeaseObligation, defaultReportedValue),
-        // OtherLiabilities: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherLiabilities, defaultReportedValue),
-        // TotalEquityGrossMinorityInterest: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTotalEquityGrossMinorityInterest, defaultReportedValue),
-        // StockholdersEquity: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualStockholdersEquity, defaultReportedValue),
-        // MinorityInterest: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualMinorityInterest, defaultReportedValue),
-        // TotalCapitalization: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTotalCapitalization, defaultReportedValue),
-        // CommonStockEquity: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCommonStockEquity, defaultReportedValue),
-        // NetTangibleAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNetTangibleAssets, defaultReportedValue),
-        // InvestedCapital: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualInvestedCapital, defaultReportedValue),
-        // TangibleBookValue: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTangibleBookValue, defaultReportedValue),
-        // TotalDebt: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTotalDebt, defaultReportedValue),
-        // NetDebt: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNetDebt, defaultReportedValue),
 
         //NEW FIELDS
         InvestmentInFinancialAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualInvestmentinFinancialAssets, defaultReportedValue),
@@ -222,28 +191,83 @@ const FinancialStatements = ({ data, data2 }) => {
         DeferredAssets:findFirstValidData(data2?.['get-balance']?.timeSeries?.annualDeferredAssets, defaultReportedValue)
     } : null;
 
-    const incomeStatementData = activeStatement === 'income' && data2 ? {
+    const incomeStatementData = activeStatement === 'income' && cacheData ? {
 
-        endDate: data2?.['get-balance']?.balanceSheetHistory?.balanceSheetStatements?.[0]?.endDate?.fmt || 'N/A',
-        TrailingBasicAverageShares: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingBasicAverageShares, defaultReportedValue),
-        TrailingBasicEPS: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingBasicEPS, defaultReportedValue),
-        TrailingCostOfRevenue: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingCostOfRevenue, defaultReportedValue),
-        TrailingDilutedAverageShares: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingDilutedAverageShares, defaultReportedValue),
-        TrailingDilutedEPS: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingDilutedEPS, defaultReportedValue),
-        TrailingGrossProfit: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingGrossProfit, defaultReportedValue),
-        TrailingInterestExpense: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingInterestExpense, defaultReportedValue),
-        TrailingNetIncome: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingNetIncome, defaultReportedValue),
-        TrailingNetIncomeCommonStockholders: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingNetIncomeCommonStockholders, defaultReportedValue),
-        TrailingNetIncomeContinuousOperations: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingNetIncomeContinuousOperations, defaultReportedValue),
-        TrailingOperatingExpense: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingOperatingExpense, defaultReportedValue),
-        TrailingOperatingIncome: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingOperatingIncome, defaultReportedValue),
-        TrailingOtherIncomeExpense: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingOtherIncomeExpense, defaultReportedValue),
-        TrailingPretaxIncome: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingPretaxIncome, defaultReportedValue),
-        TrailingResearchAndDevelopment: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingResearchAndDevelopment, defaultReportedValue),
-        TrailingSellingGeneralAndAdministration: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingSellingGeneralAndAdministration, defaultReportedValue),
-        TrailingTaxProvision: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingTaxProvision, defaultReportedValue),
-        TrailingTotalRevenue: findFirstValidData(data2?.['get-income']?.timeSeries?.trailingTotalRevenue, defaultReportedValue),
-        } : null;
+        endDate: (cacheData?.['get-balance']?.balanceSheetHistory?.balanceSheetStatements?.[0]?.endDate?.fmt ||
+            data2?.['get-balance']?.balanceSheetHistory?.balanceSheetStatements?.[0]?.endDate?.fmt) || 'N/A',
+
+        TrailingBasicAverageShares: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingBasicAverageShares ||
+            data2?.['get-income']?.timeSeries?.trailingBasicAverageShares, defaultReportedValue),
+
+        TrailingBasicEPS: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingBasicEPS ||
+            data2?.['get-income']?.timeSeries?.trailingBasicEPS, defaultReportedValue),
+
+        TrailingCostOfRevenue: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingCostOfRevenue ||
+            data2?.['get-income']?.timeSeries?.trailingCostOfRevenue, defaultReportedValue),
+
+        TrailingDilutedAverageShares: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingDilutedAverageShares ||
+            data2?.['get-income']?.timeSeries?.trailingDilutedAverageShares, defaultReportedValue),
+
+        TrailingDilutedEPS: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingDilutedEPS ||
+            data2?.['get-income']?.timeSeries?.trailingDilutedEPS, defaultReportedValue),
+        
+        TrailingGrossProfit: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingGrossProfit ||
+            data2?.['get-income']?.timeSeries?.trailingGrossProfit, defaultReportedValue),
+        
+        TrailingInterestExpense: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingInterestExpense ||
+            data2?.['get-income']?.timeSeries?.trailingInterestExpense, defaultReportedValue),
+        
+        TrailingNetIncome: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingNetIncome ||
+            data2?.['get-income']?.timeSeries?.trailingNetIncome, defaultReportedValue),
+        
+        TrailingNetIncomeCommonStockholders: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingNetIncomeCommonStockholders ||
+            data2?.['get-income']?.timeSeries?.trailingNetIncomeCommonStockholders, defaultReportedValue),
+        
+        TrailingNetIncomeContinuousOperations: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingNetIncomeContinuousOperations ||
+            data2?.['get-income']?.timeSeries?.trailingNetIncomeContinuousOperations, defaultReportedValue),
+        
+        TrailingOperatingExpense: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingOperatingExpense ||
+            data2?.['get-income']?.timeSeries?.trailingOperatingExpense, defaultReportedValue),
+
+        TrailingOperatingIncome: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingOperatingIncome ||
+            data2?.['get-income']?.timeSeries?.trailingOperatingIncome, defaultReportedValue),
+        
+        TrailingOtherIncomeExpense: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingOtherIncomeExpense ||
+            data2?.['get-income']?.timeSeries?.trailingOtherIncomeExpense, defaultReportedValue),
+        
+        TrailingPretaxIncome: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingPretaxIncome ||
+            data2?.['get-income']?.timeSeries?.trailingPretaxIncome, defaultReportedValue),
+        
+        TrailingResearchAndDevelopment: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingResearchAndDevelopment ||
+            data2?.['get-income']?.timeSeries?.trailingResearchAndDevelopment, defaultReportedValue),
+        
+        TrailingSellingGeneralAndAdministration: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingSellingGeneralAndAdministration ||
+            data2?.['get-income']?.timeSeries?.trailingSellingGeneralAndAdministration, defaultReportedValue),
+        
+        TrailingTaxProvision: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingTaxProvision ||
+            data2?.['get-income']?.timeSeries?.trailingTaxProvision, defaultReportedValue),
+        
+        TrailingTotalRevenue: findFirstValidData(
+            cacheData?.['get-income']?.timeSeries?.trailingTotalRevenue ||
+            data2?.['get-income']?.timeSeries?.trailingTotalRevenue, defaultReportedValue),
+    } : null;
 
 
     const cashflowData = activeStatement === 'cash' && data2  ? {

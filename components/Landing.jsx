@@ -4,7 +4,7 @@ import InvestorLogos from "@components/InvestorLogos";
 import Features from "./Features";
 import CronTest from '@components/CronTest'
 import AssistantTest from '@components/Test'
-import Test from '@components/Test'
+import EdgarTest from '@components/EdgarTest'
 
 const Landing = ({ setIsLandingVisible }) => {
     return (
@@ -22,8 +22,8 @@ const Landing = ({ setIsLandingVisible }) => {
             
             <h2 className="text-gray-500 uppercase text-md mb-4 mt-4">Supported By</h2>
             <InvestorLogos/>
-            {/* <CronTest/> */}
-            {/* <Test /> */}
+            <CronTest/>
+            <EdgarTest />
         </div>
     )
 }

@@ -8,7 +8,7 @@ export async function POST(req, res) {
   
     // Replace 'Your-RapidAPI-Key' and 'Your-RapidAPI-Host' with actual values from RapidAPI
     const apiKey = process.env.RAPID_API_KEY
-    const apiHost = process.env.RAPID_API_HOST_2
+    const apiHost2 = process.env.RAPID_API_HOST_2
     // console.log('COMPANY2 API KEY: ', apiHost);
     // Array of API endpoint paths
     const paramsMap = {
@@ -26,7 +26,7 @@ export async function POST(req, res) {
         },
         headers: {
           'X-RapidAPI-Key': apiKey,
-          'X-RapidAPI-Host': apiHost
+          'X-RapidAPI-Host': apiHost2
         }
       },
 
@@ -41,10 +41,9 @@ export async function POST(req, res) {
         },
         headers: {
           'X-RapidAPI-Key': apiKey,
-          'X-RapidAPI-Host': apiHost
+          'X-RapidAPI-Host': apiHost2
         }
       },
-
 
       //b. Get News endpoint  
         //Recent news articles, 
@@ -59,7 +58,7 @@ export async function POST(req, res) {
           headers: {
             'content-type': 'text/plain',
             'X-RapidAPI-Key': apiKey,
-            'X-RapidAPI-Host': apiHost
+            'X-RapidAPI-Host': apiHost2
             },
           data: 'Pass in the value of uuids field returned right in this endpoint to load the next page, or leave empty to load first page'
         },
@@ -75,7 +74,7 @@ export async function POST(req, res) {
         },
         headers: {
           'X-RapidAPI-Key': apiKey,
-          'X-RapidAPI-Host': apiHost
+          'X-RapidAPI-Host': apiHost2
         }
       },
 
@@ -90,26 +89,12 @@ export async function POST(req, res) {
           },
             headers: {
             'X-RapidAPI-Key': apiKey,
-            'X-RapidAPI-Host': apiHost
+            'X-RapidAPI-Host': apiHost2
           }
         },
   };
 
-
-        //Filter for only Aus stocks, only for catalog page
-      // 'get-similar': {
-      //   method: 'GET',
-      //   url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-similarities',
-      //   params: {symbol: ticker},
-      //   headers: {
-      //     'X-RapidAPI-Key': apiKey,
-      //     'X-RapidAPI-Host': apiHost
-      // }
-      // },
-
       console.log('ROUTE ticker', ticker);
-
-
       try {
         const fetchPromises = Object.entries(paramsMap).map(([key, endpoint]) => {
             const url = new URL(endpoint.url);
@@ -166,7 +151,7 @@ export async function POST(req, res) {
     //   }, 
     //   headers: {
     //     'X-RapidAPI-Key': apiKey,
-    //     'X-RapidAPI-Host': apiHost
+    //     'X-RapidAPI-Host': apiHost2
     //   }
     // },
         //i. Daily Gainers

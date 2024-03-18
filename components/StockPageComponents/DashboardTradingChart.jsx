@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { select, scaleLinear, axisBottom, axisLeft } from 'd3';
 
-const TradingChartContainer = ({ data }) => {
+const TradingChartContainer = ({ data, cacheData}) => {
 
     const [timeFrame, setTimeFrame] = useState('1y'); // Default to 1 year
     const [isDataLoading, setDataLoading] = useState(true);
@@ -44,11 +44,11 @@ const TradingChartContainer = ({ data }) => {
             case '1y':
             default:
                 return {
-                    volumes: data?.historic?.indicators?.quote[0]?.volume.map(vol => vol === null ? 0 : vol) || [],
-                    timestamps: data?.historic?.timestamp || [],
-                    closingPrices: processClosingPrices(data?.historic?.indicators?.quote[0]?.close || []),
-                    askPriceRaw: data?.financeAnalytics?.currentPrice?.raw,
-                    prevClose:data?.historic?.meta?.chartPreviousClose,
+                    volumes: cacheData?.historic?.indicators?.quote[0]?.volume.map(vol => vol === null ? 0 : vol) || [],
+                    timestamps: cacheData?.historic?.timestamp || [],
+                    closingPrices: processClosingPrices(cacheData?.historic?.indicators?.quote[0]?.close || []),
+                    askPriceRaw: cacheData?.financeAnalytics?.currentPrice?.raw,
+                    prevClose: cacheData?.historic?.meta?.chartPreviousClose,
                 };
         }
     };
@@ -95,10 +95,10 @@ const TradingChartContainer = ({ data }) => {
         // Clear existing chart
         d3.select(chartRef.current).selectAll('*').remove();
 
-        if (data) {
+        if (cacheData) {
 
 
-             if (chartRef.current && data) {
+             if (chartRef.current && cacheData) {
                 const margins = { top: 20, right: 30, bottom: 30, left: 50 };
                 const chartWidth = chartRef.current.clientWidth - margins.left - margins.right;
                 const chartHeight = chartRef.current.clientHeight - margins.top - margins.bottom;
@@ -348,7 +348,7 @@ const TradingChartContainer = ({ data }) => {
         }
     };
     useEffect(() => {
-        if (data && Object.keys(data).length > 0) {
+        if (cacheData && Object.keys(cacheData).length > 0) {
             // Assuming the data is now fully loaded and ready
             drawChart(); // Draw the chart
             setDataLoading(false); // Update loading state
@@ -365,7 +365,7 @@ const TradingChartContainer = ({ data }) => {
 
         // Cleanup
         return () => window.removeEventListener('resize', handleResize);
-    }, [data, isDataLoading]); // Add isDataLoading as a dependency
+    }, [cacheData, isDataLoading]); // Add isDataLoading as a dependency
 
 const handleTimeFrameChange = (newTimeFrame) => {
     setTimeFrame(newTimeFrame);
