@@ -2,7 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { MdLink } from 'react-icons/md';
 
-function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore, liquidityScore }) {
+function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore, liquidityScore, widthDiff }) {
+
+    const marginRightValue = widthDiff * 0.25;
+
     const [isLiveDataLoaded, setIsLiveDataLoaded] = useState(false);
     console.log('Dashboard Stock Card cacheData',cacheData )
     useEffect(() => {
