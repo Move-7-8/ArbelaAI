@@ -44,7 +44,9 @@ function Run({ messageSent, onRunComplete, onRunFinal }) {
     const intervalId = setInterval(async () => {
         try {
             const url = `/api/AI/run/retrieve?threadId=${thread}&runId=${runId}`;
-            const response = await fetch(url);
+            const response = await fetch(url, {
+              cache: 'no-store',
+            });
           
             if (!response.ok) {
               throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
@@ -94,7 +96,10 @@ function Run({ messageSent, onRunComplete, onRunFinal }) {
 
     setCreating(true);
     try {
-        const response = await fetch(`/api/AI/run/create?threadId=${thread}&assistantId=${assistant.id}`);
+        const response = await fetch(`/api/AI/run/create?threadId=${thread}&assistantId=${assistant.id}`, {
+          cache: 'no-store',
+
+        });
         if (!response.ok) {
           throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
         }

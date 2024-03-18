@@ -108,7 +108,6 @@ export async function POST(req, res) {
       // },
 
       console.log('ROUTE ticker', ticker);
-      console.log('ROUTE paramsMap', paramsMap);
 
 
       try {

@@ -24,31 +24,37 @@ useEffect(() => {
   }
 }, [fileChangeCompleted]);
 
-  const handleCreate = async () => {
-    setCreating(true);
-    try {
-        const response = await fetch("/api/AI/thread/create");
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const responseData = await response.json();
-        console.log("Thread Data received:", responseData);
-        const newThread = responseData.thread.id;
-        // console.log("response", newThread);
-        setThread(newThread);
-        localStorage.setItem("thread", JSON.stringify(newThread));
-        onThreadCreated(); // Call the callback once the thread is created
-        console.log("Console log 1")
-        newThreadFunctionCaller()
-        console.log("Console log 2")
-
-    } catch (error) {
-        console.error(error);
-        setMessage("Failed to create thread"); // Update message
-    } finally {
-        setCreating(false);
+const handleCreate = async () => {
+  setCreating(true);
+  try {
+    // Add method: 'POST' in the fetch options
+    const response = await fetch("/api/AI/thread/create", {
+      method: 'POST', // Specify the method
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
-  };
+    const responseData = await response.json();
+    console.log("Thread Data received:", responseData);
+    const newThread = responseData.thread.id;
+    setThread(newThread);
+    localStorage.setItem("thread", JSON.stringify(newThread));
+    onThreadCreated(); // Call the callback once the thread is created
+    console.log("Console log 1")
+    newThreadFunctionCaller()
+    console.log("Console log 2")
+
+  } catch (error) {
+    console.error(error);
+    setMessage("Failed to create thread"); // Update message
+  } finally {
+    setCreating(false);
+  }
+};
 
 //   const handleDelete = async () => {
 //     if (!thread) throw new Error("No thread to delete");
