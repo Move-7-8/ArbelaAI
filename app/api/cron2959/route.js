@@ -200,7 +200,7 @@ async function processStocksInBatch(stocks, apiKey, apiHost, apiHost2) {
 }
 
 export async function GET(req, res) {
-    console.log('Cron job 2 triggered');
+    console.log('Cron job 2 triggereddd');
     try {
         await connectToDB();
         const apiKey = process.env.RAPID_API_KEY;
