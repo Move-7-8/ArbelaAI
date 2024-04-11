@@ -4,7 +4,8 @@ import debounce from 'lodash.debounce';
 import StockCard from './StockCard';
 import { categoryMap } from '../constants';
 
-// CATALOG COMPONENT
+// CATALOG COMPONENTS
+
 function Catalog({ searchText, selectedCategory, preloadedData, sortBy }) {
     const [tickers, setTickers] = useState(preloadedData || []);
     const [visibleCount, setVisibleCount] = useState(12);
