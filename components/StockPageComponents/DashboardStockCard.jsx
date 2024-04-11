@@ -354,7 +354,7 @@ function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore,
                                 Percentage of the share paid in dividends.
                             </span>
                             </div>
-                            <div className="flex items-center justify-between my-2 relative group">
+                            {/* <div className="flex items-center justify-between my-2 relative group">
                             <span className="text-gray-500 uppercase text-xs">Volatility Score:</span>
                             <span className="text-sm">{volatilityScore}</span>
                             <span className="tooltiptext border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bottom-full mb-2">
@@ -367,7 +367,7 @@ function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore,
                             <span className="tooltiptext  border border-3A3C3E  absolute w-48 bg-white text-xs text-black text-center rounded-md p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300  bottom-full mb-2">
                                 Ranks assets on a scale of 1-10 on how liquid they are.
                             </span>
-                            </div>
+                            </div> */}
                             </>
                         )}
                         </div>

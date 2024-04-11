@@ -1,10 +1,13 @@
 import fetch from 'node-fetch'; // Ensure node-fetch is imported
 import { connectToDB } from '@utils/database';
 import Stock from '@models/stock';
-import {Redis} from 'ioredis';
+import { createClient } from '@vercel/kv';
 
-const redis = new Redis(); // Default connects to 127.0.0.1:6379
-
+// Setup Vercel KV client
+const stocks = createClient({
+  url: process.env.REDIS_REST_API_URL,
+  token: process.env.REDIS_REST_API_TOKEN,
+});
 
 async function fetchFromEndpoints(ticker, endpointKeys, apiKey , apiHost, apiHost2 ) {
 
@@ -136,6 +139,7 @@ async function fetchFromEndpoints(ticker, endpointKeys, apiKey , apiHost, apiHos
     });
         const results = await Promise.all(fetchPromises);
     const filteredResults = results.filter(result => result !== null); // Remove failed requests
+    // console.log('filteredResults', filteredResults)
     return filteredResults.reduce((acc, { key, data }) => {
         acc[key] = data;
         return acc;
@@ -143,15 +147,29 @@ async function fetchFromEndpoints(ticker, endpointKeys, apiKey , apiHost, apiHos
 }
 
 
-async function updateRedisWithStockData(ticker, organizedData) {
-    const redisKey = `stockData:${ticker}`;
-    const existingDataJson = await redis.get(redisKey);
-    let existingData = existingDataJson ? JSON.parse(existingDataJson) : {};
-    const updatedData = { ...existingData, ...organizedData };
-    const serializedData = JSON.stringify(updatedData);
-    
-    await redis.set(redisKey, serializedData, 'EX', 86400); // Adjust TTL as needed
-    console.log(`Redis updated for ${ticker} with full organized data`);
+async function updateKVWithStockData(ticker, organizedData) {
+  const kvKey = `stockData:${ticker}`;
+  // Attempt to get existing data
+  const existingDataJson = await stocks.get(kvKey);
+  let existingData = {};
+  
+  // Check if existingDataJson is already an object or a valid JSON string
+  if (typeof existingDataJson === 'string') {
+    try {
+      existingData = JSON.parse(existingDataJson);
+    } catch (error) {
+      console.error(`Error parsing JSON for ${ticker}:`, error);
+      // Handle the error or initialize existingData as needed
+    }
+  } else if (typeof existingDataJson === 'object') {
+    existingData = existingDataJson;
+  }
+
+  const updatedData = { ...existingData, ...organizedData };
+  
+  // Use kv.set to update the data as KV does not automatically merge objects like Redis hset might
+  await stocks.set(kvKey, JSON.stringify(updatedData));
+  console.log(`KV updated for ${ticker} with full organized data`);
 }
 
 function delay(ms) {
@@ -161,7 +179,7 @@ function delay(ms) {
 async function processStock(ticker, endpointKeys, apiKey, apiHost, apiHost2) {
     try {
         const newEndpointData = await fetchFromEndpoints(ticker, endpointKeys, apiKey, apiHost, apiHost2);
-        await updateRedisWithStockData(ticker, newEndpointData);
+        await updateKVWithStockData(ticker, newEndpointData);
         console.log(`Redis updated for ${ticker} with full organized data`);
     } catch (error) {
         console.error(`Error processing stock ${ticker}:`, error);
@@ -181,7 +199,6 @@ async function processStocksInBatch(stocks, apiKey, apiHost, apiHost2) {
     }
 }
 
-
 export async function GET(req, res) {
     console.log('Cron job 2 triggered');
     try {
@@ -191,7 +208,7 @@ export async function GET(req, res) {
         const apiHost2 = process.env.RAPID_API_HOST_2;
 
         // Fetch stocks from the database
-        const stocks = await Stock.find({}); // Adjust this as needed, e.g., add .limit(5) for testing
+        const stocks = await Stock.find({}).limit(5); // Adjust this as needed, e.g., add .limit(5) for testing
 
         // Process stocks respecting the API rate limit
         await processStocksInBatch(stocks, apiKey, apiHost, apiHost2);
@@ -205,128 +222,3 @@ export async function GET(req, res) {
         return new Response(JSON.stringify({ message: 'Files failed' }), { status: 500 });
 }
 }
-
-
-
-
-// export async function GET(req, res) {
-//     console.log('Cron job 2 is hit');
-//     await connectToDB();
-
-//     const apiKey = process.env.RAPID_API_KEY
-//     const apiHost = process.env.RAPID_API_HOST
-//     const apiHost2 = process.env.RAPID_API_HOST_2; // Adjust according to the specific host for new endpoints
-
-//     try {
-//         // PRODUCTION
-//         // const stocks = await Stock.find({}); // This query retrieves all documents in the collection
-        
-//         // TESTING 
-//         const stocks = await Stock.find({}).limit(5); // This query retrieves only 5 documents from the collection
-//         const totalStocks = stocks.length; // Capture the total number of stocks
-
-//         for (let index = 0; index < stocks.length; index++) {
-//             const stock = stocks[index];
-//             const ticker = stock.Stock; // Access the 'Stock' attribute which contains the ticker
-            
-//             //Array of API2 endpoint paths, using the ticker
-//             const endpointKeys = ['get-profile', 'get-income', 'get-news', 'get-cashflow', 'get-balance'];
-//             const newEndpointData = await fetchFromEndpoints(ticker, endpointKeys, apiKey, apiHost2);
-
-//             // Array of API1 endpoint paths, using the ticker
-//             const endpoints = [
-//                 { key: 'historic', path: `historic/${ticker}/1d/1y` },
-//                 // { key: 'historic30Days', path: `historic/${ticker}/1h/30d` },
-//                 // { key: 'historic7Days', path: `historic/${ticker}/30m/7d` },
-//                 { key: 'financeAnalytics', path: `finance-analytics/${ticker}` },
-//                 { key: 'keyStatistics', path: `key-statistics/${ticker}` }
-//             ];
-
-//             // Initialize an empty array to hold the fetched data for the current ticker
-//             const allData = [];
-
-//             // Loop through each endpoint, wait for a delay, and then fetch the data
-//             for (const { key, path } of endpoints) {
-//                 await delay(50); // Wait for 50ms before each request, adjust this value as needed
-
-//                 const apiUrl = `https://yahoo-finance127.p.rapidapi.com/${path}`;
-
-//                 const response = await fetch(apiUrl, {
-//                     method: 'GET',
-//                     headers: {
-//                         'X-RapidAPI-Key': apiKey,
-//                         'X-RapidAPI-Host': apiHost,
-//                         'Content-Type': 'application/json'
-//                     }
-//                 });
-
-//                 if (!response.ok) {
-//                     throw new Error(`Error: ${response.statusText}`);
-//                 }
-
-//                 const jsonData = await response.json();
-//                 allData.push({ [key]: jsonData }); // Accumulate fetched data for the current ticker
-
-//                 // At the end of processing each stock:
-//                 const completedPercentage = ((index + 1) / totalStocks) * 100;
-//                 console.log(`Updated stock information for ticker: ${ticker}`);
-//                 console.log(`Progress: ${completedPercentage.toFixed(2)}% completed (${index + 1}/${totalStocks} stocks)`);
-
-//             }
-
-//             // After fetching data from the original endpoints
-//             const organizedData = allData.reduce((acc, data) => ({ ...acc, ...data }), {});
-//             // Transform fetched historic data to match the schema structure
-//             const financeAnalyticsData = organizedData.financeAnalytics;
-           
-//             const combinedData = { ...organizedData, ...newEndpointData };
-//             const newHistoricDataArray = organizedData.historic.timestamp.map((time, index) => {
-//             const quote = organizedData.historic.indicators.quote[0];
-//             const adjclose = organizedData.historic.indicators.adjclose[0];
-            
-//             // Combine new endpoint data with the organized data from original endpoints
-
-//             return {
-//             date: new Date(time * 1000), // Convert timestamp to Date object
-//             open: quote.open[index],
-//             close: quote.close[index],
-//             high: quote.high[index],
-//             low: quote.low[index],
-//             volume: quote.volume[index],
-//             adjClose: adjclose.adjclose[index] // Adjust this line based on your needs
-//             };
-//         });
-            
-//             // Update the stock document in the database
-//             try {
-//                 await Stock.findOneAndUpdate(
-//                 { Stock: ticker },
-//                 {
-//                     $push: {
-//                     historicData: {
-//                         $each: newHistoricDataArray
-//                     }
-//                     }
-//                 },
-//                 { new: true, upsert: true }
-//                 );
-
-//             // Update Redis with the historic data
-//             await updateRedisWithStockData(ticker, combinedData)
-//             .then(() => console.log("Data updated in Redis"))
-//             .catch(err => console.error("Error updating Redis:", err));
-                
-//             console.log(`Updated stock information for ticker: ${ticker}`);
-//             return new Response(JSON.stringify({ message: 'Files updated successfully' }), { status: 200 });
-
-//             } catch (error) {
-//                 console.error(`Error updating stock information for ticker: ${ticker}`, error);
-//                 return new Response(JSON.stringify({ message: 'Files failed' }), { status: 500 });
-
-//             }
-//     }} catch (error) {
-//         console.error(`Error updating stock information `, error);
-//         return new Response(JSON.stringify({ message: 'Files failed' }), { status: 500 });
-
-//     }
-// }

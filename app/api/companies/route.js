@@ -1,3 +1,4 @@
+
 //api/companies/route.js
 
 import fs from 'fs';
@@ -93,19 +94,33 @@ export async function POST(request) {
 
 
 
+// import { connectToDB } from '@utils/database';
+// import Stock from '@models/stock';
 
+// function getSortCriteriaById(sortById) {
+//   const sortMap = {
+//     2: { MarketCapitalisation: -1 }, // Market Cap UP
+//     3: { MarketCapitalisation: 1 },  // Market Cap DOWN
+//     4: { Liquidity: -1 },            // Liquidity UP
+//     5: { Liquidity: 1 },             // Liquidity DOWN
+//     6: { Volatility: -1 },           // Volatility UP
+//     7: { Volatility: 1 },            // Volatility DOWN
+//   };
+//   return sortMap[sortById] || {}; // Default to no sorting if the ID is not found
+// }
 
+// export async function POST(request) {
+//   await connectToDB();
+//   const requestData = await request.json();
+//   console.log("Received request data:", requestData);
 
+//   const { limit, offset, searchText, category, sortbyId } = requestData;
 
+//   let query = {
+//     MarketCapitalisation: { $ne: 'N/A' },
+//     Name: { $exists: true, $ne: "" } // Ensure the company has a name
+//   };
 
-
-
-
-
-//OLD CODE
-//   let query = {};
-
-//   // If there is searchText, add conditions for searching by Name or Ticker.
 //   if (searchText) {
 //     query.$or = [
 //       { Name: { $regex: searchText, $options: 'i' } },
@@ -113,22 +128,17 @@ export async function POST(request) {
 //     ];
 //   }
 
-//   // Special condition for "All Industries" to not filter by any categories
-//   if (category && category.name !== 'All Industries') {
-//     const industryName = typeof category === 'object' ? category.name : category;
-//     query.GICsIndustryGroup = { $regex: industryName, $options: 'i' };
+//   if (category && category !== 'All Industries') {
+//     query.GICsIndustryGroup = { $regex: category, $options: 'i' };
 //   }
+
+//   console.log("Constructed query:", query);
+
+//   let sortCriteria = getSortCriteriaById(sortbyId);
+//   const companiesData = await Stock.find(query).sort(sortCriteria).skip(offset).limit(limit).lean();
   
-//   // console.log('Final Query: ', JSON.stringify(query, null, 2));
+//   console.log("Found companies data:", companiesData);
 
-//   // Execute a single query with the constructed conditions.
-//   const companiesData = await Stock.find(query).skip(offset).limit(limit).lean();
-//   // console.log('Companies Data Result: ', companiesData);
-
-  
-
-
-//   // Prepare and return the response.
 //   return new Response(JSON.stringify(companiesData), {
 //     status: 200,
 //     headers: {

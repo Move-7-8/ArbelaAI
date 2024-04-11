@@ -16,24 +16,18 @@ const Page = () => {
   const [data, setData] = useState(null); 
   const [data2, setData2] = useState(null);
   const [isLoading, setIsLoading] = useState(false); 
-  
-
-
   const [widthDiff, setWidthDiff] = useState(0);
 
   const handleWidthChange = (newWidth) => {
     setWidthDiff(newWidth);
-    console.log(`Width Difference from Page.jsx: ${newWidth}`);
   };
 
   // Add useEffect to log widthDiff whenever it changes
   useEffect(() => {
-    console.log(`Width Difference in Page.jsx: ${widthDiff}px`);
   }, [widthDiff]);
 
    // Calculate 75% of widthDiff for marginRight
     const marginRightValue = widthDiff * 0.75;
-
 
   // Search Params
   const searchParams = useSearchParams();
@@ -46,23 +40,27 @@ const Page = () => {
 
   // Utility function to fetch data with retry logic
   const fetchWithRetry = useCallback(async (url, options, retries = 3, backoff = 300) => {
+    console.log(`Fetching data from ${url} with options:`, options); // Log the fetch attempt
+
     try {
       const response = await fetch(url, options);
       if (!response.ok) {
         if (response.status === 404) {
-          // Treat 404 differently - maybe return a specific object or null to indicate a cache miss
-          console.log('Cache miss, proceeding to fetch live data.');
-          return null; // or any other placeholder that indicates a cache miss
+
+          return null; 
         }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      return await response.json();
+      const data = await response.json();
+      return data;
+
     } catch (error) {
       if (retries > 0) {
         await new Promise(resolve => setTimeout(resolve, backoff));
+        console.log(`Data received from ${url}:`, data); // Log successful fetch
+
         return fetchWithRetry(url, options, retries - 1, backoff * 2);
       } else {
-        // For actual errors, you might want to throw it, or depending on your logic, handle it gracefully
         console.error("Error fetching data:", error.message);
         return null; // or any other error handling mechanism
       }
@@ -85,9 +83,6 @@ const Page = () => {
 
       const data = await response.json();
       const documentUrl = data.documentUrl
-      console.log('documentUrl', documentUrl);
-      // If you need to do something with the URL or store it in state, do so here
-      // e.g., setDocumentUrl(data.documentUrl);
     } catch (error) {
       console.error('There was an error!', error);
     }
@@ -96,6 +91,8 @@ const Page = () => {
   // Effect hook for fetching cached data
   // Effect for fetching cached data
   // Effect for fetching cached data
+
+
   useEffect(() => {
     const fetchCacheData = async () => {
       const fetchOptions = {
@@ -106,24 +103,28 @@ const Page = () => {
   
       try {
         const cacheStartTime = performance.now();
-        const resultCache = await fetchWithRetry(`/api/companiesCache/[${ticker}]`, fetchOptions);
+        // Adjust the URL to match your API route structure
+        const resultCache = await fetchWithRetry(`/api/companiesCache/[companyId]`, fetchOptions);
         const cacheEndTime = performance.now();
         console.log(`Cache fetch time: ${cacheEndTime - cacheStartTime} milliseconds.`);
-        setCacheData(resultCache); // This should trigger a render with cache data
+        if (resultCache) {
+          setCacheData(resultCache); // This should trigger a render with cache data
+        }
       } catch (error) {
         console.error("Failed to fetch cache data, proceeding without cache:", error);
-        // Optionally set some state here to indicate cache was not loaded
       }
     };
   
-    fetchCacheData();
-    fetchEdgarData();
-
+    if (ticker) { // Only fetch cache data if ticker is available
+      fetchCacheData();
+    }
   }, [ticker, fetchWithRetry]);
-    
+      
   // Effect for fetching live data
   useEffect(() => {
     const fetchLiveData = async () => {
+      console.log(`Initiating live data fetch for ticker: ${ticker}`);
+
       const fetchOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -135,6 +136,8 @@ const Page = () => {
       const promise2 = fetchWithRetry(`/api/companies2/[${ticker}]`, fetchOptions);
 
       const [result1, result2] = await Promise.all([promise1, promise2]);
+      console.log(`Live data fetch completed for ${ticker}. Data1:`, result1, `Data2:`, result2);
+
       const liveEndTime = performance.now();
       console.log(`Live fetch time: ${liveEndTime - liveStartTime} milliseconds.`);
 
@@ -145,17 +148,12 @@ const Page = () => {
     fetchLiveData();
   }, [ticker, fetchWithRetry]); // Proper dependencies
 
-  console.log('Cached Data', cacheData)
-  console.log('Live Data', data)
 
   // CSS for controlling chatbox visibility
   const chatboxVisibility = showChatbox ? 'block' : 'hidden';
   const mobileChatboxStyle = `fixed inset-0 z-40 bg-black bg-opacity-50 ${chatboxVisibility} lg:hidden`;
   const desktopChatboxStyle = "hidden lg:block lg:w-1/4 mt-16 px-4 w-full lg:px-0 mb-4";
 
-  
-
-  
 return (
     <div className="flex flex-wrap w-full">
         <div className="flex flex-col w-full mt-20 lg:w-3/4">
@@ -200,8 +198,8 @@ return (
             </div>
         </button>
         </div>
-
         )}
+
       {/* Mobile chatbox with controlled visibility through CSS */}
       <div className={mobileChatboxStyle}>
         <div className="w-full fixed bottom-0 bg-white h-2/3 overflow-auto">

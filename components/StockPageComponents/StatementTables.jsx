@@ -369,6 +369,8 @@ const StatementTable = ({ data, statementType }) => {
 
  ].filter(row => row.value !== 'Data not available' && row.value !== null);
 
+  rows = rows.filter(row => row.value !== 'N/A' && row.value !== 'Data not available' && (typeof row.value === 'string' && row.value.trim() !== ''));
+
   console.log("Raw Data", data);
 // Assuming the filter applies to the entire array
 

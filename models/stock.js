@@ -58,7 +58,7 @@ const stockSchema = new Schema({
   regularMarketChangePercent: {
     type: Schema.Types.Mixed,
   },
-  createdDate: {
+  updatedDate: {
     type: Date,
     default: Date.now
   },
@@ -93,6 +93,7 @@ const stockSchema = new Schema({
 });
   
   const Stock = models.Stock || model("Stock", stockSchema);
+  
   
   export default Stock;
   

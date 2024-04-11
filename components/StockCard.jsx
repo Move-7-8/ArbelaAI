@@ -1,3 +1,4 @@
+
 "use client"
 
 import Link from 'next/link';
@@ -111,3 +112,115 @@ function StockCard({ company }) {
 );
     }
 export default StockCard;
+
+// "use client"
+
+// import Link from 'next/link';
+// import { useState, useEffect } from 'react';
+
+
+// function StockCard({ company }) {
+//     // Function to truncate the company name if it's too long
+//     const truncateCompanyName = (name) => {
+//         if (!name) return 'Unknown Company'; // Safeguard against undefined or empty names
+//         return name.length > 20 ? `${name.substring(0, 20)}...` : name;
+//     };
+
+//     // Convert the Strings to Numerical
+
+//     const Price = +company?.Price || 0;
+//     const MarketCapitalisation = +company?.MarketCapitalisation || 0;
+//     const fiftyTwoWeekHigh = +company?.fiftyTwoWeekHigh || 0;
+//     const fiftyTwoWeekLow = +company?.fiftyTwoWeekLow || 0;
+//     const fiftyTwoWeekChangePercent = +company?.fiftyTwoWeekChangePercent || 0;
+//     const twoHundredDayAverageChangePercent = +company?.twoHundredDayAverageChangePercent || 0;
+//     const fiftyDayAverageChangePercent = +company?.fiftyDayAverageChangePercent || 0;
+//     const averageDailyVolume3Month = +company?.averageDailyVolume3Month || 0;
+//     const regularMarketVolume = +company?.regularMarketVolume || 0;
+//     const priceToBook = +company?.priceToBook || 0;
+//     const trailingAnnualDividendRate = +company?.trailingAnnualDividendRate || 0;
+//     const epsTrailingTwelveMonths = +company?.epsTrailingTwelveMonths || 0;
+//     const LastPrice = +company?.LastPrice || 0;
+    
+//     //Calculated 
+//     const rangeVolatility = +company?.RangeVolatility || 0;
+//     const percentageChangeVolatility = +company?.PercentageChangeVolatility || 0;
+//     const volatility = +company?.Volatility || 0;
+//     const change = Price && LastPrice ? +((Price - LastPrice) / LastPrice) * 100 : 0;
+//     const liquidity = +company?.Liquidity || 0;
+//     const volatilityScore = +company?.VolatilityScore || 0;
+//     const liquidityScore = +company?.LiquidityScore || 0;
+
+
+//     // Relative Calculations
+//     const linkPath = {
+//         pathname: `/companies/${company?.Name?.toLowerCase().replace(/ /g, '') || 'unknown-company'}`,
+//         query: {
+//             companyName: company?.Name ? truncateCompanyName(company.Name) : 'Unknown Company',
+//             ticker: company?.Stock ?? 'N/A',
+//             industry: company?.GICsIndustryGroup ?? 'N/A',
+//             price: Price ?? 'N/A',
+//             MarketCapitalisation: MarketCapitalisation ?? 'N/A',
+//             fiftyTwoWeekHigh: fiftyTwoWeekHigh ?? 'N/A',
+//             fiftyTwoWeekLow: fiftyTwoWeekLow ?? 'N/A',
+//             fiftyTwoWeekChangePercent: fiftyTwoWeekChangePercent ?? 'N/A',
+//             twoHundredDayAverageChangePercent: twoHundredDayAverageChangePercent ?? 'N/A',
+//             fiftyDayAverageChangePercent: fiftyDayAverageChangePercent ?? 'N/A',
+//             averageDailyVolume3Month: averageDailyVolume3Month ?? 'N/A',
+//             regularMarketVolume: regularMarketVolume ?? 'N/A',
+//             priceToBook: priceToBook ?? 'N/A',
+//             trailingAnnualDividendRate: trailingAnnualDividendRate ?? 'N/A',
+//             epsTrailingTwelveMonths: epsTrailingTwelveMonths ?? 'N/A',
+//             LastPrice: LastPrice ?? 'N/A',
+        
+//             //Calculated
+//             rangeVolatility: rangeVolatility,
+//             percentageChangeVolatility: percentageChangeVolatility,
+//             volatility: volatility, 
+//             change: change,
+//             liquidity: liquidity,
+//             volatilityScore: volatilityScore,
+//             liquidityScore: liquidityScore
+//         }
+//     };
+
+//     return (
+//     <Link 
+//         href={linkPath} 
+//         className="stock_card cursor-pointer transform transition-transform duration-200 hover:scale-105  w-full max-w-sm mx-auto bg-white/30 border border-gray-200 rounded-lg shadow flex flex-col"
+//         style={{   minWidth: '250px' }} 
+//     >
+//         <div className="px-5 mt-5 flex-grow flex flex-col justify-between">
+//             <div className="" style={{ height: '30px' }}>
+//                 <h5 className="text-lg font-semibold tracking-tight text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
+//                     {truncateCompanyName(company.Name)}
+//                 </h5>
+//             </div>
+//             <div className="flex items-center mb-5" style={{ height: '25px' }}>
+//                 <span style={{ backgroundColor: 'rgba(106, 132, 157, 0.9)' }} className="text-white text-xs font-semibold mr-2 px-2.5 rounded">
+//                     {company.Stock}
+//                 </span>
+//             </div>
+//             <div className="flex items-center">
+//                 <span className="text-xl text-gray-900 mr-4">
+//                     ${isNaN(Price) ? 'N/A' : Price.toFixed(2)}
+//                 </span>
+//                 <span className="text-xl" style={{ color: change >= 0 ? 'rgba(53, 168, 83, 0.7)' : 'rgba(255, 0, 0, 0.7)' }}>
+//                     {isNaN(change) ? 'N/A' : change.toFixed(2)}%
+//                 </span>
+//             </div>
+//             <div className="mb-5" style={{ height: '25px' }}>
+//                <span className="text-xs mt-2 text-gray-900 overflow-hidden" style={{
+//                 display: '-webkit-box',
+//                 WebkitLineClamp: '2',
+//                 WebkitBoxOrient: 'vertical'
+//             }}>
+//                 {company.GICsIndustryGroup}
+//             </span>
+//             </div>
+
+//         </div>
+//     </Link>
+// );
+//     }
+// export default StockCard;

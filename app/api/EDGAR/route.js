@@ -79,7 +79,7 @@ export async function POST(req, res) {
         
             if (documentUrl) {
                 // If we've found the 10-K document link, return it
-                console.log('10-K Document URL: ', documentUrl);
+                // console.log('10-K Document URL: ', documentUrl);
 
                 // Assuming documentUrl is the URL of the HTML document you've fetched
                 const documentResponse = await fetch(documentUrl, {

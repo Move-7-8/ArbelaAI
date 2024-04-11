@@ -1,12 +1,9 @@
 export async function POST(req, res) {
     // console.log('BACKEND COMPANY2 ROUTE HIT');
     const request_data = await req.json(); // Parsing JSON from the incoming request.
-    // console.log('COMPANY2 REQ: ', request_data);
   
     const ticker = request_data.ticker; // 
-    // console.log('COMPANY2 TICKER: ', ticker);
   
-    // Replace 'Your-RapidAPI-Key' and 'Your-RapidAPI-Host' with actual values from RapidAPI
     const apiKey = process.env.RAPID_API_KEY
     const apiHost2 = process.env.RAPID_API_HOST_2
     // console.log('COMPANY2 API KEY: ', apiHost);
@@ -122,6 +119,7 @@ export async function POST(req, res) {
         });
 
         const results = await Promise.all(fetchPromises);
+        console.log('RESULTS:', results);
         const filteredResults = results.filter(result => result !== null); // Remove failed requests
 
         const resultObject = filteredResults.reduce((acc, { key, data }) => {

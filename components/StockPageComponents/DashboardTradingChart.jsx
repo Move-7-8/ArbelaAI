@@ -44,11 +44,18 @@ const TradingChartContainer = ({ data, cacheData}) => {
             case '1y':
             default:
                 return {
-                    volumes: cacheData?.historic?.indicators?.quote[0]?.volume.map(vol => vol === null ? 0 : vol) || [],
-                    timestamps: cacheData?.historic?.timestamp || [],
-                    closingPrices: processClosingPrices(cacheData?.historic?.indicators?.quote[0]?.close || []),
-                    askPriceRaw: cacheData?.financeAnalytics?.currentPrice?.raw,
-                    prevClose: cacheData?.historic?.meta?.chartPreviousClose,
+                    // volumes: cacheData?.historic?.indicators?.quote[0]?.volume.map(vol => vol === null ? 0 : vol) || [],
+                    // timestamps: cacheData?.historic?.timestamp || [],
+                    // closingPrices: processClosingPrices(cacheData?.historic?.indicators?.quote[0]?.close || []),
+                    // askPriceRaw: cacheData?.financeAnalytics?.currentPrice?.raw,
+                    // prevClose: cacheData?.historic?.meta?.chartPreviousClose,
+
+                    volumes: data?.historic?.indicators?.quote[0]?.volume.map(vol => vol === null ? 0 : vol) || [],
+                    timestamps: data?.historic?.timestamp || [],
+                    closingPrices: processClosingPrices(data?.historic?.indicators?.quote[0]?.close || []),
+                    askPriceRaw: data?.financeAnalytics?.currentPrice?.raw,
+                    prevClose: data?.historic?.meta?.chartPreviousClose,
+
                 };
         }
     };
@@ -78,13 +85,6 @@ const TradingChartContainer = ({ data, cacheData}) => {
     const minValue = d3.min(closingPrices);
     const maxValue = d3.max(closingPrices);
     const buffer = (maxValue - minValue) * 0.30; // For example, a 5% buffer
-
- 
-
-
-
-    
-
 
     const maxClosingPrice = closingPrices.length > 0 ? Math.max(...closingPrices) : 0;
 
@@ -247,12 +247,20 @@ const TradingChartContainer = ({ data, cacheData}) => {
             
 
     function mousemove(event) {
+        const domain = xScale.domain();
+        if (domain.length === 0) {
+            // Handle the empty case here. Perhaps show an error or return early.
+            console.error('xScale.domain() is empty');
+            return;
+        }
+    
         const mouseX = d3.pointer(event, this)[0];
-        const closestDate = xScale.domain().reduce((a, b) => {
+        const closestDate = domain.reduce((a, b) => {
             return Math.abs(xScale(a) - mouseX) < Math.abs(xScale(b) - mouseX) ? a : b;
         });
+    
         const index = dates.findIndex(d => d.getTime() === closestDate);
-
+    
         if (index >= 0 && index < dates.length) {
             const d = lineData[index]; // Define 'd' here at the start
 
@@ -363,7 +371,7 @@ const TradingChartContainer = ({ data, cacheData}) => {
 
         // Cleanup
         return () => window.removeEventListener('resize', handleResize);
-    }, [cacheData, isDataLoading]); // Add isDataLoading as a dependency
+    }, [data, cacheData, isDataLoading, timeFrame]); // Add data and timeFrame as dependencies
 
 const handleTimeFrameChange = (newTimeFrame) => {
     setTimeFrame(newTimeFrame);
@@ -421,3 +429,6 @@ const handleTimeFrameChange = (newTimeFrame) => {
 
 
 export default TradingChartContainer;
+
+
+

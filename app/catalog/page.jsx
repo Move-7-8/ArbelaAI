@@ -7,13 +7,6 @@ import { Listbox } from '@headlessui/react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'; // Importing ChevronDown icon from FontAwesome
 import { categoryMap } from '@constants'; // Import your categoryMap
 
-
-const sortOptions = [
-  { id: 1, name: 'Name' },
-  { id: 2, name: 'Price' },
-  // ... add more sort options
-];
-
 const CatalogFeed = () => {
   const [searchText, setSearchText] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(''); // Renamed to selectedCategory

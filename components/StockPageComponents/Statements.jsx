@@ -329,3 +329,372 @@ return (
 
 export default FinancialStatements;
 
+
+
+
+// import React, { useState } from 'react';
+
+// import StatementTable from './StatementTables';
+
+// const FinancialStatements = ({ data, data2, cacheData }) => {
+//     console.log('Rendering FinancialStatements with data2', data2)
+//     const [activeStatement, setActiveStatement] = useState('income');
+
+//     const renderTab = (title, statementType) => {
+
+//         const isActive = activeStatement === statementType;
+//         const buttonClass = `text-sm mr-2 px-3 py-1 rounded-full ${isActive ? 'bg-white' : 'bg-transparent'}`;
+
+//         return (
+//             <button
+//                 className={buttonClass}
+    
+//                 onClick={() => setActiveStatement(statementType)}
+//             >
+//                 {title}
+//             </button>
+//         );
+//     };
+
+//     // If data is not available, render skeleton loader
+//     if (!cacheData) {
+//         return (
+//             <div className="animate-pulse">
+//                 <div className="bg-gray-200 h-64 w-full mt-4 rounded"></div>
+//             </div>
+//         );
+//     }
+
+//     const findFirstValidData = (array) => {
+//         if (!Array.isArray(array) || array.length === 0) {
+//             return null; // Return null for non-existing data
+//         }
+    
+//         const validItem = array.find(item =>
+//             item &&
+//             item.reportedValue &&
+//             typeof item.reportedValue.fmt === 'string' &&
+//             item.reportedValue.fmt.trim() !== '' &&
+//             item.reportedValue.fmt !== 'N/A'
+//         );
+    
+//         return validItem ? validItem.reportedValue.fmt : null;
+//     };
+                                
+//     const defaultReportedValue = { reportedValue: { fmt: 'Data not available' } };
+
+//     console.log('time series', findFirstValidData(data2?.['get-balance']?.timeSeries));
+
+//     const filterNAValues = (dataObject) => {
+//         if (!dataObject) {
+//             console.warn('filterNAValues was called with a null or undefined dataObject.');
+//             return {};
+//         }
+    
+//         return Object.entries(dataObject).reduce((acc, [key, value]) => {
+//             if (value !== null && value !== undefined) { // Exclude 'N/A' and equivalent
+//                 acc[key] = value;
+//             }
+//             return acc;
+//         }, {});
+//     };
+                
+
+//     //BALANCE SHEET
+//     // Apply the filter function to balanceSheetData after it's defined
+//     const balanceSheetDataBeforeFiltering = activeStatement === 'balance' && data2 ? filterNAValues({
+//         // your code to populate balanceSheetData...
+
+//         endDate: data2?.['get-balance']?.balanceSheetHistory?.balanceSheetStatements?.[0]?.endDate?.fmt || 'N/A',
+//         InvestmentInFinancialAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualInvestmentinFinancialAssets, defaultReportedValue),
+//         OtherEquityAdjustments: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherEquityAdjustments, defaultReportedValue),
+//         TradingSecurities: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTradingSecurities, defaultReportedValue),
+//         HedgingAssetsCurrent: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualHedgingAssetsCurrent, defaultReportedValue),
+//         CurrentDeferredTaxesLiabilities: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCurrentDeferredTaxesLiabilities, defaultReportedValue),
+//         Inventory: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualInventory, defaultReportedValue),
+//         CurrentLiabilities: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCurrentLiabilities, defaultReportedValue),
+//         FinishedGoods: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualFinishedGoods, defaultReportedValue),
+//         ConstructionInProgress: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualConstructionInProgress, defaultReportedValue),
+//         InvestmentsAndAdvances: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualInvestmentsAndAdvances, defaultReportedValue),
+//         CurrentDeferredRevenue: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCurrentDeferredRevenue, defaultReportedValue),
+//         LongTermProvisions: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualLongTermProvisions, defaultReportedValue),
+//         ShareIssued: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualShareIssued, defaultReportedValue),
+//         PrepaidAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualPrepaidAssets, defaultReportedValue), // Duplicate, already present
+//         MachineryFurnitureEquipment: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualMachineryFurnitureEquipment, defaultReportedValue),
+//         ReceivablesAdjustmentsAllowances: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualReceivablesAdjustmentsAllowances, defaultReportedValue),
+//         CurrentDebt: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCurrentDebt, defaultReportedValue),
+//         OtherCapitalStock: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherCapitalStock, defaultReportedValue),
+//         TotalNonCurrentLiabilitiesNetMinorityInterest: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTotalNonCurrentLiabilitiesNetMinorityInterest, defaultReportedValue),
+//         GainsLossesNotAffectingRetainedEarnings: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualGainsLossesNotAffectingRetainedEarnings, defaultReportedValue),
+//         TotalEquityGrossMinorityInterest: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTotalEquityGrossMinorityInterest, defaultReportedValue),
+//         OtherIntangibleAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherIntangibleAssets, defaultReportedValue),
+//         OtherNonCurrentAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherNonCurrentAssets, defaultReportedValue),
+//         AccumulatedDepreciation: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualAccumulatedDepreciation, defaultReportedValue),
+//         NetPPE: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNetPPE, defaultReportedValue),
+//         CurrentDeferredAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCurrentDeferredAssets, defaultReportedValue),
+//         Leases: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualLeases, defaultReportedValue),
+//         AssetsHeldForSaleCurrent: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualAssetsHeldForSaleCurrent, defaultReportedValue),
+//         TotalLiabilitiesNetMinorityInterest: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTotalLiabilitiesNetMinorityInterest, defaultReportedValue),
+//         CurrentAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCurrentAssets, defaultReportedValue),
+//         TangibleBookValue: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTangibleBookValue, defaultReportedValue),
+//         CapitalLeaseObligations: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCapitalLeaseObligations, defaultReportedValue),
+//         CashCashEquivalentsAndShortTermInvestments: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCashCashEquivalentsAndShortTermInvestments, defaultReportedValue),
+//         TradeandOtherPayablesNonCurrent: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTradeandOtherPayablesNonCurrent, defaultReportedValue),
+//         CommonStockEquity: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCommonStockEquity, defaultReportedValue),
+//         PensionandOtherPostRetirementBenefitPlansCurrent: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualPensionandOtherPostRetirementBenefitPlansCurrent, defaultReportedValue),
+//         CashFinancial: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCashFinancial, defaultReportedValue),
+//         OtherCurrentLiabilities: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherCurrentLiabilities, defaultReportedValue),
+//         CurrentDeferredTaxesAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCurrentDeferredTaxesAssets, defaultReportedValue),
+//         LongTermCapitalLeaseObligation: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualLongTermCapitalLeaseObligation, defaultReportedValue),
+//         NonCurrentPensionAndOtherPostretirementBenefitPlans: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNonCurrentPensionAndOtherPostretirementBenefitPlans, defaultReportedValue),
+//         LoansReceivable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualLoansReceivable, defaultReportedValue),
+//         CurrentCapitalLeaseObligation: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCurrentCapitalLeaseObligation, defaultReportedValue),
+//         RetainedEarnings: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualRetainedEarnings, defaultReportedValue),
+//         CommonStock: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCommonStock, defaultReportedValue),
+//         DividendsPayable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualDividendsPayable, defaultReportedValue),
+//         CurrentProvisions: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCurrentProvisions, defaultReportedValue),
+//         GrossPPE: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualGrossPPE, defaultReportedValue),
+//         NetTangibleAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNetTangibleAssets, defaultReportedValue),
+//         NonCurrentDeferredTaxesAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNonCurrentDeferredTaxesAssets, defaultReportedValue),
+//         OtherProperties: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherProperties, defaultReportedValue),
+//         NonCurrentDeferredAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNonCurrentDeferredAssets, defaultReportedValue),
+//         OtherReceivables: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherReceivables, defaultReportedValue),
+//         PayablesAndAccruedExpenses: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualPayablesAndAccruedExpenses, defaultReportedValue),
+//         OtherShortTermInvestments: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherShortTermInvestments, defaultReportedValue),
+//         NonCurrentAccountsReceivable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNonCurrentAccountsReceivable, defaultReportedValue),
+//         InvestedCapital: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualInvestedCapital, defaultReportedValue),
+//         OtherCurrentBorrowings: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherCurrentBorrowings, defaultReportedValue),
+//         Goodwill: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualGoodwill, defaultReportedValue),
+//         CurrentDeferredLiabilities: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCurrentDeferredLiabilities, defaultReportedValue),
+//         NetDebt: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNetDebt, defaultReportedValue),
+//         OtherCurrentAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherCurrentAssets, defaultReportedValue),
+//         CapitalStock: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCapitalStock, defaultReportedValue),
+//         OtherInvestments: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherInvestments, defaultReportedValue),
+//         AccountsReceivable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualAccountsReceivable, defaultReportedValue),
+//         ForeignCurrencyTranslationAdjustments: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualForeignCurrencyTranslationAdjustments, defaultReportedValue),
+//         TotalCapitalization: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTotalCapitalization, defaultReportedValue),
+//         OtherPayable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherPayable, defaultReportedValue),
+//         Payables: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualPayables, defaultReportedValue),
+//         TotalNonCurrentAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTotalNonCurrentAssets, defaultReportedValue),
+//         AccountsPayable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualAccountsPayable, defaultReportedValue),
+//         NonCurrentDeferredRevenue: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNonCurrentDeferredRevenue, defaultReportedValue),
+//         CurrentDebtAndCapitalLeaseObligation: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCurrentDebtAndCapitalLeaseObligation, defaultReportedValue),
+//         LandAndImprovements: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualLandAndImprovements, defaultReportedValue),
+//         InvestmentsinAssociatesatCost: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualInvestmentsinAssociatesatCost, defaultReportedValue),
+//         WorkingCapital: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualWorkingCapital, defaultReportedValue),
+//         NonCurrentDeferredLiabilities: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNonCurrentDeferredLiabilities, defaultReportedValue),
+//         EmployeeBenefits: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualEmployeeBenefits, defaultReportedValue),
+//         OrdinarySharesNumber: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOrdinarySharesNumber, defaultReportedValue),
+//         LongTermDebt: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualLongTermDebt, defaultReportedValue),
+//         TotalAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTotalAssets, defaultReportedValue),
+//         InventoriesAdjustmentsAllowances: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualInventoriesAdjustmentsAllowances, defaultReportedValue),
+//         StockholdersEquity: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualStockholdersEquity, defaultReportedValue),
+//         NonCurrentDeferredTaxesLiabilities: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNonCurrentDeferredTaxesLiabilities, defaultReportedValue),
+//         Properties: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualProperties, defaultReportedValue),
+//         InvestmentProperties: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualInvestmentProperties, defaultReportedValue),
+//         HeldToMaturitySecurities: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualHeldToMaturitySecurities, defaultReportedValue),
+//         FinancialAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualFinancialAssets, defaultReportedValue),
+//         DuefromRelatedPartiesNonCurrent: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualDuefromRelatedPartiesNonCurrent, defaultReportedValue),
+//         RawMaterials: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualRawMaterials, defaultReportedValue),
+//         NonCurrentAccruedExpenses: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNonCurrentAccruedExpenses, defaultReportedValue),
+//         DuetoRelatedPartiesNonCurrent: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualDuetoRelatedPartiesNonCurrent, defaultReportedValue),
+//         InterestPayable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualInterestPayable, defaultReportedValue),
+//         CashEquivalents: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCashEquivalents, defaultReportedValue),
+//         TaxesReceivable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTaxesReceivable, defaultReportedValue),
+//         AvailableForSaleSecurities: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualAvailableForSaleSecurities, defaultReportedValue),
+//         NonCurrentPrepaidAssets: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNonCurrentPrepaidAssets, defaultReportedValue),
+//         DerivativeProductLiabilities: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualDerivativeProductLiabilities, defaultReportedValue),
+//         TreasurySharesNumber: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTreasurySharesNumber, defaultReportedValue),
+//         FixedAssetsRevaluationReserve: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualFixedAssetsRevaluationReserve, defaultReportedValue),
+//         InvestmentsInOtherVenturesUnderEquityMethod: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualInvestmentsInOtherVenturesUnderEquityMethod, defaultReportedValue),
+//         AdditionalPaidInCapital: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualAdditionalPaidInCapital, defaultReportedValue),
+//         DuetoRelatedPartiesCurrent: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualDuetoRelatedPartiesCurrent, defaultReportedValue),
+//         DefinedPensionBenefit: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualDefinedPensionBenefit, defaultReportedValue),
+//         MinimumPensionLiabilities: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualMinimumPensionLiabilities, defaultReportedValue),
+//         CurrentAccruedExpenses: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCurrentAccruedExpenses, defaultReportedValue),
+//         RestrictedCommonStock: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualRestrictedCommonStock, defaultReportedValue),
+//         BuildingsAndImprovements: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualBuildingsAndImprovements, defaultReportedValue),
+//         CommercialPaper: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCommercialPaper, defaultReportedValue),
+//         PreferredStock: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualPreferredStock, defaultReportedValue),
+//         OtherNonCurrentLiabilities: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherNonCurrentLiabilities, defaultReportedValue),
+//         OtherEquityInterest: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherEquityInterest, defaultReportedValue),
+//         GeneralPartnershipCapital: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualGeneralPartnershipCapital, defaultReportedValue),
+//         InvestmentsinJointVenturesatCost: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualInvestmentsinJointVenturesatCost, defaultReportedValue),
+//         LineOfCredit: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualLineOfCredit, defaultReportedValue),
+//         IncomeTaxPayable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualIncomeTaxPayable, defaultReportedValue),
+//         PreferredSharesNumber: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualPreferredSharesNumber, defaultReportedValue),
+//         InvestmentsinSubsidiariesatCost: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualInvestmentsinSubsidiariesatCost, defaultReportedValue),
+//         LimitedPartnershipCapital: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualLimitedPartnershipCapital, defaultReportedValue),
+//         OtherInventories: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualOtherInventories, defaultReportedValue),
+//         RestrictedCash: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualRestrictedCash, defaultReportedValue),
+//         FinancialAssetsDesignatedasFairValueThroughProfitorLossTotal: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualFinancialAssetsDesignatedasFairValueThroughProfitorLossTotal, defaultReportedValue),
+//         PreferredSecuritiesOutsideStockEquity: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualPreferredSecuritiesOutsideStockEquity, defaultReportedValue),
+//         PreferredStockEquity: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualPreferredStockEquity, defaultReportedValue),
+//         DuefromRelatedPartiesCurrent: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualDuefromRelatedPartiesCurrent, defaultReportedValue),
+//         AllowanceForDoubtfulAccountsReceivable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualAllowanceForDoubtfulAccountsReceivable, defaultReportedValue),
+//         UnrealizedGainLoss: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualUnrealizedGainLoss, defaultReportedValue),
+//         TotalTaxPayable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTotalTaxPayable, defaultReportedValue),
+//         LiabilitiesHeldforSaleNonCurrent: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualLiabilitiesHeldforSaleNonCurrent, defaultReportedValue),
+//         TotalPartnershipCapital: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTotalPartnershipCapital, defaultReportedValue),
+//         AccruedInterestReceivable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualAccruedInterestReceivable, defaultReportedValue),
+//         WorkInProcess: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualWorkInProcess, defaultReportedValue),
+//         GrossAccountsReceivable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualGrossAccountsReceivable, defaultReportedValue),
+//         NonCurrentNoteReceivables: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNonCurrentNoteReceivables, defaultReportedValue),
+//         NotesReceivable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualNotesReceivable, defaultReportedValue),
+//         CurrentNotesPayable: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualCurrentNotesPayable, defaultReportedValue),
+//         TreasuryStock: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualTreasuryStock, defaultReportedValue),
+//         LiabilitiesOfDiscontinuedOperations: findFirstValidData(data2?.['get-balance']?.timeSeries?.annualLiabilitiesOfDiscontinuedOperations, defaultReportedValue),
+//         SecuritiesAndInvestments:findFirstValidData(data2?.['get-balance']?.timeSeries?.annualSecuritiesAndInvestments, defaultReportedValue),
+//         DeferredAssets:findFirstValidData(data2?.['get-balance']?.timeSeries?.annualDeferredAssets, defaultReportedValue)
+//     }) : {}; // Fallback to an empty object if conditions are not met
+
+//     //INCOME STATEMENT
+//     const incomeStatementData = activeStatement === 'income' && cacheData ? {
+
+//         endDate: (cacheData?.['get-balance']?.balanceSheetHistory?.balanceSheetStatements?.[0]?.endDate?.fmt ||
+//             data2?.['get-balance']?.balanceSheetHistory?.balanceSheetStatements?.[0]?.endDate?.fmt) || 'N/A',
+
+//         TrailingBasicAverageShares: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingBasicAverageShares ||
+//             data2?.['get-income']?.timeSeries?.trailingBasicAverageShares, defaultReportedValue),
+
+//         TrailingBasicEPS: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingBasicEPS ||
+//             data2?.['get-income']?.timeSeries?.trailingBasicEPS, defaultReportedValue),
+
+//         TrailingCostOfRevenue: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingCostOfRevenue ||
+//             data2?.['get-income']?.timeSeries?.trailingCostOfRevenue, defaultReportedValue),
+
+//         TrailingDilutedAverageShares: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingDilutedAverageShares ||
+//             data2?.['get-income']?.timeSeries?.trailingDilutedAverageShares, defaultReportedValue),
+
+//         TrailingDilutedEPS: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingDilutedEPS ||
+//             data2?.['get-income']?.timeSeries?.trailingDilutedEPS, defaultReportedValue),
+        
+//         TrailingGrossProfit: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingGrossProfit ||
+//             data2?.['get-income']?.timeSeries?.trailingGrossProfit, defaultReportedValue),
+        
+//         TrailingInterestExpense: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingInterestExpense ||
+//             data2?.['get-income']?.timeSeries?.trailingInterestExpense, defaultReportedValue),
+        
+//         TrailingNetIncome: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingNetIncome ||
+//             data2?.['get-income']?.timeSeries?.trailingNetIncome, defaultReportedValue),
+        
+//         TrailingNetIncomeCommonStockholders: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingNetIncomeCommonStockholders ||
+//             data2?.['get-income']?.timeSeries?.trailingNetIncomeCommonStockholders, defaultReportedValue),
+        
+//         TrailingNetIncomeContinuousOperations: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingNetIncomeContinuousOperations ||
+//             data2?.['get-income']?.timeSeries?.trailingNetIncomeContinuousOperations, defaultReportedValue),
+        
+//         TrailingOperatingExpense: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingOperatingExpense ||
+//             data2?.['get-income']?.timeSeries?.trailingOperatingExpense, defaultReportedValue),
+
+//         TrailingOperatingIncome: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingOperatingIncome ||
+//             data2?.['get-income']?.timeSeries?.trailingOperatingIncome, defaultReportedValue),
+        
+//         TrailingOtherIncomeExpense: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingOtherIncomeExpense ||
+//             data2?.['get-income']?.timeSeries?.trailingOtherIncomeExpense, defaultReportedValue),
+        
+//         TrailingPretaxIncome: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingPretaxIncome ||
+//             data2?.['get-income']?.timeSeries?.trailingPretaxIncome, defaultReportedValue),
+        
+//         TrailingResearchAndDevelopment: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingResearchAndDevelopment ||
+//             data2?.['get-income']?.timeSeries?.trailingResearchAndDevelopment, defaultReportedValue),
+        
+//         TrailingSellingGeneralAndAdministration: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingSellingGeneralAndAdministration ||
+//             data2?.['get-income']?.timeSeries?.trailingSellingGeneralAndAdministration, defaultReportedValue),
+        
+//         TrailingTaxProvision: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingTaxProvision ||
+//             data2?.['get-income']?.timeSeries?.trailingTaxProvision, defaultReportedValue),
+        
+//         TrailingTotalRevenue: findFirstValidData(
+//             cacheData?.['get-income']?.timeSeries?.trailingTotalRevenue ||
+//             data2?.['get-income']?.timeSeries?.trailingTotalRevenue, defaultReportedValue),
+//     } : null;
+
+
+//     //CASH FLOW STATEMENT
+//     const cashflowData = activeStatement === 'cash' && data2  ? {
+//         endDate: data2?.['get-balance']?.balanceSheetHistory?.balanceSheetStatements?.[0]?.endDate?.fmt || 'N/A',
+//         BeginningCashPosition: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingBeginningCashPosition, defaultReportedValue),
+//         CapitalExpenditure: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingCapitalExpenditure, defaultReportedValue),
+//         CashDividendsPaid: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingCashDividendsPaid, defaultReportedValue),
+//         CashFlowFromContinuingFinancingActivities: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingCashFlowFromContinuingFinancingActivities, defaultReportedValue),
+//         ChangeInAccountPayable: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingChangeInAccountPayable, defaultReportedValue),
+//         ChangeInCashSupplementalAsReported: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingChangeInCashSupplementalAsReported, defaultReportedValue),
+//         ChangeInInventory: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingChangeInInventory, defaultReportedValue),
+//         ChangeInWorkingCapital: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingChangeInWorkingCapital, defaultReportedValue),
+//         ChangesInAccountReceivables: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingChangesInAccountReceivables, defaultReportedValue),
+//         CommonStockIssuance: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingCommonStockIssuance, defaultReportedValue),
+//         DeferredIncomeTax: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingDeferredIncomeTax, defaultReportedValue),
+//         DepreciationAndAmortization: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingDepreciationAndAmortization, defaultReportedValue),
+//         EndCashPosition: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingEndCashPosition, defaultReportedValue),
+//         FreeCashFlow: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingFreeCashFlow, defaultReportedValue),
+//         InvestingCashFlow: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingInvestingCashFlow, defaultReportedValue),
+//         NetIncome: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingNetIncome, defaultReportedValue),
+//         NetOtherFinancingCharges: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingNetOtherFinancingCharges, defaultReportedValue),
+//         NetOtherInvestingChanges: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingNetOtherInvestingChanges, defaultReportedValue),
+//         OperatingCashFlow: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingOperatingCashFlow, defaultReportedValue),
+//         OtherNonCashItems: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingOtherNonCashItems, defaultReportedValue),
+//         PurchaseOfBusiness: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingPurchaseOfBusiness, defaultReportedValue),
+//         PurchaseOfInvestment: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingPurchaseOfInvestment, defaultReportedValue),
+//         RepaymentOfDebt: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingRepaymentOfDebt, defaultReportedValue),
+//         RepurchaseOfCapitalStock: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingRepurchaseOfCapitalStock, defaultReportedValue),
+//         SaleOfInvestment: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingSaleOfInvestment, defaultReportedValue),
+//         StockBasedCompensation: findFirstValidData(data2?.['get-cashflow']?.timeSeries?.trailingStockBasedCompensation, defaultReportedValue),
+//         } : null;
+   
+
+        
+//     const requiredBalanceSheetFields = ['TotalAssets', 'TotalLiabilities', 'StockholdersEquity'];
+
+// const hasRequiredBalanceSheetFields = requiredBalanceSheetFields.every(field => 
+//     balanceSheetDataBeforeFiltering[field] && balanceSheetDataBeforeFiltering[field] !== 'Data not available'
+// ) && Object.keys(balanceSheetDataBeforeFiltering).length > 0; // Also check that the object is not empty
+
+
+//     const balanceSheetData = hasRequiredBalanceSheetFields ? balanceSheetDataBeforeFiltering : null;
+
+
+// return (
+// <div>
+//     <div className="flex justify-center mt-8 mb-4">
+//         <div className="inline-flex rounded-full bg-gray-200 p-1 space-x-2"> {/* Use inline-flex and space-x for consistent spacing */}
+//             {renderTab("Balance Sheet", "balance")}
+//             {renderTab("Income Statement", "income")}
+//             {renderTab("Cash Flow", "cash")}
+//         </div>
+//     </div>
+//     <div className="flex flex-col space-y-4 mb-4 p-4 sm:p-0"> {/* This is good for vertical spacing */}
+//         {activeStatement === 'balance' && balanceSheetData
+//             ? <StatementTable data={balanceSheetData} statementType="balance" />
+//             : activeStatement === 'income' && incomeStatementData
+//             ? <StatementTable data={incomeStatementData} statementType="income" />
+//             : activeStatement === 'cash' && cashflowData
+//             ? <StatementTable data={cashflowData} statementType="cash" />
+//             : <div className="text-center">Data not available for the selected statement.</div> // Center-align the fallback text
+//         }
+//     </div>
+// </div>
+
+// );
+
+// };
+
+// export default FinancialStatements;
+
