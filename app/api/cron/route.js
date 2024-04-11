@@ -103,10 +103,10 @@ export async function GET() {
             const headers = rows[0].split(',').map(header => header.trim().replace(/^"|"$/g, ''));
 
             //TEST
-            const data = rows.slice(1, 6).map(row => {  // Adjusted slice to (1, 6) to get first 5
+            // const data = rows.slice(1, 6).map(row => {  // Adjusted slice to (1, 6) to get first 5
 
             //REAL
-            // const data = rows.slice(1).map(row => {
+            const data = rows.slice(1).map(row => {
                 const values = row.split(',').map(value => value.trim().replace(/^"|"$/g, ''));
                 return values.reduce((object, value, index) => {
                     object[headers[index]] = value;

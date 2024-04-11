@@ -208,7 +208,8 @@ export async function GET(req, res) {
         const apiHost2 = process.env.RAPID_API_HOST_2;
 
         // Fetch stocks from the database
-        const stocks = await Stock.find({}).limit(5); // Adjust this as needed, e.g., add .limit(5) for testing
+        // const stocks = await Stock.find({}).limit(5); // Adjust this as needed, e.g., add .limit(5) for testing
+        const stocks = await Stock.find({}) // Adjust this as needed, e.g., add .limit(5) for testing
 
         // Process stocks respecting the API rate limit
         await processStocksInBatch(stocks, apiKey, apiHost, apiHost2);
