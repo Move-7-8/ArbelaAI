@@ -93,7 +93,7 @@ const Profile = ({ data }) => {
             onClick={() => handleGoClick(thread)}
             className='bg-blue-500 hover:bg-blue-700 text-white text-md font-semibold py-2 px-4 rounded'
           >
-            Go to Model!
+            Go to Model!!!!
           </button>
         </div>
       </div>
