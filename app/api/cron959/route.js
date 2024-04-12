@@ -96,10 +96,9 @@ export async function POST(req) {
     // Parse the JSON to get an object
     const vercelScHeaders = JSON.parse(vercelScHeadersJson);
     console.log('vercelScHeaders', vercelScHeaders);
-
     let authToken;
-    console.log('auth token has failed', authToken);
-    if (scHeaders) {
+    
+    if (vercelScHeaders) {
         try {
             authToken = vercelScHeaders.Authorization;
             console.log('authToken', authToken);

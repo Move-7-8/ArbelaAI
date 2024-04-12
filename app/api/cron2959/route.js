@@ -2,6 +2,7 @@ import fetch from 'node-fetch'; // Ensure node-fetch is imported
 import { connectToDB } from '@utils/database';
 import Stock from '@models/stock';
 import { createClient } from '@vercel/kv';
+import { headers } from "next/headers";
 
 // Setup Vercel KV client
 const stocks = createClient({
@@ -200,35 +201,41 @@ async function processStocksInBatch(stocks, apiKey, apiHost, apiHost2) {
 }
 
 export async function POST(req) {
-    // Attempt to retrieve and parse the 'x-vercel-sc-headers'
-    const scHeaders = req.headers['x-vercel-sc-headers'];
-    console.log('scHeaders', scHeaders);
-    let authToken;
-    if (scHeaders) {
-        try {
-            const parsedScHeaders = JSON.parse(scHeaders);
-            console.log('parsedScHeaders', parsedScHeaders);
-            authToken = parsedScHeaders.Authorization;
-            console.log('authToken', authToken);
-        } catch (error) {
-            console.error('Error parsing x-vercel-sc-headers:', error);
-            // Respond with an internal server error status if parsing fails
-            return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
-        }
-    } else {
-        // Fallback to directly retrieving 'authorization' if 'x-vercel-sc-headers' is not present
-        authToken = req.headers['authorization'] || '';
-        console.log('auth token has failed', authToken);
-    }
+  const headersList = headers();
+  console.log('headersList', headersList);
+  const vercelScHeadersJson = headersList.get('x-vercel-sc-headers');
+  console.log('vercelScHeadersJson', vercelScHeadersJson);
+  // Parse the JSON to get an object
+  const vercelScHeaders = JSON.parse(vercelScHeadersJson);
+  console.log('vercelScHeaders', vercelScHeaders);
+  let authToken;
+  
+  if (vercelScHeaders) {
+      try {
+          authToken = vercelScHeaders.Authorization;
+          console.log('authToken', authToken);
 
-    // Verify the token
-    if (authToken !== `Bearer ${process.env.QSTASH_TOKEN}`) {
-        console.log('env token compare', process.env.QSTASH_TOKEN);
-        console.log('auth token compare', authToken);
-        console.error('Unauthorized access attempt. Cron is not executing');
-        // Unauthorized response
-        return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
-    }
+      } catch (error) {
+          console.error('Error parsing x-vercel-sc-headers:', error);
+          // Respond with an internal server error status if parsing fails
+          return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
+      }
+  } else {
+      // Fallback to directly retrieving 'authorization' if 'x-vercel-sc-headers' is not present
+      authToken = req.headers['authorization'] || '';
+      console.log('auth token has failed', authToken);
+
+  }
+
+  // Verify the token
+  if (authToken !== `Bearer ${process.env.QSTASH_TOKEN}`) {
+      console.log('env token compare', process.env.QSTASH_TOKEN);
+      console.log('auth token compare', authToken);
+
+      console.error('Unauthorized access attempt. Cron is not executing');
+      // Unauthorized response
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
+  }
 
     console.log('Cron job 2 is executing');
     try {
