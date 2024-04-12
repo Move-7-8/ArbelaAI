@@ -373,10 +373,13 @@ const TradingChartContainer = ({ data, cacheData}) => {
         return () => window.removeEventListener('resize', handleResize);
     }, [data, cacheData, isDataLoading, timeFrame]); // Add data and timeFrame as dependencies
 
-const handleTimeFrameChange = (newTimeFrame) => {
-    setTimeFrame(newTimeFrame);
-    setDataLoading(true); // Indicate loading while the chart is being redrawn
-};
+    const handleTimeFrameChange = (newTimeFrame) => {
+        setTimeFrame(newTimeFrame);
+        // Remove setDataLoading(true) from here to prevent showing the loader on each button click
+        // You might want to manage the loading state directly within your chart's data fetching or updating logic,
+        // especially if the data update is not instantaneous or comes from an external source.
+    };
+    
 
     const [activeButton, setActiveButton] = useState('charts'); 
 
