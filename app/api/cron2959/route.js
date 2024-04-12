@@ -218,7 +218,7 @@ export async function POST(req) {
     } else {
         // Fallback to directly retrieving 'authorization' if 'x-vercel-sc-headers' is not present
         authToken = req.headers['authorization'] || '';
-        console,log('auth token has failed', authToken);
+        console.log('auth token has failed', authToken);
     }
 
     // Verify the token
