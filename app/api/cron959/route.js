@@ -88,7 +88,13 @@ function flattenObject(obj, prefix = '') {
 //   })
 
 export async function GET() {
-    console.log('Cron job is hit');
+
+    if (process.env.CRON_PRODUCTION === 'false') {
+        console.log('Skipping cron job in production without explicit permission.');
+        return new Response(JSON.stringify({ message: 'Cron job skipped' }), { status: 200 });
+      }
+
+    console.log('Cron job is executing');
     await connectToDB();
 
     const exchangeFiles = ['NYSE.csv', 'AMEX.csv', 'NASDAQ.csv'];

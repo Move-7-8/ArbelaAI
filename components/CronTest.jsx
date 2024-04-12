@@ -5,7 +5,7 @@ const CronTest = () => {
 
   const handleClick = async () => {
     try {
-      const response = await fetch('/api/cron', {
+      const response = await fetch('/api/cron959', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ const CronTest = () => {
 
   const handleClick2 = async () => {
     try {
-      const response = await fetch('/api/cron2', {
+      const response = await fetch('/api/cron2959', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

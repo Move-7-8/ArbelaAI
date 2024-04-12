@@ -200,7 +200,14 @@ async function processStocksInBatch(stocks, apiKey, apiHost, apiHost2) {
 }
 
 export async function GET(req, res) {
-    console.log('Cron job 2 triggereddd');
+
+  if (process.env.CRON_PRODUCTION === 'false') {
+    console.log('Skipping cron job 2 in production without explicit permission.');
+    return new Response(JSON.stringify({ message: 'Cron job skipped' }), { status: 200 });
+  }
+
+
+    console.log('Cron job 2 is executing');
     try {
         await connectToDB();
         const apiKey = process.env.RAPID_API_KEY;
