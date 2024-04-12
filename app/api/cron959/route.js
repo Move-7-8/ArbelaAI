@@ -88,7 +88,7 @@ function flattenObject(obj, prefix = '') {
 //   })
 
 export async function POST(req) {
-
+    console.log('Received headers:', req.headers);
     // Retrieve the token from the request headers
     const authToken = req.headers['authorization'] || '';
 
