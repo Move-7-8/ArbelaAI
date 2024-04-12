@@ -5,12 +5,12 @@ const CronTest = () => {
 
   const handleClick = async () => {
     try {
-      const response = await fetch('/api/cron', {
-        method: 'GET',
+      const response = await fetch('/api/cron959', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        // body: JSON.stringify({ 'ticker': 'AAPL' }),
+        body: JSON.stringify({ 'ticker': 'AAPL' }),
       });
 
       if (!response.ok) {
@@ -28,7 +28,7 @@ const CronTest = () => {
 
   const handleClick2 = async () => {
     try {
-      const response = await fetch('/api/cron2', {
+      const response = await fetch('/api/cron2959', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -87,8 +87,24 @@ function flattenObject(obj, prefix = '') {
 //     console.log(`Deleted ${result.deletedCount} documents.`);
 //   })
 
-export async function GET() {
-    console.log('Cron job is hit');
+export async function POST(req) {
+
+    const data = await req.json();
+    console.log(data);
+    const triggerKeyword = data.triggerKeyword; // Access the property of the parsed object
+    console.log('triggerKeyword', triggerKeyword);
+    // Verify the body 
+    if (triggerKeyword !== process.env.QSTASH_TOKEN) {
+        console.log('env token compare', process.env.QSTASH_TOKEN);
+        console.log('auth token compare', triggerKeyword);
+
+        console.error('Unauthorized access attempt. Cron is not executing');
+        // Unauthorized response
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
+    }
+
+
+    console.log('Cron job is executing');
     await connectToDB();
 
     const exchangeFiles = ['NYSE.csv', 'AMEX.csv', 'NASDAQ.csv'];

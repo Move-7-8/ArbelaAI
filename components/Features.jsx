@@ -15,7 +15,7 @@ const Features = () => {
           alt="Unstructured Data"
         />
         <p style={{ marginTop: '1rem' }}>
-          Our Data covers live feeds, quarterly updates, news stories, and metrics for all ASX traded stocks.
+          Our Data covers live feeds, quarterly updates, news stories, and metrics for all US public stocks.
         </p>
       </div>
       <div className='w-full sm:flex-1 feature p-4 mb-4'> 
