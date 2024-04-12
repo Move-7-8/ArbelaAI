@@ -87,12 +87,19 @@ function flattenObject(obj, prefix = '') {
 //     console.log(`Deleted ${result.deletedCount} documents.`);
 //   })
 
-export async function GET() {
+export async function GET(req) {
 
-    if (process.env.CRON_PRODUCTION === 'false') {
-        console.log('Skipping cron job in production without explicit permission.');
-        return new Response(JSON.stringify({ message: 'Cron job skipped' }), { status: 200 });
-      }
+    // Retrieve the token from the request headers
+    const authToken = req.headers['authorization'] || '';
+
+    // Verify the token
+    if (authToken !== `Bearer ${process.env.QSTASH_TOKEN}`) {
+        console.error('Unauthorized access attempt. Cron is not executing');
+        // Unauthorized response
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
+    }
+
+
 
     console.log('Cron job is executing');
     await connectToDB();
