@@ -30,7 +30,7 @@ const Nav = () => {
  return (
 <nav className="w-full mb-16 pt-3 flex justify-between items-center">
       {/* Logo and Brand Name */}
-      <Link href={session ? "/catalog" : "/"} className="flex gap-2 items-center">
+      <Link href={session ? "/" : "/"} className="flex gap-2 items-center">
         <Image
           src="/assets/images/logo3.png"
           alt="Arbela Logo"

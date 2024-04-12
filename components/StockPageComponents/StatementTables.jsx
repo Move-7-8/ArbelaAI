@@ -27,7 +27,7 @@ const StatementTable = ({ data, statementType }) => {
 
   
   if (!data) {
-    return <div>No data available</div>;
+    return <div>Data loading</div>;
   }
 
   const { endDate } = data;
@@ -503,7 +503,7 @@ const StatementTable = ({ data, statementType }) => {
 
   // Check if there are any rows to display
   if (rows.length === 0) {
-    return <div>No data available for the selected statement.</div>;
+    return <div>Data loading.</div>;
   }
 
   // Functions to categorise balance sheet rows (to add colours): 

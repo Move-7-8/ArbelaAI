@@ -49,15 +49,7 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChang
   const [showExtraIcons, setShowExtraIcons] = useState(false);
   const [widthDiff, setWidthDiff] = useState(0);
 
-
-
   const chatContentRef = useRef(null);
-
-
-
-
-  
-  
 
     // Function to update `isLargeScreen` based on window width
   useEffect(() => {
@@ -180,13 +172,12 @@ const sendMessageAutomatically = async (messageText) => {
     setSending(false);
   }
 };
-    
 
-  // Generate a unique ID for the gradient to avoid conflicts
-const gradientId = `gradient-${Math.random().toString(36).substr(2, 9)}`;
+    // Generate a unique ID for the gradient to avoid conflicts
+  const gradientId = `gradient-${Math.random().toString(36).substr(2, 9)}`;
 
-///Formatting the bold and paragraphs of the message content
-function formatMessage(message) {
+  ///Formatting the bold and paragraphs of the message content
+  function formatMessage(message) {
 
   // First, remove annotations like &#8203;``【oaicite:1】``&#8203;and &#8203;``【oaicite:0】``&#8203;
   const messageWithoutAnnotations = message.replace(/\【\d+†source】/g, '');
@@ -199,7 +190,6 @@ function formatMessage(message) {
   
   // Split the processed message into sections based on double newlines for paragraphs
   const sections = processedMessage.split(/\n\n+/);
-
 
   return sections.map((section, index) => {
     // Check for numbered lists
@@ -303,14 +293,12 @@ const calculateMinWidth = () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
   };
 
 return (
   <>
-
     <div 
       ref={containerRef} 
       className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col gradient1 chat-container ${isLargeScreen ? 'fixed bottom-20 top-16 right-0' : ''}`} 
@@ -319,247 +307,228 @@ return (
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
         position: 'fixed', // Keep it fixed to the viewport
       }}
+    > 
+    <div  
+      className="absolute left-0 top-0 bottom-0 cursor-ew-resize z-10" 
+      onMouseDown={handleMouseDown} 
+      style={{ width: '20px', left: '-20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} // Adjust as necessary
     >
-<div 
-        className="absolute left-0 top-0 bottom-0 cursor-ew-resize z-10" 
-        onMouseDown={handleMouseDown} 
-        style={{ width: '20px', left: '-20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} // Adjust as necessary
-      >
-      <FaGripLinesVertical size={85} style={{ color: 'lightgrey' }} />
+    <FaGripLinesVertical size={85} style={{ color: 'lightgrey' }} />
+    </div>
+    <div className="relative text-center shadow-lg rounded" style={{ paddingTop: 0, marginTop: 0, backgroundColor: 'rgba(255, 102, 101, 0.2)'}}>
+      <div className= {isLargeScreen ? "h-[10vw] rounded max-h-[88px]" : " rounded h-[15vw]"} style={{ width: '100%', overflow: 'hidden' }}>
+        <svg width="100%" height="100%" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style={{ stopColor: 'rgba(255, 102, 101, 0.9)' }} />
+              <stop offset="100%" style={{ stopColor: '#FFFFFF', stopOpacity: 0.5 }} />
+            </linearGradient>
+          </defs>
+          <path d={isLargeScreen ? "M0,0 L700,0 L500 60 Q100,150 0,80 Z" : "M0,0 L500,0 L500 40 Q60,120 0,70 Z"} fill={`url(#${gradientId})`} />
+        </svg>
       </div>
-      <div className="relative text-center shadow-lg rounded" style={{ paddingTop: 0, marginTop: 0, backgroundColor: 'rgba(255, 102, 101, 0.2)'}}>
-        <div className= {isLargeScreen ? "h-[10vw] rounded max-h-[88px]" : " rounded h-[15vw]"} style={{ width: '100%', overflow: 'hidden' }}>
-          <svg width="100%" height="100%" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style={{ stopColor: 'rgba(255, 102, 101, 0.9)' }} />
-                <stop offset="100%" style={{ stopColor: '#FFFFFF', stopOpacity: 0.5 }} />
-              </linearGradient>
-            </defs>
-            <path d={isLargeScreen ? "M0,0 L700,0 L500 60 Q100,150 0,80 Z" : "M0,0 L500,0 L500 40 Q60,120 0,70 Z"} fill={`url(#${gradientId})`} />
-          </svg>
+      <div className="absolute left-3 top-1/4 flex items-center">
+        <div className="w-10 h-10 flex justify-center items-center relative">
+          <Image src={botImage} alt="PNG" layout="fill" objectFit="cover" />
         </div>
-        <div className="absolute left-3 top-1/4 flex items-center">
-          <div className="w-10 h-10 flex justify-center items-center relative">
-            <Image src={botImage} alt="PNG" layout="fill" objectFit="cover" />
-          </div>
-          <div className="ml-3 text-white flex flex-col justify-center">
-            <div className="text-sm" style={{ alignSelf: 'flex-start' }}>Analyse</div>
-            <div className="text-lg" style={{ alignSelf: 'flex-start' }}>{chat_ticker}</div>
-          </div>
+        <div className="ml-3 text-white flex flex-col justify-center">
+          <div className="text-sm" style={{ alignSelf: 'flex-start' }}>Analyse</div>
+          <div className="text-lg" style={{ alignSelf: 'flex-start' }}>{chat_ticker}</div>
         </div>
       </div>
-      <div className="flex-grow p-3 overflow-y-auto" ref={chatContentRef} style={{  backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
-        {fetching ? (
-            <Spinner /> // Show spinner while fetching
-          ) : (
-            messages.map((message, index) => (
-          <div key={index} className="text-left text-sm my-2 p-2 rounded-md" 
+    </div>
+    <div className="flex-grow p-3 overflow-y-auto" ref={chatContentRef} style={{  backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
+      {fetching ? (
+        <Spinner /> // Show spinner while fetching
+      ) : (
+        messages.map((message, index) => (
+        <div key={index} className="text-left text-sm my-2 p-2 rounded-md" 
           style={message.role === 'user' ? 
             { background: 'linear-gradient(to right, rgba(255, 102, 101, 0.6), rgba(255, 102, 101, 0.6))', color: 'white' } : 
             { backgroundColor: 'rgba(255, 255, 255)', color: 'black' }}
-
           >
-            {formatMessage(message.content[0].type === "text" ? message.content[0].text.value : '')}
-          </div>
-            ))
-        )}
-        {isTyping && (
-          <div className="flex space-x-1">
-            <span className="typing-indicator"></span>
-            <span className="typing-indicator"></span>
-            <span className="typing-indicator"></span>
-          </div>
-        )}
-      </div>
-   <div className="p-2">
-    <div className={`flex items-center rounded-full bg-white p-1 overflow-hidden ${messageFocused ? 'ring-2 ring-[#E0D08B]' : ''}`}>
-      <input
-        type="text"
-        placeholder="Type a message..."
-        className="flex-grow p-2 bg-white focus:outline-none rounded-l-full flex-1 min-w-0"
-        style={{ fontSize: '14px' }}
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) { sendMessage(); }}}
-        onFocus={() => setMessageFocused(true)}
-        onBlur={() => setMessageFocused(false)}
-      />
-      <button
-        disabled={!message}
-        className="absolute right-4 flex items-center justify-center bg-white border-none rounded-full"
-        onClick={sendMessage}
-        onMouseEnter={() => setIsHoveredSend(true)}
-        onMouseLeave={() => setIsHoveredSend(false)}
-      >
-        <span className="transition-transform duration-200 ease-in-out hover:scale-110 mr-4">
-          <FaPaperPlane size={20} className="send-icon text-gray-800" />
-        </span>
-      </button>
-    </div>
-{/* Adjusted "See More" Toggle Button for closer proximity */}
-<div className="flex justify-center mt-2"> {/* Ensure there's no margin-top */}
-  <button
-    className="px-1 py-0 focus:outline-none transition duration-150 ease-in-out" /* Minimized padding */
-    onClick={() => setShowExtraIcons(!showExtraIcons)}
-  >
-    {showExtraIcons ? (
-      <FaAngleDoubleDown className="text-[#3A3C3E] text-xl" />
-    ) : (
-      <FaAngleDoubleUp className="text-[#3A3C3E] text-xl" />
-    )}
-  </button>
-</div>
-
-
-
-    {/* Conditionally render extra icons */}
-    {showExtraIcons && (
-
-<>
- {/* Section Container with Flex */}
- <div className="flex mb-4 mt-4">
-    {/* Portfolio Integration Button */}
-    <div className="w-1/2 flex justify-center items-center pr-2">
-      <button
-        onClick={() => handleIconClick('Portfolio Integration')}
-        className="w-full py-2 px-4 rounded-lg shadow hover:shadow-xl transition-transform duration-300 hover:scale-105 text-xs"
-        style={{ height: '100%', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)' }}
-      >
-        Portfolio Integration
-      </button>
-      {isHoveredPortfolio && (
-    <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
-    Coming Soon
-  </span>
-  )}
-    </div>
-
- {/* Rating Section with Button and Slider */}
- <div className="w-1/2 pl-2 flex justify-center items-center">
-      <div className="w-full h-full flex flex-col justify-between py-2 px-4 border rounded-lg shadow hover:shadow-xl transition-all duration-300 hover:scale-105"
-           style={{ boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)' }}>
-        <button
-          onClick={() => handleIconClick('Rating')}
-          className="mb-2 text-xs"
-        >
-          Rating
-        </button>
-        {isHoveredRating && (
-            <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
-              Coming Soon
-            </span>
-          )}
-        <input type="range" className="w-full slider-thumb" min="0" max="5" step="1"
-          style={{
-            accentColor: '#6A849D'
-          }}
-        />
-        {/* Number Display Underneath Slider */}
-        <div className="w-full flex justify-between text-xxs text-gray-500 mt-1">
-          <span>0</span>
-          <span>1</span>
-          <span>2</span>
-          <span>3</span>
-          <span>4</span>
-          <span>5</span>
+          {formatMessage(message.content[0].type === "text" ? message.content[0].text.value : '')}
         </div>
+        ))
+      )}
+      {isTyping && (
+        <div className="flex space-x-1">
+          <span className="typing-indicator"></span>
+          <span className="typing-indicator"></span>
+          <span className="typing-indicator"></span>
+        </div>
+      )}
       </div>
-    </div>
-    
-  </div>
-
-      
-      <div className="flex justify-between items-center transition-opacity duration-300 opacity-100 mb-4">
-        <div 
-  onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
-  onMouseEnter={() => setIsHoveredCompetitor(true)}
-  onMouseLeave={() => setIsHoveredCompetitor(false)}
-  className="flex flex-col items-center cursor-pointer relative py-2 rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-105"
-  style={{ width: '4.5rem', height: '3.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)' }}
->
-  <FaUsers
-    size={17} 
-    className="text-[#3A3C3E]  mb-2" // Adjusted to use className for consistency
-  />
-  <span className="text-xs text-center truncate w-full">Competing</span>
-  {isHoveredCompetitor && (
-    // <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
-    //   Competitors
-    // </span>
-    <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
-    Coming Soon
-  </span>
-  )}
-</div>
-        <div 
-  onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
-  onMouseEnter={() => setIsHoveredAnalyst(true)}
-  onMouseLeave={() => setIsHoveredAnalyst(false)}
-  className="flex flex-col items-center cursor-pointer relative py-2 rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-105"
-  style={{ width: '4.5rem', height: '3.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)' }}
->
-  <FaChartLine
-    size={17} 
-    className="text-[#3A3C3E]   mb-2" // Adjusted to use className for consistency
-  />
-  <span className="text-xs">Analyst</span>
-  {isHoveredAnalyst && (
-    // <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
-    //   Analyst Rating
-    // </span>
-    <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
-    Coming Soon
-  </span>
-  )}
-</div>
-        <div 
-  onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
-  onMouseEnter={() => setIsHoveredTeam(true)}
-  onMouseLeave={() => setIsHoveredTeam(false)}
-  className="flex flex-col items-center cursor-pointer relative py-2 rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-105"
-  style={{ width: '4.5rem', height: '3.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)' }}
->
-  <FaUserFriends
-    size={17} 
-    className="text-[#3A3C3E]   mb-2" // Adjusted to use className for consistency
-  />
-  <span className="text-xs">Team</span>
-  {isHoveredTeam && (
-    // <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
-    //   Team Analysis
-    // </span>
-    <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
-    Coming Soon
-  </span>
-  )}
-</div>
-        <div 
-  onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
-  onMouseEnter={() => setIsHoveredESG(true)}
-  onMouseLeave={() => setIsHoveredESG(false)}
-  className="flex flex-col items-center cursor-pointer relative py-2 rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-105"
-  style={{ width: '4.5rem', height: '3.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)' }}
->
-  <FaLeaf
-    size={17} 
-    className="text-[#3A3C3E]   mb-2" // Adjusted to use className for consistency
-  />
-  <span className="text-xs">ESG</span>
-  {isHoveredESG && (
-    // <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
-    //   ESG Rating
-    // </span>
-        <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
-        Coming Soon
-      </span>
-  )}
-</div>
+      <div className="p-2">
+        <div className={`flex items-center rounded-full bg-white p-1 overflow-hidden ${messageFocused ? 'ring-2 ring-[#E0D08B]' : ''}`}>
+          <input
+            type="text"
+            placeholder="Type a message..."
+            className="flex-grow p-2 bg-white focus:outline-none rounded-l-full flex-1 min-w-0"
+            style={{ fontSize: '14px' }}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) { sendMessage(); }}}
+            onFocus={() => setMessageFocused(true)}
+            onBlur={() => setMessageFocused(false)}
+          />
+          <button
+            disabled={!message}
+            className="absolute right-4 flex items-center justify-center bg-white border-none rounded-full"
+            onClick={sendMessage}
+            onMouseEnter={() => setIsHoveredSend(true)}
+            onMouseLeave={() => setIsHoveredSend(false)}
+          >
+            <span className="transition-transform duration-200 ease-in-out hover:scale-110 mr-4">
+              <FaPaperPlane size={20} className="send-icon text-gray-800" />
+            </span>
+          </button>
+        </div>
+        {/* Adjusted "See More" Toggle Button for closer proximity */}
+        <div className="flex justify-center mt-2"> {/* Ensure there's no margin-top */}
+          <button
+            className="px-1 py-0 focus:outline-none transition duration-150 ease-in-out" /* Minimized padding */
+            onClick={() => setShowExtraIcons(!showExtraIcons)}
+          >
+            {showExtraIcons ? (
+              <FaAngleDoubleDown className="text-[#3A3C3E] text-xl" />
+            ) : (
+              <FaAngleDoubleUp className="text-[#3A3C3E] text-xl" />
+            )}
+          </button>
       </div>
+      {/* Conditionally render extra icons */}
+      {showExtraIcons && (
+      <>
+        {/* Section Container with Flex */}
+        <div className="flex mb-4 mt-4">
+          {/* Portfolio Integration Button */}
+          <div className="w-1/2 flex justify-center items-center pr-2">
+            <button
+              // onClick={() => handleIconClick('Portfolio Integration')}
+              className="w-full py-2 px-4 rounded-lg shadow hover:shadow-xl transition-transform duration-300 hover:scale-105 text-xs"
+              style={{ height: '100%', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)' }}
+            >
+              Portfolio Integration
+            </button>
+            {isHoveredPortfolio && (
+              <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+                Coming Soon
+              </span>
+            )}
+          </div>
+          {/* Rating Section with Button and Slider */}
+          <div className="w-1/2 pl-2 flex justify-center items-center">
+            <div className="w-full h-full flex flex-col justify-between py-2 px-4 border rounded-lg shadow hover:shadow-xl transition-all duration-300 hover:scale-105"
+                style={{ boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)' }}>
+              <button
+                onClick={() => handleIconClick('Rating')}
+                className="mb-2 text-xs"
+              >
+                User Rating
+              </button>
+              {isHoveredRating && (
+                  <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+                    Coming Soon
+                  </span>
+              )}
+              <input type="range" className="w-full slider-thumb" min="0" max="5" step="1"
+                style={{
+                  accentColor: '#6A849D'
+                }}
+              />
+              {/* Number Display Underneath Slider */}
+              <div className="w-full flex justify-between text-xxs text-gray-500 mt-1">
+                <span>0</span>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-between items-center transition-opacity duration-300 opacity-100 mb-4">
+          <div 
+            // onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
+            onMouseEnter={() => setIsHoveredCompetitor(true)}
+            onMouseLeave={() => setIsHoveredCompetitor(false)}
+            className="flex flex-col items-center cursor-pointer relative py-2 rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-105"
+            disabled={true} 
+            style={{ width: '4.5rem', height: '3.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)' }}
+          >
+            <FaUsers
+              size={17} 
+              className="text-[#3A3C3E]  mb-2" // Adjusted to use className for consistency
+            />
+            <span className="text-xs text-center truncate w-full ">Competing</span>
+            {isHoveredCompetitor && (
+              <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+                Coming Soon
+              </span>
+            )}
+          </div>
+          <div 
+            // onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
+            onMouseEnter={() => setIsHoveredAnalyst(true)}
+            onMouseLeave={() => setIsHoveredAnalyst(false)}
+            className="flex flex-col items-center cursor-pointer relative py-2 rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-105"
+            style={{ width: '4.5rem', height: '3.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)' }}
+            disabled={true} 
+          >
+            <FaChartLine
+              size={17} 
+              className="text-[#3A3C3E]   mb-2" // Adjusted to use className for consistency
+            />
+            <span className="text-xs">Analyst</span>
+            {isHoveredAnalyst && (
+              <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+                Coming Soon
+              </span>
+            )}
+          </div>
+          <div 
+            // onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
+            onMouseEnter={() => setIsHoveredTeam(true)}
+            onMouseLeave={() => setIsHoveredTeam(false)}
+            className="flex flex-col items-center cursor-pointer relative py-2 rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-105"
+            style={{ width: '4.5rem', height: '3.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)' }}
+            disabled={true} 
+          >
+            <FaUserFriends
+              size={17} 
+              className="text-[#3A3C3E]   mb-2" // Adjusted to use className for consistency
+            />
+            <span className="text-xs">Team</span>
+            {isHoveredTeam && (
+              <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+                Coming Soon
+              </span>
+            )}
+          </div>
+          <div 
+            // onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
+            onMouseEnter={() => setIsHoveredESG(true)}
+            onMouseLeave={() => setIsHoveredESG(false)}
+            className="flex flex-col items-center cursor-pointer relative py-2 rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-105"
+            style={{ width: '4.5rem', height: '3.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)' }}
+            disabled={true} 
+         >
+            <FaLeaf
+              size={17} 
+              className="text-[#3A3C3E]   mb-2" // Adjusted to use className for consistency
+            />
+            <span className="text-xs">ESG</span>
+            {isHoveredESG && (
+              <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+                Coming Soon
+              </span>
+            )}
+          </div>
+        </div>
       </>
-)}
-
-
+    )}
       <div className="flex justify-between items-center mt-2"> {/* Adjusted for even spacing among icons */}
         {/* Icons for predefined messages */}
       <div 
