@@ -6,11 +6,11 @@ const CronTest = () => {
   const handleClick = async () => {
     try {
       const response = await fetch('/api/cron959', {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        // body: JSON.stringify({ 'ticker': 'AAPL' }),
+        body: JSON.stringify({ 'ticker': 'AAPL' }),
       });
 
       if (!response.ok) {

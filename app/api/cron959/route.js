@@ -88,13 +88,15 @@ function flattenObject(obj, prefix = '') {
 //   })
 
 export async function POST(req) {
-  
+
     const data = await req.json();
     console.log(data);
+    const triggerKeyword = data.triggerKeyword; // Access the property of the parsed object
+    console.log('triggerKeyword', triggerKeyword);
     // Verify the body 
-    if (data !== process.env.QSTASH_TOKEN) {
+    if (triggerKeyword !== process.env.QSTASH_TOKEN) {
         console.log('env token compare', process.env.QSTASH_TOKEN);
-        console.log('auth token compare', data);
+        console.log('auth token compare', triggerKeyword);
 
         console.error('Unauthorized access attempt. Cron is not executing');
         // Unauthorized response
