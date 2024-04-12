@@ -6,6 +6,7 @@ function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore,
 
     const marginRightValue = widthDiff * 0.25;
 
+
     const [isLiveDataLoaded, setIsLiveDataLoaded] = useState(false);
     console.log('Dashboard Stock Card cacheData',cacheData )
     useEffect(() => {
@@ -30,11 +31,11 @@ function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore,
 
     const description = cacheData?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.longBusinessSummary ||
     data2?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.longBusinessSummary || 
-    'Not Available';
+    'Description Loading...';
     const shortDescription = description.length > 200 ? description.substring(0, 200) + '...' : description;
     const link = cacheData?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.website ||
     data2?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.website || 
-    'Not Available';
+    'Website Loading...';
 
     // const [hover, setHover] = useState(false);
     const volume = data?.price?.regularMarketVolume?.longFmt || cacheData?.price?.regularMarketVolume?.longFmt || 'Loading';

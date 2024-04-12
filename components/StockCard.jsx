@@ -8,9 +8,12 @@ import { useState, useEffect } from 'react';
 function StockCard({ company }) {
     // Function to truncate the company name if it's too long
     const truncateCompanyName = (Name) => {
+        if (typeof Name !== 'string') {
+            return 'Unknown Company'; // Default value or placeholder
+        }
         return Name.length > 20 ? Name.substring(0, 20) + "..." : Name;
     };
-
+    
     // Convert the Strings to Numerical
 
     const Price = +company.Price;
@@ -41,7 +44,7 @@ function StockCard({ company }) {
 
     // Relative Calculations
     const linkPath = {
-        pathname: `/companies/${company.Name.toLowerCase().replace(/ /g, '')}`,
+        pathname: `/companies/${company.Name ? company.Name.toLowerCase().replace(/ /g, '') : 'unknown-company'}`,
         query: {
             companyName: company.Name,
             ticker: company.Stock,
@@ -90,11 +93,11 @@ function StockCard({ company }) {
             </div>
             <div className="flex items-center">
                 <span className="text-xl text-gray-900 mr-4">
-                    ${company.Price.toFixed(2)}
+                    ${typeof company.Price === 'number' ? company.Price.toFixed(2) : 'N/A'}
                 </span>
-              <span className="text-xl" style={{ color: change >= 0 ? 'rgba(53, 168, 83, 0.7)' : 'rgba(255, 0, 0, 0.7)' }}>
-                {change.toFixed(2)}%
-            </span>
+                <span className="text-xl" style={{ color: change >= 0 ? 'rgba(53, 168, 83, 0.7)' : 'rgba(255, 0, 0, 0.7)' }}>
+                    {change.toFixed(2)}%
+                </span>
 
             </div>
             <div className="mb-5" style={{ height: '25px' }}>

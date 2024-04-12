@@ -282,9 +282,6 @@ const calculateMinWidth = () => {
         onWidthChange(additionalWidth);
 
      
-
-      // Log the width difference to the console
-      console.log(`Width Difference: ${additionalWidth}px`);
     }
   };
 

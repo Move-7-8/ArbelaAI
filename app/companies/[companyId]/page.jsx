@@ -162,7 +162,7 @@ return (
               </div>
             {/* Statements and Chart Section */}
             <div style={{ marginRight: `${widthDiff}px` }} className="w-full lg:ml-[15.5%] lg:overflow-y-scroll lg:h-screen pb-[65px] lg:pb-0">
-              <TradingChartContainer cacheData={cacheData} data={data} />
+              <TradingChartContainer widthDiff={marginRightValue} cacheData={cacheData} data={data} />
               <>
                 <FinancialStatements cacheData={cacheData} data={data} data2={data2} className="mt-4" />
                 <NewsSection cacheData={cacheData} data={data} data2={data2} className="mt-4" />

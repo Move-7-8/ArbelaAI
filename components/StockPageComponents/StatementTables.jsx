@@ -503,7 +503,9 @@ const StatementTable = ({ data, statementType }) => {
 
   // Check if there are any rows to display
   if (rows.length === 0) {
-    return <div>Data loading.</div>;
+    <div className="animate-pulse">
+        <div className="bg-gray-200 h-64 w-full mt-4 rounded"></div>
+    </div>
   }
 
   // Functions to categorise balance sheet rows (to add colours): 

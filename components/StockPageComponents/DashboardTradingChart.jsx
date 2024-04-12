@@ -2,10 +2,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { select, scaleLinear, axisBottom, axisLeft } from 'd3';
 
-const TradingChartContainer = ({ data, cacheData}) => {
+const TradingChartContainer = ({ widthDiff, data, cacheData}) => {
+
+    const marginRightValue = widthDiff * 0.10;
+
+    console.log("widthDiff value:", marginRightValue ); 
 
     const [timeFrame, setTimeFrame] = useState('1y'); // Default to 1 year
     const [isDataLoading, setDataLoading] = useState(true);
+
+    
+
 
     // Function to process closing prices
     const processClosingPrices = (closingPrices) => {
@@ -99,7 +106,14 @@ const TradingChartContainer = ({ data, cacheData}) => {
 
 
              if (chartRef.current && cacheData) {
-                const margins = { top: 20, right: 30, bottom: 30, left: 50 };
+                const margins = { 
+                    top: 20, 
+                    right: 15 + marginRightValue, // Adjusting right margin by widthDiff
+                    bottom: 30, 
+                    left: 50 
+                };
+
+                console.log("Adjusted right margin:", margins.right);
                 const chartWidth = chartRef.current.clientWidth - margins.left - margins.right;
                 const chartHeight = chartRef.current.clientHeight - margins.top - margins.bottom;
                 const baseColor = askPriceRaw > prevClose ? '53, 168, 83' : 
@@ -236,60 +250,60 @@ const TradingChartContainer = ({ data, cacheData}) => {
                 .style("stroke", "lightgrey")
                 .style("opacity", 0.7);
             });
-    // Append the y-axis with unique ticks and formatted values
-    svg.append("g")
-    .call(d3.axisLeft(yScale)
-            .tickValues(yTicks) // Use unique tick values
-            .tickFormat(d3.format(".3f"))) // Format each tick value
-    .call(g => g.select(".domain").remove()); // Remove the Y-axis line
+        // Append the y-axis with unique ticks and formatted values
+        svg.append("g")
+        .call(d3.axisLeft(yScale)
+                .tickValues(yTicks) // Use unique tick values
+                .tickFormat(d3.format(".3f"))) // Format each tick value
+        .call(g => g.select(".domain").remove()); // Remove the Y-axis line
 
 
             
 
-    function mousemove(event) {
-        const domain = xScale.domain();
-        if (domain.length === 0) {
-            // Handle the empty case here. Perhaps show an error or return early.
-            console.error('xScale.domain() is empty');
-            return;
-        }
-    
-        const mouseX = d3.pointer(event, this)[0];
-        const closestDate = domain.reduce((a, b) => {
-            return Math.abs(xScale(a) - mouseX) < Math.abs(xScale(b) - mouseX) ? a : b;
-        });
-    
-        const index = dates.findIndex(d => d.getTime() === closestDate);
-    
-        if (index >= 0 && index < dates.length) {
-            const d = lineData[index]; // Define 'd' here at the start
+        function mousemove(event) {
+            const domain = xScale.domain();
+            if (domain.length === 0) {
+                // Handle the empty case here. Perhaps show an error or return early.
+                console.error('xScale.domain() is empty');
+                return;
+            }
+        
+            const mouseX = d3.pointer(event, this)[0];
+            const closestDate = domain.reduce((a, b) => {
+                return Math.abs(xScale(a) - mouseX) < Math.abs(xScale(b) - mouseX) ? a : b;
+            });
+        
+            const index = dates.findIndex(d => d.getTime() === closestDate);
+        
+            if (index >= 0 && index < dates.length) {
+                const d = lineData[index]; // Define 'd' here at the start
 
-                    // Update the position of the focus circle
-            focus.attr("transform", `translate(${xScale(d.date) + xScale.bandwidth() / 2}, ${yScale(d.value)})`)
-                .style("display", null);
+                        // Update the position of the focus circle
+                focus.attr("transform", `translate(${xScale(d.date) + xScale.bandwidth() / 2}, ${yScale(d.value)})`)
+                    .style("display", null);
 
-            // Update hover line's position and display it
-            hoverLine.attr("x1", xScale(d.date) + xScale.bandwidth() / 2)
-                    .attr("x2", xScale(d.date) + xScale.bandwidth() / 2)
-                    .attr("y1", yScale(d.value))
-                    .attr("y2", chartHeight)
+                // Update hover line's position and display it
+                hoverLine.attr("x1", xScale(d.date) + xScale.bandwidth() / 2)
+                        .attr("x2", xScale(d.date) + xScale.bandwidth() / 2)
+                        .attr("y1", yScale(d.value))
+                        .attr("y2", chartHeight)
+                        .style("opacity", 1);
+
+                // Update tooltip content and position
+                const dateFormat = d3.timeFormat("%b %d");
+                const price = `AUD $${d.value.toFixed(3)}`;
+                const date = dateFormat(d.date);
+                const volume = volumes[index];
+
+                tooltip.html(`<div class='text-black'>${price}</div>
+                            <div class='text-gray-500'>${date}</div>
+                            <div class='text-gray-500'>Volume: ${volume.toLocaleString()}</div>`)
+                    .style("left", `${event.pageX + 10}px`)
+                    .style("top", `${event.pageY - 28}px`)
                     .style("opacity", 1);
 
-            // Update tooltip content and position
-            const dateFormat = d3.timeFormat("%b %d");
-            const price = `AUD $${d.value.toFixed(3)}`;
-            const date = dateFormat(d.date);
-            const volume = volumes[index];
 
-            tooltip.html(`<div class='text-black'>${price}</div>
-                        <div class='text-gray-500'>${date}</div>
-                        <div class='text-gray-500'>Volume: ${volume.toLocaleString()}</div>`)
-                .style("left", `${event.pageX + 10}px`)
-                .style("top", `${event.pageY - 28}px`)
-                .style("opacity", 1);
-
-
-    }
+        }
 }
 
 
@@ -371,7 +385,7 @@ const TradingChartContainer = ({ data, cacheData}) => {
 
         // Cleanup
         return () => window.removeEventListener('resize', handleResize);
-    }, [data, cacheData, isDataLoading, timeFrame]); // Add data and timeFrame as dependencies
+    }, [data, widthDiff, cacheData, isDataLoading, timeFrame]); // Add data and timeFrame as dependencies
 
     const handleTimeFrameChange = (newTimeFrame) => {
         setTimeFrame(newTimeFrame);
@@ -413,14 +427,14 @@ const TradingChartContainer = ({ data, cacheData}) => {
         </div>
 
 
-        {isDataLoading ? (
+        {(!cacheData) ? (
             // Skeleton loader
             <div className="animate-pulse">
                 <div className="bg-gray-200 h-64 w-full rounded"></div>
             </div>
         ) : (
             // Chart container
-            <div className="trading-chart-container flex min-h-[30vh] lg:min-h-[40vh]" ref={chartRef} style={{ width: '100%' }}>
+            <div className="trading-chart-container flex min-h-[30vh] lg:min-h-[40vh]" ref={chartRef} style= {{ width: '100%' }}>
                 {/* Chart will be attached to this div */}
             </div>
         )}
