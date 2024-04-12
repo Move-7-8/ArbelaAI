@@ -88,9 +88,22 @@ function flattenObject(obj, prefix = '') {
 //   })
 
 export async function POST(req) {
-    console.log('Received headers:', req.headers);
-    // Retrieve the token from the request headers
-    const authToken = req.headers['authorization'] || '';
+    // Attempt to retrieve and parse the 'x-vercel-sc-headers'
+    const scHeaders = req.headers['x-vercel-sc-headers'];
+    let authToken;
+    if (scHeaders) {
+        try {
+            const parsedScHeaders = JSON.parse(scHeaders);
+            authToken = parsedScHeaders.Authorization;
+        } catch (error) {
+            console.error('Error parsing x-vercel-sc-headers:', error);
+            // Respond with an internal server error status if parsing fails
+            return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
+        }
+    } else {
+        // Fallback to directly retrieving 'authorization' if 'x-vercel-sc-headers' is not present
+        authToken = req.headers['authorization'] || '';
+    }
 
     // Verify the token
     if (authToken !== `Bearer ${process.env.QSTASH_TOKEN}`) {
