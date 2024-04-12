@@ -19,14 +19,14 @@ function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore,
     console.log('Dashboard cacheData', cacheData?.price?.marketCap?.longFmt)
     console.log('Dashboard liveData', data?.price?.marketCap?.longFmt)
 
-    const companyName = data?.keyStatistics?.longName || cacheData?.keyStatistics?.longName || 'Company Name Not Available';
-    const ticker = data?.historic?.meta?.symbol || cacheData?.historic?.meta?.symbol || 'Ticker Not Available';
-    const marketCap = data?.price?.marketCap?.longFmt || cacheData?.price?.marketCap?.longFmt || 'Not Available';
+    const companyName = data?.keyStatistics?.longName || cacheData?.keyStatistics?.longName || 'Company Name Loading';
+    const ticker = data?.historic?.meta?.symbol || cacheData?.historic?.meta?.symbol || 'Ticker Loading';
+    const marketCap = data?.price?.marketCap?.longFmt || cacheData?.price?.marketCap?.longFmt || 'Loading';
     // const marketCap = cacheData?.price?.marketCap?.longFmt || 'Not Available';
 
-    const askPrice = data?.financeAnalytics?.currentPrice || cacheData?.financeAnalytics?.currentPrice || 'Not Available';
-    const prevClose = data?.price?.regularMarketPreviousClose?.raw || cacheData?.price?.regularMarketPreviousClose?.raw || 'Not Available';
-    const regularMarketChange = data?.price?.regularMarketChange?.raw || cacheData?.price?.regularMarketChange?.raw || 'Not Available';
+    const askPrice = data?.financeAnalytics?.currentPrice || cacheData?.financeAnalytics?.currentPrice || 'Loading';
+    const prevClose = data?.price?.regularMarketPreviousClose?.raw || cacheData?.price?.regularMarketPreviousClose?.raw || 'Loading';
+    const regularMarketChange = data?.price?.regularMarketChange?.raw || cacheData?.price?.regularMarketChange?.raw || 'Loading';
 
     const description = cacheData?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.longBusinessSummary ||
     data2?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.longBusinessSummary || 
@@ -37,7 +37,7 @@ function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore,
     'Not Available';
 
     // const [hover, setHover] = useState(false);
-    const volume = data?.price?.regularMarketVolume?.longFmt || cacheData?.price?.regularMarketVolume?.longFmt || 'Not Available';
+    const volume = data?.price?.regularMarketVolume?.longFmt || cacheData?.price?.regularMarketVolume?.longFmt || 'Loading';
 
     //New Data for Ratios Connor added:
     //No need for cached data here 

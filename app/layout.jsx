@@ -5,7 +5,7 @@ import { Analytics } from "@vercel/analytics/react"
 
 export const metadata = {
     title: "Arbela", 
-    description: "Use AI to discover and analyse ASX companies"
+    description: "Use AI to discover and analyse US companies"
 }
 
 const RootLayout = ({children}) => {

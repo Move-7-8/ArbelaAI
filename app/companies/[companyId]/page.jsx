@@ -87,11 +87,6 @@ const Page = () => {
       console.error('There was an error!', error);
     }
   }, [ticker]);
-  
-  // Effect hook for fetching cached data
-  // Effect for fetching cached data
-  // Effect for fetching cached data
-
 
   useEffect(() => {
     const fetchCacheData = async () => {

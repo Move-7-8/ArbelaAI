@@ -42,7 +42,7 @@ const SettingsFeatures = () => {
           { title: "AI based company search", description: "Search and filter investments using natural language to find the best companies to meet your goals, portfolio, or thesis." },
           { title: "New Data points", description: "More data points including annual reports and earnings calls. This will provide insight into strategy and key team members of companies." },
           { title: "Better LLMs", description: "Testing on newer models with larger context windows." },
-          { title: "New Assets", description: "Expanding from ASX listed stocks into US stocks, Digital Assets, and Commodities." }
+          { title: "New Assets", description: "Expanding to Digital Assets, and Commodities." }
         ].map((feature, index) => (
           <ListItem key={index} p={4}> {/* Added padding to each ListItem */}
             <VStack spacing={4} align="start">
