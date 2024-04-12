@@ -43,6 +43,8 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChang
   const [isHoveredAnalyst, setIsHoveredAnalyst] = useState(false);
   const [isHoveredCompetitor, setIsHoveredCompetitor] = useState(false);
   const [isHoveredESG, setIsHoveredESG] = useState(false);
+  const [isHoveredPortfolio, setIsHoveredPortfolio] = useState(false);
+  const [isHoveredRating, setIsHoveredRating] = useState(false);
   const [isHoveredSend, setIsHoveredSend] = useState(false);
   const [showExtraIcons, setShowExtraIcons] = useState(false);
   const [widthDiff, setWidthDiff] = useState(0);
@@ -426,6 +428,11 @@ return (
       >
         Portfolio Integration
       </button>
+      {isHoveredPortfolio && (
+    <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+    Coming Soon
+  </span>
+  )}
     </div>
 
  {/* Rating Section with Button and Slider */}
@@ -438,6 +445,11 @@ return (
         >
           Rating
         </button>
+        {isHoveredRating && (
+            <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+              Coming Soon
+            </span>
+          )}
         <input type="range" className="w-full slider-thumb" min="0" max="5" step="1"
           style={{
             accentColor: '#6A849D'
@@ -454,6 +466,7 @@ return (
         </div>
       </div>
     </div>
+    
   </div>
 
       
@@ -471,9 +484,12 @@ return (
   />
   <span className="text-xs text-center truncate w-full">Competing</span>
   {isHoveredCompetitor && (
+    // <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+    //   Competitors
+    // </span>
     <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
-      Competitors
-    </span>
+    Coming Soon
+  </span>
   )}
 </div>
         <div 
@@ -489,9 +505,12 @@ return (
   />
   <span className="text-xs">Analyst</span>
   {isHoveredAnalyst && (
+    // <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+    //   Analyst Rating
+    // </span>
     <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
-      Analyst Rating
-    </span>
+    Coming Soon
+  </span>
   )}
 </div>
         <div 
@@ -507,9 +526,12 @@ return (
   />
   <span className="text-xs">Team</span>
   {isHoveredTeam && (
+    // <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+    //   Team Analysis
+    // </span>
     <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
-      Team Analysis
-    </span>
+    Coming Soon
+  </span>
   )}
 </div>
         <div 
@@ -525,9 +547,12 @@ return (
   />
   <span className="text-xs">ESG</span>
   {isHoveredESG && (
-    <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
-      ESG Rating
-    </span>
+    // <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+    //   ESG Rating
+    // </span>
+        <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
+        Coming Soon
+      </span>
   )}
 </div>
       </div>
