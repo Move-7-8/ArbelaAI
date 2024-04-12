@@ -202,11 +202,14 @@ async function processStocksInBatch(stocks, apiKey, apiHost, apiHost2) {
 export async function POST(req) {
     // Attempt to retrieve and parse the 'x-vercel-sc-headers'
     const scHeaders = req.headers['x-vercel-sc-headers'];
+    console.log('scHeaders', scHeaders);
     let authToken;
     if (scHeaders) {
         try {
             const parsedScHeaders = JSON.parse(scHeaders);
+            console.log('parsedScHeaders', parsedScHeaders);
             authToken = parsedScHeaders.Authorization;
+            console.log('authToken', authToken);
         } catch (error) {
             console.error('Error parsing x-vercel-sc-headers:', error);
             // Respond with an internal server error status if parsing fails
@@ -215,10 +218,13 @@ export async function POST(req) {
     } else {
         // Fallback to directly retrieving 'authorization' if 'x-vercel-sc-headers' is not present
         authToken = req.headers['authorization'] || '';
+        console,log('auth token has failed', authToken);
     }
 
     // Verify the token
     if (authToken !== `Bearer ${process.env.QSTASH_TOKEN}`) {
+        console.log('env token compare', process.env.QSTASH_TOKEN);
+        console.log('auth token compare', authToken);
         console.error('Unauthorized access attempt. Cron is not executing');
         // Unauthorized response
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
