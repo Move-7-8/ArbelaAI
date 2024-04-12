@@ -91,15 +91,17 @@ function flattenObject(obj, prefix = '') {
 export async function POST(req) {
     const headersList = headers();
     console.log('headersList', headersList);
-    const scHeaders = headersList['x-vercel-sc-headers'];
-    console.log('scHeaders', scHeaders);
+    const vercelScHeadersJson = headersList.get('x-vercel-sc-headers');
+    console.log('vercelScHeadersJson', vercelScHeadersJson);
+    // Parse the JSON to get an object
+    const vercelScHeaders = JSON.parse(vercelScHeadersJson);
+    console.log('vercelScHeaders', vercelScHeaders);
+
     let authToken;
     console.log('auth token has failed', authToken);
     if (scHeaders) {
         try {
-            const parsedScHeaders = JSON.parse(scHeaders);
-            console.log('parsedScHeaders', parsedScHeaders);
-            authToken = parsedScHeaders.Authorization;
+            authToken = vercelScHeaders.Authorization;
             console.log('authToken', authToken);
 
         } catch (error) {
