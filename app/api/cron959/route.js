@@ -87,7 +87,7 @@ function flattenObject(obj, prefix = '') {
 //     console.log(`Deleted ${result.deletedCount} documents.`);
 //   })
 
-export async function GET(req) {
+export async function POST(req) {
 
     // Retrieve the token from the request headers
     const authToken = req.headers['authorization'] || '';

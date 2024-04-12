@@ -199,7 +199,7 @@ async function processStocksInBatch(stocks, apiKey, apiHost, apiHost2) {
     }
 }
 
-export async function GET(req) {
+export async function POST(req) {
 
     // Retrieve the token from the request headers
     const authToken = req.headers['authorization'] || '';
