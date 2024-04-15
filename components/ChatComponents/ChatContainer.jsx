@@ -422,7 +422,7 @@ return (
                 onClick={() => handleIconClick('Rating')}
                 className="mb-2 text-xs"
               >
-                User Rating
+                Your Rating
               </button>
               {isHoveredRating && (
                   <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">

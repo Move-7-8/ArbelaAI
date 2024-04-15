@@ -1,0 +1,12 @@
+{
+    "functions": {
+      "app/api/cron959": {
+        "maxDuration": 280 
+      }, 
+      "app/api/cron2959": {
+        "maxDuration": 280 
+      }
+
+    }
+  }
+  
