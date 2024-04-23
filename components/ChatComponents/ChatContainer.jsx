@@ -292,20 +292,20 @@ return (
   <>
     <div 
       ref={containerRef} 
-      className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col gradient1 chat-container ${isLargeScreen ? 'fixed bottom-20 top-16 right-0' : ''}`} 
+      className={`bg-gray-100 bg-opacity-50 m-4 rounded-lg flex flex-col gradient1 chat-container ${isLargeScreen ? 'fixed bottom-20 top-16 right-0' : 'fixed inset-x-0 bottom-0 '}`} 
       style={{ 
-        width: `${width}px`, 
+        width: isLargeScreen ? `${width}px` : '', // Conditional width
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
         position: 'fixed', // Keep it fixed to the viewport
       }}
-    > 
-    <div  
-      className="absolute left-0 top-0 bottom-0 cursor-ew-resize z-10" 
-      onMouseDown={handleMouseDown} 
-      style={{ width: '20px', left: '-20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} // Adjust as necessary
     >
-    <FaGripLinesVertical size={85} style={{ color: 'lightgrey' }} />
-    </div>
+<div  
+  className="absolute left-0 top-0 bottom-0 cursor-ew-resize z-10 hidden lg:flex w-5 -left-5 items-center justify-center" 
+  onMouseDown={handleMouseDown}
+>
+  <FaGripLinesVertical size={85} className="text-gray-300" />
+</div>
+
     <div className="relative text-center shadow-lg rounded" style={{ paddingTop: 0, marginTop: 0, backgroundColor: 'rgba(255, 102, 101, 0.2)'}}>
       <div className= {isLargeScreen ? "h-[10vw] rounded max-h-[88px]" : " rounded h-[15vw]"} style={{ width: '100%', overflow: 'hidden' }}>
         <svg width="100%" height="100%" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
