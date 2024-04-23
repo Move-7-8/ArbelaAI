@@ -19,17 +19,22 @@ const CatalogFeed = () => {
     setSearchText(e.target.value);
   }
   
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await fetch('/api/companies');
+  const fetchPosts = async () => {
+    const response = await fetch('/api/companies');
+    if (!response.ok) {
+      // Handle non-OK responses here
+      console.error('Failed to fetch:', response.statusText);
+      return; // Prevent further execution
+    }
+    try {
       const data = await response.json();
-      const uniqueIndustries = [...new Set(data.industry)];
+      const uniqueIndustries = [...new Set(data.map(d => d.industry))];
       setIndustries(uniqueIndustries.map((industry, index) => ({ id: index + 1, name: industry })));
-          }
-  
-    fetchPosts();
-  }, []);
-
+    } catch (error) {
+      console.error('Failed to parse JSON:', error);
+    }
+  }
+      
   return (
     <section className={`w-full flex-center flex-col mt-20 pt-10`}>
     <div className='mb-2 mt-12 text-center'>

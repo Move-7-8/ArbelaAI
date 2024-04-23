@@ -2,17 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { select, scaleLinear, axisBottom, axisLeft } from 'd3';
 
-const TradingChartContainer = ({ widthDiff, data, cacheData}) => {
+const TradingChartContainer = ({ widthDiff, data, cacheData, dbData }) => {
 
     const marginRightValue = widthDiff * 0.10;
-
-    console.log("widthDiff value:", marginRightValue ); 
-
     const [timeFrame, setTimeFrame] = useState('1y'); // Default to 1 year
     const [isDataLoading, setDataLoading] = useState(true);
-
-    
-
 
     // Function to process closing prices
     const processClosingPrices = (closingPrices) => {
@@ -57,6 +51,7 @@ const TradingChartContainer = ({ widthDiff, data, cacheData}) => {
                     // askPriceRaw: cacheData?.financeAnalytics?.currentPrice?.raw,
                     // prevClose: cacheData?.historic?.meta?.chartPreviousClose,
 
+                    //SECOND UPDATE HERE ONCE FINANCIAL ANALYTICS IS READY 
                     volumes: data?.historic?.indicators?.quote[0]?.volume.map(vol => vol === null ? 0 : vol) || [],
                     timestamps: data?.historic?.timestamp || [],
                     closingPrices: processClosingPrices(data?.historic?.indicators?.quote[0]?.close || []),
@@ -113,7 +108,6 @@ const TradingChartContainer = ({ widthDiff, data, cacheData}) => {
                     left: 50 
                 };
 
-                console.log("Adjusted right margin:", margins.right);
                 const chartWidth = chartRef.current.clientWidth - margins.left - margins.right;
                 const chartHeight = chartRef.current.clientHeight - margins.top - margins.bottom;
                 const baseColor = askPriceRaw > prevClose ? '53, 168, 83' : 

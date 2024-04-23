@@ -13,6 +13,8 @@ import chatImage from '../../../public/assets/images/conversation.png'; // Corre
 
 const Page = () => {
   const [cacheData, setCacheData] = useState(null); 
+  const [DBData, setDBData] = useState(null); 
+
   const [data, setData] = useState(null); 
   const [data2, setData2] = useState(null);
   const [isLoading, setIsLoading] = useState(false); 
@@ -38,9 +40,8 @@ const Page = () => {
   const [showChatbox, setShowChatbox] = useState(false);
   const toggleChatbox = () => setShowChatbox(!showChatbox);
 
-  // Utility function to fetch data with retry logic
+  // Function to fetch data1 with retry logic
   const fetchWithRetry = useCallback(async (url, options, retries = 3, backoff = 300) => {
-    console.log(`Fetching data from ${url} with options:`, options); // Log the fetch attempt
 
     try {
       const response = await fetch(url, options);
@@ -57,7 +58,6 @@ const Page = () => {
     } catch (error) {
       if (retries > 0) {
         await new Promise(resolve => setTimeout(resolve, backoff));
-        console.log(`Data received from ${url}:`, data); // Log successful fetch
 
         return fetchWithRetry(url, options, retries - 1, backoff * 2);
       } else {
@@ -67,6 +67,36 @@ const Page = () => {
     }
   }, []);
 
+
+    // Use Effect to fetch MongoDB Data
+    useEffect(() => {
+      const fetchMongoDBData = async () => {
+        const fetchOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 'ticker': ticker }),
+        };
+  
+        try {
+          const mongoStartTime = performance.now();
+          const resultMongoDB = await fetchWithRetry(`/api/companiesMongo/[companyId]`, fetchOptions);
+          const mongoEndTime = performance.now();
+          console.log(`MongoDB fetch time: ${mongoEndTime - mongoStartTime} milliseconds.`);
+          console.log('MongoDB Data:', resultMongoDB)
+          if (resultMongoDB) {
+            setDBData(resultMongoDB); // This will store the fetched MongoDB data
+          }
+        } catch (error) {
+          console.error("Failed to fetch MongoDB data, proceeding without MongoDB data:", error);
+        }
+      };
+  
+      if (ticker) { // Only fetch MongoDB data if ticker is available
+        fetchMongoDBData();
+      }
+    }, [ticker, fetchWithRetry]);
+  
+  // Function to fetch 10k link
   const fetchEdgarData = useCallback(async () => {
     try {
       const response = await fetch('/api/EDGAR', {
@@ -88,6 +118,7 @@ const Page = () => {
     }
   }, [ticker]);
 
+  //Use Effect to fetch Cache Data
   useEffect(() => {
     const fetchCacheData = async () => {
       const fetchOptions = {
@@ -114,11 +145,12 @@ const Page = () => {
       fetchCacheData();
     }
   }, [ticker, fetchWithRetry]);
+
+  
       
-  // Effect for fetching live data
+  // UseEffect for fetching live data
   useEffect(() => {
     const fetchLiveData = async () => {
-      console.log(`Initiating live data fetch for ticker: ${ticker}`);
 
       const fetchOptions = {
         method: 'POST',
@@ -158,14 +190,14 @@ return (
 
               {/* Stock Card */}
               <div className="w-full flex lg:bottom-0 lg:fixed lg:w-1/4 lg:top-20 lg:left-0  lg:overflow-y-auto mb-2">
-                <DashboardStockCard widthDiff={marginRightValue} cacheData={cacheData} data={data} data2={data2} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
+                <DashboardStockCard widthDiff={marginRightValue} cacheData={cacheData} data={data} data2={data2} dbData={DBData} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
               </div>
             {/* Statements and Chart Section */}
             <div style={{ marginRight: `${widthDiff}px` }} className="w-full lg:ml-[15.5%] lg:overflow-y-scroll lg:h-screen pb-[65px] lg:pb-0">
-              <TradingChartContainer widthDiff={marginRightValue} cacheData={cacheData} data={data} />
+              <TradingChartContainer widthDiff={marginRightValue} cacheData={cacheData} data={data} dbData={DBData}/>
               <>
-                <FinancialStatements cacheData={cacheData} data={data} data2={data2} className="mt-4" />
-                <NewsSection cacheData={cacheData} data={data} data2={data2} className="mt-4" />
+                <FinancialStatements cacheData={cacheData} data={data} data2={data2} dbData={DBData} className="mt-4" />
+                <NewsSection cacheData={cacheData} data={data} data2={data2} dbData={DBData} className="mt-4" />
               </>
             </div>
             </div>

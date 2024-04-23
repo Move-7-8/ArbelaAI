@@ -2,13 +2,32 @@
 import React, { useState, useEffect } from 'react';
 import { MdLink } from 'react-icons/md';
 
-function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore, liquidityScore, widthDiff }) {
+function DashboardStockCard({ cacheData, data, dbData, widthDiff }) {
+    const [showFullDescription, setShowFullDescription] = useState(false);
 
     const marginRightValue = widthDiff * 0.25;
 
-
+    const formatNumber = (value) => {
+        if (typeof value !== 'number') {
+            return value;
+        }
+        // Convert values to millions or billions as appropriate
+        if (value >= 1e9) {
+            return `$${(value / 1e9).toFixed(2)}B`;
+        } else if (value >= 1e6) {
+            return `$${(value / 1e6).toFixed(2)}M`;
+        } else if (value >= 1e3) {
+            return `$${(value / 1e3).toFixed(2)}K`;
+        } else {
+            return `$${value.toFixed(2)}`;
+        }
+    };
+        
+    const toggleFullDescription = () => {
+        setShowFullDescription(prev => !prev);
+    };
+    
     const [isLiveDataLoaded, setIsLiveDataLoaded] = useState(false);
-    console.log('Dashboard Stock Card cacheData',cacheData )
     useEffect(() => {
         if (data) {
             setIsLiveDataLoaded(true); // Set to true once data is loaded
@@ -16,88 +35,62 @@ function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore,
     }, [data]); // Depend on data to trigger the effect
 
     // Prepare your data values, preferring live data if available, otherwise falling back to cache
-   
-    console.log('Dashboard cacheData', cacheData?.price?.marketCap?.longFmt)
-    console.log('Dashboard liveData', data?.price?.marketCap?.longFmt)
+    console.log('dbData:', dbData);
+    console.log('dbData Name:', dbData?.Name);
 
-    const companyName = data?.keyStatistics?.longName || cacheData?.keyStatistics?.longName || 'Company Name Loading';
-    const ticker = data?.historic?.meta?.symbol || cacheData?.historic?.meta?.symbol || 'Ticker Loading';
-    const marketCap = data?.price?.marketCap?.longFmt || cacheData?.price?.marketCap?.longFmt || 'Loading';
-    // const marketCap = cacheData?.price?.marketCap?.longFmt || 'Not Available';
+    const companyName = dbData?.Name || 'Company Name Loading';
+    const sector = dbData?.['get-profile']?.quoteSummary?.result[0]?.summaryProfile?.industry || 'Sector Loading';
+    const ticker = dbData?.Stock || 'Ticker Loading';
+    const marketCap = dbData?.MarketCapitalisation;
+    const formattedMarketCap = formatNumber(marketCap) || 'Loading';
+    const volume = dbData?.keyStatistics?.regularMarketVolume?.raw;
+    const formattedVolume = formatNumber(volume) || 'Loading';
+    const askPrice =  dbData?.LastPrice|| 'Loading';
 
-    const askPrice = data?.financeAnalytics?.currentPrice || cacheData?.financeAnalytics?.currentPrice || 'Loading';
-    const prevClose = data?.price?.regularMarketPreviousClose?.raw || cacheData?.price?.regularMarketPreviousClose?.raw || 'Loading';
-    const regularMarketChange = data?.price?.regularMarketChange?.raw || cacheData?.price?.regularMarketChange?.raw || 'Loading';
-
-    const description = cacheData?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.longBusinessSummary ||
-    data2?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.longBusinessSummary || 
-    'Description Loading...';
+    const description = dbData?.['get-profile']?.quoteSummary?.result[0]?.summaryProfile?.longBusinessSummary || 'Description Loading...';
     const shortDescription = description.length > 200 ? description.substring(0, 200) + '...' : description;
-    const link = cacheData?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.website ||
-    data2?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.website || 
-    'Website Loading...';
+    const link = dbData?.['get-profile']?.quoteSummary?.result?.[0]?.summaryProfile?.website || 'Loading';
 
-    // const [hover, setHover] = useState(false);
-    const volume = data?.price?.regularMarketVolume?.longFmt || cacheData?.price?.regularMarketVolume?.longFmt || 'Loading';
+    // const prevClose = cacheData?.responseData?.priceData?.regularMarketPreviousClose?.raw || 'Loading';
+    // const regularMarketChange = cacheData?.responseData?.priceData?.RegularMarketChange || 'Loading';
 
     //New Data for Ratios Connor added:
     //No need for cached data here 
-    const EPS = data?.keyStatistics?.epsCurrentYear?.raw || 'N/A'
-    const peRatioLagging = data?.keyStatistics?.priceEpsCurrentYear?.raw || 'N/A'
-    const peRatioForward = data?.keyStatistics?.forwardPE?.raw || 'N/A'
-    const pbRatio = data?.keyStatistics?.priceToBook?.raw || 'N/A'
-    const debtToEquityRatio = data?.financeAnalytics?.debtToEquity?.raw || 'N/A'
-    const revenuePerShare = data?.financeAnalytics?.revenuePerShare?.raw || 'N/A'
-    const returnOnAssets = data?.financeAnalytics?.returnOnAssets?.raw || 'N/A'
-    const returnOnEquity = data?.financeAnalytics?.returnOnEquity?.raw || 'N/A'
-    const dividendYield = data?.keyStatistics?.trailingAnnualDividendYield?.raw || 'N/A'
+    const EPS = typeof dbData?.['keyStatistics']?.epsCurrentYear?.raw === 'number' ? dbData?.['keyStatistics'].epsCurrentYear.raw.toFixed(2) : 'N/A';
+    const peRatioLagging = typeof dbData?.['keyStatistics']?.priceEpsCurrentYear?.raw === 'number' ? dbData?.['keyStatistics'].priceEpsCurrentYear.raw.toFixed(2) : 'N/A';
+    const peRatioForward = typeof dbData?.['keyStatistics']?.forwardPE?.raw === 'number' ? dbData?.['keyStatistics'].forwardPE.raw.toFixed(2) : 'N/A';
+    const pbRatio = typeof dbData?.['keyStatistics']?.priceToBook?.raw === 'number' ? dbData?.['keyStatistics'].priceToBook.raw.toFixed(2) : 'N/A';
+    
+    //Return to this later once the data is available
+    const debtToEquityRatio = typeof dbData?.['financeAnalytics']?.debtToEquity?.raw === 'number' ? dbData?.['financeAnalytics'].debtToEquity.raw.toFixed(2) : 'N/A';
+    const revenuePerShare = typeof dbData?.['financeAnalytics']?.revenuePerShare?.raw === 'number' ? dbData?.['financeAnalytics'].revenuePerShare.raw.toFixed(2) : 'N/A';
+    const returnOnAssets = typeof dbData?.['financeAnalytics']?.returnOnAssets?.raw === 'number' ? dbData?.['financeAnalytics'].returnOnAssets.raw.toFixed(2) : 'N/A';
+    const returnOnEquity = typeof dbData?.['financeAnalytics']?.returnOnEquity?.raw === 'number' ? dbData?.['financeAnalytics'].returnOnEquity.raw.toFixed(2) : 'N/A';
+    const dividendYield = typeof dbData?.['keyStatistics']?.trailingAnnualDividendYield?.raw === 'number' ? dbData?.['keyStatistics']?.trailingAnnualDividendYield.raw.toFixed(2) : 'N/A';
+    
+    const priceChange = dbData?.RegularMarketChange;
+    const formattedPriceChange = typeof priceChange === 'number' ? priceChange.toFixed(2) : 'Loading';
+    const percentageChange = dbData?.regularMarketChangePercent;
+    const formattedPercentageChange = typeof percentageChange === 'number' ? `${percentageChange.toFixed(2)}` : 'Loading';
 
-
-    const formatAskPrice = (askPriceObj) => {
+    const formatAskPrice = (askPrice) => {
         // Check if askPriceObj is an object with a 'raw' property
-        if (askPriceObj && typeof askPriceObj === 'object' && 'raw' in askPriceObj) {
-            return `$${Number(askPriceObj.raw).toFixed(2)}`; // Use raw value
+        if (askPrice && typeof askPrice === 'object' && 'raw' in askPrice) {
+            return `$${Number(askPrice).toFixed(2)}`; // Use raw value
         }
 
         // If askPriceObj is a number, format it to three decimal places
-        if (!isNaN(askPriceObj)) {
-            return `$${Number(askPriceObj).toFixed(3)}`;
+        if (!isNaN(askPrice)) {
+            return `$${Number(askPrice).toFixed(2)}`;
         }
 
         // Return 'Not Available' if askPriceObj is not valid
         return 'N/A';
     };
 
-    // Ensure askPrice and prevClose are numbers
-    const currentPrice = (typeof askPrice === 'object' && askPrice.raw) 
-                          ? askPrice.raw 
-                          : Number(askPrice);
-    const previousClose = Number(prevClose);
-
-    // Calculate price change and percentage change
-    // Calculate price change and percentage change
-    const priceChange = regularMarketChange;
-
-    const numericPriceChange = Number(priceChange) || 0;
-    const numericPreviousClose = Number(previousClose) || 0;
-    
-    // Calculate percentage change safely
-    let percentageChange = 0;
-    if (numericPreviousClose !== 0) {
-    percentageChange = ((numericPriceChange / numericPreviousClose) * 100).toFixed(2);
-    } else if (numericPriceChange !== 0) {
-    // Handle edge case where previousClose is 0 but there's a priceChange
-    percentageChange = Infinity; // Or handle as appropriate for your application
-    } else {
-    // This handles the case where both priceChange and previousClose are 0
-    // Ensuring percentageChange is explicitly set to 0 avoids the NaN issue
-    percentageChange = 0;
-    }
-
     // Convert percentageChange to a number for safe comparison and display
-    percentageChange = parseFloat(percentageChange);
-
-        // Custom function to format price change
+    // percentageChange = parseFloat(percentageChange);
+    // Custom function to format price change
         const formatPriceChange = (change) => {
             // Convert change to a number to ensure numeric operations are valid
             const numericChange = Number(change);
@@ -140,7 +133,14 @@ function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore,
     window.open(url, '_blank', 'noopener,noreferrer'); // Open the link in a new tab
     };
 
-
+    const formatDescription = (desc) => {
+        // Splitting at each period followed by a space and an uppercase letter
+        return desc.split(/\. (?=[A-Z])/).map((paragraph, index) => (
+            <p key={index} className="text-sm text-gray-600 mt-2">{paragraph.trim() + '.'}</p>
+        ));
+    };
+        
+    
  return (
     
     <div style={{ marginRight: `${marginRightValue}px` }} className="flex flex-col flex-1 rounded-md mx-auto lg-height-80vh">
@@ -175,7 +175,10 @@ function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore,
 
             `}
         </style>
-        <div className="flex flex-1 mx-4 mb-2 flex-col relative rounded-md p-2" style={{ minHeight: '0%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+        {/* <div className="flex flex-1 mx-4 mb-2 flex-col relative rounded-md p-2" style={{ minHeight: '0%', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}> */}
+        {/* TEST */}
+        <div className="flex flex-1 mx-4 mb-2 flex-col relative rounded-md p-2" style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+        
             {/* Blurred Background */}
             <div className="absolute inset-0 bg-opacity-50" style={{ filter: 'blur(1px)' }}></div>
 
@@ -238,32 +241,35 @@ function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore,
         )}
 
         {activeButton === 'button1' && (
-            <div className="flex flex-col flex-grow">
+            <div className="flex flex-col">
                 {!cacheData ? (
-                    // Skeleton loaders for company name and description
                     <div className="mb-2">
                         <div className="bg-gray-200 h-6 w-1/2 rounded"></div> {/* Skeleton for Company Name */}
                         <div className="bg-gray-200 h-4 w-3/4 rounded mt-2"></div> {/* Skeleton for Company Description */}
                     </div>
                 ) : (
-                    // Actual Company Name and Description
-                    
-                <div className="mb-2">
-                <h2 className="text-xl font-bold text-[#3A3C3E]">{`${companyName}  (${ticker})`}</h2>
-            <div>
-            <p className="text-sm text-gray-600 mt-2">{shortDescription}</p>
-        </div>
-        
-        {link !== 'Not Available' && (
-            <div className="mt-2">
-                <a href={link} 
-                onClick={(e) => handleLinkClick(e, link)}
-                className="text-xs relative z-2 bg-gray-200 rounded px-2 py-1 transition-colors duration-300 hover:bg-[#6A849D] hover:text-white">
-                Website
-                </a>
+                    <div className="mb-2">
+                        <h2 className="text-xl font-bold text-[#3A3C3E]">{`${companyName} (${ticker})`}</h2>
+                        <div>
+                        <div>
+                            {showFullDescription ? formatDescription(description) : <p className="text-sm text-gray-600 mt-2">{shortDescription}</p>}
+                        </div>
+                            {description.length > 200 && (
+                                <a onClick={toggleFullDescription}
+                                    className="text-xs relative z-2 bg-gray-200 rounded px-2 py-1 mr-2 transition-colors duration-300 hover:bg-[#6A849D] hover:text-white cursor-pointer">
+                                    {showFullDescription ? 'Show Less' : 'Show More'}
+                                </a>
+                            )}
+                            {link !== 'Not Available' && (
+                                <a href={link} onClick={(e) => handleLinkClick(e, link)}
+                                className="text-xs relative z-2 bg-gray-200 rounded px-2 py-1 transition-colors duration-300 hover:bg-[#6A849D] hover:text-white cursor-pointer">
+                                Website
+                                </a>
+                            )}
+                        </div>
+                    </div>
+                )}
             </div>
-        )}
-        </div>
         )}
         <div className="mt-2 flex justify-between items-center w-full">
             {!cacheData ? (
@@ -295,18 +301,18 @@ function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore,
                                 {/* Price Increase Percentage */}
                                 <div className="p-2 rounded flex items-center" 
                                     style={{
-                                        backgroundColor: priceChange >= 0 ? 'rgba(53, 168, 83, 0.5)' : 'rgba(255, 0, 0, 0.5)',
-                                        color: priceChange >= 0 ? '#35A853' : 'red'
+                                        backgroundColor: formattedPriceChange >= 0 ? 'rgba(53, 168, 83, 0.5)' : 'rgba(255, 0, 0, 0.5)',
+                                        color: formattedPriceChange >= 0 ? '#35A853' : 'red'
                                     }}>
-                                    <span className="mr-2 text-white text-xs">{percentageChange >= 0 ? '↑' : '↓'}</span>
-                                    <span className="text-white text-xs">{`${percentageChange}%`}</span>
+                                    <span className="mr-2 text-white text-xs">{formattedPercentageChange >= 0 ? '↑' : '↓'}</span>
+                                    <span className="text-white text-xs">{`${formattedPercentageChange}%`}</span>
                                 </div>
                                 {/* Price Increase in Dollars */}
                                 <div className="ml-2 text-xs" 
                                     style={{ 
-                                        color: priceChange >= 0 ? '#35A853' : 'red' 
+                                        color: formattedPriceChange >= 0 ? '#35A853' : 'red' 
                                     }}>
-                                    {`${priceChange >= 0 ? '+' : ''}${formatPriceChange(priceChange)}`}
+                                    {`${formattedPriceChange >= 0 ? '+' : ''}${formattedPriceChange}`}
                                 </div>
                             </div>
                         </div>
@@ -334,17 +340,17 @@ function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore,
                         <span className="text-gray-500 uppercase text-xs flex-shrink-0">Sector:</span>
                         <div className="flex-grow text-right ml-4">
                             <span className="text-sm">
-                            {industry || 'N/A'}
+                            {sector || 'N/A'}
                             </span>
                         </div>
                         </div>
                         <div className="flex  items-center justify-between my-2">
                             <span className="text-gray-500 uppercase text-xs">Market Cap:</span>
-                            <span className="text-sm">${marketCap}</span> {/* Added dollar sign here */}
+                            <span className="text-sm">{formattedMarketCap}</span> {/* Added dollar sign here */}
                         </div>
                         <div className="flex items-center justify-between my-2">
                             <span className="text-gray-500 uppercase text-xs">24hr Volume:</span>
-                            <span className="text-sm">${volume}</span> {/* And here */}
+                            <span className="text-sm">{formattedVolume}</span> {/* And here */}
                         </div>
                             <div className="flex items-center justify-between my-2 relative group">
                             <span className="text-gray-500 uppercase text-xs">Dividend Yield:</span>
@@ -373,10 +379,10 @@ function DashboardStockCard({ cacheData, data, data2, industry, volatilityScore,
                         )}
                         </div>
                     </div>   
-                    )}     
+                    {/* )}      */}
                 </div>      
             </div>
-        </div>
+        // </div>
     );
 }
 

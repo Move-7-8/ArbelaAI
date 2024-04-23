@@ -6,8 +6,6 @@ export async function POST(req, res) {
   
     const apiKey = process.env.RAPID_API_KEY
     const apiHost2 = process.env.RAPID_API_HOST_2
-    // console.log('COMPANY2 API KEY: ', apiHost);
-    // Array of API endpoint paths
     const paramsMap = {
       
       //2. For companies page (METHOD: POST with the tickers as Requests)
@@ -78,7 +76,7 @@ export async function POST(req, res) {
       //d. Get Balance Sheet
       'get-balance': {
           method: 'GET',
-          url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-balance-sheet',
+          url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-balance-sheet',
           params: {
             symbol: ticker, 
             currencyCode: 'AUD'

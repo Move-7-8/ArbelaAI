@@ -96,12 +96,10 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChang
         const response = await fetch(`/api/AI/message/list?threadId=${thread}`, {
           cache: 'no-store',
         });
-        // console.log('response status: ', response.status)
         if (!response.ok) {
           if (response.status === 404) {
             
             // Handle the case where no messages are found
-            // console.log('No messages found for this thread.');
             setMessages([]); // Set messages to an empty array or handle as needed
             return;
           }
@@ -109,7 +107,6 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChang
         }
 
         const data = await response.json();
-        // console.log('data', data)
         let newMessages = data.messages;
 
         // Sort messages in descending order by createdAt
@@ -119,7 +116,6 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChang
         setMessages(newMessages);
 
       } catch (error) {
-        // console.log("error", error);
       } finally {
         setFetching(false);
       }
@@ -139,13 +135,11 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChang
       );
   
       const newMessage = response.data.message;
-      // console.log("newMessage", newMessage);
       setMessages([...messages, newMessage]);
       setMessage("");
       onMessageSent(); // Invoke the callback after successful send
 
     } catch (error) {
-      // console.log("error", error);
     } finally {
       setSending(false);
     }

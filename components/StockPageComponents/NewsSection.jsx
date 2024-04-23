@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const NewsSection = ({ data2 }) => {
+const NewsSection = ({ data2, dbData }) => {
     const [visibleCount, setVisibleCount] = useState(4);
     const [isLoading, setIsLoading] = useState(true); // Initialize loading state to true
 
@@ -18,7 +18,8 @@ const NewsSection = ({ data2 }) => {
         ));
     };
 
-    const newsArray2 = data2?.['get-news']?.data?.main?.stream || []; // Adjust based on actual API response structure
+    // const newsArray2 = data2?.['get-news']?.data?.main?.stream || []; // Adjust based on actual API response structure
+    const newsArray2 = dbData?.['get-news']?.data?.main?.stream || [];
 
     // Adjusted Function to choose an appropriate thumbnail resolution
     const getThumbnailUrl = (item) => {

@@ -10,7 +10,7 @@ const CronTest = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 'ticker': 'AAPL' }),
+        body: JSON.stringify({ 'triggerKeyword': 'triggernow' }),
       });
 
       if (!response.ok) {
@@ -29,11 +29,11 @@ const CronTest = () => {
   const handleClick2 = async () => {
     try {
       const response = await fetch('/api/cron2959', {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        // body: JSON.stringify({ 'ticker': 'AAPL' }),
+        body: JSON.stringify({ 'triggerKeyword': 'triggernow' }),
       });
 
       if (!response.ok) {

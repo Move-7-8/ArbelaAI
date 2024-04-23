@@ -5,6 +5,7 @@ import Features from "./Features";
 import CronTest from '@components/CronTest'
 import AssistantTest from '@components/Test'
 import EdgarTest from '@components/EdgarTest'
+import Footer from "@components/Footer";
 
 const Landing = ({ setIsLandingVisible }) => {
     return (
@@ -22,8 +23,7 @@ const Landing = ({ setIsLandingVisible }) => {
             
             <h2 className="text-gray-500 uppercase text-md mb-4 mt-4">Supported By</h2>
             <InvestorLogos/>
-            {/* <CronTest/>
-            <EdgarTest /> */}
+            <Footer />
         </div>
     )
 }
