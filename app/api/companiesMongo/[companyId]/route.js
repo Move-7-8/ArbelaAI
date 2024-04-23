@@ -1,24 +1,3 @@
-//Backend Data Structuring (Inflow): 
-    //CompaniesMongo (MongoDB Data)
-      //Cron959
-        //Price(1), 
-      //Cron2959 
-        //Historic(1), KeyStatistics(1), Profile(2), Income Statement(2), News(2), Cashflow Statement(2), Balance Sheet(2)
-
-    //CompaniesCache (Cached Data)
-      //Cron3959
-
-//Backend Data Structuring (Outflow): 
-    //Companies/[companyId] (Live Data 1)
-        //Live Data: Price*(1), Historic30Days(1), Historic7Days(1), KeyStatistics (1)
-    //Companies2 (Live Data 2)
-        //Live Data: NA 
-    //CompaniesMongo (MongoDB Data)
-        // Daily Data: NA 
-        // Weekly Data: Historic(1), Profile(2), Income Statement(2), News(2), Cashflow Statement(2), Balance Sheet(2)
-        //Stored to pass to cache but not used in outflow: Price(1), KeyStatistics (1)
-    //CompaniesCache (Cached Data)
-        // Price(1), Profile(2), FinanceAnalytics(1), KeyStatistics (1)
 
 import { connectToDB } from '@utils/database';
 import Stock from '@models/stock';

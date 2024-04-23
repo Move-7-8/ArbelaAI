@@ -52,37 +52,17 @@ const TradingChartContainer = ({ widthDiff, data, cacheData, dbData }) => {
                     // prevClose: cacheData?.historic?.meta?.chartPreviousClose,
 
                     //SECOND UPDATE HERE ONCE FINANCIAL ANALYTICS IS READY 
-                    volumes: data?.historic?.indicators?.quote[0]?.volume.map(vol => vol === null ? 0 : vol) || [],
-                    timestamps: data?.historic?.timestamp || [],
-                    closingPrices: processClosingPrices(data?.historic?.indicators?.quote[0]?.close || []),
-                    askPriceRaw: data?.financeAnalytics?.currentPrice?.raw,
-                    prevClose: data?.historic?.meta?.chartPreviousClose,
+                    volumes: dbData?.historic?.indicators?.quote[0]?.volume.map(vol => vol === null ? 0 : vol) || [],
+                    timestamps: dbData?.historic?.timestamp || [],
+                    closingPrices: processClosingPrices(dbData?.historic?.indicators?.quote[0]?.close || []),
+                    askPriceRaw: dbData?.financialanalytics?.currentPrice?.raw,
+                    prevClose: dbData?.historic?.meta?.chartPreviousClose,
 
                 };
         }
     };
 
-    // Get the data for the currently selected time frame
     const { volumes, timestamps, closingPrices, askPriceRaw, prevClose } = getDataForTimeFrame(timeFrame);
-
-
-
-
-    // // Replace null values with the last available non-null value
-    // closingPrices = closingPrices.map((price, i, arr) => {
-    //     if (price !== null) {
-    //         return price;
-    //     }
-    //     // Find the most recent non-null value
-    //     for (let j = i - 1; j >= 0; j--) {
-    //         if (arr[j] !== null) {
-    //             return arr[j];
-    //         }
-    //     }
-    //     // Default to 0 if no non-null value is found
-    //     return 0;
-    // });
-
 
     const minValue = d3.min(closingPrices);
     const maxValue = d3.max(closingPrices);

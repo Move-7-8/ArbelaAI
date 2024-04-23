@@ -1,6 +1,7 @@
 import { Schema, model, models } from 'mongoose';
 
 const stockSchema = new Schema({
+  
   Stock: {
       type: String, 
   },
@@ -91,6 +92,8 @@ const stockSchema = new Schema({
   }],
 
 });
+
+  stockSchema.index({ Stock: 1 });  // Ascending index on the 'Stock' field
   
   const Stock = models.Stock || model("Stock", stockSchema);
   

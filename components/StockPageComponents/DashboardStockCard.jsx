@@ -36,7 +36,6 @@ function DashboardStockCard({ cacheData, data, dbData, widthDiff }) {
 
     // Prepare your data values, preferring live data if available, otherwise falling back to cache
     console.log('dbData:', dbData);
-    console.log('dbData Name:', dbData?.Name);
 
     const companyName = dbData?.Name || 'Company Name Loading';
     const sector = dbData?.['get-profile']?.quoteSummary?.result[0]?.summaryProfile?.industry || 'Sector Loading';
@@ -62,12 +61,15 @@ function DashboardStockCard({ cacheData, data, dbData, widthDiff }) {
     const pbRatio = typeof dbData?.['keyStatistics']?.priceToBook?.raw === 'number' ? dbData?.['keyStatistics'].priceToBook.raw.toFixed(2) : 'N/A';
     
     //Return to this later once the data is available
-    const debtToEquityRatio = typeof dbData?.['financeAnalytics']?.debtToEquity?.raw === 'number' ? dbData?.['financeAnalytics'].debtToEquity.raw.toFixed(2) : 'N/A';
-    const revenuePerShare = typeof dbData?.['financeAnalytics']?.revenuePerShare?.raw === 'number' ? dbData?.['financeAnalytics'].revenuePerShare.raw.toFixed(2) : 'N/A';
-    const returnOnAssets = typeof dbData?.['financeAnalytics']?.returnOnAssets?.raw === 'number' ? dbData?.['financeAnalytics'].returnOnAssets.raw.toFixed(2) : 'N/A';
-    const returnOnEquity = typeof dbData?.['financeAnalytics']?.returnOnEquity?.raw === 'number' ? dbData?.['financeAnalytics'].returnOnEquity.raw.toFixed(2) : 'N/A';
+    const debtToEquityRatio = typeof dbData?.['financialanalytics']?.debtToEquity?.raw === 'number' ? dbData?.['financialanalytics'].debtToEquity.raw.toFixed(2) : 'N/A';
+    const revenuePerShare = typeof dbData?.['financialanalytics']?.revenuePerShare?.raw === 'number' ? dbData?.['financialanalytics'].revenuePerShare.raw.toFixed(2) : 'N/A';
+    const returnOnAssets = typeof dbData?.['financialanalytics']?.returnOnAssets?.raw === 'number' ? dbData?.['financialanalytics'].returnOnAssets.raw.toFixed(2) : 'N/A';
+    const returnOnEquity = typeof dbData?.['financialanalytics']?.returnOnEquity?.raw === 'number' ? dbData?.['financialanalytics'].returnOnEquity.raw.toFixed(2) : 'N/A';
     const dividendYield = typeof dbData?.['keyStatistics']?.trailingAnnualDividendYield?.raw === 'number' ? dbData?.['keyStatistics']?.trailingAnnualDividendYield.raw.toFixed(2) : 'N/A';
     
+    console.log('financial analytics', dbData?.['financialanalytics']);
+    console.log('debt to equity', debtToEquityRatio);
+
     const priceChange = dbData?.RegularMarketChange;
     const formattedPriceChange = typeof priceChange === 'number' ? priceChange.toFixed(2) : 'Loading';
     const percentageChange = dbData?.regularMarketChangePercent;
