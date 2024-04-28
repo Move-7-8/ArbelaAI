@@ -89,16 +89,23 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChang
 
   useEffect(() => {
     const fetchMessages = async () => {
+      console.log('Starting to fetch messages for thread:', thread);
+
       setFetching(true);
-      if (!thread) return;
-  
-      try {
+      if (!thread) {
+        console.log('No thread ID provided, exiting fetch.');
+        return;
+      }
+        try {
         const response = await fetch(`/api/AI/message/list?threadId=${thread}`, {
           cache: 'no-store',
         });
+        console.log('Response received:', response.status);
+
         if (!response.ok) {
           if (response.status === 404) {
-            
+                console.log('No messages found, setting empty message array.');
+
             // Handle the case where no messages are found
             setMessages([]); // Set messages to an empty array or handle as needed
             return;
@@ -116,8 +123,11 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChang
         setMessages(newMessages);
 
       } catch (error) {
+        console.error('Error fetching messages:', error);
+
       } finally {
         setFetching(false);
+        console.log('Finished fetching messages.');
       }
     };
   
@@ -126,22 +136,30 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChang
   
   //Function to send a message in normal circumstances
   const sendMessage = async () => {
+    console.log('Sending message:', message);
+
     if (!thread) return;
     setSending(true);
-  
+    console.log('No thread ID provided, cannot send message.');
+
     try {
       const response = await axios.post(`/api/AI/message/create?threadId=${thread}&message=${message}`, 
         { message: message, threadId: thread }
       );
-  
+      console.log('Message sent, response status:', response.status);
+
       const newMessage = response.data.message;
       setMessages([...messages, newMessage]);
       setMessage("");
       onMessageSent(); // Invoke the callback after successful send
 
     } catch (error) {
+      console.error('Error sending message:', error);
+
     } finally {
       setSending(false);
+      console.log('Message send process complete.');
+
     }
   };
 

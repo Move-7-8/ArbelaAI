@@ -82,7 +82,6 @@ const Page = () => {
           const resultMongoDB = await fetchWithRetry(`/api/companiesMongo/[companyId]`, fetchOptions);
           const mongoEndTime = performance.now();
           console.log(`MongoDB fetch time: ${mongoEndTime - mongoStartTime} milliseconds.`);
-          console.log('MongoDB Data:', resultMongoDB)
           if (resultMongoDB) {
             setDBData(resultMongoDB); // This will store the fetched MongoDB data
           }

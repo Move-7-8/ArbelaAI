@@ -1,26 +1,48 @@
-//api/industries/route.js
-
 import { NextRequest } from 'next/server';
-import {connectToDB} from '@utils/database'
+import { connectToDB } from '@utils/database';
 import Stock from '@models/stock';
 
 export async function GET(request) {
-    await connectToDB();
+
     
     // Check if the request is for unique industries
     const url = new URL(request.url);
     const uniqueIndustries = url.searchParams.get('uniqueIndustries');
-    
+
     if (uniqueIndustries) {
-      const industries = await Stock.distinct("GICsIndustryGroup"); // Assuming "GICsIndustryGroup" is the field name
-      return new Response(JSON.stringify(industries), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+        // Using MongoDB's aggregation framework to extract unique industries
+        const industries = await Stock.aggregate([
+            {
+                $match: {"get-profile.quoteSummary.result.summaryProfile.industry": {$exists: true}}
+            },
+            {
+                $group: {
+                    _id: "$get-profile.quoteSummary.result.summaryProfile.industry"
+                }
+            },
+            {
+                $sort: {_id: 1} // Sorting alphabetically
+            }
+        ]).exec();
+
+        // Log the results of the aggregation
+
+        // Map to return only the industry names
+        const industryNames = industries.map(ind => ind._id);
+        return new Response(JSON.stringify(industryNames), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
     } else {
-      // Your existing code to return companies data
+        // Log when the request does not have the correct parameters
+        console.log("Request for unique industries failed; parameter 'uniqueIndustries' not provided.");
+        return new Response(JSON.stringify({"message": "No unique industries parameter provided"}), {
+            status: 400,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
     }
-  }
-  
+}

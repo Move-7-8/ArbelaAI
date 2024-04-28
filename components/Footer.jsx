@@ -8,7 +8,7 @@ const Footer = () => {
           <a href="https://twitter.com/arbela_io" target="_blank" rel="noopener noreferrer" aria-label="Follow on Twitter" className="mx-4">
             <FontAwesomeIcon icon={faTwitter} />
           </a>
-          <a href="hthttps://discord.gg/nmFUkqZxBA" target="_blank" rel="noopener noreferrer" aria-label="Join on Discord" className="mx-4">
+          <a href="https://discord.gg/nmFUkqZxBA" target="_blank" rel="noopener noreferrer" aria-label="Join on Discord" className="mx-4">
             <FontAwesomeIcon icon={faDiscord} />
           </a>
           <a href="https://www.linkedin.com/company/arbeladao/" target="_blank" rel="noopener noreferrer" aria-label="Connect on LinkedIn" className="mx-4">

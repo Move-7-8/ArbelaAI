@@ -64,6 +64,10 @@ const TradingChartContainer = ({ widthDiff, data, cacheData, dbData }) => {
 
     const { volumes, timestamps, closingPrices, askPriceRaw, prevClose } = getDataForTimeFrame(timeFrame);
 
+    console.log('closing prices', closingPrices)
+    console.log('closing price first', closingPrices[0])
+    console.log('closing price first', closingPrices[-1])
+
     const minValue = d3.min(closingPrices);
     const maxValue = d3.max(closingPrices);
     const buffer = (maxValue - minValue) * 0.30; // For example, a 5% buffer
@@ -90,8 +94,8 @@ const TradingChartContainer = ({ widthDiff, data, cacheData, dbData }) => {
 
                 const chartWidth = chartRef.current.clientWidth - margins.left - margins.right;
                 const chartHeight = chartRef.current.clientHeight - margins.top - margins.bottom;
-                const baseColor = askPriceRaw > prevClose ? '53, 168, 83' : 
-                                askPriceRaw < prevClose ? '255, 0, 0' : 
+                const baseColor = closingPrices[closingPrices.length - 1] > closingPrices[0] ? '53, 168, 83' : 
+                closingPrices[closingPrices.length - 1] < closingPrices[0] ? '255, 0, 0' : 
                                '53, 168, 83' ; 
 
                 setTimeout(() => {
@@ -359,7 +363,7 @@ const TradingChartContainer = ({ widthDiff, data, cacheData, dbData }) => {
 
         // Cleanup
         return () => window.removeEventListener('resize', handleResize);
-    }, [data, widthDiff, cacheData, isDataLoading, timeFrame]); // Add data and timeFrame as dependencies
+    }, [data, widthDiff, dbData, isDataLoading, timeFrame]); // Add data and timeFrame as dependencies
 
     const handleTimeFrameChange = (newTimeFrame) => {
         setTimeFrame(newTimeFrame);

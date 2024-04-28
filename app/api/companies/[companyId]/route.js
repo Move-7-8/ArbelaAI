@@ -3,7 +3,7 @@ import fetch from 'node-fetch'; // Ensure node-fetch is imported
 export async function POST(req, res) {
   const request_data = await req.json(); // Parsing JSON from the incoming request.
   const ticker = request_data.ticker; 
-
+  console.log('company route ticker', ticker)
 
 
   // Replace 'Your-RapidAPI-Key' and 'Your-RapidAPI-Host' with actual values from RapidAPI

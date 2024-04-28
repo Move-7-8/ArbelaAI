@@ -37,7 +37,6 @@ function StockCard({ company }) {
     const volatilityScore = +company.VolatilityScore;
     const liquidityScore = +company.LiquidityScore;
 
-    console.log('catalog company', company)
     // Relative Calculations
     const linkPath = {
         pathname: `/companies/${company.Name ? company.Name.toLowerCase().replace(/ /g, '') : 'unknown-company'}`,

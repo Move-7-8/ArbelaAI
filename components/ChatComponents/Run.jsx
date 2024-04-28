@@ -153,7 +153,7 @@ function Run({ messageSent, onRunComplete, onRunFinal }) {
           return response.json();
         })
       .then((response) => {
-        // console.log('RUN response', response.messages)
+        console.log('RUN response', response.messages)
         let newMessages = response.messages;
 
         // Sort messages in descending order by createdAt
@@ -165,36 +165,11 @@ function Run({ messageSent, onRunComplete, onRunFinal }) {
         setMessages(newMessages);
       });
     } catch (error) {
-      // console.log("error", error);
       setMessage("Error fetching messages");
     }
   };
 
   return null
-  // return (
-  //   <div className="flex flex-col mb-8">
-  //     <h1 className="text-4xl font-semibold mb-4">Run</h1>
-  //     <div className="flex flex-row gap-x-4 w-full">
-  //       <button
-  //         onClick={handleCreate}
-  //         disabled={creating || !assistant || !thread}
-  //         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-  //       >
-  //         {creating ? "Creating..." : "Create"}
-  //       </button>
-  //       <button
-  //         onClick={handleCancel}
-  //         disabled={["N/A"].includes(runState) || !run}
-  //         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-  //       >
-  //         {canceling ? "Canceling..." : "Cancel"}
-  //       </button>
-  //     </div>
-  //     {message && <div className="mt-4 text-center text-lg">{message}</div>}
-  //     <p className="font-semibold mb-4">Run: {run?.id}</p>
-  //     <p className="font-semibold mb-4">RunState: {runState}</p>
-  //   </div>
-  // );
 }
 
 export default Run;

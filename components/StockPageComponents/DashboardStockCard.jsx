@@ -41,7 +41,7 @@ function DashboardStockCard({ cacheData, data, dbData, widthDiff }) {
     const sector = dbData?.['get-profile']?.quoteSummary?.result[0]?.summaryProfile?.industry || 'Sector Loading';
     const ticker = dbData?.Stock || 'Ticker Loading';
     const marketCap = dbData?.MarketCapitalisation;
-    const formattedMarketCap = formatNumber(marketCap) || 'Loading';
+    const formattedMarketCap = formatNumber(marketCap) || '--';
     const volume = dbData?.keyStatistics?.regularMarketVolume?.raw;
     const formattedVolume = formatNumber(volume) || 'Loading';
     const askPrice =  dbData?.LastPrice|| 'Loading';

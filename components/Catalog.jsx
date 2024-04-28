@@ -15,45 +15,9 @@ function Catalog({ searchText, selectedCategory, preloadedData, sortBy }) {
     const selectCompany = (company) => setSelectedCompany(company);
     const itemPerLoad = 12;
 
-
-    //TEST
-    // const fetchData = async (shouldAppend = false, searchQuery = '', category = selectedCategory) => {
-    //     setLoading(true);
-    //     try {
-    //         const offset = shouldAppend ? tickers.length : 0;
-    //         const limit = itemPerLoad;
-    //         const sortby = sortBy;
-            
-    //         // Determine the API endpoint based on the context of the search
-    //         const apiRoute = searchQuery ? 'api/navCompanies' : 'api/companies';
-    //         const bodyContent = { limit, offset, searchText: searchQuery, category: category, sortby: sortBy };
-    //         console.log('Sending Request with Body:', bodyContent);
-
-    //         // const bodyContent = { limit, offset, searchText: searchQuery, category: selectedCategory, sortby: sortby };
-    //         console.log('Selected Category in Catalog:', selectedCategory);
-
-    //         const response = await fetch(`/${apiRoute}?limit=${limit}&offset=${offset}`, {
-    //             method: 'POST',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify(bodyContent),
-    //         });
-
-    //         const fetchedData = await response.json();
-    //         setTickers(shouldAppend ? prevTickers => [...prevTickers, ...fetchedData] : fetchedData);
-    //     } catch (error) {
-    //         console.error("Fetch error: ", error);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     // Fetch data on component mount or when preloadedData changes
-    //     setLoading(true);
-    //     fetchData();
-    // }, [preloadedData, sortBy]);
-
     const fetchData = async (shouldAppend = false, searchQuery = '', category = selectedCategory) => {
+        console.log(`Fetching data with searchQuery='${searchQuery}', category='${category ? category.name : 'All'}', sortBy='${sortBy}'`);
+
         setLoading(true);
         try {
             const offset = shouldAppend ? tickers.length : 0;
@@ -62,7 +26,6 @@ function Catalog({ searchText, selectedCategory, preloadedData, sortBy }) {
     
             const apiRoute = searchQuery ? 'api/navCompanies' : 'api/companies';
             const bodyContent = { limit, offset, searchText: searchQuery, category: category, sortby: sortBy };
-            console.log('Sending Request with Body:', bodyContent);
     
             const response = await fetch(`/${apiRoute}?limit=${limit}&offset=${offset}`, {
                 method: 'POST',
@@ -71,6 +34,8 @@ function Catalog({ searchText, selectedCategory, preloadedData, sortBy }) {
             });
     
             const fetchedData = await response.json();
+            console.log("Data received:", fetchedData);
+
             setTickers(shouldAppend ? prevTickers => [...prevTickers, ...fetchedData] : fetchedData);
         } catch (error) {
             console.error("Fetch error: ", error);
@@ -80,38 +45,24 @@ function Catalog({ searchText, selectedCategory, preloadedData, sortBy }) {
     };
     
     useEffect(() => {
+        console.log("Selected category changed to:", selectedCategory ? selectedCategory.name : "None");
         fetchData();
     }, [preloadedData, sortBy, selectedCategory]);
     
-
-    // const handleLoadMore = () => {
-    //     fetchData(true).then(() => setVisibleCount(prevCount => prevCount + itemPerLoad));
-    // };
+    useEffect(() => {
+        console.log("Catalog mounted with initial category:", selectedCategory ? selectedCategory.name : "None");
+    }, []);
+    
 
     const handleLoadMore = async () => {
         await fetchData(true);
         setVisibleCount(prevCount => prevCount + itemPerLoad);
     };
     
-
-    // const debounceSearch = useCallback(debounce((search) => {
-    //     fetchData(false, search); // Always replace the tickers on search
-    // }, 200), []);
-
     const debounceSearch = useCallback(debounce((search, category) => {
         fetchData(false, search, category); // Adjust fetchData to accept and handle category
     }, 200), [selectedCategory]); // Adding selectedCategory in dependency array
     
-    // useEffect(() => {
-    //     if (searchText && searchText.length > 2) {
-    //         // If searchText exists and is longer than 2 characters, perform a debounced search
-    //         debounceSearch(searchText);
-    //     } else {
-    //         // If searchText is cleared, fetch all data again, ignoring selectedCategory
-    //         fetchData(false, '');
-    //     }
-    // }, [searchText, selectedCategory, debounceSearch]);
-
     useEffect(() => {
         if (searchText && searchText.length > 2) {
             debounceSearch(searchText, selectedCategory); // Pass current selectedCategory
