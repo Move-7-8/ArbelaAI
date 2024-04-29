@@ -83,11 +83,11 @@ const Feed = ({ preloadedData }) => {
         {/* Filters Section - Adjusted for mobile responsiveness */}
       <div className="flex flex-col space-y-4 w-full mx-4 md:flex-row md:space-x-4 md:space-y-0">
       <Listbox value={selectedCategory} onChange={(newCategory) => {
-    console.log("Selected Category Changed to:", newCategory.name);  // Logging the category change
-    setSelectedCategory(newCategory);
-}} className="w-full">
-    {({ open }) => (
-        <>
+          console.log("Selected Category Changed to:", newCategory.name);  // Logging the category change
+          setSelectedCategory(newCategory);
+      }} className="w-full">
+          {({ open }) => (
+              <>
             <div className="relative w-full">
                 <Listbox.Button className="dropdown-button text-sm flex text-gray-500 justify-between items-center w-full h-10 px-3 shadow-md rounded-full">
                     <span>{selectedCategory && selectedCategory.name !== 'All Industries' ? selectedCategory.name : 'Industry Filter'}</span> 

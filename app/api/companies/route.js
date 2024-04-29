@@ -28,10 +28,13 @@ export async function POST(request) {
         priceToBook: { $ne: 'N/A', $exists: true, $type: 'number', $gte: 0 }
     };
 
-    if (category && category.name && category.name[0] !== 'All Industries') {
-        matchStage['get-profile.quoteSummary.result.summaryProfile.industry'] = { $regex: category.name[0], $options: 'i' };
+    // if (category && category.name && category.name[0] !== 'All Industries') {
+    //     matchStage['get-profile.quoteSummary.result.summaryProfile.industry'] = { $regex: category.name[0], $options: 'i' };
+    // }
+    if (category && category.name && category.name !== 'All Industries') {
+        matchStage['get-profile.quoteSummary.result.summaryProfile.industry'] = { $regex: category.name, $options: 'i' };
     }
-
+    
     if (searchText) {
         matchStage.$or = [
             { Name: { $regex: searchText, $options: 'i' } },
