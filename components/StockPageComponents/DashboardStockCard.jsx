@@ -35,7 +35,6 @@ function DashboardStockCard({ cacheData, data, dbData, widthDiff }) {
     }, [data]); // Depend on data to trigger the effect
 
     // Prepare your data values, preferring live data if available, otherwise falling back to cache
-    console.log('dbData:', dbData);
 
     const companyName = dbData?.Name || 'Company Name Loading';
     const sector = dbData?.['get-profile']?.quoteSummary?.result[0]?.summaryProfile?.industry || 'Sector Loading';
@@ -67,8 +66,6 @@ function DashboardStockCard({ cacheData, data, dbData, widthDiff }) {
     const returnOnEquity = typeof dbData?.['financialanalytics']?.returnOnEquity?.raw === 'number' ? dbData?.['financialanalytics'].returnOnEquity.raw.toFixed(2) : 'N/A';
     const dividendYield = typeof dbData?.['keyStatistics']?.trailingAnnualDividendYield?.raw === 'number' ? dbData?.['keyStatistics']?.trailingAnnualDividendYield.raw.toFixed(2) : 'N/A';
     
-    console.log('financial analytics', dbData?.['financialanalytics']);
-    console.log('debt to equity', debtToEquityRatio);
 
     const priceChange = dbData?.RegularMarketChange;
     const formattedPriceChange = typeof priceChange === 'number' ? priceChange.toFixed(2) : 'Loading';

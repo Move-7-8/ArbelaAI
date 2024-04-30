@@ -61,12 +61,7 @@ function Run({ messageSent, onRunComplete, onRunFinal }) {
         // Check if run status is 'in_progress' and call the callback
         if (updatedRun.status === 'in_progress') {
           onRunComplete(); // Call the callback function
-        }
-        
-        // console.log('/////////////////////////////')
-        // console.log('RUN STATUS',updatedRun.status )
-        // console.log('/////////////////////////////')
-      
+        }      
 
         if (["cancelled", "failed", "completed", "expired"].includes(updatedRun.status)) {
           clearInterval(intervalId);
@@ -153,7 +148,6 @@ function Run({ messageSent, onRunComplete, onRunFinal }) {
           return response.json();
         })
       .then((response) => {
-        console.log('RUN response', response.messages)
         let newMessages = response.messages;
 
         // Sort messages in descending order by createdAt

@@ -33,7 +33,7 @@ const Assistant = ({ onFileChangeTrigger, triggerCreate, setTriggerCreate }) => 
           onFileChangeTrigger();
 
         } catch (error) {
-          // console.log("error", error);
+
           setMessage("Error creating assistant");
         } finally {
           setCreating(false);

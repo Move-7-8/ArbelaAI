@@ -34,9 +34,9 @@ const Page = () => {
   // Search Params
   const searchParams = useSearchParams();
   const ticker = searchParams.get('ticker');
-  const industry = searchParams.get('industry');
-  const volatilityScore = searchParams.get('volatilityScore');
-  const liquidityScore = searchParams.get('liquidityScore');
+  // const industry = searchParams.get('industry');
+  // const volatilityScore = searchParams.get('volatilityScore');
+  // const liquidityScore = searchParams.get('liquidityScore');
   const [showChatbox, setShowChatbox] = useState(false);
   const toggleChatbox = () => setShowChatbox(!showChatbox);
 
@@ -81,7 +81,6 @@ const Page = () => {
           const mongoStartTime = performance.now();
           const resultMongoDB = await fetchWithRetry(`/api/companiesMongo/[companyId]`, fetchOptions);
           const mongoEndTime = performance.now();
-          console.log(`MongoDB fetch time: ${mongoEndTime - mongoStartTime} milliseconds.`);
           if (resultMongoDB) {
             setDBData(resultMongoDB); // This will store the fetched MongoDB data
           }
@@ -131,7 +130,6 @@ const Page = () => {
         // Adjust the URL to match your API route structure
         const resultCache = await fetchWithRetry(`/api/companiesCache/[companyId]`, fetchOptions);
         const cacheEndTime = performance.now();
-        console.log(`Cache fetch time: ${cacheEndTime - cacheStartTime} milliseconds.`);
         if (resultCache) {
           setCacheData(resultCache); // This should trigger a render with cache data
         }
@@ -162,10 +160,8 @@ const Page = () => {
       const promise2 = fetchWithRetry(`/api/companies2/[${ticker}]`, fetchOptions);
 
       const [result1, result2] = await Promise.all([promise1, promise2]);
-      console.log(`Live data fetch completed for ${ticker}. Data1:`, result1, `Data2:`, result2);
 
       const liveEndTime = performance.now();
-      console.log(`Live fetch time: ${liveEndTime - liveStartTime} milliseconds.`);
 
       setData(result1);
       setData2(result2);
@@ -189,7 +185,7 @@ return (
 
               {/* Stock Card */}
               <div className="w-full flex lg:bottom-0 lg:fixed lg:w-1/4 lg:top-20 lg:left-0  lg:overflow-y-auto mb-2">
-                <DashboardStockCard widthDiff={marginRightValue} cacheData={cacheData} data={data} data2={data2} dbData={DBData} industry={industry} volatilityScore={volatilityScore} liquidityScore={liquidityScore} />
+                <DashboardStockCard widthDiff={marginRightValue} cacheData={cacheData} data={data} data2={data2} dbData={DBData} />
               </div>
             {/* Statements and Chart Section */}
             <div style={{ marginRight: `${widthDiff}px` }} className="w-full lg:ml-[15.5%] lg:overflow-y-scroll lg:h-screen pb-[65px] lg:pb-0">

@@ -102,7 +102,6 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChang
         const response = await fetch(`/api/AI/message/list?threadId=${thread}`, {
           cache: 'no-store',
         });
-        console.log('Response received:', response.status);
 
         if (!response.ok) {
           if (response.status === 404) {
@@ -129,7 +128,6 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChang
 
       } finally {
         setFetching(false);
-        console.log('Finished fetching messages.');
       }
     };
   
@@ -138,7 +136,6 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChang
   
   //Function to send a message in normal circumstances
   const sendMessage = async () => {
-    console.log('Sending message:', message);
 
     if (!thread) return;
     setSending(true);
@@ -148,7 +145,6 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChang
       const response = await axios.post(`/api/AI/message/create?threadId=${thread}&message=${message}`, 
         { message: message, threadId: thread }
       );
-      console.log('Message sent, response status:', response.status);
 
       const newMessage = response.data.message;
       setMessages([...messages, newMessage]);
@@ -160,7 +156,6 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChang
 
     } finally {
       setSending(false);
-      console.log('Message send process complete.');
 
     }
   };

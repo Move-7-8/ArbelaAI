@@ -64,9 +64,6 @@ const TradingChartContainer = ({ widthDiff, data, cacheData, dbData }) => {
 
     const { volumes, timestamps, closingPrices, askPriceRaw, prevClose } = getDataForTimeFrame(timeFrame);
 
-    console.log('closing prices', closingPrices)
-    console.log('closing price first', closingPrices[0])
-    console.log('closing price first', closingPrices[-1])
 
     const minValue = d3.min(closingPrices);
     const maxValue = d3.max(closingPrices);
@@ -242,7 +239,6 @@ const TradingChartContainer = ({ widthDiff, data, cacheData, dbData }) => {
             const domain = xScale.domain();
             if (domain.length === 0) {
                 // Handle the empty case here. Perhaps show an error or return early.
-                console.error('xScale.domain() is empty');
                 return;
             }
         

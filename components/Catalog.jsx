@@ -16,7 +16,6 @@ function Catalog({ searchText, selectedCategory, preloadedData, sortBy }) {
     const itemPerLoad = 12;
 
     const fetchData = async (shouldAppend = false, searchQuery = '', category = selectedCategory) => {
-        console.log(`Fetching data with searchQuery='${searchQuery}', category='${category ? category.name : 'All'}', sortBy='${sortBy}'`);
 
         setLoading(true);
         try {
@@ -34,7 +33,6 @@ function Catalog({ searchText, selectedCategory, preloadedData, sortBy }) {
             });
     
             const fetchedData = await response.json();
-            console.log("Data received:", fetchedData);
 
             setTickers(shouldAppend ? prevTickers => [...prevTickers, ...fetchedData] : fetchedData);
         } catch (error) {
@@ -45,13 +43,9 @@ function Catalog({ searchText, selectedCategory, preloadedData, sortBy }) {
     };
     
     useEffect(() => {
-        console.log("Selected category changed to:", selectedCategory ? selectedCategory.name : "None");
         fetchData();
     }, [preloadedData, sortBy, selectedCategory]);
     
-    useEffect(() => {
-        console.log("Catalog mounted with initial category:", selectedCategory ? selectedCategory.name : "None");
-    }, []);
     
 
     const handleLoadMore = async () => {

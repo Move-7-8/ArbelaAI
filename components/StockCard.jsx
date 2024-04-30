@@ -32,40 +32,42 @@ function StockCard({ company }) {
     const rangeVolatility = +company.RangeVolatility;
     const percentageChangeVolatility = +company.PercentageChangeVolatility;
     const volatility = +company.Volatility;
-    const change = +((Price - company.LastPrice) / company.LastPrice) * 100;
+    const change = +company.regularMarketChangePercent;
     const liquidity = +company.Liquidity;
     const volatilityScore = +company.VolatilityScore;
     const liquidityScore = +company.LiquidityScore;
 
     // Relative Calculations
     const linkPath = {
-        pathname: `/companies/${company.Name ? company.Name.toLowerCase().replace(/ /g, '') : 'unknown-company'}`,
-        query: {
-            companyName: company.Name,
-            ticker: company.Stock,
-            industry: industry, 
-            price: Price,
-            MarketCapitalisation: MarketCapitalisation,
-            fiftyTwoWeekHigh: fiftyTwoWeekHigh, 
-            fiftyTwoWeekLow: fiftyTwoWeekLow,
-            fiftyTwoWeekChangePercent: fiftyTwoWeekChangePercent,
-            twoHundredDayAverageChangePercent: twoHundredDayAverageChangePercent, 
-            fiftyDayAverageChangePercent: fiftyDayAverageChangePercent,
-            averageDailyVolume3Month: averageDailyVolume3Month,
-            regularMarketVolume: regularMarketVolume,
-            priceToBook: priceToBook,
-            trailingAnnualDividendRate: trailingAnnualDividendRate,
-            epsTrailingTwelveMonths: epsTrailingTwelveMonths,
-            LastPrice: LastPrice,
+        // pathname: `/companies/${company.Name ? company.Name.toLowerCase().replace(/ /g, '') : 'unknown-company'}`,
+        pathname: `/companies/${company.Stock}`,
 
-            //Calculated
-            rangeVolatility: rangeVolatility,
-            percentageChangeVolatility: percentageChangeVolatility,
-            volatility: volatility, 
-            change: change,
-            liquidity: liquidity,
-            volatilityScore: volatilityScore,
-            liquidityScore: liquidityScore
+        query: {
+            // companyName: company.Name,
+            ticker: company.Stock,
+            // industry: industry, 
+            // price: Price,
+            // MarketCapitalisation: MarketCapitalisation,
+            // fiftyTwoWeekHigh: fiftyTwoWeekHigh, 
+            // fiftyTwoWeekLow: fiftyTwoWeekLow,
+            // fiftyTwoWeekChangePercent: fiftyTwoWeekChangePercent,
+            // twoHundredDayAverageChangePercent: twoHundredDayAverageChangePercent, 
+            // fiftyDayAverageChangePercent: fiftyDayAverageChangePercent,
+            // averageDailyVolume3Month: averageDailyVolume3Month,
+            // regularMarketVolume: regularMarketVolume,
+            // priceToBook: priceToBook,
+            // trailingAnnualDividendRate: trailingAnnualDividendRate,
+            // epsTrailingTwelveMonths: epsTrailingTwelveMonths,
+            // LastPrice: LastPrice,
+
+            // //Calculated
+            // rangeVolatility: rangeVolatility,
+            // percentageChangeVolatility: percentageChangeVolatility,
+            // volatility: volatility, 
+            // change: change,
+            // liquidity: liquidity,
+            // volatilityScore: volatilityScore,
+            // liquidityScore: liquidityScore
         }
     };
 

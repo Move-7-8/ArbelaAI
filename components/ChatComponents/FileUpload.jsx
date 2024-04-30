@@ -5,7 +5,6 @@ const FileUpload = ({ data, data2, ticker, onFileUploadCompleted }) => {
     const [uploadInitiated, setUploadInitiated] = useState(false);
 
     const handleUpload = async () => {
-        console.log('File Upload triggered');
         const bodyData = JSON.stringify({ ticker });
 
             try {
@@ -18,7 +17,6 @@ const FileUpload = ({ data, data2, ticker, onFileUploadCompleted }) => {
                 body: bodyData // Convert your data to JSON and send in the request body
             });
             const responseData = await response.json();
-            console.log("Data Uploaded:", responseData);
             onFileUploadCompleted(); // Call this after successful upload
 
         } catch (error) {

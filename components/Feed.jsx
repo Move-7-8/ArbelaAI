@@ -83,7 +83,6 @@ const Feed = ({ preloadedData }) => {
         {/* Filters Section - Adjusted for mobile responsiveness */}
       <div className="flex flex-col space-y-4 w-full mx-4 md:flex-row md:space-x-4 md:space-y-0">
       <Listbox value={selectedCategory} onChange={(newCategory) => {
-          console.log("Selected Category Changed to:", newCategory.name);  // Logging the category change
           setSelectedCategory(newCategory);
       }} className="w-full">
           {({ open }) => (
