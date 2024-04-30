@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import botImage from '../../public/assets/images/user1.png';
 import Image from 'next/image';
 import { MdOutlineSend } from 'react-icons/md';
-import { FaChalkboardTeacher, FaUsers, FaChartLine, FaLeaf, FaUserFriends , FaCheckCircle, FaThumbsUp, FaExclamationTriangle, FaHeartbeat, FaPaperPlane, FaAngleDoubleUp, FaAngleDoubleDown, FaAngleDoubleLeft, FaGripLinesVertical, FaUser } from 'react-icons/fa';
+import { FaChalkboardTeacher, FaNewspaper, FaChartLine, FaLeaf, FaUserFriends , FaCheckCircle, FaThumbsUp, FaExclamationTriangle, FaHeartbeat, FaPaperPlane, FaAngleDoubleUp, FaAngleDoubleDown, FaAngleDoubleLeft, FaGripLinesVertical, FaUser } from 'react-icons/fa';
 import Spinner from './Spinner'; // Assume you have a Spinner component
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -36,6 +36,8 @@ function ChatContainer({ onMessageSent, chatCondition, chat_ticker, onWidthChang
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024); // Initial check
   const [messageFocused, setMessageFocused] = useState(false);
   const [isHoveredChalkboard, setIsHoveredChalkboard] = useState(false);
+  const [isHoveredNews, setIsHoveredNews] = useState(false);
+
   const [isHoveredThumbsUp, setIsHoveredThumbsUp] = useState(false);
   const [isHoveredExclamation, setIsHoveredExclamation] = useState(false);
   const [isHoveredHeartbeat, setIsHoveredHeartbeat] = useState(false);
@@ -459,25 +461,21 @@ return (
           </div>
         </div>
         <div className="flex justify-between items-center transition-opacity duration-300 opacity-100 mb-4">
-          <div 
-            // onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
-            onMouseEnter={() => setIsHoveredCompetitor(true)}
-            onMouseLeave={() => setIsHoveredCompetitor(false)}
-            className="flex flex-col items-center cursor-pointer relative py-2 rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-105"
-            disabled={true} 
-            style={{ width: '4.5rem', height: '3.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)' }}
-          >
-            <FaUsers
-              size={17} 
-              className="text-[#3A3C3E]  mb-2" // Adjusted to use className for consistency
-            />
-            <span className="text-xs text-center truncate w-full ">Competing</span>
-            {isHoveredCompetitor && (
-              <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 bg-white border-3A3C3E text-black text-xs rounded-md">
-                Coming Soon
-              </span>
-            )}
-          </div>
+        <div 
+          onClick={() => handleIconClick('Give me recent news about this company and provide article links.')}
+          onMouseEnter={() => setIsHoveredNews(true)}
+          onMouseLeave={() => setIsHoveredNews(false)}
+          className="flex flex-col items-center cursor-pointer relative py-2 rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-105"
+          style={{ width: '4.5rem', height: '3.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)' }}
+        >
+          <FaNewspaper size={17} className="text-[#3A3C3E] mb-2 " />
+          <span className="text-xs">News</span>
+          {isHoveredNews && (
+            <span className="absolute whitespace-nowrap bottom-0 mb-14 px-2 py-1 border bg-white border-3A3C3E text-black text-xs rounded-md">
+              Recent Company News
+            </span>
+          )}
+        </div>
           <div 
             // onClick={() => handleIconClick('What are the positive aspects of this company that enhance its investment appeal')}
             onMouseEnter={() => setIsHoveredAnalyst(true)}
