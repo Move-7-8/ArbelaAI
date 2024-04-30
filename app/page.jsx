@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 
 const Home = () => {
   //Set to True to show home page pt.1
-  const [isLandingVisible, setIsLandingVisible] = useState(false);
+  const [isLandingVisible, setIsLandingVisible] = useState(true);
   const [preloadedData, setPreloadedData] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Add this line
   const [isScreenLarge, setIsScreenLarge] = useState(false); // Default to false
@@ -34,7 +34,7 @@ const Home = () => {
 
   //Set to True to show home page pt.2
   useEffect(() => {
-    setIsLandingVisible(false);
+    setIsLandingVisible(true);
   }, []);
 
   const preloadData = async () => {
