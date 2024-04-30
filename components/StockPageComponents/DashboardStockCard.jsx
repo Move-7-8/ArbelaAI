@@ -44,7 +44,7 @@ function DashboardStockCard({ cacheData, data, dbData, widthDiff }) {
     const formattedMarketCap = formatNumber(marketCap) || '--';
     const volume = dbData?.keyStatistics?.regularMarketVolume?.raw;
     const formattedVolume = formatNumber(volume) || 'Loading';
-    const askPrice =  dbData?.LastPrice|| 'Loading';
+    const askPrice =  dbData?.Price|| 'Loading';
 
     const description = dbData?.['get-profile']?.quoteSummary?.result[0]?.summaryProfile?.longBusinessSummary || 'Description Loading...';
     const shortDescription = description.length > 200 ? description.substring(0, 200) + '...' : description;
@@ -244,7 +244,7 @@ function DashboardStockCard({ cacheData, data, dbData, widthDiff }) {
 
         {activeButton === 'button1' && (
             <div className="flex flex-col">
-                {!cacheData ? (
+                {!dbData ? (
                     <div className="mb-2">
                         <div className="bg-gray-200 h-6 w-1/2 rounded"></div> {/* Skeleton for Company Name */}
                         <div className="bg-gray-200 h-4 w-3/4 rounded mt-2"></div> {/* Skeleton for Company Description */}
@@ -274,7 +274,7 @@ function DashboardStockCard({ cacheData, data, dbData, widthDiff }) {
             </div>
         )}
         <div className="mt-2 flex justify-between items-center w-full">
-            {!cacheData ? (
+            {!dbData ? (
                 // Skeleton loader displayed when data is not available
                 <>
                     {/* Skeleton for Stock Price */}
@@ -326,7 +326,7 @@ function DashboardStockCard({ cacheData, data, dbData, widthDiff }) {
         {/* Top Divider */}
         <div className="border-t border-gray-300 mt-4"></div>
                     {/* Conditional Rendering for Skeleton or Actual Data */}
-                    {!cacheData ? (
+                    {!dbData ? (
                         // Skeleton Loaders
                         <>
                         {Array.from({ length: 6 }).map((_, index) => (

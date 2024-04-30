@@ -462,7 +462,7 @@ return (
         </div>
         <div className="flex justify-between items-center transition-opacity duration-300 opacity-100 mb-4">
         <div 
-          onClick={() => handleIconClick('Give me recent news about this company and provide article links.')}
+          onClick={() => handleIconClick('Give me recent news titles for this company and provide article links.')}
           onMouseEnter={() => setIsHoveredNews(true)}
           onMouseLeave={() => setIsHoveredNews(false)}
           className="flex flex-col items-center cursor-pointer relative py-2 rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-105"

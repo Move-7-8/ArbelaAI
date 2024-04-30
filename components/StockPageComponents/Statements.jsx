@@ -14,7 +14,7 @@ const FinancialStatements = ({ data, data2, cacheData, dbData }) => {
         );
     };
 
-    if (!cacheData || !data2) {
+    if (!dbData) {
         return (
             <div className="animate-pulse">
                 <div className="bg-gray-200 h-64 w-full mt-4 rounded"></div>

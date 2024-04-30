@@ -81,10 +81,10 @@ const TradingChartContainer = ({ widthDiff, data, cacheData, dbData }) => {
         // Clear existing chart
         d3.select(chartRef.current).selectAll('*').remove();
 
-        if (cacheData) {
+        if (dbData) {
 
 
-             if (chartRef.current && cacheData) {
+             if (chartRef.current && dbData) {
                 const margins = { 
                     top: 20, 
                     right: 15 + marginRightValue, // Adjusting right margin by widthDiff
@@ -346,7 +346,7 @@ const TradingChartContainer = ({ widthDiff, data, cacheData, dbData }) => {
         }
     };
     useEffect(() => {
-        if (cacheData && Object.keys(cacheData).length > 0) {
+        if (dbData && Object.keys(dbData).length > 0) {
             // Assuming the data is now fully loaded and ready
             drawChart(); // Draw the chart
             setDataLoading(false); // Update loading state
@@ -405,7 +405,7 @@ const TradingChartContainer = ({ widthDiff, data, cacheData, dbData }) => {
         </div>
 
 
-        {(!cacheData) ? (
+        {(!dbData) ? (
             // Skeleton loader
             <div className="animate-pulse">
                 <div className="bg-gray-200 h-64 w-full rounded"></div>

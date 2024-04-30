@@ -7,9 +7,11 @@ const ChatLoad = () => {
     const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024); // Initial check
     const [containerHeight, setContainerHeight] = useState(calculateInitialHeight());
     const [showTypingText, setShowTypingText] = useState(false); // State to control typing text visibility
+    const [showGatheringDataText, setShowGatheringDataText] = useState(false); // For "training model..." text
     const [showTrainingText, setShowTrainingText] = useState(false); // For "training model..." text
-    const [showGatheringDataText, setShowGatheringDataText] = useState(false); // For "gathering data..." text
+    const [showFinalisingText, setshowFinalisingText] = useState(false); // For "gathering data..." text
 
+    showFinalisingText
     useEffect(() => {
         const handleResize = () => {
             // Adjust container height based on viewport width
@@ -26,7 +28,9 @@ const ChatLoad = () => {
         const removeGatheringDataTimer = setTimeout(() => setShowGatheringDataText(false), 7000);
         const trainingTimer = setTimeout(() => setShowTrainingText(true), 7000);
         const removeTrainingTimer = setTimeout(() => setShowTrainingText(false), 10000);
-        
+        const FinalisingTimer = setTimeout(() => setshowFinalisingText(true), 10000);
+        const removeFinalisingTimer = setTimeout(() => setshowFinalisingText(false), 13000);
+
         // Cleanup event listener on component unmount
         return () => {
             window.removeEventListener('resize', handleResize);
@@ -59,6 +63,8 @@ const ChatLoad = () => {
             </div>
             {showGatheringDataText && <div className="typing-text" style={{marginTop: '20px', textAlign: 'center'}}>Gathering data...</div>}
             {showTrainingText && <div className="typing-text" style={{marginTop: '10px', textAlign: 'center'}}>Training model...</div>}
+            {showFinalisingText && <div className="typing-text" style={{marginTop: '10px', textAlign: 'center'}}>Finalising...</div>}
+
         </div>
     );
 };
