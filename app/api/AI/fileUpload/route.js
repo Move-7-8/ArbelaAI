@@ -306,7 +306,7 @@ export async function POST(req) {
 
             // Price Data
             'Title:Price Data',
-
+            `Stock Price: ${DBStockData.Price || 'NA'}`,
             `Symbol: ${DBStockData.Stock || 'NA'}`,
             `200 Day Average Change Percent: ${DBStockData.twoHundredDayAverageChangePercent || 'NA'}`,
             `52 Week Change Percent: ${DBStockData.fiftyTwoWeekChangePercent || 'NA'}`,
@@ -318,7 +318,7 @@ export async function POST(req) {
             `Ask Size: ${DBStockData.askSize || 'NA'}`,
             `200 Day Average: ${DBStockData.twoHundredDayAverage || 'NA'}`,
             `Book Value: ${DBStockData.bookValue || 'NA'}`,
-            `Market Cap: ${DBStockData.marketCap || 'NA'}`,
+            `Market Cap: ${DBStockData.MarketCapitalisation || 'NA'}`,
             `52 Week High Change: ${DBStockData.fiftyTwoWeekHighChange || 'NA'}`,
             `52 Week Range: ${DBStockData.fiftyTwoWeekRange || 'NA'}`,
             `50 Day Average Change: ${DBStockData.fiftyDayAverageChange || 'NA'}`,
@@ -330,7 +330,7 @@ export async function POST(req) {
             `52 Week Low: ${DBStockData.fiftyTwoWeekLow || 'NA'}`,
             `Regular Market Volume: ${DBStockData.regularMarketVolume || 'NA'}`,
             `Market: ${DBStockData.market || 'NA'}`,
-            `Message Board ID: ${DBStockData.messageBoardId || 'NA'}`,
+            // `Message Board ID: ${DBStockData.messageBoardId || 'NA'}`,
             `Price Hint: ${DBStockData.priceHint || 'NA'}`,
             `Source Interval: ${DBStockData.sourceInterval || 'NA'}`,
             `Regular Market Day Low: ${DBStockData.regularMarketDayLow || 'NA'}`,
@@ -375,7 +375,6 @@ export async function POST(req) {
                     
             // News Data
             'Title:News Data',
-
 
             `News 1 Title: ${DBStockData?.['get-news']?.data?.main?.stream[0]?.content?.title || 'NA'}`,
             `News 1 Link: ${DBStockData?.['get-news']?.data?.main?.stream[0]?.content?.clickThroughUrl?.url || 'NA'}`,
