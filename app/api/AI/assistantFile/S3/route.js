@@ -54,28 +54,3 @@ export async function POST (request) {
 };
         
 
-//         // Create a pre-signed URL for the specific file
-//         const url = await s3.getSignedUrlPromise('getObject', {
-//             Bucket: 'kalicapitaltest',
-//             Key: fileKey,
-//             Expires: 60 * 5 // URL expires in 5 minutes, you can adjust this value
-//         });
-
-//         console.log(`Pre-signed URL: ${url}`);
-//         return new Response(JSON.stringify({ key: fileKey, url: url }), {
-//             status: 200,
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             }
-//         });
-
-//     } catch (error) {
-//         console.log('Our error', error);
-//         return new Response(JSON.stringify({ error: error.message }), {
-//             status: 500,
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             }
-//         });
-//     }
-// };

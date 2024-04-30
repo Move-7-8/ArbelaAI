@@ -20,7 +20,6 @@ export async function POST(req, res) {
     const cachedData = await stocksKV.get(kvKey);
 
     if (cachedData) {
-      console.log('Serving from KV cache:', cachedData);
 
       let responseData;
       if (typeof cachedData === "string") {

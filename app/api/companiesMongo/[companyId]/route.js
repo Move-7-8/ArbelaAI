@@ -14,7 +14,6 @@ export async function POST(req, res) {
     const stockData = await Stock.findOne({ Stock: ticker });
 
     if (stockData) {
-      console.log('Serving from MongoDB:', stockData);
       // Send the MongoDB data as a response
       return new Response(JSON.stringify(stockData), { status: 200 });
     } else {

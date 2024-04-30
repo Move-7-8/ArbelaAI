@@ -22,7 +22,7 @@ import {
   runAtom,
 } from "@/atom";
 
-export default function Home({data, data2, onWidthChange}) {
+export default function Home({data, data2, ticker, onWidthChange}) {
   // Atom State
   const [, setAssistant] = useAtom(assistantAtom);
   const [, setFile] = useAtom(fileAtom);
@@ -184,7 +184,7 @@ const handleFileChangeTrigger = () => {
       <div className="flex flex-row  mt-3 gap-x-10">
         <div className="flex flex-col w-full">
           <Assistant onFileChangeTrigger={afterAssistantCreate} triggerCreate={triggerCreate} setTriggerCreate={setTriggerCreate} />
-          <FileUpload data={data} data2={data2} onFileUploadCompleted={onFileUploadCompleted} />
+          <FileUpload data={data} data2={data2} ticker={ticker} onFileUploadCompleted={onFileUploadCompleted} />
           <AssistantFile 
             onFileChangeTrigger={handleFileChangeTrigger} 
             tasksCompleted={tasksCompleted}

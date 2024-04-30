@@ -229,7 +229,7 @@ return (
       {/* Mobile chatbox with controlled visibility through CSS */}
       <div className={mobileChatboxStyle}>
         <div className="w-full fixed bottom-0 bg-white h-2/3 overflow-auto">
-          <Test data={data} data2={data2} onWidthChange={handleWidthChange}/>
+          <Test data={data} data2={data2} ticker={ticker} onWidthChange={handleWidthChange}/>
           <button onClick={toggleChatbox} className="absolute top-0 right-0 mt-2 mr-2 text-2xl text-gray-700">
             &times;
           </button>

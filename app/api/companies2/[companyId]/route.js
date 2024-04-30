@@ -117,7 +117,6 @@ export async function POST(req, res) {
         });
 
         const results = await Promise.all(fetchPromises);
-        console.log('RESULTS:', results);
         const filteredResults = results.filter(result => result !== null); // Remove failed requests
 
         const resultObject = filteredResults.reduce((acc, { key, data }) => {

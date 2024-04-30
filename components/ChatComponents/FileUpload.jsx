@@ -1,11 +1,13 @@
 
 import { useEffect, useState } from 'react';
 
-const FileUpload = ({ data, data2, onFileUploadCompleted }) => {
+const FileUpload = ({ data, data2, ticker, onFileUploadCompleted }) => {
     const [uploadInitiated, setUploadInitiated] = useState(false);
 
     const handleUpload = async () => {
-        const bodyData = JSON.stringify({ data, data2 });
+        console.log('File Upload triggered');
+        const bodyData = JSON.stringify({ ticker });
+
             try {
             
             const response = await fetch("/api/AI/fileUpload", {
