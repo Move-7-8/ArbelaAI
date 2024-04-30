@@ -865,3 +865,49 @@ nav {
   border-right: 3px solid;
   animation: typing 3s steps(40, end), blink-caret .75s step-end infinite;
 }
+
+
+/* Landing Button Animation */
+
+@keyframes pulse {
+  0% {
+      transform: scale(1);
+      opacity: 1;
+  }
+  50% {
+      transform: scale(1.1);
+      opacity: 0.7;
+  }
+  100% {
+      transform: scale(1);
+      opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+
+.analyse_button {
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center align items horizontally */
+  justify-content: center; /* Center content vertically */
+  gap: 5px; /* Adds space between text and icon */
+  cursor: pointer;
+  /* animation: pulse 2s infinite; Keep your pulse animation */
+  /* animation: colorPulse 2s infinite ease-in-out; */
+  animation: bounce 2s infinite, pulse 2s infinite; /* Apply both animations */
+
+  padding: 5px 50px; /* Increased horizontal padding */
+}
+
+.FaAngleDoubleDown {
+  margin-top: 0; /* Adjust as needed */
+}

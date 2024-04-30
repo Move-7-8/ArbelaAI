@@ -6,6 +6,7 @@ import CronTest from '@components/CronTest'
 import AssistantTest from '@components/Test'
 import EdgarTest from '@components/EdgarTest'
 import Footer from "@components/Footer";
+import { FaAngleDoubleDown } from 'react-icons/fa'; // Corrected import if the name was wrong
 
 const Landing = ({ setIsLandingVisible }) => {
     return (
@@ -17,8 +18,11 @@ const Landing = ({ setIsLandingVisible }) => {
                 <button 
                     className="analyse_button" 
                     onClick={() => setIsLandingVisible(false)}> 
-                    Try It (FREE)
+                    Try It
+                    <FaAngleDoubleDown size={17} className="text-[#3A3C3E] mb-2 FaAngleDoubleDown" />
+
                 </button>
+
             </div>
             
             <h2 className="text-gray-500 uppercase text-md mb-4 mt-16">Supported By</h2>

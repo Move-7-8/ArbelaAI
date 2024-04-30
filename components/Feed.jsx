@@ -7,6 +7,7 @@ import { Listbox } from '@headlessui/react';
 import { FaChevronDown, FaChevronUp, FaLongArrowAltDown, FaLongArrowAltUp, FaSortDown, FaSortUp } from 'react-icons/fa'; // Importing ChevronDown icon from FontAwesome
 // import { categoryMap } from '../constants'; // Import your categoryMap
 import Sort from './Sort'; // Adjust the path if necessary
+import Footer from "@components/Footer";
 
 
 const sortOptions = [
@@ -134,7 +135,9 @@ const Feed = ({ preloadedData }) => {
       </div>
   
       <Catalog searchText={searchText} selectedCategory={selectedCategory} sortBy={sortBy} preloadedData={preloadedData}/>
+      <Footer />
     </section>
+
   );
 }
 

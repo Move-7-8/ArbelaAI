@@ -6,7 +6,8 @@ import Landing from '@components/Landing';
 import { useState, useEffect } from 'react';
 
 const Home = () => {
-  const [isLandingVisible, setIsLandingVisible] = useState(true);
+  //Set to True to show home page pt.1
+  const [isLandingVisible, setIsLandingVisible] = useState(false);
   const [preloadedData, setPreloadedData] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Add this line
   const [isScreenLarge, setIsScreenLarge] = useState(false); // Default to false
@@ -31,8 +32,9 @@ const Home = () => {
     setIsLandingVisible(false);
   };
 
+  //Set to True to show home page pt.2
   useEffect(() => {
-    setIsLandingVisible(true);
+    setIsLandingVisible(false);
   }, []);
 
   const preloadData = async () => {
@@ -89,7 +91,8 @@ const Home = () => {
         classNames="fade"
         unmountOnExit
       >
-        {!isLoading ? <Feed preloadedData={preloadedData} /> : <div>Loading...</div>}
+        <Feed preloadedData={preloadedData} />
+        {/* {!isLoading ? <Feed preloadedData={preloadedData} /> : <div>Loading...</div>} */}
       </CSSTransition>
 
     </section>

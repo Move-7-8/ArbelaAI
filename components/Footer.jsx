@@ -3,7 +3,7 @@ import { faTwitter, faDiscord, faLinkedin } from '@fortawesome/free-brands-svg-i
 
 const Footer = () => {
   return (
-      <div className="mt-24 flex justify-between items-center p-5 border-t border-gray-300">
+      <div className="mt-6 flex justify-between items-center p-5 border-t border-gray-300">
           <div className="flex flex-wrap justify-start">
               <a href="https://twitter.com/arbela_io" target="_blank" rel="noopener noreferrer" aria-label="Follow on Twitter" className="mx-2">
                   <FontAwesomeIcon icon={faTwitter} size="lg" />
