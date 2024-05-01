@@ -19,8 +19,8 @@ const Landing = ({ setIsLandingVisible }) => {
                     className="analyse_button" 
                     onClick={() => setIsLandingVisible(false)}> 
                     Try It
-                    <FaAngleDoubleDown size={17} className="text-[#3A3C3E] mb-2 FaAngleDoubleDown" />
-
+                    {/* <FaAngleDoubleDown size={17} className="text-[#3A3C3E] mb-2 FaAngleDoubleDown" />
+ */}
                 </button>
 
             </div>
